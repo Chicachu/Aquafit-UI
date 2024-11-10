@@ -1,0 +1,21 @@
+{
+  "LOGIN": {
+    "TITLE": "Log in",
+    "SUBMIT": "Log in",
+    "SUBMIT_WAIT_MESSAGE": "Logging in...",
+    "WELCOME": "Welcome, {{name}}!"
+  },
+  "AUTH": {
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "PASSWORD": "Password", 
+    "PASSWORD_PLACEHOLDER": "Enter your password"
+  },
+  "ERRORS": {
+    "REQUIRED": "{{field}} is required"
+  },
+  "LANGUAGES": {
+    "ENGLISH": "English", 
+    "SPANISH": "Spanish"
+  }
+}

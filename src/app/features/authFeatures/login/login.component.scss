@@ -1,0 +1,49 @@
+@import '../../../../assets/colors.scss';
+
+.login-container {
+  max-width: 450px;
+  margin: 2rem auto;
+  padding: 0;
+  color: $background-blue;
+}
+
+.form-field-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+
+  ::ng-deep {
+    .mdc-text-field--outlined, .mat-mdc-text-field-wrapper, .mdc-text-field {
+      background-color: white !important;
+    }
+  }
+}
+
+.submit-button {
+  height: 48px;
+  font-size: 16px;
+}
+
+.spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.mat-mdc-card {
+  background-color: $light-blue;
+}
+
+mat-card-header {
+  padding: 16px;
+  //background: rgba(0, 0, 0, 0.10);
+}
+
+mat-card-title {
+  margin: 0;
+  font-size: 24px;
+}

@@ -1,0 +1,21 @@
+{
+  "LOGIN": {
+    "TITLE": "Iniciar sesión",
+    "SUBMIT": "Iniciar sesión",
+    "SUBMIT_WAIT_MESSAGE": "Iniciando sesión...",
+    "WELCOME": "¡Bienvenido, {{name}}!"
+  },
+  "AUTH": {
+    "EMAIL": "Correo electrónico",
+    "EMAIL_PLACEHOLDER": "Ingrese su correo electrónico",
+    "PASSWORD": "Contraseña",
+    "PASSWORD_PLACEHOLDER": "Ingrese su contraseña"
+  },
+  "ERRORS": {
+    "REQUIRED": "{{field}} es obligatorio"
+  },
+  "LANGUAGES": {
+    "ENGLISH": "Inglés",
+    "SPANISH": "Español"
+  }
+}

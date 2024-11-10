@@ -1,0 +1,66 @@
+@import '../../../assets/colors.scss';
+
+:host {
+  height: 100%;
+}
+
+.main {
+  background-color: $background-blue;
+  min-height: 100vh;
+  height: 100vh;
+  align-items: center; 
+  justify-content: center; 
+}
+
+.language-container {
+  width: 100%;
+  padding: 1rem 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  .content-width {
+    max-width: 60vw; 
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.feature-container {
+  border: 5px solid $light-blue;
+  border-radius: 10px;
+  height: 60vh; 
+  width: 60vw;
+  background-image: url('../../../assets/images/backgrounds/happy-woman-barbells-pool-less-wide.jpg');
+  background-size: cover; 
+  background-position: center;
+  justify-content: center; 
+  z-index: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+
+.overlay {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $background-blue-overlay; 
+  z-index: 1;
+}
+
+.content  {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.logo {
+  height: 15vh;
+  width: auto;
+}

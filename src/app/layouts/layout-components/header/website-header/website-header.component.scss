@@ -1,0 +1,56 @@
+@import '../../../../../assets/colors.scss';
+
+.website-header-main {
+  min-height: 20vh;
+  max-height: 20vh;
+}
+
+.website-header-nav-bar {
+  height: 55px;
+}
+
+.website-header-middle {
+  height: calc(2vh + 138px);
+  background-color: $background-blue;
+}
+
+.website-header-nav-bar {
+  background-color: $primary-blue;
+}
+
+.logo {
+  text-align: center;
+}
+
+.logo>img {
+  min-height: 100px;
+  height: calc(2vh + 138px);
+  object-fit: contain;
+}
+
+.middle-row {
+  justify-content: space-between;
+}
+
+.middle-row>div {
+  width: 25vw;
+}
+
+.v-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-wrap: nowrap;
+}
+
+.phone {
+  padding: 0 10px;
+  font-size: calc(.75vw + 10px);
+  color: $light-pink;
+}
+
+@media screen and (max-width: 800px) {
+  .middle-row>div {
+    width: 33vw;
+  }
+}

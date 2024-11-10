@@ -2,13 +2,15 @@
   "REGISTER": {
     "TITLE": "Registrarse",
     "SUBMIT": "Registrarse",
-    "SUBMIT_WAIT_MESSAGE": "Registrando..."
+    "SUBMIT_WAIT_MESSAGE": "Registrando...",
+    "SUCCESS": "¡Registro exitoso!"
   },
   "LOGIN": {
     "TITLE": "Iniciar sesión",
     "SUBMIT": "Iniciar sesión",
     "SUBMIT_WAIT_MESSAGE": "Iniciando sesión...",
-    "WELCOME": "Bienvenido, {{name}}!"
+    "WELCOME": "Bienvenido, {{name}}!",
+    "SUCCESS": "¡Inicio de sesión exitoso!"
   },
   "AUTH": {
     "EMAIL": "Correo electrónico",
@@ -24,8 +26,12 @@
     "INVALID_EMAIL": "Por favor, ingrese una dirección de correo electrónico válida",
     "MUST_MATCH": "{{field}}s deben coincidir"
   },
-    "LANGUAGES": {
+  "LANGUAGES": {
     "ENGLISH": "Inglés",
     "SPANISH": "Español"
+  },
+  "HEADER": {
+    "ENROLL": "¡Inscríbete en las clases hoy!",
+    "PHONE": "322 211 8399"
   }
 }

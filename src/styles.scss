@@ -60,6 +60,11 @@ body, p {
   font-weight: 500; 
 }
 
+button {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 700; 
@@ -88,5 +93,51 @@ h1, h2, h3, h4, h5, h6 {
     &, & .mdc-snackbar__surface {
       background: $error;  
     }
+  }
+}
+
+.content-width { 
+  max-width: 60vw; 
+  margin: 0 auto;
+}
+
+.website-content-width {
+  max-width: 50vw;
+  margin: 0 auto;
+}
+
+.small-icon {
+  height: 2rem;
+}
+
+.primary-button {
+  padding: 20px 20px;
+  background-color: $primary-pink;
+  color: white;
+  border: 2px solid $background-blue;
+  border-radius: 7px;
+}
+
+@media screen and (min-width: 1000px) and  (max-width: 1300px) {
+  .website-content-width {
+    max-width: 60vw;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .website-content-width {
+    max-width: 70vw;
+  } 
+}
+
+@media screen and (min-width: 600px) and (max-width: 800px) {
+  .website-content-width {
+    max-width: 90vw;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .website-content-width {
+    max-width: 98vw;
   }
 }

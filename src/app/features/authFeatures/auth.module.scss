@@ -24,7 +24,7 @@ mat-form-field {
   }
 }
 
-::ng-deep .mat-mdc-raised-button:not(:disabled) {
+::ng-deep .mat-mdc-raised-button {
   background-color: rgba(255, 255, 255, .7) !important;
 }
 

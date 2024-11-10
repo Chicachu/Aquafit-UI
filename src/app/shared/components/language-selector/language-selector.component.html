@@ -1,0 +1,23 @@
+<div class="flex-row main">
+  <div class="globe-icon" [class]="isDark ? 'globe-dark' : 'globe-light'"></div>
+  
+  <div class="language-click-target" (click)="toggleLanguage()" >
+    <div class="language-container">
+      <span class="language-choice left" 
+      [ngClass]="{'text-selected-dark': currentLang === 'en' && isDark, 
+                  'text-not-selected-dark': currentLang === 'es' && isDark, 
+                  'text-selected-light': currentLang === 'en' && !isDark, 
+                  'text-not-selected-light': currentLang === 'es' && !isDark}">
+        EN
+      </span>
+      <span class="language-choice right" 
+      [ngClass]="{'text-selected-dark': currentLang === 'es' && isDark, 
+                  'text-not-selected-dark': currentLang === 'en' && isDark, 
+                  'text-selected-light': currentLang === 'es' && !isDark, 
+                  'text-not-selected-light': currentLang === 'en' && !isDark}">
+        ES
+      </span>
+    </div>
+    <div class="select-chip" [class]="isDark ? 'select-chip-dark' : 'select-chip-light'" [@slideToggle]="currentLang"></div>
+  </div>
+</div>

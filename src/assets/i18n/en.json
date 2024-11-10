@@ -29,5 +29,9 @@
   "LANGUAGES": {
     "ENGLISH": "English", 
     "SPANISH": "Spanish"
+  },
+  "HEADER": {
+    "ENROLL": "Enroll in classes today!",
+    "PHONE": "+52 322 211 8399"
   }
 }

@@ -7,9 +7,11 @@ import { MatInputModule } from "@angular/material/input"
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { MatSnackBarModule } from "@angular/material/snack-bar"
 import { TranslateModule } from "@ngx-translate/core"
-import { LanguageSelectorComponent } from "./components/languageSelector/language-selector.component"
+import { LanguageSelectorComponent } from "./components/language-selector/language-selector.component"
 import { MatSelectModule } from "@angular/material/select"
 import { MatFormFieldModule } from "@angular/material/form-field"
+import { CommonModule } from "@angular/common"
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 
 const materialModules = [
   MatCardModule,
@@ -28,6 +30,7 @@ const materialModules = [
   ],
   imports: [
     ...materialModules,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule

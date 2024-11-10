@@ -3,6 +3,9 @@ import { AuthLayoutComponent } from "./auth-layout/auth-layout.component";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { SharedModule } from "../shared/shared.module";
+import { WebsiteLayoutComponent } from "./website-layout/website-layout.component";
+import { LayoutComponentsModule } from "./layout-components/layout-components.module";
+import { AdminLayoutComponent } from "./admin-layout/admin-layout.component";
 
 const routes = [
   {
@@ -11,20 +14,42 @@ const routes = [
     children: [
       {
         path: '', 
-        loadChildren: () => import('../features/authFeatures/authFeatures.module').then(m => m.AuthFeaturesModule), // Lazy load AuthModule
+        loadChildren: () => import('../features/authFeatures/authFeatures.module').then(m => m.AuthFeaturesModule)
       },
     ],
   },
+  {
+    path: '', 
+    component: WebsiteLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('../features/website-features/website-features.module').then(m => m.WebsiteFeaturesModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    component: AdminLayoutComponent,
+    children: [
+      {
+        path: ''
+      }
+    ]
+  }
 ];
 
 @NgModule({
   declarations: [
-    AuthLayoutComponent
+    AdminLayoutComponent,
+    AuthLayoutComponent,
+    WebsiteLayoutComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule
+    SharedModule, 
+    LayoutComponentsModule
   ],
   providers: []
 })

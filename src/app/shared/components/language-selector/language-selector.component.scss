@@ -1,0 +1,82 @@
+@import '../../../../assets/colors.scss';
+
+.select-chip {
+  position: absolute;
+  height: 1.5rem;
+  width: 2rem;
+  top: .91rem;
+  border-radius: 100%;
+}
+
+.select-chip-dark {
+  background-color: $background-blue;
+}
+
+.select-chip-light {
+  background-color: $light-blue;
+}
+
+.main, .language-click-target {
+  align-items: center;
+}
+
+.main {
+  gap: 0.2rem;
+}
+
+.language-container {
+  position: relative;
+  z-index: 10;
+  display: inline-flex;
+  padding-left: 0.5rem; 
+  padding-right: 0.5rem; 
+  cursor: pointer;
+}
+
+.language-container > * + * {
+  margin-left: 1.0rem;
+}
+
+.language-choice {
+  transition-property: color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+.text-selected-dark {
+  color: $light-pink;
+}
+
+.text-not-selected-dark {
+  color: $background-blue;
+}
+
+.text-selected-light {
+  color: $background-blue;
+}
+
+.text-not-selected-light {
+  color: $light-pink;
+}
+
+.globe-icon {
+  width: 1.25rem;  
+  height: 1.25rem; 
+  mask-image: url('../../../../assets/images/icons/globe.svg');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.globe-dark {
+  background-color: $background-blue;
+}
+
+.globe-light {
+  background-color: $light-green;
+}
+
+span {
+  font-weight: 600;
+}
+

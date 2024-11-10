@@ -5,6 +5,7 @@ import { WebsiteHeaderComponent } from "./header/website-header/website-header.c
 import { RouterModule } from "@angular/router";
 import { TopHeaderComponent } from "./header/top-header/top-header.component";
 import { AdminHeaderComponent } from "./header/admin-header/admin-header.component";
+import { SubLayoutsModule } from "../admin-layout/sub-layouts/sub-layouts.module";
  
 @NgModule({
   declarations: [

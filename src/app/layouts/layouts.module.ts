@@ -6,6 +6,7 @@ import { SharedModule } from "../shared/shared.module";
 import { WebsiteLayoutComponent } from "./website-layout/website-layout.component";
 import { LayoutComponentsModule } from "./layout-components/layout-components.module";
 import { AdminLayoutComponent } from "./admin-layout/admin-layout.component";
+import { SubLayoutsModule } from "./admin-layout/sub-layouts/sub-layouts.module";
 
 const routes = [
   {
@@ -34,7 +35,7 @@ const routes = [
     children: [
       {
         path: 'admin',
-        loadChildren: () => import('../features/admin-features/admin-features.module').then(m => m.AdminFeaturesModule)
+        loadChildren: () => import('./admin-layout/sub-layouts/sub-layouts.module').then(m => m.SubLayoutsModule)
       }
     ]
   }
@@ -50,7 +51,8 @@ const routes = [
     CommonModule,
     RouterModule.forChild(routes),
     SharedModule, 
-    LayoutComponentsModule
+    LayoutComponentsModule,
+    SubLayoutsModule
   ],
   providers: []
 })

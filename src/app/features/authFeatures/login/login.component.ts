@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../core/services/authenticationService';
 import { SnackBarService } from '../../../core/services/snackBarService';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private translateService: TranslateService
   ) 
   {
     this.loginForm = this.formBuilder.group({
@@ -27,7 +29,6 @@ export class LoginComponent {
 
   ngOnInit(): void {}
 
-  // Getter for easy access to form fields
   get f() { 
     return this.loginForm.controls; 
   }
@@ -36,10 +37,10 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.loading = true;
       
-      this.authService.login(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value).subscribe({
+      this.authService.login(this.f['email'].value, this.f['password'].value).subscribe({
         next: (rsp) => {
           this.loading = false;
-          this.snackBarService.showSuccess('Login successful!');
+          this.snackBarService.showSuccess(this.translateService.instant('LOGIN.SUCCESS'));
         },
         error: ({error}) => {
           this.loading = false;
@@ -51,7 +52,6 @@ export class LoginComponent {
     }
   }
 
-  // Helper method to trigger validation on all fields
   private markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
@@ -64,13 +64,13 @@ export class LoginComponent {
   getErrorMessage(controlName: string): string {
     const control = this.loginForm.get(controlName);
     if (control?.hasError('required')) {
-      return `${controlName.charAt(0).toUpperCase() + controlName.slice(1)} is required`;
+      return this.translateService.instant('ERRORS.REQUIRED', { field: this.translateService.instant(`AUTH.${controlName.toUpperCase()}`) });;
     }
     if (control?.hasError('email')) {
-      return 'Please enter a valid email address';
+      return this.translateService.instant('ERRORS.INVALID_EMAIL');
     }
     if (control?.hasError('minlength')) {
-      return 'Password must be at least 6 characters';
+      return this.translateService.instant('ERRORS.MIN_LENGTH', { field: this.translateService.instant(`AUTH.${controlName.toUpperCase()}`), minLength: 6 });
     }
     return '';
   }

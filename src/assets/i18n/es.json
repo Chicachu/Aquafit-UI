@@ -1,20 +1,30 @@
 {
+  "REGISTER": {
+    "TITLE": "Registrarse",
+    "SUBMIT": "Registrarse",
+    "SUBMIT_WAIT_MESSAGE": "Registrando..."
+  },
   "LOGIN": {
     "TITLE": "Iniciar sesión",
     "SUBMIT": "Iniciar sesión",
     "SUBMIT_WAIT_MESSAGE": "Iniciando sesión...",
-    "WELCOME": "¡Bienvenido, {{name}}!"
+    "WELCOME": "Bienvenido, {{name}}!"
   },
   "AUTH": {
     "EMAIL": "Correo electrónico",
     "EMAIL_PLACEHOLDER": "Ingrese su correo electrónico",
     "PASSWORD": "Contraseña",
+    "CONFIRMPASSWORD": "Contraseña",
+    "CONFIRM_PASSWORD_TITLE": "Confirmar contraseña",
     "PASSWORD_PLACEHOLDER": "Ingrese su contraseña"
   },
   "ERRORS": {
-    "REQUIRED": "{{field}} es obligatorio"
+    "REQUIRED": "{{field}} es requerido",
+    "MIN_LENGTH": "{{field}} debe tener al menos {{minLength}} caracteres",
+    "INVALID_EMAIL": "Por favor, ingrese una dirección de correo electrónico válida",
+    "MUST_MATCH": "{{field}}s deben coincidir"
   },
-  "LANGUAGES": {
+    "LANGUAGES": {
     "ENGLISH": "Inglés",
     "SPANISH": "Español"
   }

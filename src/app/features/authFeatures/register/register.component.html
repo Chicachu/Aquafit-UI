@@ -1,1 +1,92 @@
-<p>register works!</p>
+<main>
+  <div class="auth-container mat-elevation-z8">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ 'REGISTER.TITLE' | translate }}</mat-card-title>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-field-container">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'AUTH.EMAIL' | translate }}</mat-label>
+              <input 
+                matInput 
+                type="email" 
+                formControlName="email" 
+                [placeholder]="'AUTH.EMAIL_PLACEHOLDER' | translate"
+              >
+              <mat-icon matPrefix>email</mat-icon>
+              <mat-error *ngIf="f['email'].invalid && (f['email'].dirty || f['email'].touched)">
+                {{getErrorMessage('email')}}
+              </mat-error>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'AUTH.PASSWORD' | translate }}</mat-label>
+              <input 
+                matInput 
+                [type]="hidePassword ? 'password' : 'text'" 
+                formControlName="password"
+                [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate "
+              >
+              <mat-icon matPrefix>lock</mat-icon>
+              <button 
+                mat-icon-button 
+                matSuffix 
+                type="button"
+                (click)="hidePassword = !hidePassword" 
+                [attr.aria-label]="'Hide password'" 
+                [attr.aria-pressed]="hidePassword"
+              >
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="f['password'].invalid && (f['password'].dirty || f['password'].touched)">
+                {{getErrorMessage('password')}}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'AUTH.CONFIRM_PASSWORD_TITLE' | translate }}</mat-label>
+              <input 
+                matInput 
+                [type]="hidePassword ? 'password' : 'text'" 
+                formControlName="confirmPassword"
+                [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate "
+              >
+              <mat-icon matPrefix>lock</mat-icon>
+              <button 
+                mat-icon-button 
+                matSuffix 
+                type="button"
+                (click)="hidePassword = !hidePassword" 
+                [attr.aria-label]="'Hide password'" 
+                [attr.aria-pressed]="hidePassword"
+              >
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="f['confirmPassword'].invalid && (f['confirmPassword'].dirty || f['confirmPassword'].touched)">
+                {{getErrorMessage('confirmPassword')}}
+              </mat-error>
+            </mat-form-field>
+  
+            <button 
+              mat-raised-button 
+              color="primary" 
+              type="submit" 
+              [disabled]="loading"
+              class="submit-button"
+            >
+              <mat-spinner 
+                diameter="20" 
+                *ngIf="loading" 
+                class="spinner"
+              ></mat-spinner>
+              {{ (loading ? 'REGISTER.SUBMIT_WAIT_MESSAGE' : 'REGISTER.SUBMIT') | translate }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>

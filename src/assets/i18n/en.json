@@ -1,18 +1,30 @@
 {
+  "REGISTER": {
+    "TITLE": "Register",
+    "SUBMIT": "Register",
+    "SUBMIT_WAIT_MESSAGE": "Registering...",
+    "SUCCESS": "Registration successful!"
+  },
   "LOGIN": {
     "TITLE": "Log in",
     "SUBMIT": "Log in",
     "SUBMIT_WAIT_MESSAGE": "Logging in...",
-    "WELCOME": "Welcome, {{name}}!"
+    "WELCOME": "Welcome, {{name}}!",
+    "SUCCESS": "Log in successful!"
   },
   "AUTH": {
     "EMAIL": "Email",
     "EMAIL_PLACEHOLDER": "Enter your email",
     "PASSWORD": "Password", 
+    "CONFIRMPASSWORD": "Password",
+    "CONFIRM_PASSWORD_TITLE": "Confirm password",
     "PASSWORD_PLACEHOLDER": "Enter your password"
   },
   "ERRORS": {
-    "REQUIRED": "{{field}} is required"
+    "REQUIRED": "{{field}} is required",
+    "MIN_LENGTH": "{{field}} must be at least {{minLength}} characters",
+    "INVALID_EMAIL": "Please enter a valid email address",
+    "MUST_MATCH": "{{field}}s must match"
   },
   "LANGUAGES": {
     "ENGLISH": "English", 

@@ -15,8 +15,4 @@ export class AuthenticationService {
   login(username: string, password: string): Observable<User> {
     return this._http.post<User>(`${environment.apiUrl}/auth/login`, { username, password }).pipe(take(1))
   }
-
-  register(username: string, password: string, role: Role): Observable<User> {
-    return this._http.post<User>(`${environment.apiUrl}/auth/register`, { username, password, role }).pipe(take(1))
-  }
 }

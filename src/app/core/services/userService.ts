@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core"
 import { Role } from "../types/enums/role"
 import { User } from "../types/user"
+import { HttpClient } from "@angular/common/http"
+import { Observable, take } from "rxjs"
+import { environment } from "../../../environments/environment"
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +11,7 @@ import { User } from "../types/user"
 export class UserService {
   private _user: User | null = null
 
-  constructor() { }
+  constructor(private _http: HttpClient) { }
 
   set user(user: User) {
     this._user = {...user}
@@ -34,5 +37,10 @@ export class UserService {
     if (!this._user) {
       this._user = <User>JSON.parse(sessionStorage.getItem('user')!)
     }
+  }
+
+  register(username: string, password: string, role: Role): Observable<User> {
+    console.log(`${environment.apiUrl}/users/register`)
+    return this._http.post<User>(`${environment.apiUrl}/users/register`, { username, password, role }).pipe(take(1))
   }
 }

@@ -1,13 +1,17 @@
 import { NgModule } from "@angular/core"
 import { AppComponent } from "./app.component"
 import { TranslatePipe } from '@ngx-translate/core'
-import { FeaturesModule } from "./features/features.module"
 import { LayoutsModule } from "./layouts/layouts.module"
 import { BrowserModule } from "@angular/platform-browser"
-import { RouterModule } from "@angular/router"
+import { RouterModule, Routes } from "@angular/router"
 import { SharedModule } from "./shared/shared.module"
 
-export const routes = [
+export const routes: Routes = [
+  { 
+    path: '', 
+    redirectTo: '/home', 
+    pathMatch: 'full'
+  },
   {
     path: '',
     component: AppComponent,
@@ -26,7 +30,6 @@ export const routes = [
   imports: [
     BrowserModule,
     RouterModule,
-    FeaturesModule,
     LayoutsModule,
     SharedModule
   ],

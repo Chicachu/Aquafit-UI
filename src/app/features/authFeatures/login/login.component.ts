@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../core/services/authenticationService';
 import { SnackBarService } from '../../../core/services/snackBarService';
 import { TranslateService } from '@ngx-translate/core';
+import { User } from '../../../core/types/user';
+import { internalEmailRegex } from '../../../core/constants';
+import { Router } from '@angular/router';
+import { UserService } from '../../../core/services/userService';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +22,9 @@ export class LoginComponent {
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
     private snackBarService: SnackBarService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router,
+    private userService: UserService
   ) 
   {
     this.loginForm = this.formBuilder.group({
@@ -38,9 +44,15 @@ export class LoginComponent {
       this.loading = true;
       
       this.authService.login(this.f['email'].value, this.f['password'].value).subscribe({
-        next: (rsp) => {
+        next: (user: User) => {
           this.loading = false;
-          this.snackBarService.showSuccess(this.translateService.instant('LOGIN.SUCCESS'));
+          this.userService.user = user
+          this.snackBarService.showSuccess(this.translateService.instant('LOGIN.WELCOME', { name: user.username }));
+          if (internalEmailRegex.test(user.username!)) {
+            this.router.navigate(['/admin/home'])
+          } else {
+            this.router.navigate(['/home'])
+          }
         },
         error: ({error}) => {
           this.loading = false;

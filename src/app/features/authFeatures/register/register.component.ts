@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../../core/services/authenticationServ
 import { SnackBarService } from '../../../core/services/snackBarService';
 import { UserService } from '../../../core/services/userService';
 import { Role } from '../../../core/types/enums/role';
+import { internalEmailRegex } from '../../../core/constants';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,6 @@ import { Role } from '../../../core/types/enums/role';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  private readonly instructorEmailRegex = /.*@aquafitvallarta\.com/
   registerForm: FormGroup;
   hidePassword = true;
   loading = false;
@@ -43,7 +43,7 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.loading = true;
 
-      const role = this.instructorEmailRegex.test(this.f['email'].value) ? Role.ADMIN : Role.CLIENT
+      const role = internalEmailRegex.test(this.f['email'].value) ? Role.INSTRUCTOR : Role.CLIENT
       
       this.userService.register(this.f['email'].value, this.f['password'].value, role).subscribe({
         next: (rsp) => {

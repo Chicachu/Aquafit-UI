@@ -5,6 +5,9 @@
     "SUBMIT_WAIT_MESSAGE": "Registrando...",
     "SUCCESS": "¡Registro exitoso!"
   },
+  "LOGOUT": {
+    "TITLE": "Cierre la sesión"
+  },
   "LOGIN": {
     "TITLE": "Iniciar sesión",
     "SUBMIT": "Iniciar sesión",

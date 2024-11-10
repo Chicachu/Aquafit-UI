@@ -6,7 +6,6 @@ import { RouterModule } from "@angular/router";
   declarations: [
   ],
   imports: [
-    AuthFeaturesModule,
     RouterModule
   ],
   providers: []

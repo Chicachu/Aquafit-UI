@@ -33,7 +33,8 @@ const routes = [
     component: AdminLayoutComponent,
     children: [
       {
-        path: ''
+        path: 'admin',
+        loadChildren: () => import('../features/admin-features/admin-features.module').then(m => m.AdminFeaturesModule)
       }
     ]
   }

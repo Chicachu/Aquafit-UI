@@ -5,6 +5,9 @@
     "SUBMIT_WAIT_MESSAGE": "Registering...",
     "SUCCESS": "Registration successful!"
   },
+  "LOGOUT": {
+    "TITLE": "Log out"
+  },
   "LOGIN": {
     "TITLE": "Log in",
     "SUBMIT": "Log in",
@@ -24,7 +27,8 @@
     "REQUIRED": "{{field}} is required",
     "MIN_LENGTH": "{{field}} must be at least {{minLength}} characters",
     "INVALID_EMAIL": "Please enter a valid email address",
-    "MUST_MATCH": "{{field}}s must match"
+    "MUST_MATCH": "{{field}}s must match",
+    "ACCESS_DENIED": "Access denied"
   },
   "LANGUAGES": {
     "ENGLISH": "English", 

@@ -1,6 +1,6 @@
 <div class="header-top-bar">
   <div class="website-content-width flex-row">
-    <a [routerLink]="['/login']">{{ 'LOGIN.TITLE' | translate }}</a>
+    <a [routerLink]="['/login']">{{ (loggedIn ? 'LOGOUT.TITLE' : 'LOGIN.TITLE') | translate }}</a>
     <app-language-selector></app-language-selector>
   </div>
 </div>

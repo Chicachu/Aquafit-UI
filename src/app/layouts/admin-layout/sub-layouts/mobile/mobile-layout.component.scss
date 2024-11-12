@@ -1,0 +1,19 @@
+@import '../../../../../assets/colors.scss';
+
+ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  gap: 1rem;
+  background-color: $primary-blue;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 4px solid $primary-green;
+}
+
+li {
+  padding: 10px 25px;
+  color: $light-green;
+}

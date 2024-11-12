@@ -1,6 +1,10 @@
 import { NgModule } from "@angular/core";
 import { MobileLayoutComponent } from "./mobile/mobile-layout.component";
 import { RouterModule, Routes } from "@angular/router";
+import { SharedModule } from "../../../shared/shared.module";
+import { CommonModule } from "@angular/common";
+
+const navItems = ["NAVIGATION.CALENDAR", "NAVIGATION.CLASSES", "NAVIGATION.CLIENTS"]
 
 const routes: Routes = [
   {
@@ -9,6 +13,8 @@ const routes: Routes = [
   },
   {
     path: 'mobile',
+    component: MobileLayoutComponent,
+    data: { navItems },
     loadChildren: () => import('../../../features/admin-features/mobile/mobile-features.module').then(m => m.MobileFeaturesModule)
   }
 ]
@@ -18,7 +24,9 @@ const routes: Routes = [
     MobileLayoutComponent
   ],
   imports: [
-    RouterModule.forChild(routes)
+    CommonModule, 
+    RouterModule.forChild(routes),
+    SharedModule
   ]
 })
 export class SubLayoutsModule { }

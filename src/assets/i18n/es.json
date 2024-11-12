@@ -27,7 +27,8 @@
     "REQUIRED": "{{field}} es requerido",
     "MIN_LENGTH": "{{field}} debe tener al menos {{minLength}} caracteres",
     "INVALID_EMAIL": "Por favor, ingrese una dirección de correo electrónico válida",
-    "MUST_MATCH": "{{field}}s deben coincidir"
+    "MUST_MATCH": "{{field}}s deben coincidir",
+    "ACCESS_DENIED": "Acceso denegado"
   },
   "LANGUAGES": {
     "ENGLISH": "Inglés",
@@ -36,5 +37,10 @@
   "HEADER": {
     "ENROLL": "¡Inscríbete en las clases hoy!",
     "PHONE": "322 211 8399"
+  },
+  "NAVIGATION": {
+    "CALENDAR": "Calendario",
+    "CLASSES": "Clases", 
+    "CLIENTS": "Clientes"
   }
 }

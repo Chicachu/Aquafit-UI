@@ -1,6 +1,20 @@
 <main>
   <!-- Today's calendar view -->
   <div class="day-view">
-    
+    <ul>
+      <li *ngFor="let hour of HOURS_IN_WORKDAY; let i = index">
+        <div *ngIf="classSchedule.get(hour)" 
+          [ngClass]="{ 'class1': classSchedule.get(hour)?.classType === ClassTypes.GROUP_FITNESS,
+                       'class2': classSchedule.get(hour)?.classType === ClassTypes.PRIVATE_REHAB,
+                       'class3': classSchedule.get(hour)?.classType === ClassTypes.FREE_SWIM,
+                       'class4': classSchedule.get(hour)?.classType === ClassTypes.PRIVATE_FITNESS}">
+          {{ displayTimes[i] }}
+          {{ 'CLASS_TYPES.' + (classSchedule.get(hour)?.classType || '') | translate }}
+        </div>
+        <div *ngIf="!classSchedule.get(hour)" class="empty">
+          {{ displayTimes[i] }}
+        </div>
+      </li>
+    </ul>
   </div>
 </main>

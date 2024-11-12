@@ -4,6 +4,7 @@ import { MobileHomeComponent } from "./home/mobile-home.component";
 import { SharedAdminFeaturesModule } from "../shared/shared-admin-features.module";
 import { CommonModule } from "@angular/common";
 import { OverviewComponent } from "../shared/overview/overview.component";
+import { SharedModule } from "../../../shared/shared.module";
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    SharedModule,
     SharedAdminFeaturesModule,
     RouterModule.forChild(routes)
   ],

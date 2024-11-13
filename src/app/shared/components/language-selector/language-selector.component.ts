@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../core/services/languageService';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
-
 @Component({
   selector: 'app-language-selector',
   templateUrl: './language-selector.component.html',
@@ -24,10 +23,13 @@ export class LanguageSelectorComponent {
   constructor(
     public translate: TranslateService,
     public languageService: LanguageService
-  ) {}
+  ) {
+    this.currentLang = languageService.getLanguage()
+  }
 
   toggleLanguage(): void {
     this.currentLang = this.currentLang === 'en' ? 'es' : 'en';
+    console.log(this.currentLang)
     this.languageService.setLanguage(this.currentLang)
   }
 }

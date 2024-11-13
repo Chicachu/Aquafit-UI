@@ -1,34 +1,50 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { SnackBarService } from './snackBarService';
+import { Languages } from '../types/enums/languages';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LanguageService {
+  @Output() notifyPreferredLanguage = new EventEmitter<string>()
+
   constructor(private translate: TranslateService, private _http: HttpClient, private snackBarService: SnackBarService) {}
 
   init() {
-    // Get stored preference or browser language
-    const savedLang = localStorage.getItem('preferred-language');
-    const browserLang = this.translate.getBrowserLang();
-    const defaultLang = savedLang || (browserLang?.match(/en|es/) ? browserLang : 'en');
+    const defaultLang = this.getLanguage()
     
     this.translate.setDefaultLang('en');
     this.translate.use(defaultLang);
   }
 
-  setLanguage(language: 'en' | 'es') {
-    return this._http.post(`${environment.apiUrl}/language`, {language}).subscribe({
-      next: (rsp) => {
-        this.translate.use(language);
+  setLanguage(language: 'en' | 'es'): void {
+    this._http.post(`${environment.apiUrl}/languages`, {language}).subscribe({
+      next: () => {
+        console.log(language)
         localStorage.setItem('preferred-language', language);
       }, 
       error: ({error}) => {
         this.snackBarService.showError(error.message)
       }
     })
+  }
+
+  getLanguage(): Languages {
+    let language = 'en'
+    
+    const browserLang = this.translate.getBrowserLang()
+    if (browserLang && Object.values(Languages).includes(browserLang as Languages)) language = browserLang
+
+    const savedLang = localStorage.getItem('preferred-language')
+
+    if (savedLang && Object.values(Languages).includes(savedLang as Languages)) language = savedLang
+    return language as Languages
+  }
+
+  notifyLanguage(): void {
+    this.notifyPreferredLanguage.emit(this.getLanguage())
   }
 }

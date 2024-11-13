@@ -14,5 +14,5 @@ const routes = [
     RouterModule.forChild(routes),
   ],
   providers: []
-})
+}) 
 export class AdminFeaturesModule { }

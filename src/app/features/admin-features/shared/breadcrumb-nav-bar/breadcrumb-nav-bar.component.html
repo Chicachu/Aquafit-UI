@@ -1,0 +1,15 @@
+<main class="flex-row">
+    <div class="icon-container flex-row" (click)="navigateBack()">
+      <img src="./assets/images/icons/chevron-left.svg" />
+      <h3>
+        {{ title }}
+      </h3>
+    </div>
+    <div *ngIf="buttonType" class="flex-row">
+      <button 
+        mat-icon-button 
+        (click)="emitButtonClick()" class="add-edit-button">
+        <mat-icon matPrefix>{{ buttonType === ButtonType.ADD ? 'add' : 'edit'}}</mat-icon>
+      </button>
+    </div>
+</main>

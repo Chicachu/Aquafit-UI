@@ -1,14 +1,21 @@
 import { NgModule } from "@angular/core";
-import { OverviewComponent } from "./overview/overview.component";
-
+import { BreadcrumbNavBarComponent } from './breadcrumb-nav-bar/breadcrumb-nav-bar.component'
+import { ClientListComponent } from "./clients/client-list/client-list.component";
+import { SharedModule } from "../../../shared/shared.module";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [
-    OverviewComponent
+    BreadcrumbNavBarComponent,
+    ClientListComponent
   ],
-  imports: [],
+  imports: [
+    CommonModule,
+    SharedModule
+  ],
   exports: [
-    OverviewComponent
+    BreadcrumbNavBarComponent,
+    ClientListComponent
   ]
 })
 export class SharedAdminFeaturesModule { }

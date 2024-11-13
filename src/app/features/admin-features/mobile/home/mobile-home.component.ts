@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Class } from '../../../../core/types/class';
 import { ScheduleService } from '../../../../core/services/scheduleService';
 import { ScheduleView } from '../../../../core/types/scheduleView';
 import { CalendarClass } from '../../../../core/types/calendarClass';

@@ -43,4 +43,8 @@ export class UserService {
     console.log(`${environment.apiUrl}/users/register`)
     return this._http.post<User>(`${environment.apiUrl}/users/register`, { username, password, role }).pipe(take(1))
   }
+
+  getAllUsers(): Observable<User[]> {
+    return this._http.get<User[]>(`${environment.apiUrl}/users`)
+  }
 }

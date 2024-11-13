@@ -3,17 +3,16 @@ import { RouterModule, Routes } from "@angular/router";
 import { MobileHomeComponent } from "./home/mobile-home.component";
 import { SharedAdminFeaturesModule } from "../shared/shared-admin-features.module";
 import { CommonModule } from "@angular/common";
-import { OverviewComponent } from "../shared/overview/overview.component";
 import { SharedModule } from "../../../shared/shared.module";
+import { ClientListComponent } from "../shared/clients/client-list/client-list.component";
 
 const routes: Routes = [
   {
     path: 'home', component: MobileHomeComponent
   },
   {
-    path: 'classes', 
-    data: { newItemButtonText: 'Create New Class' },
-    component: OverviewComponent
+    path: 'clients', 
+    component: ClientListComponent
   }
 ]
 

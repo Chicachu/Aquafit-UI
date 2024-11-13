@@ -1,0 +1,13 @@
+<main>
+  <app-breadcrumb-nav-bar 
+  [title]="'NAVIGATION.CLIENTS' | translate" 
+  [buttonType]="ButtonType.ADD"
+  (onButtonClick)="addNewClient()"></app-breadcrumb-nav-bar>
+  <div>
+    <ul>
+      <li *ngFor="let user of users">
+        {{ user.firstName }} {{ user.lastName }}
+      </li>
+    </ul>
+  </div>
+</main>

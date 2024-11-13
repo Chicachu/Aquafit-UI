@@ -41,12 +41,16 @@
   "NAVIGATION": {
     "CALENDAR": "Calendar",
     "CLASSES": "Classes", 
-    "CLIENTS": "Clients"
+    "CLIENTS": "Clients",
+    "Discounts": "Discounts"
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Group fitness", 
     "PRIVATE_FITNESS": "Private fitness", 
     "PRIVATE_REHAB": "Private rehab",
     "FREE_SWIM": "Free swim"
+  },
+  "BUTTON_TEXT": {
+     
   }
 }

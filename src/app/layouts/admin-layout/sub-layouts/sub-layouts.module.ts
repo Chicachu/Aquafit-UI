@@ -4,7 +4,11 @@ import { RouterModule, Routes } from "@angular/router";
 import { SharedModule } from "../../../shared/shared.module";
 import { CommonModule } from "@angular/common";
 
-const navItems = ["NAVIGATION.CALENDAR", "NAVIGATION.CLASSES", "NAVIGATION.CLIENTS"]
+const navItems = new Map([
+  ["NAVIGATION.CALENDAR", "/admin/mobile/home"], 
+  ["NAVIGATION.CLIENTS", "/admin/mobile/clients"],
+  ["NAVIGATION.CLASSES", "/admin/mobile/classes"]
+])
 
 const routes: Routes = [
   {

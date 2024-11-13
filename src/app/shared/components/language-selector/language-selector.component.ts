@@ -29,7 +29,6 @@ export class LanguageSelectorComponent {
 
   toggleLanguage(): void {
     this.currentLang = this.currentLang === 'en' ? 'es' : 'en';
-    console.log(this.currentLang)
     this.languageService.setLanguage(this.currentLang)
   }
 }

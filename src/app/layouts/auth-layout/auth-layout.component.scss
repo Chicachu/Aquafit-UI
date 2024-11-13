@@ -62,3 +62,12 @@
   height: 15vh;
   width: auto;
 }
+
+@media screen and (max-width: 500px) {
+  .feature-container {
+    width: 95vw;
+    height: 80vh;
+    background-size: cover;
+    background-image: url('../../../assets/images/backgrounds/barbells-in-air.png');
+  }
+}

@@ -7,6 +7,7 @@ import { WebsiteLayoutComponent } from "./website-layout/website-layout.componen
 import { LayoutComponentsModule } from "./layout-components/layout-components.module";
 import { AdminLayoutComponent } from "./admin-layout/admin-layout.component";
 import { SubLayoutsModule } from "./admin-layout/sub-layouts/sub-layouts.module";
+import { LayoutGuard } from "../core/guards/layout.guard";
 
 const routes = [
   {

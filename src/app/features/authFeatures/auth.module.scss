@@ -14,25 +14,6 @@
   padding: 1rem;
 }
 
-mat-form-field {
-  width: 100%;
-
-  ::ng-deep {
-    .mdc-text-field--outlined, .mat-mdc-text-field-wrapper, .mdc-text-field {
-      background-color: rgba(255, 255, 255, .6);
-    }
-  }
-}
-
-::ng-deep .mat-mdc-raised-button {
-  background-color: rgba(255, 255, 255, .7) !important;
-}
-
-.submit-button {
-  height: 48px;
-  font-size: 16px;
-}
-
 .spinner {
   display: inline-block;
   margin-right: 8px;

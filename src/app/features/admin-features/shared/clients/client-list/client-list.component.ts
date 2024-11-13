@@ -40,6 +40,6 @@ export class ClientListComponent {
   }
 
   addNewClient(): void {
-    this.router.navigate(['/admin/mobile/clients/new-client'])
+    this.router.navigate(['/admin/mobile/clients/add-client'])
   }
 }

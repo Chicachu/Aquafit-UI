@@ -1,0 +1,32 @@
+@import '../../../../../../assets/colors.scss';
+
+.add-client-container {
+  display: flex;
+  padding: 20px 20px;
+  justify-content: center;
+}
+
+form {
+  text-align: center;
+  width: 80vw;
+  background-color: $light-blue;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+button {
+  display: block;
+  margin: 5px auto;
+}
+
+::ng-deep .mat-mdc-raised-button {
+  background-color: white !important;
+}
+
+::ng-deep {
+  .add-client-container {
+    .mat-mdc-form-field .mdc-text-field--outlined {
+      background-color: white !important;
+    }
+  }
+}

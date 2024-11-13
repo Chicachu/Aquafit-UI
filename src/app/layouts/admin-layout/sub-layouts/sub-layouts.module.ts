@@ -3,11 +3,13 @@ import { MobileLayoutComponent } from "./mobile/mobile-layout.component";
 import { RouterModule, Routes } from "@angular/router";
 import { SharedModule } from "../../../shared/shared.module";
 import { CommonModule } from "@angular/common";
+import { LayoutGuard } from "../../../core/guards/layout.guard";
 
 const navItems = new Map([
   ["NAVIGATION.CALENDAR", "/admin/mobile/home"], 
   ["NAVIGATION.CLIENTS", "/admin/mobile/clients"],
-  ["NAVIGATION.CLASSES", "/admin/mobile/classes"]
+  ["NAVIGATION.CLASSES", "/admin/mobile/classes"],
+  ["NAVIGATION.DISCOUNTS", "/admin/mobile/discounts"]
 ])
 
 const routes: Routes = [
@@ -17,6 +19,7 @@ const routes: Routes = [
   },
   {
     path: 'mobile',
+    canActivate: [LayoutGuard],
     component: MobileLayoutComponent,
     data: { navItems },
     loadChildren: () => import('../../../features/admin-features/mobile/mobile-features.module').then(m => m.MobileFeaturesModule)

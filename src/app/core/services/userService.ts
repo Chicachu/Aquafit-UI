@@ -33,6 +33,11 @@ export class UserService {
     return this._user?.role
   }
 
+  get isAdmin(): boolean { 
+    this._checkSessionStorage()
+    return this._user?.role === Role.ADMIN
+  }
+
   private _checkSessionStorage() {
     if (!this._user) {
       this._user = <User>JSON.parse(sessionStorage.getItem('user')!)
@@ -40,11 +45,14 @@ export class UserService {
   }
 
   register(username: string, password: string, role: Role): Observable<User> {
-    console.log(`${environment.apiUrl}/users/register`)
     return this._http.post<User>(`${environment.apiUrl}/users/register`, { username, password, role }).pipe(take(1))
   }
 
   getAllUsers(): Observable<User[]> {
     return this._http.get<User[]>(`${environment.apiUrl}/users`)
+  }
+
+  addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber: string }): Observable<Object> {
+    return this._http.put(`${environment.apiUrl}/users/`, { ...reqObj })
   }
 }

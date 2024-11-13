@@ -1,9 +1,12 @@
 import { NgModule } from "@angular/core";
 import { AdminHomeComponent } from "./home/admin-home.component";
 import { RouterModule } from "@angular/router";
+import { LayoutGuard } from "../../core/guards/layout.guard";
 
 const routes = [
-  { path: 'home', component: AdminHomeComponent },
+  { 
+    path: 'home', component: AdminHomeComponent
+  },
 ]
 
 @NgModule({

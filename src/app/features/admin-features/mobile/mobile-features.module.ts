@@ -5,14 +5,23 @@ import { SharedAdminFeaturesModule } from "../shared/shared-admin-features.modul
 import { CommonModule } from "@angular/common";
 import { SharedModule } from "../../../shared/shared.module";
 import { ClientListComponent } from "../shared/clients/client-list/client-list.component";
+import { EditClientComponent } from "../shared/clients/edit-client/edit-client.component";
 
 const routes: Routes = [
   {
-    path: 'home', component: MobileHomeComponent
+    path: 'home',
+    pathMatch: 'full',
+    component: MobileHomeComponent
   },
   {
     path: 'clients', 
+    pathMatch: 'full',
     component: ClientListComponent
+  },
+  {
+    path: 'clients/add-client', 
+    pathMatch: 'full',
+    component: EditClientComponent
   }
 ]
 

@@ -18,7 +18,6 @@ export class BreadcrumbNavBarComponent {
   ButtonType = ButtonType
 
   constructor(private location: Location) {
-    console.log(this.buttonType)
   }
 
   navigateBack(): void {

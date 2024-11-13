@@ -3,19 +3,21 @@ import { BreadcrumbNavBarComponent } from './breadcrumb-nav-bar/breadcrumb-nav-b
 import { ClientListComponent } from "./clients/client-list/client-list.component";
 import { SharedModule } from "../../../shared/shared.module";
 import { CommonModule } from "@angular/common";
+import { ClientDetailsComponent } from "./clients/client-details/client-details.component";
+import { EditClientComponent } from "./clients/edit-client/edit-client.component";
 
 @NgModule({
   declarations: [
     BreadcrumbNavBarComponent,
-    ClientListComponent
+    EditClientComponent,
+    ClientListComponent,
+    ClientDetailsComponent
   ],
   imports: [
     CommonModule,
     SharedModule
   ],
   exports: [
-    BreadcrumbNavBarComponent,
-    ClientListComponent
   ]
 })
 export class SharedAdminFeaturesModule { }

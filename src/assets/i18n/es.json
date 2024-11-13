@@ -42,7 +42,7 @@
     "CALENDAR": "Calendario",
     "CLASSES": "Clases", 
     "CLIENTS": "Clientes",
-    "Discounts": "Descuentos"
+    "DISCOUNTS": "Descuentos"
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Fitness grupal",
@@ -50,7 +50,8 @@
     "PRIVATE_REHAB": "Reha privada", 
     "FREE_SWIM": "Nado libre"
   },
-  "BUTTON_TEXT": {
-    
+  "CLIENTS": {
+    "ADD_NEW_CLIENT": "Agregar cliente" , 
+    "ADD_NEW_CLIENT_SUCCESS": "¡Nuevo cliente agregado exitosamente!"
   }
 }

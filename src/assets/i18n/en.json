@@ -42,7 +42,7 @@
     "CALENDAR": "Calendar",
     "CLASSES": "Classes", 
     "CLIENTS": "Clients",
-    "Discounts": "Discounts"
+    "DISCOUNTS": "Discounts"
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Group fitness", 
@@ -50,7 +50,13 @@
     "PRIVATE_REHAB": "Private rehab",
     "FREE_SWIM": "Free swim"
   },
-  "BUTTON_TEXT": {
-     
+  "CLIENTS": {
+    "ADD_NEW_CLIENT": "Add Client", 
+    "ADD_NEW_CLIENT_SUCCESS": "Successfully added new client!"
+  },
+  "GENERAL": {
+    "FIRST_NAME": "First Name",
+    "LAST_NAME": "Last Name",
+    "PHONE_NUMBER": "Phone Number",
   }
 }

@@ -16,7 +16,6 @@ export class MobileLayoutComponent {
   }
 
   navigate(navItemTitle: string): void {
-    console.log(navItemTitle)
     this.router.navigate([`${this.navItems.get(navItemTitle)}`])
   }
 }

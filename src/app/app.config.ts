@@ -6,6 +6,7 @@ import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptors } fr
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { authHttpInterceptor } from './core/interceptors/authHttpInterceptor';
+import { LayoutGuard } from './core/guards/layout.guard';
 
 const I18N_CONFIG = {
   defaultLanguage: 'en',
@@ -28,6 +29,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([authHttpInterceptor])
     ), 
-    importProvidersFrom(TranslateModule.forRoot(I18N_CONFIG))
+    importProvidersFrom(TranslateModule.forRoot(I18N_CONFIG)),
+    LayoutGuard
   ]
 }

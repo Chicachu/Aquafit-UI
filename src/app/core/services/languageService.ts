@@ -23,7 +23,7 @@ export class LanguageService {
   setLanguage(language: 'en' | 'es'): void {
     this._http.post(`${environment.apiUrl}/languages`, {language}).subscribe({
       next: () => {
-        console.log(language)
+        this.translate.use(language);
         localStorage.setItem('preferred-language', language);
       }, 
       error: ({error}) => {

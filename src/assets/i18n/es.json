@@ -53,5 +53,28 @@
   "CLIENTS": {
     "ADD_NEW_CLIENT": "Agregar cliente" , 
     "ADD_NEW_CLIENT_SUCCESS": "¡Nuevo cliente agregado exitosamente!"
+  },
+  "GENERAL": {
+    "FIRST_NAME": "Nombre",
+    "LAST_NAME": "Apellido(s)",
+    "PHONE_NUMBER": "Número de Teléfono"
+  },
+  "WEEKDAYS": {
+    "SUNDAY": "Domingo",
+    "MONDAY": "Lunes",
+    "TUESDAY": "Martes",
+    "WEDNESDAY": "Miércoles",
+    "THURSDAY": "Jueves",
+    "FRIDAY": "Viernes",
+    "SATURDAY": "Sábado"
+  },
+  "WEEKDAYS_SHORT": {
+    "SUNDAY": "Dom",
+    "MONDAY": "Lun",
+    "TUESDAY": "Mar",
+    "WEDNESDAY": "Mié",
+    "THURSDAY": "Jue",
+    "FRIDAY": "Vie",
+    "SATURDAY": "Sáb"
   }
 }

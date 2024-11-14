@@ -3,7 +3,7 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { SnackBarService } from './snackBarService';
-import { Languages } from '../types/enums/languages';
+import { Language } from '../types/enums/language';
 
 @Injectable({
   providedIn: 'root'
@@ -32,16 +32,16 @@ export class LanguageService {
     })
   }
 
-  getLanguage(): Languages {
+  getLanguage(): Language {
     let language = 'en'
     
     const browserLang = this.translate.getBrowserLang()
-    if (browserLang && Object.values(Languages).includes(browserLang as Languages)) language = browserLang
+    if (browserLang && Object.values(Language).includes(browserLang as Language)) language = browserLang
 
     const savedLang = localStorage.getItem('preferred-language')
 
-    if (savedLang && Object.values(Languages).includes(savedLang as Languages)) language = savedLang
-    return language as Languages
+    if (savedLang && Object.values(Language).includes(savedLang as Language)) language = savedLang
+    return language as Language
   }
 
   notifyLanguage(): void {

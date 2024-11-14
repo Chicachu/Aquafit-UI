@@ -6,6 +6,7 @@ import { CommonModule } from "@angular/common";
 import { SharedModule } from "../../../shared/shared.module";
 import { ClientListComponent } from "../shared/clients/client-list/client-list.component";
 import { EditClientComponent } from "../shared/clients/edit-client/edit-client.component";
+import { ClassListComponent } from "../shared/classes/class-list/class-list.component";
 
 const routes: Routes = [
   {
@@ -22,7 +23,16 @@ const routes: Routes = [
     path: 'clients/add-client', 
     pathMatch: 'full',
     component: EditClientComponent
+  },
+  {
+    path: 'classes', 
+    pathMatch: 'full', 
+    component: ClassListComponent
   }
+  // {
+  //   path: 'classes/add-class',
+  //   pathMatch: 'full'
+  // }
 ]
 
 @NgModule({

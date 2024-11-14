@@ -1,4 +1,4 @@
-<main>
+<div>
   <!-- Today's calendar view -->
   <div class="day-view">
     <ul>
@@ -8,13 +8,13 @@
                        'class2': classSchedule.get(hour)?.classType === ClassTypes.PRIVATE_REHAB,
                        'class3': classSchedule.get(hour)?.classType === ClassTypes.FREE_SWIM,
                        'class4': classSchedule.get(hour)?.classType === ClassTypes.PRIVATE_FITNESS}">
-          {{ displayTimes[i] }}
-          {{ 'CLASS_TYPES.' + (classSchedule.get(hour)?.classType || '') | translate }}
+          {{ hour | timeFormat }}
+          {{ 'CLASS_TYPES.' + (classSchedule.get(hour)?.classType || '') | translate | capitalize }}
         </div>
         <div *ngIf="!classSchedule.get(hour)" class="empty">
-          {{ displayTimes[i] }}
+          {{ hour | timeFormat }}
         </div>
       </li>
     </ul>
   </div>
-</main>
+</div>

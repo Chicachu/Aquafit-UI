@@ -1,4 +1,4 @@
-export enum ClassTypes {
+export enum ClassType {
   GROUP_FITNESS = "GROUP_FITNESS", 
   PRIVATE_FITNESS = "PRIVATE_FITNESS", 
   PRIVATE_REHAB = "PRIVATE_REHAB", 

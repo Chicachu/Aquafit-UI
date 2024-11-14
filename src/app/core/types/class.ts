@@ -1,15 +1,15 @@
-import { ClassTypes } from "./enums/classTypes"
-import { Currencies } from "./enums/currencies"
+import { ClassType } from "./enums/classType"
+import { Currency } from "./enums/currency"
 import { Weekday } from "./enums/weekday"
 
 export type Class = {
   classLocation: string
-  classType: ClassTypes
+  classType: ClassType
   days: Weekday[]
   startDate: Date
   endDate?: Date | null
   startTime: string
-  prices: Map<Currencies | string, number>
+  prices: Map<Currency | string, number>
   maxCapacity: number
   checkIns: {
     date: Date

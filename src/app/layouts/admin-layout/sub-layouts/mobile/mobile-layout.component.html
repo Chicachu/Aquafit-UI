@@ -1,8 +1,8 @@
-<main class="flex-column">
+<div class="flex-column">
   <div>
     <ul>
       <li *ngFor="let title of navTitles"><a (click)="navigate(title)">{{ title | translate }}</a></li>
     </ul>
   </div>
   <router-outlet />
-</main>
+</div>

@@ -1,4 +1,4 @@
-import { Currencies } from "./enums/currencies"
+import { Currency } from "./enums/currency"
 import { Role } from "./enums/role"
 
 export type User = {
@@ -10,7 +10,7 @@ export type User = {
   password?: string | null
   credits?: {
     amount: number
-    currency: Currencies
+    currency: Currency
   } | null
   accessToken?: string | null
 }

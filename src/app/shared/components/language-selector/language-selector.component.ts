@@ -9,8 +9,8 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   styleUrls: ['./language-selector.component.scss'],
   animations: [
     trigger('slideToggle', [
-      state('en', style({ transform: 'translateX(.15rem)' })),
-      state('es', style({ transform: 'translateX(2.4rem)' })),
+      state('en', style({ transform: 'translateX(.13rem)' })),
+      state('es', style({ transform: 'translateX(2.34rem)' })),
       transition('en <=> es', animate('200ms ease-in-out'))
     ])
   ]

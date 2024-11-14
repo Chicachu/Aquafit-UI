@@ -36,6 +36,7 @@ const routes = [
     children: [
       {
         path: 'admin',
+        canActivate: [LayoutGuard],
         loadChildren: () => import('./admin-layout/sub-layouts/sub-layouts.module').then(m => m.SubLayoutsModule)
       }
     ]

@@ -12,6 +12,9 @@ import { MatSelectModule } from "@angular/material/select"
 import { MatFormFieldModule } from "@angular/material/form-field"
 import { CommonModule } from "@angular/common"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { WeekdaysPipe } from "./pipes/WeekdaysPipe"
+import { TimeFormatPipe } from "./pipes/TimeFormat.pipe"
+import { CapitalizePipe } from "./pipes/Capitalize.pipe"
 
 const materialModules = [
   MatCardModule,
@@ -26,7 +29,10 @@ const materialModules = [
 
 @NgModule({
   declarations: [
-    LanguageSelectorComponent
+    LanguageSelectorComponent,
+    CapitalizePipe,
+    TimeFormatPipe,
+    WeekdaysPipe
   ],
   imports: [
     ...materialModules,
@@ -40,7 +46,10 @@ const materialModules = [
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    LanguageSelectorComponent
+    CapitalizePipe,
+    LanguageSelectorComponent,
+    TimeFormatPipe,
+    WeekdaysPipe
   ],
 })
 export class SharedModule { }

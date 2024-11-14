@@ -1,0 +1,21 @@
+<div class="flex-column">
+  <app-breadcrumb-nav-bar 
+  [title]="'NAVIGATION.CLASSES' | translate" 
+  [buttonType]="ButtonType.ADD"
+  (onButtonClick)="addNewClass()"></app-breadcrumb-nav-bar>
+  <div>
+  <div class="flex-column class-container">
+    <div *ngFor="let typeGroup of classesGrouped | keyvalue">
+      <h3>{{ 'CLASS_TYPES.' + typeGroup.key | translate | capitalize }}</h3>
+      <hr />
+      <div *ngFor="let locationGroup of typeGroup.value | keyvalue">
+        <h4>{{ locationGroup.key }}</h4>
+        <ul>
+          <li *ngFor="let class of locationGroup.value">
+            <p>{{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

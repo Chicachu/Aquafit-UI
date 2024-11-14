@@ -15,7 +15,6 @@ export const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [LayoutGuard],
     component: AppComponent,
     children: [
       {

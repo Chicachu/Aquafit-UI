@@ -1,0 +1,27 @@
+<mat-form-field appearance="outline">
+  <mat-label>{{ (label ?? '') | translate }}</mat-label>
+  <input 
+    matInput 
+    [type]="type" 
+    [formControl]="control"
+    [placeholder]="(placeholder ?? '') | translate"
+    [required]="required"
+    (input)="onInputChange($event)"
+  >
+  <mat-icon *ngIf="type === 'email'" matPrefix>email</mat-icon>
+  <mat-icon *ngIf="type === 'password'" matPrefix>lock</mat-icon>
+
+  <button 
+    *ngIf="type === 'password'"
+    mat-icon-button 
+    matSuffix 
+    type="button"
+    (click)="hidePassword = !hidePassword" 
+  >
+    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+  </button>
+
+  <mat-error *ngIf="control?.errors">
+    {{getErrorMessage()}}
+  </mat-error>
+</mat-form-field>

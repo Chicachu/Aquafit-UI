@@ -3,22 +3,36 @@ import { Currency } from "./enums/currency"
 import { Weekday } from "./enums/weekday"
 
 export type Class = {
-  classLocation: string
+  classLocation: string 
   classType: ClassType
   days: Weekday[]
   startDate: Date
   endDate?: Date | null
   startTime: string
-  prices: Map<Currency | string, number>
+  prices: Map<Currency | string, number> 
   maxCapacity: number
-  checkIns: {
+  checkIns?: {
     date: Date
     instructorId: string
     clientIds: string[]
   }[]
-  cancellations: {
+  cancellations?: {
     date: Date
     instructorId: string
     reason: string
   }[]
 }
+
+export type CreateClassDTO = {
+  classLocation: string
+  classType: ClassType
+  days: Weekday[]
+  startDate: Date
+  startTime: string
+  prices: {
+    amount: number
+    currency: Currency
+  }[]
+  maxCapacity: number
+}
+

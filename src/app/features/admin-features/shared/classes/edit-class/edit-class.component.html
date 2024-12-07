@@ -1,0 +1,75 @@
+<div>
+  <app-breadcrumb-nav-bar [title]="'CLASSES.ADD_NEW_CLASS' | translate"></app-breadcrumb-nav-bar>
+  <div class="edit-container">
+    <form [formGroup]="classForm" (ngSubmit)="onSubmit()" class="form-container">
+      <!-- Location Autocomplete -->
+      <app-autocomplete-dropdown
+        label="CONTROLS.LOCATION"
+        [getOptionsObservable]="getLocations$"
+        controlName="location">
+      </app-autocomplete-dropdown>
+
+      <!-- Class Type -->
+      <app-dropdown
+        label="CONTROLS.CLASS_TYPE"
+        [options]="classTypes"
+        [i18nPrefix]="'CLASS_TYPES'"
+        controlName="class_type">
+      </app-dropdown>
+
+      <!-- Days Selection -->
+      <app-multi-select-chips
+        label="CONTROLS.DAYS"
+        [options]="weekdays"
+        i18nPrefix="WEEKDAYS_SHORT"
+        controlName="days">
+      </app-multi-select-chips>
+
+      <!-- Start Date -->
+      <app-datepicker
+        label="CONTROLS.START_DATE"
+        controlName="start_date">
+      </app-datepicker>
+
+      <!-- Start Time -->
+      <app-dropdown
+        label="CONTROLS.START_TIME"
+        [options]="timeSlots"
+        controlName="start_time">
+      </app-dropdown>
+
+      <!-- Prices -->
+      
+      <div class="prices-container">
+        <div>
+          <app-text-input
+            label="CONTROLS.MXN"
+            controlName="mxn"
+            [min]="0">
+          </app-text-input>
+        </div>
+
+        <div>
+          <app-text-input
+            label="CONTROLS.USD"
+            controlName="usd"
+            [min]="0">
+          </app-text-input>
+        </div>
+      </div>
+
+      <!-- Max Capacity -->
+      <app-text-input
+        label="CONTROLS.MAX_CAPACITY"
+        controlName="max_capacity"
+        [min]="1">
+      </app-text-input>
+
+      <app-submit-button
+        label="CLASSES.ADD_NEW_CLASS"
+        [loading]="loading"
+        [loadingMessage]="'CONTROLS.SUBMIT_WAIT_MESSAGE'">
+      </app-submit-button>
+    </form>
+  </div>
+</div>

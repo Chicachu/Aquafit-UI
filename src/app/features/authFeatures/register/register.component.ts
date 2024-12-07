@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MustMatch } from '../../../shared/validators/mustMatch';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthenticationService } from '../../../core/services/authenticationService';
 import { SnackBarService } from '../../../core/services/snackBarService';
 import { UserService } from '../../../core/services/userService';
 import { Role } from '../../../core/types/enums/role';
 import { internalEmailRegex } from '../../../core/constants';
+import { ErrorsService } from '../../../core/services/errorsService';
+import { TextInputType } from '../../../core/types/enums/textInputType';
 
 @Component({
   selector: 'app-register',
@@ -14,21 +15,22 @@ import { internalEmailRegex } from '../../../core/constants';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  registerForm: FormGroup;
-  hidePassword = true;
-  loading = false;
+  readonly TextInputType = TextInputType
+  registerForm: FormGroup
+  hidePassword = true
+  loading = false
  
   constructor(
     private formBuilder: FormBuilder,
     private translateService: TranslateService,
     private userService: UserService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
     ) {
     this.registerForm = this.formBuilder.group(
     {
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
+      email: [''],
+      password: [''],
+      confirmPassword: ['']
     }, 
     {
       validators: [MustMatch('password', 'confirmPassword')]
@@ -56,33 +58,7 @@ export class RegisterComponent {
         }
       })
     } else {
-      this.markFormGroupTouched(this.registerForm);
+      this.registerForm.markAllAsTouched()
     }
-  }
-
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
-  }
-
-  getErrorMessage(controlName: string): string {
-    const control = this.registerForm.get(controlName);
-    if (control?.hasError('required')) {
-      return this.translateService.instant('ERRORS.REQUIRED', { field: this.translateService.instant(`AUTH.${controlName.toUpperCase()}`) });
-    }
-    if (control?.hasError('email')) {
-      return this.translateService.instant('ERRORS.INVALID_EMAIL');
-    }
-    if (control?.hasError('minlength')) {
-      return this.translateService.instant('ERRORS.MIN_LENGTH', { field: this.translateService.instant(`AUTH.${controlName.toUpperCase()}`), minLength: 6 });
-    }
-    if (control?.hasError('mustMatch')) {
-      return this.translateService.instant('ERRORS.MUST_MATCH', { field: this.translateService.instant(`AUTH.${controlName.toUpperCase()}`) });
-    }
-    return '';
   }
 }

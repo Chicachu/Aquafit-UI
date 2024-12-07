@@ -7,6 +7,8 @@ import { User } from '../../../core/types/user';
 import { internalEmailRegex } from '../../../core/constants';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/userService';
+import { ErrorMessageProvider, ErrorsService } from '../../../core/services/errorsService';
+import { TextInputType } from '../../../core/types/enums/textInputType';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +16,9 @@ import { UserService } from '../../../core/services/userService';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  loginForm: FormGroup;
-  hidePassword = true;
-  loading = false;
+  readonly TextInputType = TextInputType
+  loginForm: FormGroup
+  loading = false
 
   constructor(
     private authService: AuthenticationService,
@@ -28,8 +30,8 @@ export class LoginComponent {
   ) 
   {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      email: [''],
+      password: ['']
     });
   }
 
@@ -41,7 +43,7 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.loading = true;
+      this.loading = true
       
       this.authService.login(this.f['email'].value, this.f['password'].value).subscribe({
         next: (user: User) => {
@@ -60,30 +62,11 @@ export class LoginComponent {
         }
       })
     } else {
-      this.markFormGroupTouched(this.loginForm);
+      this.loginForm.markAllAsTouched()
     }
-  }
-
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
   }
 
   getErrorMessage(controlName: string): string {
-    const control = this.loginForm.get(controlName);
-    if (control?.hasError('required')) {
-      return this.translateService.instant('ERRORS.REQUIRED', { field: this.translateService.instant(`AUTH.${controlName.toUpperCase()}`) });;
-    }
-    if (control?.hasError('email')) {
-      return this.translateService.instant('ERRORS.INVALID_EMAIL');
-    }
-    if (control?.hasError('minlength')) {
-      return this.translateService.instant('ERRORS.MIN_LENGTH', { field: this.translateService.instant(`AUTH.${controlName.toUpperCase()}`), minLength: 6 });
-    }
-    return '';
+    return ''
   }
 }

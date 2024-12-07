@@ -27,7 +27,6 @@ export class MobileHomeComponent {
           for (const values of calendarClasses.values()) {
             values.forEach((value) => {
               this.classSchedule.set(new Date(value.date).getHours(), value)
-              console.log(this.classSchedule)
             }) 
           }
         }, 

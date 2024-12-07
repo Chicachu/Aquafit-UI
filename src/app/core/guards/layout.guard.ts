@@ -23,19 +23,18 @@ export class LayoutGuard implements CanActivate {
       .observe(['(max-width: 500px)'])
       .pipe(
         map(result => {
-          const isMobilePath = state.url.includes('mobile');
-          const isMobileSize = result.matches;
+          const isMobilePath = state.url.includes('mobile')
+          const isMobileSize = result.matches
 
           if (isMobilePath && isMobileSize) {
-            return true;
+            return true
           }
           if (!isMobilePath && !isMobileSize) {
-            return true;
+            return true
           }
 
-          let targetUrl = this.userService.isAdmin ? ( isMobileSize ? '/admin/mobile/home' : '/admin/home') : '/home';
-          console.log('Redirecting to:', targetUrl);
-          this.router.navigate([targetUrl]);
+          let targetUrl = this.userService.isAdmin ? ( isMobileSize ? '/admin/mobile/home' : '/admin/home') : '/home'
+          this.router.navigate([targetUrl])
           return false;
         })
       );

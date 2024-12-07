@@ -1,8 +1,9 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { authHttpInterceptor } from './core/interceptors/authHttpInterceptor';
@@ -26,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes), 
     provideAnimationsAsync(),
+    provideMomentDateAdapter(),
     provideHttpClient(
       withInterceptors([authHttpInterceptor])
     ), 

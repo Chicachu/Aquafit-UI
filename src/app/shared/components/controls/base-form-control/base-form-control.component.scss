@@ -1,0 +1,23 @@
+:host ::ng-deep {
+  .mat-mdc-form-field .mdc-text-field--outlined {
+    background-color: white !important;
+  }
+
+  .mdc-text-field--outlined, .mat-mdc-text-field-wrapper, .mdc-text-field {
+    background-color: rgba(255, 255, 255, .6) !important;
+    border-radius: 4px !important;
+  }
+
+  .mat-mdc-form-field, .mat-error {
+    margin-bottom: 10px;
+  }
+
+  .mat-error, .mat-mdc-form-field-error {
+    font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 600; 
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}

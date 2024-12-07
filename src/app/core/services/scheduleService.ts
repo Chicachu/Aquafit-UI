@@ -1,10 +1,9 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable, map, tap } from "rxjs";
-import { Class } from "../types/class";
-import { environment } from "../../../environments/environment";
-import { ScheduleView } from "../types/scheduleView";
-import { CalendarClass } from "../types/calendarClass";
+import { HttpClient, HttpParams } from "@angular/common/http"
+import { Injectable } from "@angular/core"
+import { Observable, take } from "rxjs"
+import { environment } from "../../../environments/environment"
+import { ScheduleView } from "../types/scheduleView"
+import { CalendarClass } from "../types/calendarClass"
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +23,7 @@ export class ScheduleService {
       params = params.set('year', year).set('month', month)
     }
   
-    return this.http.get<Map<string, CalendarClass[]>>(`${environment.apiUrl}/schedules/classes`, { params })
+    return this.http.get<Map<string, CalendarClass[]>>(`${environment.apiUrl}/schedules/classes`, { params }).pipe(take(1))
   }
 }
 

@@ -7,6 +7,7 @@ import { SharedModule } from "../../../shared/shared.module";
 import { ClientListComponent } from "../shared/clients/client-list/client-list.component";
 import { EditClientComponent } from "../shared/clients/edit-client/edit-client.component";
 import { ClassListComponent } from "../shared/classes/class-list/class-list.component";
+import { EditClassComponent } from "../shared/classes/edit-class/edit-class.component";
 
 const routes: Routes = [
   {
@@ -28,11 +29,12 @@ const routes: Routes = [
     path: 'classes', 
     pathMatch: 'full', 
     component: ClassListComponent
+  },
+  {
+    path: 'classes/add-class',
+    pathMatch: 'full',
+    component: EditClassComponent
   }
-  // {
-  //   path: 'classes/add-class',
-  //   pathMatch: 'full'
-  // }
 ]
 
 @NgModule({

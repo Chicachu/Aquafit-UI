@@ -1,0 +1,14 @@
+<button 
+  mat-raised-button 
+  color="primary" 
+  type="submit" 
+  [disabled]="loading"
+  class="submit-button"
+>
+  <mat-spinner 
+    diameter="20" 
+    *ngIf="loading" 
+    class="spinner"
+  ></mat-spinner>
+  {{ (loading && loadingMessage ? loadingMessage : label) | translate }}
+</button>

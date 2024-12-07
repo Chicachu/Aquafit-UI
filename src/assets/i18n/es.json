@@ -15,20 +15,38 @@
     "WELCOME": "Bienvenido, {{name}}!",
     "SUCCESS": "¡Inicio de sesión exitoso!"
   },
-  "AUTH": {
+  "CONTROLS": {
     "EMAIL": "Correo electrónico",
     "EMAIL_PLACEHOLDER": "Ingrese su correo electrónico",
     "PASSWORD": "Contraseña",
     "CONFIRMPASSWORD": "Contraseña",
     "CONFIRM_PASSWORD_TITLE": "Confirmar contraseña",
-    "PASSWORD_PLACEHOLDER": "Ingrese su contraseña"
+    "PASSWORD_PLACEHOLDER": "Ingrese su contraseña",
+    "FIRSTNAME": "Nombre",
+    "LASTNAME": "Apellido(s)",
+    "PHONENUMBER": "Número de Teléfono",
+    "LOCATION": "Ubicación",
+    "CLASS_TYPE": "Tipo de Clase",
+    "START_DATE": "Fecha de Inicio", 
+    "START_TIME": "Hora de Inicio",
+    "END_DATE": "Fecha de Finalización",
+    "MXN": "Precio en MXN",
+    "USD": "Precio en USD",
+    "DAYS": "Días",
+    "MAX_CAPACITY": "Capacidad Máxima",
+    "SUBMIT": "Enviar",
+    "SUBMIT_WAIT_MESSAGE": "Enviando..."
   },
   "ERRORS": {
     "REQUIRED": "{{field}} es requerido",
     "MIN_LENGTH": "{{field}} debe tener al menos {{minLength}} caracteres",
+    "MAX_LENGTH": "{{field}} debe tener menos de {{maxLength}} caracteres",
     "INVALID_EMAIL": "Por favor, ingrese una dirección de correo electrónico válida",
     "MUST_MATCH": "{{field}}s deben coincidir",
-    "ACCESS_DENIED": "Acceso denegado"
+    "ACCESS_DENIED": "Acceso denegado",
+    "INVALID_PATTERN": "Por favor ingrese un {{field}} válido",
+    "POSITIVE": "{{field}} debe ser un valor positivo",
+    "MIN": "{{field}} debe ser al menos {{min}}"
   },
   "LANGUAGES": {
     "ENGLISH": "Inglés",
@@ -54,10 +72,9 @@
     "ADD_NEW_CLIENT": "Agregar cliente" , 
     "ADD_NEW_CLIENT_SUCCESS": "¡Nuevo cliente agregado exitosamente!"
   },
-  "GENERAL": {
-    "FIRST_NAME": "Nombre",
-    "LAST_NAME": "Apellido(s)",
-    "PHONE_NUMBER": "Número de Teléfono"
+  "CLASSES": {
+    "ADD_NEW_CLASS": "Agregar Clase",
+    "ADD_NEW_CLASS_SUCCESS": "¡Clase agregada exitosamente!"
   },
   "WEEKDAYS": {
     "SUNDAY": "Domingo",

@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { SnackBarService } from './snackBarService';
 import { Language } from '../types/enums/language';
+import { take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,12 @@ export class LanguageService {
   init() {
     const defaultLang = this.getLanguage()
     
-    this.translate.setDefaultLang('en');
-    this.translate.use(defaultLang);
+    this.translate.setDefaultLang('en')
+    this.translate.use(defaultLang)
   }
 
   setLanguage(language: 'en' | 'es'): void {
-    this._http.post(`${environment.apiUrl}/languages`, {language}).subscribe({
+    this._http.post(`${environment.apiUrl}/languages`, {language}).pipe(take(1)).subscribe({
       next: () => {
         this.translate.use(language);
         localStorage.setItem('preferred-language', language);

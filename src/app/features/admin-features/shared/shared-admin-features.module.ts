@@ -6,11 +6,13 @@ import { CommonModule } from "@angular/common";
 import { ClientDetailsComponent } from "./clients/client-details/client-details.component";
 import { EditClientComponent } from "./clients/edit-client/edit-client.component";
 import { ClassListComponent } from "./classes/class-list/class-list.component";
+import { EditClassComponent } from "./classes/edit-class/edit-class.component";
 
 @NgModule({
   declarations: [
     BreadcrumbNavBarComponent,
     EditClientComponent,
+    EditClassComponent, 
     ClientListComponent,
     ClientDetailsComponent,
     ClassListComponent

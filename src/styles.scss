@@ -127,23 +127,20 @@ ul {
   list-style-type: none;
 }
 
-mat-form-field {
-  width: 100%;
+form {
+  text-align: center;
+  width: 80vw;
+  background-color: $light-blue;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.mdc-text-field--outlined, .mat-mdc-text-field-wrapper, .mdc-text-field {
-  background-color: rgba(255, 255, 255, .6) !important;
-  border-radius: 4px !important;
+.edit-container {
+  display: flex;
+  padding: 20px 20px;
+  justify-content: center;
 }
 
-.mat-mdc-raised-button {
-  background-color: rgba(255, 255, 255, .7) !important;
-}
-
-.submit-button {
-  height: 48px;
-  font-size: 16px;
-}
 
 @media screen and (min-width: 1000px) and  (max-width: 1300px) {
   .website-content-width {

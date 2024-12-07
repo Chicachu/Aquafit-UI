@@ -1,0 +1,15 @@
+<mat-form-field appearance="outline">
+  <mat-label>{{(label ?? '') | translate}}</mat-label>
+  <input type="text"
+        matInput
+        [matAutocomplete]="auto"
+        (focusin)="auto.opened.emit()">
+  <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+    <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+      {{option}}
+    </mat-option>
+  </mat-autocomplete>
+  <mat-error *ngIf="control?.errors">
+    {{getErrorMessage()}}
+  </mat-error>
+</mat-form-field>

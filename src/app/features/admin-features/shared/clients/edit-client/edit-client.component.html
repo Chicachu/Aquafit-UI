@@ -1,50 +1,30 @@
 <div>
   <app-breadcrumb-nav-bar [title]="'CLIENTS.ADD_NEW_CLIENT' | translate"></app-breadcrumb-nav-bar>
-  <div class="add-client-container">
+  <div class="edit-container">
     <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="form-container">
-      <mat-form-field appearance="outline">
-        <mat-label>First Name</mat-label>
-        <input matInput formControlName="firstName" placeholder="John">
-        <mat-error *ngIf="contactForm.get('firstName')?.hasError('required')">
-          First name is required
-        </mat-error>
-      </mat-form-field>
+      <app-text-input
+        [type]="TextInputType.TEXT"
+        label="CONTROLS.FIRSTNAME"
+        controlName="firstName">
+      </app-text-input>
+      
+      <app-text-input
+        [type]="TextInputType.TEXT"
+        label="CONTROLS.LASTNAME"
+        controlName="lastName">
+      </app-text-input>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Last Name</mat-label>
-        <input matInput formControlName="lastName" placeholder="Doe">
-        <mat-error *ngIf="contactForm.get('lastName')?.hasError('required')">
-          Last name is required
-        </mat-error>
-      </mat-form-field>
+      <app-text-input
+        [type]="TextInputType.PHONE"
+        label="CONTROLS.PHONENUMBER"
+        controlName="phoneNumber">
+      </app-text-input>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Phone Number</mat-label>
-        <span matPrefix>&nbsp;&nbsp;+&nbsp;</span>
-        <input matInput 
-          formControlName="phoneNumber" 
-          placeholder="1 234 567 8900"
-          (input)="formatPhoneNumber($event)">
-        <mat-error *ngIf="contactForm.get('phoneNumber')?.hasError('required')">
-          Phone number is required
-        </mat-error>
-        <mat-error *ngIf="contactForm.get('phoneNumber')?.hasError('pattern')">
-          Please enter a valid phone number
-        </mat-error>
-        <mat-error *ngIf="contactForm.get('phoneNumber')?.hasError('minlength')">
-          Phone number must be at least 7 digits
-        </mat-error>
-        <mat-error *ngIf="contactForm.get('phoneNumber')?.hasError('maxlength')">
-          Phone number cannot exceed 15 digits
-        </mat-error>
-      </mat-form-field>
-
-      <button mat-raised-button 
-        color="primary" 
-        type="submit"
-        [disabled]="!contactForm.valid">
-        Submit
-      </button>
+      <app-submit-button
+        [loading]="loading"
+        label="CONTROLS.SUBMIT"
+        [loadingMessage]="'CONTROLS.SUBMIT_WAIT_MESSAGE'">
+      </app-submit-button>
     </form>
   </div>
 </div>

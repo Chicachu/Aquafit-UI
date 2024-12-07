@@ -14,14 +14,13 @@
   padding: 1rem;
 }
 
-.spinner {
-  display: inline-block;
-  margin-right: 8px;
-}
-
 .mat-mdc-card {
   //background-color: $light-blue;
   background-color: rgba(193, 226, 242, .6)
+}
+
+form {
+  width: auto !important;
 }
 
 mat-card-header {

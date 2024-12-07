@@ -15,20 +15,38 @@
     "WELCOME": "Welcome, {{name}}!",
     "SUCCESS": "Log in successful!"
   },
-  "AUTH": {
+  "CONTROLS": {
     "EMAIL": "Email",
     "EMAIL_PLACEHOLDER": "Enter your email",
     "PASSWORD": "Password", 
     "CONFIRMPASSWORD": "Password",
     "CONFIRM_PASSWORD_TITLE": "Confirm password",
-    "PASSWORD_PLACEHOLDER": "Enter your password"
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "FIRSTNAME": "First Name",
+    "LASTNAME": "Last Name",
+    "PHONENUMBER": "Phone Number",
+    "LOCATION": "Location",
+    "CLASS_TYPE": "Class Type", 
+    "START_DATE": "Start Date", 
+    "START_TIME": "Start Time",
+    "END_DATE": "End Date", 
+    "MXN": "MXN Price", 
+    "USD": "USD Price",
+    "DAYS": "Days",
+    "MAX_CAPACITY": "Max Capacity",
+    "SUBMIT": "Submit",
+    "SUBMIT_WAIT_MESSAGE": "Submitting..."
   },
   "ERRORS": {
     "REQUIRED": "{{field}} is required",
     "MIN_LENGTH": "{{field}} must be at least {{minLength}} characters",
+    "MAX_LENGTH": "{{field}} must be less than {{maxLength}} characters",
     "INVALID_EMAIL": "Please enter a valid email address",
     "MUST_MATCH": "{{field}}s must match",
-    "ACCESS_DENIED": "Access denied"
+    "ACCESS_DENIED": "Access denied",
+    "INVALID_PATTERN": "Please enter a valid {{field}}",
+    "POSITIVE": "{{field}} must be a positive value",
+    "MIN": "{{field}} must be at least {{min}}"
   },
   "LANGUAGES": {
     "ENGLISH": "English", 
@@ -54,10 +72,9 @@
     "ADD_NEW_CLIENT": "Add Client", 
     "ADD_NEW_CLIENT_SUCCESS": "Successfully added new client!"
   },
-  "GENERAL": {
-    "FIRST_NAME": "First Name",
-    "LAST_NAME": "Last Name",
-    "PHONE_NUMBER": "Phone Number"
+  "CLASSES": {
+    "ADD_NEW_CLASS": "Add Class",
+    "ADD_NEW_CLASS_SUCCESS": "Successfully added new class!"
   },
   "WEEKDAYS": {
     "SUNDAY": "Sunday",

@@ -1,0 +1,18 @@
+<mat-form-field appearance="outline">
+  <mat-label>{{(label ?? '') | translate}}</mat-label>
+  <mat-select>
+    <div *ngIf="i18nPrefix">
+      <mat-option *ngFor="let option of options" [value]="option.value">
+        {{ i18nPrefix + '.' + option.viewValue | translate }}
+      </mat-option>
+    </div>
+    <div *ngIf="!i18nPrefix">
+      <mat-option *ngFor="let option of options" [value]="option.value">
+        {{ option.viewValue | timeFormat }}
+      </mat-option>
+    </div>
+  </mat-select>
+  <mat-error *ngIf="control?.errors">
+    {{getErrorMessage()}}
+  </mat-error>
+</mat-form-field>

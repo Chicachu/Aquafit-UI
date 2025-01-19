@@ -20,8 +20,10 @@ import { DropdownComponent } from "./components/controls/dropdown/dropdown.compo
 import { LanguageSelectorComponent } from "./components/language-selector/language-selector.component"
 import { TextInputComponent } from "./components/controls/text-input/text-input.component"
 import { MultiSelectChipsComponent } from "./components/controls/multi-select-chips/multi-select-chips.component"
-import { SubmitButtonComponent } from "./components/submit-button/submit-button.component"
+import { SubmitButtonComponent } from "./components/buttons/submit-button/submit-button.component"
 import { DatepickerComponent } from "./components/controls/datepicker/datepicker.component"
+import { RouterModule } from "@angular/router"
+import { ButtonComponent } from "./components/buttons/button/button.component"
 
 const materialModules = [
   MatAutocompleteModule,
@@ -43,6 +45,7 @@ const inputComponents = [
   MultiSelectChipsComponent,
   TextInputComponent,
   SubmitButtonComponent,
+  ButtonComponent,
   DatepickerComponent
 ]
 
@@ -62,7 +65,8 @@ const pipes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
+    RouterModule
   ],
   exports: [
     ...materialModules, 
@@ -71,9 +75,11 @@ const pipes = [
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    RouterModule,
   ],
   providers: [
-    TimeFormatPipe
+    TimeFormatPipe,
+    WeekdaysPipe
   ]
 })
 export class SharedModule { }

@@ -1,7 +1,7 @@
 import { Component, Input, PipeTransform } from "@angular/core";
 import { BaseFormControlComponent } from "../base-form-control/base-form-control.component";
 import { SelectOption } from "../../../../core/types/selectOption";
-import { Pipes } from "../../../../core/types/enums/pipes";
+import { FormatOptions } from "../../../../core/types/enums/formatOptions";
 
 @Component({
   selector: 'app-dropdown',
@@ -9,6 +9,8 @@ import { Pipes } from "../../../../core/types/enums/pipes";
   styleUrls: ['../base-form-control/base-form-control.component.scss']
 })
 export class DropdownComponent extends BaseFormControlComponent {
+  readonly FormatOptions = FormatOptions
   @Input() options!: SelectOption[]
-  @Input() i18nPrefix!: string
+  @Input() i18nPrefix: string | null = null
+  @Input() formatOption: FormatOptions | null = null
 }

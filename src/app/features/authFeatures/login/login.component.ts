@@ -55,9 +55,10 @@ export class LoginComponent {
           } else {
             this.router.navigate(['/home'])
           }
+          this.loginForm.reset()
         },
         error: ({error}) => {
-          this.loading = false;
+          this.loading = false
           this.snackBarService.showError(error.message)
         }
       })

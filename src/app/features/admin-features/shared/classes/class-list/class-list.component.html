@@ -1,6 +1,6 @@
 <div class="flex-column">
   <app-breadcrumb-nav-bar 
-  [title]="'NAVIGATION.CLASSES' | translate" 
+  [title]="'NAVIGATION.CLASSES'" 
   [buttonType]="ButtonType.ADD"
   (onButtonClick)="addNewClass()"></app-breadcrumb-nav-bar>
   <div>
@@ -12,7 +12,7 @@
         <h4>{{ locationGroup.key }}</h4>
         <ul>
           <li *ngFor="let class of locationGroup.value">
-            <p>{{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}</p>
+            <a [routerLink]="['./', class._id, 'details']">{{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}</a>
           </li>
         </ul>
       </div>

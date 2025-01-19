@@ -10,6 +10,7 @@ import { Currency } from "../../../../../core/types/enums/currency";
 import { CreateClassDTO } from "../../../../../core/types/class";
 import { SelectOption } from "../../../../../core/types/selectOption";
 import { Pipes } from "../../../../../core/types/enums/pipes";
+import { FormatOptions } from "../../../../../core/types/enums/formatOptions";
 
 @Component({
   selector: 'app-edit-class',
@@ -18,6 +19,7 @@ import { Pipes } from "../../../../../core/types/enums/pipes";
 })
 export class EditClassComponent {
   readonly Pipes = Pipes
+  readonly FormatOptions = FormatOptions
   classForm: FormGroup
   getLocations$: Observable<string[]>
   classTypes: SelectOption[] = this.convertToSelectOptions(Object.keys(ClassType))
@@ -27,7 +29,7 @@ export class EditClassComponent {
       viewValue: `${key.toUpperCase()}`,
       value: Weekday[key as keyof typeof Weekday].toString()
     }))
-  timeSlots = this.convertToSelectOptions(Array.from({length: 14}, (_, i) => i + 7)) 
+  timeSlots = this.convertToTimeOptions(Array.from({length: 14}, (_, i) => i + 7)) 
   loading = false
 
   constructor(
@@ -53,7 +55,7 @@ export class EditClassComponent {
     return this.classForm.controls; 
   }
 
-  convertToSelectOptions(values: string[] | number[]): SelectOption[] {
+  convertToSelectOptions(values: string[]): SelectOption[] {
     return values.map(value => (
       {
         viewValue: value, 
@@ -62,15 +64,28 @@ export class EditClassComponent {
     ))
   }
 
+  convertToTimeOptions(hours: number[]): SelectOption[] {
+    return hours.map(hour => ({
+      value: `${hour.toString()}:00`,  
+      viewValue: this.formatTimeDisplay(hour)
+    }));
+  }
+
+  private formatTimeDisplay(hour: number): string {
+    const period = hour >= 12 ? 'p.m.' : 'a.m.'
+    const displayHour = hour % 12 || 12
+    return `${displayHour}:00${period}`
+   }
+
   onSubmit() {
     if (this.classForm.valid) {
       const prices = [
         {
-          amount: this.f['mxn'].value,
+          value: this.f['mxn'].value,
           currency: Currency.PESOS
         },
         {
-          amount: this.f['usd'].value,
+          value: this.f['usd'].value,
           currency: Currency.DOLARS
         }
       ]
@@ -79,11 +94,11 @@ export class EditClassComponent {
         classLocation: this.f['location'].value,
         classType: this.f['class_type'].value,
         days: this.f['days'].value,
-        startDate: this.f['start_date'].value,
+        startDate: this.f['start_date'].value._d,
         startTime: this.f['start_time'].value,
         prices,
         maxCapacity: this.f['max_capacity'].value
-      };
+      }
 
       this.loading = true
       this.classService.createNewClass(classData).subscribe({
@@ -101,5 +116,4 @@ export class EditClassComponent {
       this.classForm.markAllAsTouched()
     }
   }
-
 }

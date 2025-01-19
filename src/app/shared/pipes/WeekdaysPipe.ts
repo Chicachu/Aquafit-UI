@@ -3,7 +3,8 @@ import { TranslateService } from "@ngx-translate/core";
 import { Weekday } from "../../core/types/enums/weekday";
 
 @Pipe({
-  name: 'weekdays'
+  name: 'weekdays',
+  pure: false
 })
 export class WeekdaysPipe implements PipeTransform {
   constructor(private translate: TranslateService) { }

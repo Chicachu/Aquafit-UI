@@ -1,0 +1,70 @@
+<div *ngIf="classDetails">
+  <app-breadcrumb-nav-bar [title]="'CLASSES.CLASS_DETAILS'" [buttonType]="ButtonType.EDIT"></app-breadcrumb-nav-bar>
+  <div class="flex-column general-info">
+    <h3>{{ 'CLASS_TYPES.' + classDetails.classType | translate }}</h3>
+    <h3>{{ classDetails.classLocation }}</h3>
+    <h3>{{ classDetails.days | weekdays:'/' }} - {{ classDetails.startTime | timeFormat }}</h3>
+    <div class="flex-row">
+      <h3 *ngFor="let price of classDetails.prices">{{ price.value }} {{ price.currency }}</h3>
+    </div>
+    <h3>{{ classDetails.clients.length }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}</h3>
+  </div>
+
+  <!-- Client information -->
+  <div class="flex-column">
+    <h3>{{ 'CLIENTS.TITLE' | translate }}</h3>
+    <div>
+      <div>
+        <h4>{{ 'PAYMENT_STATUS.PAID' | translate }}</h4>
+        <!-- green icon -->
+      </div>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PAID)">{{ client.fullName }}</p>
+    </div>
+
+    <div>
+      <div>
+        <h4>{{ 'PAYMENT_STATUS.PENDING' | translate }}</h4>
+        <!-- yellow icon -->
+      </div>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PENDING)">{{ client.fullName }}</p>
+    </div>
+
+    <div>
+      <div>
+        <h4>{{ 'PAYMENT_STATUS.ALMOST_DUE' | translate }}</h4>
+        <!-- yellow icon -->
+      </div>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.ALMOST_DUE)">{{ client.fullName }}</p>
+    </div>
+
+    <div>
+      <div>
+        <h4>{{ 'PAYMENT_STATUS.OVERDUE' | translate }}</h4>
+        <!-- yellow icon -->
+      </div>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.OVERDUE)">{{ client.fullName }}</p>
+    </div>
+
+    <div>
+      <div>
+        <h4>{{ 'CLASSES.WAIT_LIST' | translate }}</h4>
+      </div>
+      <p *ngFor="let client of classDetails.waitlistClients">{{ client.firstName }} {{ client.lastName }}</p>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <app-button 
+      [label]="'CLASSES.CANCEL'"
+      [loading]="loading"
+      [loadingMessage]="'CLASSES.CANCELLING'"
+      (onClick)="cancelClass()">
+    </app-button>
+    <app-submit-button 
+      [label]="'CLASSES.TERMINATE'"
+      [loading]="loading"
+      [loadingMessage]="'CLASSES.TERMINATING'"
+      (onClick)=terminateClass()>
+    </app-submit-button>
+  </div>
+</div>

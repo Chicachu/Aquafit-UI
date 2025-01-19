@@ -69,12 +69,18 @@
     "FREE_SWIM": "Nado libre"
   },
   "CLIENTS": {
+    "TITLE": "Clientes",
     "ADD_NEW_CLIENT": "Agregar cliente" , 
     "ADD_NEW_CLIENT_SUCCESS": "¡Nuevo cliente agregado exitosamente!"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Agregar Clase",
-    "ADD_NEW_CLASS_SUCCESS": "¡Clase agregada exitosamente!"
+    "ADD_NEW_CLASS_SUCCESS": "¡Clase agregada exitosamente!",
+    "CLASS_DETAILS": "Detalles de la Clase",
+    "ENROLLED": "inscritos",
+    "WAIT_LIST": "Listo de espera",
+    "CANCEL": "Cancelar la Clase",
+    "TERMINATE": "Terminar la Clase"
   },
   "WEEKDAYS": {
     "SUNDAY": "Domingo",
@@ -93,5 +99,14 @@
     "THURSDAY": "Jue",
     "FRIDAY": "Vie",
     "SATURDAY": "Sáb"
+  },
+  "PAYMENT_STATUS": {
+    "PAID": "Pagado",
+    "PENDING": "Pendiente", 
+    "OVERDUE": "Vencido",
+    "ALMOST_DUE": "Próximo a vencer"
+  },
+  "PAYMENTS": {
+    "TITLE": "Pagos"
   }
 }

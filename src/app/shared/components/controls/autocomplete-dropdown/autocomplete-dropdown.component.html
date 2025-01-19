@@ -2,6 +2,7 @@
   <mat-label>{{(label ?? '') | translate}}</mat-label>
   <input type="text"
         matInput
+        [formControl]="control"
         [matAutocomplete]="auto"
         (focusin)="auto.opened.emit()">
   <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>

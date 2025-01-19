@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, take } from "rxjs";
 import { Class, CreateClassDTO } from "../types/class";
 import { environment } from "../../../environments/environment";
+import { ClassDetails } from "../types/classDetails";
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +21,9 @@ export class ClassService {
 
   createNewClass(newClass: CreateClassDTO): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/classes`, { newClass }).pipe(take(1))
+  }
+
+  getClassDetails(classId: string): Observable<ClassDetails> {
+    return this.http.get<ClassDetails>(`${environment.apiUrl}/classes/${classId}/details`).pipe(take(1))
   }
 }

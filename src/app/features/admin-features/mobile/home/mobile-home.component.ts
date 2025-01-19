@@ -13,9 +13,9 @@ import { ClassType } from '../../../../core/types/enums/classType';
 })
 export class MobileHomeComponent {
   ClassTypes = ClassType
-  readonly HOURS_IN_WORKDAY = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  readonly HOURS_IN_WORKDAY = ["7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
 
-  classSchedule: Map<number, CalendarClass> = new Map()
+  classSchedule: Map<string, CalendarClass> = new Map()
 
   constructor(private scheduleService: ScheduleService, private snackBarService: SnackBarService) {}
 
@@ -26,7 +26,9 @@ export class MobileHomeComponent {
         next: (calendarClasses: Map<string, CalendarClass[]>) => {
           for (const values of calendarClasses.values()) {
             values.forEach((value) => {
-              this.classSchedule.set(new Date(value.date).getHours(), value)
+              const hour = new Date(value.date).getHours();
+              const timeKey = `${hour.toString().padStart(2, '0')}:00`;
+              this.classSchedule.set(timeKey, value);
             }) 
           }
         }, 

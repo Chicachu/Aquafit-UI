@@ -1,7 +1,8 @@
 import { Currency } from "./enums/currency"
 import { Role } from "./enums/role"
+import { Document } from "./document"
 
-export type User = {
+export type User = Document & {
   firstName: string
   lastName: string
   phoneNumber: string

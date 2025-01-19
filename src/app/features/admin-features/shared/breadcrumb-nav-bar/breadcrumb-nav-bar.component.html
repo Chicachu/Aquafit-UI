@@ -1,8 +1,8 @@
 <div class="flex-row breadcrumb-container">
     <div class="icon-container flex-row" (click)="navigateBack()">
       <img src="./assets/images/icons/chevron-left.svg" />
-      <h2>
-        {{ title }}
+      <h2 *ngIf="title">
+        {{ title | translate }}
       </h2>
     </div>
     <div *ngIf="buttonType" class="flex-row">

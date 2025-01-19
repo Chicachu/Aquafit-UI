@@ -1,6 +1,6 @@
 <mat-form-field appearance="outline">
   <mat-label>{{(label ?? '') | translate}}</mat-label>
-  <input matInput [matDatepicker]="picker">
+  <input matInput [formControl]="control" [matDatepicker]="picker">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker #picker></mat-datepicker>
   <mat-error *ngIf="control?.errors">

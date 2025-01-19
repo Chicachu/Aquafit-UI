@@ -1,5 +1,5 @@
 <div>
-  <app-breadcrumb-nav-bar [title]="'CLASSES.ADD_NEW_CLASS' | translate"></app-breadcrumb-nav-bar>
+  <app-breadcrumb-nav-bar [title]="'CLASSES.ADD_NEW_CLASS'"></app-breadcrumb-nav-bar>
   <div class="edit-container">
     <form [formGroup]="classForm" (ngSubmit)="onSubmit()" class="form-container">
       <!-- Location Autocomplete -->
@@ -35,6 +35,7 @@
       <app-dropdown
         label="CONTROLS.START_TIME"
         [options]="timeSlots"
+        [formatOption]="FormatOptions.TIME"
         controlName="start_time">
       </app-dropdown>
 

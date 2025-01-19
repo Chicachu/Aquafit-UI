@@ -1,0 +1,15 @@
+<button 
+  mat-raised-button 
+  color="primary" 
+  type="button" 
+  [disabled]="loading"
+  class="button"
+  (click)="onButtonClick()"
+>
+  <mat-spinner 
+    diameter="20" 
+    *ngIf="loading" 
+    class="spinner"
+  ></mat-spinner>
+  {{ (loading && loadingMessage ? loadingMessage : label) | translate }}
+</button>

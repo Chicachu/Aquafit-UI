@@ -27,9 +27,9 @@ export class ClassListComponent {
       next: (classes: Class[]) => {
         this.classes = classes
       },
-      error: ({error}) => [
+      error: ({error}) => {
         this.snackBarService.showError(error.message)
-      ]
+      }
     })
   }
 

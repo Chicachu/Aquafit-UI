@@ -69,12 +69,20 @@
     "FREE_SWIM": "Free swim"
   },
   "CLIENTS": {
+    "TITLE": "Clients",
     "ADD_NEW_CLIENT": "Add Client", 
     "ADD_NEW_CLIENT_SUCCESS": "Successfully added new client!"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",
-    "ADD_NEW_CLASS_SUCCESS": "Successfully added new class!"
+    "ADD_NEW_CLASS_SUCCESS": "Successfully added new class!",
+    "CLASS_DETAILS": "Class Details",
+    "ENROLLED": "enrolled",
+    "WAIT_LIST": "Waitlist",
+    "CANCEL": "Cancel Class",
+    "CANCELLING": "Cancelling...",
+    "TERMINATE": "Terminate Class",
+    "TERMINATING": "Terminating..."
   },
   "WEEKDAYS": {
     "SUNDAY": "Sunday",
@@ -93,5 +101,14 @@
     "THURSDAY": "Thur",
     "FRIDAY": "Fri",
     "SATURDAY": "Sat"
+  },
+  "PAYMENT_STATUS": {
+    "PAID": "Paid",
+    "PENDING": "Pending", 
+    "OVERDUE": "Overdue",
+    "ALMOST_DUE": "Due soon"
+  },
+  "PAYMENTS": {
+    "TITLE": "Payments"
   }
 }

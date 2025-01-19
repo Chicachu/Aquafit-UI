@@ -1,0 +1,26 @@
+@import '../../../../../assets/colors.scss';
+
+.submit-button {
+  height: 48px;
+  font-size: 16px;
+}
+
+.spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+:host ::ng-deep {
+  .mat-mdc-raised-button {
+    background-color: white !important;
+  }
+
+  button.selected {
+    background-color: $primary-blue;
+    color: white !important;
+  }
+
+  .mat-mdc-raised-button {
+    background-color: rgba(255, 255, 255, .7) !important;
+  }
+}

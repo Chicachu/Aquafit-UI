@@ -1,40 +1,55 @@
-import { Component } from '@angular/core';
-import { ScheduleService } from '../../../../core/services/scheduleService';
-import { ScheduleView } from '../../../../core/types/scheduleView';
-import { CalendarClass } from '../../../../core/types/calendarClass';
-import { SnackBarService } from '../../../../core/services/snackBarService';
-import { map } from 'rxjs';
-import { ClassType } from '../../../../core/types/enums/classType';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ClassService } from '@core/services/classService';
+import { SnackBarService } from '@core/services/snackBarService';
+import { FormatOptions } from '@core/types/enums/formatOptions';
+import { SelectOption } from '@core/types/selectOption';
 
 @Component({
   selector: 'app-mobile-home',
   templateUrl: './mobile-home.component.html',
   styleUrls: ['./mobile-home.component.scss']
 })
-export class MobileHomeComponent {
-  ClassTypes = ClassType
-  readonly HOURS_IN_WORKDAY = ["7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
+export class MobileHomeComponent implements OnInit {
+  readonly FormatOptions = FormatOptions
+  calendarLocationOptions: SelectOption[] = []
+  allLocations: string[] = []
+  calendarOptionsForm: FormGroup 
+  selectedLocation: string = ''
 
-  classSchedule: Map<string, CalendarClass> = new Map()
+  constructor(private _classService: ClassService, private snackBarService: SnackBarService, private fb: FormBuilder, ) {
+    this.calendarOptionsForm = this.fb.group({
+      calendarView: ['MASTER']
+    })
 
-  constructor(private scheduleService: ScheduleService, private snackBarService: SnackBarService) {}
+    this.calendarOptionsForm.get('calendarView')?.valueChanges.subscribe(value => {
+      this.selectedLocation = value === 'MASTER' ? '' : value;
+    });
+  }
 
   ngOnInit(): void {
-    this.scheduleService.getAllClasses(ScheduleView.DAY, new Date()).pipe(
-      map(response => new Map(Object.entries(response))))
-      .subscribe({
-        next: (calendarClasses: Map<string, CalendarClass[]>) => {
-          for (const values of calendarClasses.values()) {
-            values.forEach((value) => {
-              const hour = new Date(value.date).getHours();
-              const timeKey = `${hour.toString().padStart(2, '0')}:00`;
-              this.classSchedule.set(timeKey, value);
-            }) 
-          }
-        }, 
-        error: ({error}) => {
-          this.snackBarService.showError(error.message)
-        }
+    this._classService.getAllLocations().subscribe({
+      next: (res: string[]) => {
+        this.allLocations = res
+        this._generateCalendarLocationOptions()
+      }, 
+      error: ({error}) => {
+        this.snackBarService.showError(error.message)
+      }
+    })
+  }
+
+  private _generateCalendarLocationOptions(): void {
+    this.calendarLocationOptions.push({
+      value: "MASTER", 
+      viewValue: "CALENDAR.MASTER"
+    })
+
+    this.allLocations.forEach((location) => {
+      this.calendarLocationOptions.push({
+        viewValue: location, 
+        value: location
+      })
     })
   }
 }

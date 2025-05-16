@@ -8,6 +8,7 @@ import { EditClientComponent } from "./clients/edit-client/edit-client.component
 import { ClassListComponent } from "./classes/class-list/class-list.component";
 import { EditClassComponent } from "./classes/edit-class/edit-class.component";
 import { ClassDetailsComponent } from "./classes/class-details/class-details.component";
+import { MobileCalendarComponent } from "./calendar/mobile-calendar/mobile-calendar.component";
 
 @NgModule({
   declarations: [
@@ -17,13 +18,16 @@ import { ClassDetailsComponent } from "./classes/class-details/class-details.com
     ClientListComponent,
     ClientDetailsComponent,
     ClassListComponent,
-    ClassDetailsComponent
+    ClassDetailsComponent,
+    MobileCalendarComponent
   ],
   imports: [
     CommonModule,
     SharedModule
   ],
   exports: [
+    SharedModule,
+    MobileCalendarComponent
   ]
 })
 export class SharedAdminFeaturesModule { }

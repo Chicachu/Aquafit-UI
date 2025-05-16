@@ -4,6 +4,7 @@ import { UserService } from "../../../../../core/services/userService";
 import { SnackBarService } from "../../../../../core/services/snackBarService";
 import { Router } from "@angular/router";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
+import { Role } from "@core/types/enums/role";
 
 @Component({
   selector: 'app-client-list',
@@ -22,7 +23,7 @@ export class ClientListComponent {
   ) {}
 
   ngOnInit(): void {
-    this.usersService.getAllUsers().subscribe({
+    this.usersService.getAllUsers(Role.CLIENT).subscribe({
       next: (users: User[]) => {
         this.users = users
         this.users.sort((a: User, b: User) => {

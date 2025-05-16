@@ -2,4 +2,97 @@
 
 .general-info {
   border-bottom: 1px solid $light-blue;
+  text-align: center;
+}
+
+.prices {
+  justify-content: space-evenly;
+}
+
+.paid-status-icon {
+  background-color: green;
+  mask-image: url('../../../../../../assets/images/icons/check_circle.svg');
+  width: 1.5rem;  
+  height: 1.5rem; 
+}
+
+.almost-due-status-icon {
+  background-color: yellow;
+  mask-image: url('../../../../../../assets/images/icons/exclamation_circle.svg');
+  width: 1.5rem;  
+  height: 1.5rem; 
+}
+
+.overdue-status-icon {
+  background-color: red;
+  mask-image: url('../../../../../../assets/images/icons/exclamation_circle.svg');
+  width: 1.5rem;  
+  height: 1.5rem; 
+}
+
+.paid-status-icon, .almost-due-status-icon, .overdue-status-icon {
+  margin-left: 10px;
+  margin-top: 3px;
+}
+
+.paid-status-section {
+  border-bottom: 1px solid $primary-green;
+  justify-content: space-between;
+}
+
+.pending-status-section {
+  border-bottom: 1px solid $primary-pink;
+}
+
+.almost-due-status-section {
+  border-bottom: 1px solid yellow;
+  justify-content: space-between;
+}
+
+.overdue-status-section {
+  border-bottom: 1px solid red;
+  justify-content: space-between;
+}
+
+.waitlist-section {
+  border-bottom: 1px solid $primary-blue;
+}
+
+h2, h3, h4 {
+  margin: 5px 0;
+}
+
+.edit-icon {
+  left: -9px;
+  top: -9px;
+}
+
+.edit-class-button { 
+  background-color: $light-pink !important;
+  width: fit-content !important;
+  border-radius: 5px;
+  margin-left: 15px;
+  height: 24px;
+  width: 24px !important;
+  color: $primary-pink;
+  font-weight: 900 !important; 
+  border: 1px solid $primary-pink;
+}
+
+.clients-section {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.yellow {
+  color: yellow;
+}
+
+.red {
+  color: red;
+}
+
+.class-details-content {
+  width: 80vw;
+  margin: auto auto;
 }

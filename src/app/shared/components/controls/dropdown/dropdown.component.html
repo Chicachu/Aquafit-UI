@@ -6,6 +6,11 @@
         {{ i18nPrefix + '.' + option.viewValue | translate }}
       </mat-option>
     </div>
+    <div *ngIf="!i18nPrefix && formatOption === FormatOptions.TRANSLATE">
+      <mat-option *ngFor="let option of options" [value]="option.value">
+        {{ option.viewValue | translate }}
+      </mat-option>
+    </div>
     <div *ngIf="!i18nPrefix && formatOption === FormatOptions.TIME">
       <mat-option *ngFor="let option of options" [value]="option.value">
         {{ option.viewValue | timeFormat }}

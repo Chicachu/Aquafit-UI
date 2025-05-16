@@ -8,6 +8,7 @@ import { Role } from '../../../core/types/enums/role';
 import { internalEmailRegex } from '../../../core/constants';
 import { ErrorsService } from '../../../core/services/errorsService';
 import { TextInputType } from '../../../core/types/enums/textInputType';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +26,7 @@ export class RegisterComponent {
     private translateService: TranslateService,
     private userService: UserService,
     private snackBarService: SnackBarService,
+    private router: Router
     ) {
     this.registerForm = this.formBuilder.group(
     {
@@ -50,6 +52,7 @@ export class RegisterComponent {
       this.userService.register(this.f['email'].value, this.f['password'].value, role).subscribe({
         next: (rsp) => {
           this.loading = false;
+          this.router.navigate(["/login"])
           this.snackBarService.showSuccess(this.translateService.instant('REGISTER.SUCCESS'));
         },
         error: ({error}) => {

@@ -1,70 +1,79 @@
 <div *ngIf="classDetails">
   <app-breadcrumb-nav-bar [title]="'CLASSES.CLASS_DETAILS'" [buttonType]="ButtonType.EDIT"></app-breadcrumb-nav-bar>
   <div class="flex-column general-info">
-    <h3>{{ 'CLASS_TYPES.' + classDetails.classType | translate }}</h3>
-    <h3>{{ classDetails.classLocation }}</h3>
-    <h3>{{ classDetails.days | weekdays:'/' }} - {{ classDetails.startTime | timeFormat }}</h3>
-    <div class="flex-row">
-      <h3 *ngFor="let price of classDetails.prices">{{ price.value }} {{ price.currency }}</h3>
-    </div>
-    <h3>{{ classDetails.clients.length }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}</h3>
+    <h3 class="light-green">{{ 'CLASS_TYPES.' + classDetails.classType | translate }}</h3>
+    <h3 class="light-blue">{{ classDetails.classLocation }}</h3>
+    <h3 class="light-pink">{{ classDetails.days | weekdays:'/' }} - {{ classDetails.startTime | timeFormat }}</h3>
+    <h3 class="light-blue">{{ classDetails.prices[0].amount }} {{ classDetails.prices[0].currency }}</h3>
+    <!-- <div class="flex-row prices">
+      <h3 *ngFor="let price of classDetails.prices">{{ price.amount }} {{ price.currency }}</h3>
+    </div> -->
+    <h3 class="light-green">{{ classDetails.clients.length }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}</h3>
   </div>
 
   <!-- Client information -->
-  <div class="flex-column">
-    <h3>{{ 'CLIENTS.TITLE' | translate }}</h3>
+  <div class="flex-column class-details-content">
+    <div class="flex-row clients-section">
+      <h2 class="primary-blue">{{ 'CLIENTS.TITLE' | translate }}</h2>
+      <button 
+        mat-icon-button 
+        (click)="editClass()" class="edit-class-button">
+        <mat-icon class="edit-icon" matPrefix>{{ 'add'}}</mat-icon>
+      </button>
+    </div>
     <div>
-      <div>
-        <h4>{{ 'PAYMENT_STATUS.PAID' | translate }}</h4>
-        <!-- green icon -->
+      <div class="flex-row paid-status-section">
+        <h3 class="primary-green">{{ 'PAYMENT_STATUS.PAID' | translate }}</h3>
+        <div class="paid-status-icon"></div>
       </div>
       <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PAID)">{{ client.fullName }}</p>
     </div>
 
     <div>
-      <div>
-        <h4>{{ 'PAYMENT_STATUS.PENDING' | translate }}</h4>
-        <!-- yellow icon -->
+      <div class="pending-status-section">
+        <h3 class="primary-pink">{{ 'PAYMENT_STATUS.PENDING' | translate }}</h3>
       </div>
       <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PENDING)">{{ client.fullName }}</p>
     </div>
 
     <div>
-      <div>
-        <h4>{{ 'PAYMENT_STATUS.ALMOST_DUE' | translate }}</h4>
-        <!-- yellow icon -->
+      <div class="flex-row almost-due-status-section">
+        <h3 class="yellow">{{ 'PAYMENT_STATUS.ALMOST_DUE' | translate }}</h3>
+        <div class="almost-due-status-icon"></div>
       </div>
       <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.ALMOST_DUE)">{{ client.fullName }}</p>
     </div>
 
     <div>
-      <div>
-        <h4>{{ 'PAYMENT_STATUS.OVERDUE' | translate }}</h4>
-        <!-- yellow icon -->
+      <div class="flex-row overdue-status-section">
+        <h3 class="red">{{ 'PAYMENT_STATUS.OVERDUE' | translate }}</h3>
+        <div class="overdue-status-icon"></div>
       </div>
       <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.OVERDUE)">{{ client.fullName }}</p>
     </div>
 
     <div>
-      <div>
-        <h4>{{ 'CLASSES.WAIT_LIST' | translate }}</h4>
+      <div class="waitlist-section">
+        <h3 class="primary-blue">{{ 'CLASSES.WAIT_LIST' | translate }}</h3>
       </div>
       <p *ngFor="let client of classDetails.waitlistClients">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
-  </div>
 
-  <div class="flex-row">
-    <app-button 
-      [label]="'CLASSES.CANCEL'"
-      [loading]="loading"
-      [loadingMessage]="'CLASSES.CANCELLING'"
-      (onClick)="cancelClass()">
-    </app-button>
-    <app-submit-button 
-      [label]="'CLASSES.TERMINATE'"
-      [loading]="loading"
-      [loadingMessage]="'CLASSES.TERMINATING'"
-      (onClick)=terminateClass()>
-    </app-submit-button>
+    <div class="flex-row">
+      <app-button 
+        [label]="'CLASSES.CANCEL'"
+        [loading]="loading"
+        [loadingMessage]="'CLASSES.CANCELLING'"
+        (onClick)="cancelClass()">
+      </app-button>
+      <app-submit-button 
+        [label]="'CLASSES.TERMINATE'"
+        [loading]="loading"
+        [loadingMessage]="'CLASSES.TERMINATING'"
+        (onClick)=terminateClass()>
+      </app-submit-button>
+    </div>
   </div>
 </div>
+
+ 

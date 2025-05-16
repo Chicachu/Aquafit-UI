@@ -1,0 +1,44 @@
+@import '../../../../../../assets/colors.scss';
+
+ul {
+  margin: 0px 0px;
+  padding: 0px 0px;
+}
+
+li {
+  height: 40px;
+  border-bottom: 1px solid $background-blue;
+  height: calc((100vh - 120px) / 14);
+}
+
+li>div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.class1 {
+  background-color: $primary-green;
+  color: $light-green;
+}
+
+.class2 {
+  background-color: $primary-pink;
+  color: $light-pink;
+}
+
+.class3 {
+  background-color: $primary-blue;
+  color: $light-blue;
+}
+
+.class4 {
+  background-color: $light-blue;
+  color: $background-blue;
+}
+
+.empty {
+  background-color: $background-blue;
+  color: $light-pink;
+}

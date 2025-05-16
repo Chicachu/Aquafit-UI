@@ -6,7 +6,7 @@
   <div>
     <ul>
       <li *ngFor="let user of users">
-        {{ user.firstName }} {{ user.lastName }}
+        <a [routerLink]="['./', user._id, 'details']">{{ user.firstName }} {{ user.lastName }}</a>
       </li>
     </ul>
   </div>

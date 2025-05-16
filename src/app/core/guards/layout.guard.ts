@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { UserService } from '../services/userService';
+import { Role } from '@core/types/enums/role';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +33,9 @@ export class LayoutGuard implements CanActivate {
           if (!isMobilePath && !isMobileSize) {
             return true
           }
-
-          let targetUrl = this.userService.isAdmin ? ( isMobileSize ? '/admin/mobile/home' : '/admin/home') : '/home'
+          
+          let targetUrl = (this.userService.user?.role === Role.INSTRUCTOR || this.userService.user?.role === Role.ADMIN) 
+            ? ( isMobileSize ? '/admin/mobile/home' : '/admin/home') : '/home'
           this.router.navigate([targetUrl])
           return false;
         })

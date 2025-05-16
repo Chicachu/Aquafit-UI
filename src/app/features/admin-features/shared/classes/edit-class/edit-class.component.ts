@@ -11,6 +11,8 @@ import { CreateClassDTO } from "../../../../../core/types/class";
 import { SelectOption } from "../../../../../core/types/selectOption";
 import { Pipes } from "../../../../../core/types/enums/pipes";
 import { FormatOptions } from "../../../../../core/types/enums/formatOptions";
+import { ActivatedRoute, Router } from "@angular/router";
+import { nonEmptyArrayValidator } from "@shared/validators/nonEmptyArray";
 
 @Component({
   selector: 'app-edit-class',
@@ -36,15 +38,17 @@ export class EditClassComponent {
     private fb: FormBuilder, 
     private classService: ClassService,
     private snackBarService: SnackBarService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.getLocations$ = this.classService.getAllLocations()
     this.classForm = this.fb.group({
-      location: [''],
-      class_type: [''],
-      days: [[]],
-      start_date: [''],
-      start_time: [''],
+      location: ['', [Validators.required]],
+      class_type: ['', [Validators.required]],
+      days: [[], [nonEmptyArrayValidator]],
+      start_date: ['', [Validators.required]],
+      start_time: ['', [Validators.required]],
       mxn: [null, [Validators.required, Validators.min(0)]],
       usd: [null, [Validators.required, Validators.min(0)]],
       max_capacity: [null, [Validators.required, Validators.min(1)]]
@@ -67,25 +71,19 @@ export class EditClassComponent {
   convertToTimeOptions(hours: number[]): SelectOption[] {
     return hours.map(hour => ({
       value: `${hour.toString()}:00`,  
-      viewValue: this.formatTimeDisplay(hour)
+      viewValue: hour.toString()
     }));
   }
-
-  private formatTimeDisplay(hour: number): string {
-    const period = hour >= 12 ? 'p.m.' : 'a.m.'
-    const displayHour = hour % 12 || 12
-    return `${displayHour}:00${period}`
-   }
 
   onSubmit() {
     if (this.classForm.valid) {
       const prices = [
         {
-          value: this.f['mxn'].value,
+          amount: this.f['mxn'].value,
           currency: Currency.PESOS
         },
         {
-          value: this.f['usd'].value,
+          amount: this.f['usd'].value,
           currency: Currency.DOLARS
         }
       ]
@@ -105,6 +103,7 @@ export class EditClassComponent {
         next: () => {
           this.loading = false
           this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
+          this.router.navigate(['../'], { relativeTo: this.route })
         },
         error: ({error}) => {
           this.loading = false

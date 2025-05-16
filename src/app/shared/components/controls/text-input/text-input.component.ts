@@ -15,12 +15,18 @@ export class TextInputComponent extends BaseFormControlComponent {
 
   constructor(formGroup: FormGroupDirective, errorService: ErrorsService) {
     super(formGroup, errorService)
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit()
 
     if (this.type === TextInputType.EMAIL) {
       this.control.addValidators(Validators.email)
     } else if (this.type === TextInputType.PHONE) {
       this.control.addValidators(Validators.pattern('^[+]?[0-9 ]*$'))
     }
+
+    if (this.type !== TextInputType.PASSWORD) this.hidePassword = false
   }
 
   onInputChange(event: Event): void {

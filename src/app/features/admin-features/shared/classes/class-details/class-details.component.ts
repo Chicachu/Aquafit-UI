@@ -39,6 +39,10 @@ export class ClassDetailsComponent implements OnInit {
     })
   }
 
+  editClass(): void {
+    
+  }
+
   cancelClass(): void {
     // call api - api will find this class with a class Id, iterate through all clients (except overdue clients) 
     // and give them a free bonus session. 

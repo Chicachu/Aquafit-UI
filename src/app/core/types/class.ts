@@ -11,7 +11,7 @@ export type Class = Document & {
   endDate?: Date | null
   startTime: string
   prices: {
-    value: number
+    amount: number
     currency: Currency
   }[],
   maxCapacity: number
@@ -34,7 +34,7 @@ export type CreateClassDTO = {
   startDate: Date
   startTime: string
   prices: {
-    value: number
+    amount: number
     currency: Currency
   }[]
   maxCapacity: number

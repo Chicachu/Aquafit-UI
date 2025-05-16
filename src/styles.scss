@@ -151,6 +151,29 @@ form {
   justify-content: center;
 }
 
+.primary-blue {
+  color: $primary-blue;
+}
+
+.primary-pink {
+  color: $primary-pink;
+}
+
+.primary-green {
+  color: $primary-green;
+}
+
+.light-blue {
+  color: $light-blue;
+}
+
+.light-pink {
+  color: $light-pink;
+}
+
+.light-green {
+  color: $light-green;
+}
 
 @media screen and (min-width: 1000px) and  (max-width: 1300px) {
   .website-content-width {

@@ -11,10 +11,12 @@ import { CalendarClass } from "../types/calendarClass"
 export class ScheduleService {
   constructor(private http: HttpClient) {}
 
-  public getAllClasses(view: ScheduleView, date: Date): Observable<Map<string, CalendarClass[]>> {
+  public getAllClasses(view: ScheduleView, date: Date, location: string): Observable<Map<string, CalendarClass[]>> {
+    console.log(location)
     let params = new HttpParams()
     params = params.set('view', view)
     params = params.set('date', date.toISOString())
+    params = params.set('location', location)
     
     let month, year 
     if (view === ScheduleView.MONTH) {

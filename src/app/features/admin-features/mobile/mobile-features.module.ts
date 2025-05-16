@@ -9,6 +9,7 @@ import { EditClientComponent } from "../shared/clients/edit-client/edit-client.c
 import { ClassListComponent } from "../shared/classes/class-list/class-list.component";
 import { EditClassComponent } from "../shared/classes/edit-class/edit-class.component";
 import { ClassDetailsComponent } from "../shared/classes/class-details/class-details.component";
+import { ClientDetailsComponent } from "../shared/clients/client-details/client-details.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,11 @@ const routes: Routes = [
     path: 'clients', 
     pathMatch: 'full',
     component: ClientListComponent
+  },
+  {
+    path: 'clients/:user-id/details',
+    pathMatch: 'full', 
+    component: ClientDetailsComponent
   },
   {
     path: 'clients/add-client', 

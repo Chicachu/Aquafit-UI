@@ -1,16 +1,16 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Observable, map, merge, of } from "rxjs";
-import { ClassType } from "../../../../../core/types/enums/classType";
-import { Weekday } from "../../../../../core/types/enums/weekday";
-import { ClassService } from "../../../../../core/services/classService";
-import { SnackBarService } from "../../../../../core/services/snackBarService";
+import { ClassType } from "@/core/types/enums/classType";
+import { Weekday } from "@/core/types/enums/weekday";
+import { ClassService } from "@/core/services/classService";
+import { SnackBarService } from "@/core/services/snackBarService";
 import { TranslateService } from "@ngx-translate/core";
-import { Currency } from "../../../../../core/types/enums/currency";
-import { CreateClassDTO } from "../../../../../core/types/class";
-import { SelectOption } from "../../../../../core/types/selectOption";
-import { Pipes } from "../../../../../core/types/enums/pipes";
-import { FormatOptions } from "../../../../../core/types/enums/formatOptions";
+import { Currency } from "@/core/types/enums/currency";
+import { CreateClassDTO } from "@/core/types/classes/class";
+import { SelectOption } from "@/core/types/selectOption";
+import { Pipes } from "@/core/types/enums/pipes";
+import { FormatOptions } from "@/core/types/enums/formatOptions";
 import { ActivatedRoute, Router } from "@angular/router";
 import { nonEmptyArrayValidator } from "@shared/validators/nonEmptyArray";
 

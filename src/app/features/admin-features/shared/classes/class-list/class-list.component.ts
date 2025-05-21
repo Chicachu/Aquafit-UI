@@ -1,10 +1,10 @@
 import { Component } from "@angular/core";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
-import { Class } from "../../../../../core/types/class";
-import { ClassService } from "../../../../../core/services/classService";
-import { SnackBarService } from "../../../../../core/services/snackBarService";
+import { Class } from "@/core/types/classes/class";
+import { ClassService } from "@/core/services/classService";
+import { SnackBarService } from "@/core/services/snackBarService";
 import { Router } from "@angular/router";
-import { ClassType } from "../../../../../core/types/enums/classType";
+import { ClassType } from "@/core/types/enums/classType";
 
 @Component({
   selector: 'app-class-list',

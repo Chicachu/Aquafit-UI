@@ -1,3 +1,22 @@
 <div>
-  <app-breadcrumb-nav-bar [buttonType]="ButtonType.EDIT"></app-breadcrumb-nav-bar>
+  <app-breadcrumb-nav-bar [title]="'CLIENTS.DETAILS'" [buttonType]="ButtonType.EDIT"></app-breadcrumb-nav-bar>
+  <div *ngIf="client" class="flex-column general-info">
+    <h3 class="light-green">{{ client.firstName + ' ' + client.lastName }}</h3>
+    <h3 *ngIf="client.phoneNumber" class="light-blue">{{ client.phoneNumber }}</h3>
+  </div>
+
+  <div class="flex-column client-details-content">
+    <div class="flex-row classes-section">
+      <h2 class="light-blue">{{ 'CLIENTS.ENROLLMENT' | translate }}</h2>
+      <button 
+        mat-icon-button 
+        (click)="enrollClient()" class="add-client-button">
+        <mat-icon class="add-icon" matPrefix>{{ 'add'}}</mat-icon>
+      </button>
+    </div>
+
+    <!-- <div *ngFor="">
+
+    </div> -->
+  </div>
 </div>

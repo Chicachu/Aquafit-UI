@@ -12,7 +12,6 @@ export class ScheduleService {
   constructor(private http: HttpClient) {}
 
   public getAllClasses(view: ScheduleView, date: Date, location: string): Observable<Map<string, CalendarClass[]>> {
-    console.log(location)
     let params = new HttpParams()
     params = params.set('view', view)
     params = params.set('date', date.toISOString())

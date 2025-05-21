@@ -1,0 +1,33 @@
+@import '../../../../../../assets/colors.scss';
+
+.general-info {
+  border-bottom: 1px solid $light-blue;
+  text-align: center;
+}
+
+.classes-section {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.client-details-content {
+  width: 80vw;
+  margin: auto auto;
+}
+
+.add-client-button { 
+  background-color: $light-pink !important;
+  width: fit-content !important;
+  border-radius: 5px;
+  margin-left: 15px;
+  height: 24px;
+  width: 24px !important;
+  color: $primary-pink;
+  font-weight: 900 !important; 
+  border: 1px solid $primary-pink;
+}
+
+.add-icon {
+  left: -9px;
+  top: -9px;
+}

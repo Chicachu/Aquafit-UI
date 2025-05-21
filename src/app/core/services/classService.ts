@@ -1,9 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, take } from "rxjs";
-import { Class, CreateClassDTO } from "../types/class";
+import { Class, CreateClassDTO } from "../types/classes/class";
 import { environment } from "../../../environments/environment";
-import { ClassDetails } from "../types/classDetails";
+import { ClassDetails } from "../types/classes/classDetails";
 
 @Injectable({
   providedIn: 'root'

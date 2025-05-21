@@ -52,6 +52,10 @@ export class UserService {
     return this._http.get<User[]>(`${environment.apiUrl}/users?role=${role}`).pipe(take(1))
   }
 
+  getUser(userId: string): Observable<User> {
+    return this._http.get<User>(`${environment.apiUrl}/users/${userId}`).pipe(take(1))
+  }
+
   addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber: string }): Observable<Object> {
     return this._http.put(`${environment.apiUrl}/users/`, { ...reqObj }).pipe(take(1))
   }

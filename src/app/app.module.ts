@@ -5,7 +5,6 @@ import { LayoutsModule } from "./layouts/layouts.module"
 import { BrowserModule } from "@angular/platform-browser"
 import { RouterModule, Routes } from "@angular/router"
 import { SharedModule } from "./shared/shared.module"
-import { LayoutGuard } from "./core/guards/layout.guard"
 
 export const routes: Routes = [
   { 

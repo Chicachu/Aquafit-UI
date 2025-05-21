@@ -73,7 +73,9 @@
   "CLIENTS": {
     "TITLE": "Clients",
     "ADD_NEW_CLIENT": "Add Client", 
-    "ADD_NEW_CLIENT_SUCCESS": "Successfully added new client!"
+    "ADD_NEW_CLIENT_SUCCESS": "Successfully added new client!",
+    "DETAILS": "Client Details",
+    "ENROLLMENT": "Class Enrollment"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",

@@ -14,16 +14,16 @@
   <!-- Client information -->
   <div class="flex-column class-details-content">
     <div class="flex-row clients-section">
-      <h2 class="primary-blue">{{ 'CLIENTS.TITLE' | translate }}</h2>
+      <h2 class="light-blue">{{ 'CLIENTS.TITLE' | translate }}</h2>
       <button 
         mat-icon-button 
-        (click)="editClass()" class="edit-class-button">
-        <mat-icon class="edit-icon" matPrefix>{{ 'add'}}</mat-icon>
+        (click)="addClientToClass()" class="add-class-button">
+        <mat-icon class="add-icon" matPrefix>{{ 'add'}}</mat-icon>
       </button>
     </div>
     <div>
       <div class="flex-row paid-status-section">
-        <h3 class="primary-green">{{ 'PAYMENT_STATUS.PAID' | translate }}</h3>
+        <h3 class="light-green">{{ 'PAYMENT_STATUS.PAID' | translate }}</h3>
         <div class="paid-status-icon"></div>
       </div>
       <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PAID)">{{ client.fullName }}</p>
@@ -31,14 +31,14 @@
 
     <div>
       <div class="pending-status-section">
-        <h3 class="primary-pink">{{ 'PAYMENT_STATUS.PENDING' | translate }}</h3>
+        <h3 class="light-green">{{ 'PAYMENT_STATUS.PENDING' | translate }}</h3>
       </div>
       <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PENDING)">{{ client.fullName }}</p>
     </div>
 
     <div>
       <div class="flex-row almost-due-status-section">
-        <h3 class="yellow">{{ 'PAYMENT_STATUS.ALMOST_DUE' | translate }}</h3>
+        <h3 class="light-green">{{ 'PAYMENT_STATUS.ALMOST_DUE' | translate }}</h3>
         <div class="almost-due-status-icon"></div>
       </div>
       <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.ALMOST_DUE)">{{ client.fullName }}</p>
@@ -46,7 +46,7 @@
 
     <div>
       <div class="flex-row overdue-status-section">
-        <h3 class="red">{{ 'PAYMENT_STATUS.OVERDUE' | translate }}</h3>
+        <h3 class="light-green">{{ 'PAYMENT_STATUS.OVERDUE' | translate }}</h3>
         <div class="overdue-status-icon"></div>
       </div>
       <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.OVERDUE)">{{ client.fullName }}</p>
@@ -54,7 +54,7 @@
 
     <div>
       <div class="waitlist-section">
-        <h3 class="primary-blue">{{ 'CLASSES.WAIT_LIST' | translate }}</h3>
+        <h3 class="light-green">{{ 'CLASSES.WAIT_LIST' | translate }}</h3>
       </div>
       <p *ngFor="let client of classDetails.waitlistClients">{{ client.firstName }} {{ client.lastName }}</p>
     </div>

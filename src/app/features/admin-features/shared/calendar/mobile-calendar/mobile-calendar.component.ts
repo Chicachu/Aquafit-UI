@@ -20,10 +20,6 @@ export class MobileCalendarComponent implements OnChanges {
 
   constructor(private scheduleService: ScheduleService, private snackBarService: SnackBarService) {}
 
-  ngOnInit(): void {
-    this._loadSchedule()
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['location']) {
       this.classSchedule = new Map()
@@ -39,10 +35,12 @@ export class MobileCalendarComponent implements OnChanges {
           for (const values of calendarClasses.values()) {
             values.forEach((value) => {
               const hour = new Date(value.date).getHours()
-              const timeKey = `${hour.toString().padStart(2, '0')}:00`
+              const timeKey = `${hour.toString()}:00`
               this.classSchedule.set(timeKey, value)
             }) 
           }
+          console.log(this.classSchedule)
+          console.log(this.classSchedule.get(this.HOURS_IN_WORKDAY[1]))
         }, 
         error: ({error}) => {
           this.snackBarService.showError(error.message)

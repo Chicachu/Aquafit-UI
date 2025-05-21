@@ -36,38 +36,38 @@
 }
 
 .paid-status-section {
-  border-bottom: 1px solid $primary-green;
+  border-bottom: 1px solid $light-pink;
   justify-content: space-between;
 }
 
 .pending-status-section {
-  border-bottom: 1px solid $primary-pink;
+  border-bottom: 1px solid $light-pink;
 }
 
 .almost-due-status-section {
-  border-bottom: 1px solid yellow;
+  border-bottom: 1px solid $light-pink;
   justify-content: space-between;
 }
 
 .overdue-status-section {
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid $light-pink;
   justify-content: space-between;
 }
 
 .waitlist-section {
-  border-bottom: 1px solid $primary-blue;
+  border-bottom: 1px solid $light-pink;
 }
 
 h2, h3, h4 {
   margin: 5px 0;
 }
 
-.edit-icon {
+.add-icon {
   left: -9px;
   top: -9px;
 }
 
-.edit-class-button { 
+.add-class-button { 
   background-color: $light-pink !important;
   width: fit-content !important;
   border-radius: 5px;
@@ -82,14 +82,6 @@ h2, h3, h4 {
 .clients-section {
   align-items: center;
   justify-content: space-between;
-}
-
-.yellow {
-  color: yellow;
-}
-
-.red {
-  color: red;
 }
 
 .class-details-content {

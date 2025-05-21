@@ -1,7 +1,7 @@
-import { ClassType } from "./enums/classType"
-import { Currency } from "./enums/currency"
-import { Weekday } from "./enums/weekday"
-import { Document } from "./document"
+import { ClassType } from "../enums/classType"
+import { Currency } from "../enums/currency"
+import { Weekday } from "../enums/weekday"
+import { Document } from "../document"
 
 export type Class = Document & {
   classLocation: string 

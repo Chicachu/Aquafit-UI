@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Class } from '../../../../../core/types/class';
+import { Class } from '@/core/types/classes/class';
 
 @Component({
   selector: 'app-class-slot',

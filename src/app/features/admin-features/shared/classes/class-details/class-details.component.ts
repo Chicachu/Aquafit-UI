@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { ClassService } from "../../../../../core/services/classService";
+import { ClassService } from "@/core/services/classService";
 import { ActivatedRoute } from "@angular/router";
-import { ClassDetails } from "../../../../../core/types/classDetails";
-import { SnackBarService } from "../../../../../core/services/snackBarService";
+import { ClassDetails } from "@/core/types/classes/classDetails";
+import { SnackBarService } from "@/core/services/snackBarService";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
-import { PaymentStatus } from "../../../../../core/types/enums/paymentStatus";
-import { ClientEnrollmentDetails } from "../../../../../core/types/clientEnrollmentDetails";
+import { PaymentStatus } from "@/core/types/enums/paymentStatus";
+import { ClientEnrollmentDetails } from "@/core/types/classes/clientEnrollmentDetails";
 
 @Component({
   selector: 'app-class-details',
@@ -39,7 +39,7 @@ export class ClassDetailsComponent implements OnInit {
     })
   }
 
-  editClass(): void {
+  addClientToClass(): void {
     
   }
 

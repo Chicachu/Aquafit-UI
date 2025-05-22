@@ -26,6 +26,7 @@
     "LASTNAME": "Apellido(s)",
     "PHONENUMBER": "Número de Teléfono",
     "LOCATION": "Ubicación",
+    "TIME": "Hora",
     "CLASS_TYPE": "Tipo de Clase",
     "START_DATE": "Fecha de Inicio", 
     "START_TIME": "Hora de Inicio",
@@ -35,7 +36,8 @@
     "DAYS": "Días",
     "MAX_CAPACITY": "Capacidad Máxima",
     "SUBMIT": "Enviar",
-    "SUBMIT_WAIT_MESSAGE": "Enviando..."
+    "SUBMIT_WAIT_MESSAGE": "Enviando...",
+    "CANCEL": "Cancelar"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} es requerido",
@@ -75,7 +77,9 @@
     "ADD_NEW_CLIENT": "Agregar cliente" , 
     "ADD_NEW_CLIENT_SUCCESS": "¡Nuevo cliente agregado exitosamente!",
     "DETAILS": "Detalles del Cliente",
-    "ENROLLMENT": "Inscripción a Clases"
+    "ENROLLMENT": "Inscripción a Clases",
+    "ENROLL": "Inscribir Cliente",
+    "ENROLL_INSTRUCTIONS": "Selecciona una clase para inscribir a"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Agregar Clase",

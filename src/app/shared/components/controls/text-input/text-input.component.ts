@@ -1,7 +1,7 @@
-import { Component, Input } from "@angular/core";
+import { Component, forwardRef, Input } from "@angular/core";
 import { TextInputType } from "../../../../core/types/enums/textInputType";
 import { BaseFormControlComponent } from "../base-form-control/base-form-control.component";
-import { FormGroupDirective, Validators } from "@angular/forms";
+import { FormGroupDirective, NG_VALUE_ACCESSOR, Validators } from "@angular/forms";
 import { ErrorsService } from "../../../../core/services/errorsService";
 
 @Component({
@@ -19,7 +19,6 @@ export class TextInputComponent extends BaseFormControlComponent {
 
   override ngOnInit(): void {
     super.ngOnInit()
-
     if (this.type === TextInputType.EMAIL) {
       this.control.addValidators(Validators.email)
     } else if (this.type === TextInputType.PHONE) {

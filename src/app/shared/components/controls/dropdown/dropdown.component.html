@@ -16,6 +16,11 @@
         {{ option.viewValue | timeFormat }}
       </mat-option>
     </div>
+    <div *ngIf="!i18nPrefix && !formatOption">
+      <mat-option *ngFor="let option of options" [value]="option.value">
+        {{ option.viewValue }}
+      </mat-option>
+    </div>
   </mat-select>
   <mat-error *ngIf="control?.errors">
     {{getErrorMessage()}}

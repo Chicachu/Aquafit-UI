@@ -24,6 +24,7 @@ import { SubmitButtonComponent } from "./components/buttons/submit-button/submit
 import { DatepickerComponent } from "./components/controls/datepicker/datepicker.component"
 import { RouterModule } from "@angular/router"
 import { ButtonComponent } from "./components/buttons/button/button.component"
+import { ModalComponent } from "./components/modal/modal.component"
 
 const materialModules = [
   MatAutocompleteModule,
@@ -58,7 +59,8 @@ const pipes = [
 @NgModule({
   declarations: [
     ...inputComponents,
-    ...pipes
+    ...pipes,
+    ModalComponent
   ],
   imports: [
     ...materialModules,
@@ -72,6 +74,7 @@ const pipes = [
     ...materialModules, 
     ...inputComponents, 
     ...pipes,
+    ModalComponent,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,

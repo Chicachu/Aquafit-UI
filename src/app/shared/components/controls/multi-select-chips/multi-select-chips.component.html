@@ -8,8 +8,8 @@
             (click)="toggleOption(option.value)">
       {{ i18nPrefix + '.' + option.viewValue | translate }}
     </button>
-    <mat-error *ngIf="control?.errors">
+    <div *ngIf="control?.errors">
       {{getErrorMessage()}}
-    </mat-error>
+    </div>
   </div>
 </div>

@@ -4,6 +4,7 @@ import { Observable, take } from "rxjs";
 import { Class, CreateClassDTO } from "../types/classes/class";
 import { environment } from "../../../environments/environment";
 import { ClassDetails } from "../types/classes/classDetails";
+import { ClassScheduleMap } from "@core/types/classScheduleMap";
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,9 @@ export class ClassService {
 
   getClassDetails(classId: string): Observable<ClassDetails> {
     return this.http.get<ClassDetails>(`${environment.apiUrl}/classes/${classId}/details`).pipe(take(1))
+  }
+
+  getClassScheduleMap(): Observable<ClassScheduleMap> {
+    return this.http.get<ClassScheduleMap>(`${environment.apiUrl}/classes/classScheduleMap`).pipe(take(1))
   }
 }

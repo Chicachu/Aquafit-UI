@@ -39,8 +39,6 @@ export class MobileCalendarComponent implements OnChanges {
               this.classSchedule.set(timeKey, value)
             }) 
           }
-          console.log(this.classSchedule)
-          console.log(this.classSchedule.get(this.HOURS_IN_WORKDAY[1]))
         }, 
         error: ({error}) => {
           this.snackBarService.showError(error.message)

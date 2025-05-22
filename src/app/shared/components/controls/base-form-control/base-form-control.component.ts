@@ -1,15 +1,15 @@
-import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { ErrorMessageProvider, ErrorsService } from "../../../../core/services/errorsService";
-import { ControlValueAccessor, FormControl, FormGroupDirective, Validators } from "@angular/forms";
+import { FormControl, FormGroupDirective, Validators } from "@angular/forms";
 
 @Component({
   template: ''
 })
-export abstract class BaseFormControlComponent implements OnInit, ErrorMessageProvider, ControlValueAccessor {
+export abstract class BaseFormControlComponent implements OnInit, ErrorMessageProvider {
   @Input() label?: string
   @Input() placeholder?: string
   @Input() hint?: string
-  @Input() controlName!: string
+  @Input() controlName: string = ''
   @Input() autocomplete?: string
 
   @Input() maxLength?: number
@@ -17,23 +17,38 @@ export abstract class BaseFormControlComponent implements OnInit, ErrorMessagePr
   @Input() min?: number
   @Input() pattern?: string
   @Input() required = true
-
-  @Input() disabled = false
   @Input() customErrorMessages?: { [key: string]: string }
-
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
-
+  @Input()
+  set disabled(value: boolean) {
+    this._disabled = value
+    this.setDisabledState(value)
+  }
+  
+  get disabled(): boolean {
+    return this._disabled
+  }
+  private _disabled = false
   control!: FormControl
 
-  constructor(protected formGroup: FormGroupDirective, private errorService: ErrorsService) {}
+  constructor(protected formGroup: FormGroupDirective, private errorService: ErrorsService) {
+  }
 
   ngOnInit(): void {
+    if (!this.controlName) {
+      throw new Error(`[${this.constructor.name}] Missing controlName`);
+    }
+  
+    if (!this.formGroup || !this.formGroup.form) {
+      throw new Error(`[${this.constructor.name}] formGroup is missing`);
+    }
     if (this.controlName) {
       this.control = this.formGroup.form.get(this.controlName) as FormControl
-
       if (this.disabled) {
         this.control.disable()
+      }
+
+      if (!this.control) {
+        throw new Error(`[${this.constructor.name}] FormControl "${this.controlName}" not found in formGroup`);
       }
       
       if (this.required && !this.control.hasValidator(Validators.required)) {
@@ -66,14 +81,6 @@ export abstract class BaseFormControlComponent implements OnInit, ErrorMessagePr
     if (this.control) {
       this.control.setValue(value, { emitEvent: false })
     }
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {

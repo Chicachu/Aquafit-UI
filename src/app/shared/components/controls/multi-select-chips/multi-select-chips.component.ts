@@ -1,6 +1,6 @@
-import { Component, Input } from "@angular/core";
+import { Component, forwardRef, Input } from "@angular/core";
 import { BaseFormControlComponent } from "../base-form-control/base-form-control.component";
-import { FormGroupDirective } from "@angular/forms";
+import { FormGroupDirective, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { ErrorsService } from "../../../../core/services/errorsService";
 import { SelectOption } from "../../../../core/types/selectOption";
 

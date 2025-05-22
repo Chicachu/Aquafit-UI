@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Observable, map, merge, of } from "rxjs";
+import { Observable } from "rxjs";
 import { ClassType } from "@/core/types/enums/classType";
 import { Weekday } from "@/core/types/enums/weekday";
 import { ClassService } from "@/core/services/classService";
@@ -56,7 +56,7 @@ export class EditClassComponent {
   }
 
   get f() { 
-    return this.classForm.controls; 
+    return this.classForm.controls
   }
 
   convertToSelectOptions(values: string[]): SelectOption[] {

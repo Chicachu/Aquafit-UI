@@ -1,6 +1,6 @@
-import { Component, Input } from "@angular/core";
+import { Component, forwardRef, Input } from "@angular/core";
 import { ErrorsService } from "../../../../core/services/errorsService";
-import { FormGroupDirective } from "@angular/forms";
+import { FormGroupDirective, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { BaseFormControlComponent } from "../base-form-control/base-form-control.component";
 import { Observable, map, merge, of } from "rxjs";
 import { SnackBarService } from "../../../../core/services/snackBarService";

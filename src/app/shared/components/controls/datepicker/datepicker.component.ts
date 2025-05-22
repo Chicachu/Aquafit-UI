@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, forwardRef } from "@angular/core";
 import { BaseFormControlComponent } from "../base-form-control/base-form-control.component";
+import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Component({
   selector: 'app-datepicker',

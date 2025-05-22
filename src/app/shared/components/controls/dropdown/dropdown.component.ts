@@ -1,7 +1,8 @@
-import { Component, Input, PipeTransform } from "@angular/core";
+import { Component, forwardRef, Input } from "@angular/core";
 import { BaseFormControlComponent } from "../base-form-control/base-form-control.component";
 import { SelectOption } from "../../../../core/types/selectOption";
 import { FormatOptions } from "../../../../core/types/enums/formatOptions";
+import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Component({
   selector: 'app-dropdown',

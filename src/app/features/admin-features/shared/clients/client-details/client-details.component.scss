@@ -31,3 +31,16 @@
   left: -9px;
   top: -9px;
 }
+
+h2, h3, h4, h5 {
+  margin: 5px 0;
+}
+
+.enrollment-modal p, .enrollment-modal h5 {
+  text-align: center;
+}
+
+form {
+  width: inherit;
+  border: none;
+}

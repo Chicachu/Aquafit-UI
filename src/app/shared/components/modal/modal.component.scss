@@ -1,0 +1,66 @@
+@import '../../../../assets/colors.scss';
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0; 
+  width: 100vw;
+  height: 100vh; 
+  background-color: rgba(128, 128, 128, 0.75);
+  z-index: 900;
+}
+
+.modal-header {
+  justify-content: space-between;
+  border-bottom: 1px $primary-blue solid;
+  color: $background-blue;
+}
+
+.modal-container {
+  background-color: $light-blue;
+  border: 2px solid $primary-pink;
+  margin: auto auto; 
+  width: fit-content; 
+  height: fit-content;
+  position: absolute; 
+  top: 0;
+  bottom: 0; 
+  left: 0; 
+  right: 0;
+  max-height: 75vh; 
+  max-width: 75vw;
+  padding: 15px;
+  border-radius: 10px;
+
+  h3 {
+    margin: 4px;
+    flex: 1; 
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .close-button {
+    flex: 0 0 auto; 
+    padding: 4px 4px;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-container {
+    justify-content: end;
+  }
+
+  .button {
+    margin-left: 10px;
+  }
+}
+
+
+

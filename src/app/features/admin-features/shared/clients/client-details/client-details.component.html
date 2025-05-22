@@ -10,7 +10,7 @@
       <h2 class="light-blue">{{ 'CLIENTS.ENROLLMENT' | translate }}</h2>
       <button 
         mat-icon-button 
-        (click)="enrollClient()" class="add-client-button">
+        (click)="setShowEnrollmentModal()" class="add-client-button">
         <mat-icon class="add-icon" matPrefix>{{ 'add'}}</mat-icon>
       </button>
     </div>
@@ -20,3 +20,37 @@
     </div> -->
   </div>
 </div>
+
+<app-modal *ngIf="showEnrollmentModal"
+  [parent]="this"
+  [title]="'CLIENTS.ENROLL' | translate"
+  [buttonList]="enrollmentButtons"
+  (modalClick)="processEnrollmentModalClick($event)"
+  class="enrollment-modal">
+  <div content> 
+    <p>{{ 'CLIENTS.ENROLL_INSTRUCTIONS' | translate }}</p>
+    <h5>{{ client?.firstName }} {{ client?.lastName }}</h5>
+
+    <form [formGroup]="classSelectionForm">
+      <app-dropdown *ngIf="classTypeOptions.length" 
+        label="CONTROLS.CLASS_TYPE" 
+        [options]="classTypeOptions" 
+        [i18nPrefix]="'CLASS_TYPES'"
+        controlName="class_type">
+      </app-dropdown>
+      <app-dropdown 
+        label="CONTROLS.LOCATION" 
+        [options]="classLocationOptions" 
+        controlName="location"
+        [disabled]="!selectedType">
+      </app-dropdown>
+      <app-dropdown
+        label="CONTROLS.TIME" 
+        [options]="classTimesOptions" 
+        controlName="time"
+        [formatOption]="FormatOptions.TIME"
+        [disabled]="!selectedType || !selectedLocation">
+      </app-dropdown>
+    </form>
+  </div>
+</app-modal>

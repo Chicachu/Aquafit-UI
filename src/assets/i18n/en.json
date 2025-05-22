@@ -26,6 +26,7 @@
     "LASTNAME": "Last Name",
     "PHONENUMBER": "Phone Number",
     "LOCATION": "Location",
+    "TIME": "Time",
     "CLASS_TYPE": "Class Type", 
     "START_DATE": "Start Date", 
     "START_TIME": "Start Time",
@@ -35,7 +36,8 @@
     "DAYS": "Days",
     "MAX_CAPACITY": "Max Capacity",
     "SUBMIT": "Submit",
-    "SUBMIT_WAIT_MESSAGE": "Submitting..."
+    "SUBMIT_WAIT_MESSAGE": "Submitting...",
+    "CANCEL": "Cancel"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} is required",
@@ -75,7 +77,9 @@
     "ADD_NEW_CLIENT": "Add Client", 
     "ADD_NEW_CLIENT_SUCCESS": "Successfully added new client!",
     "DETAILS": "Client Details",
-    "ENROLLMENT": "Class Enrollment"
+    "ENROLLMENT": "Class Enrollment",
+    "ENROLL": "Enroll Client",
+    "ENROLL_INSTRUCTIONS": "Select a class to enroll"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",

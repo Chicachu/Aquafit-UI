@@ -1,0 +1,21 @@
+<div class="overlay">
+  <div class="modal-container" [ngClass]="{'overflow-behavior': true}"> 
+    <div class="modal-header flex-row">
+      <h3 *ngIf="title">{{ title }}</h3>
+      <button (click)="processButtonClick('close-button')" class="close-button">X</button>
+    </div>
+
+    <div class="content">
+      <ng-content [select]="[content]"></ng-content>
+    </div>
+
+    <div class="button-container flex-row">
+      <ng-container *ngFor="let button of buttonList">
+        <app-button 
+        class="button"
+        [label]="button.text | translate"
+        (click)="processButtonClick(button.text)"></app-button>
+      </ng-container>
+    </div>
+  </div>
+</div>

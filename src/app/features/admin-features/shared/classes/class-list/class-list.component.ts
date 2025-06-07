@@ -51,5 +51,5 @@ export class ClassListComponent {
    
       return typeMap;
     }, new Map<ClassType, Map<string, Class[]>>());
-   }
+  }
 }

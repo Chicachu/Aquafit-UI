@@ -2,6 +2,7 @@ import { ClassType } from "../enums/classType"
 import { Currency } from "../enums/currency"
 import { Weekday } from "../enums/weekday"
 import { Document } from "../document"
+import { BillingFrequency } from "../enums/billingFrequency"
 
 export type Class = Document & {
   classLocation: string 
@@ -37,6 +38,7 @@ export type CreateClassDTO = {
     amount: number
     currency: Currency
   }[]
+  billingFrequency: BillingFrequency
   maxCapacity: number
 }
 

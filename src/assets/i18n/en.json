@@ -37,7 +37,8 @@
     "MAX_CAPACITY": "Max Capacity",
     "SUBMIT": "Submit",
     "SUBMIT_WAIT_MESSAGE": "Submitting...",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "BILLING_FREQUENCY": "Billing Frequency"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} is required",
@@ -122,5 +123,13 @@
   "CALENDAR": {
     "MASTER": "Master",
     "VIEW_OPTIONS": "View Options"
-  }
+  },
+  "ENROLLMENTS": {
+    "ADD_NEW_ENROLLMENT_SUCCESS": "Successfully enrolled the client!"
+  },
+  "BILLING_FREQUENCY": {
+    "ONE_TIME": "One Time",
+    "WEEKLY": "Weekly", 
+    "MONTHLY": "Monthly"
+  } 
 }

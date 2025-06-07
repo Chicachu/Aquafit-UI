@@ -64,6 +64,13 @@
         [min]="0">
       </app-text-input>
 
+      <app-dropdown
+        label="CONTROLS.BILLING_FREQUENCY"
+        [options]="billingFrequencyOptions"
+        [i18nPrefix]="'BILLING_FREQUENCY'"
+        controlName="billing_frequency">
+      </app-dropdown>
+
       <!-- Max Capacity -->
       <app-text-input
         label="CONTROLS.MAX_CAPACITY"

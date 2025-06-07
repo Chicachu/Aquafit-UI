@@ -8,7 +8,7 @@
     <!-- <div class="flex-row prices">
       <h3 *ngFor="let price of classDetails.prices">{{ price.amount }} {{ price.currency }}</h3>
     </div> -->
-    -= Z KJBMN,L.MM           <h3 class="light-green">{{ classDetails.clients.length }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}</h3>
+    <h3 class="light-green">{{ classDetails.clients.length }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}</h3>
   </div>
 
   <!-- Client information -->
@@ -26,14 +26,14 @@
         <h3 class="light-green">{{ 'PAYMENT_STATUS.PAID' | translate }}</h3>
         <div class="paid-status-icon"></div>
       </div>
-      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PAID)">{{ client.fullName }}</p>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PAID)">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
     <div>
       <div class="pending-status-section">
         <h3 class="light-green">{{ 'PAYMENT_STATUS.PENDING' | translate }}</h3>
       </div>
-      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PENDING)">{{ client.fullName }}</p>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PENDING)">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
     <div>
@@ -41,7 +41,7 @@
         <h3 class="light-green">{{ 'PAYMENT_STATUS.ALMOST_DUE' | translate }}</h3>
         <div class="almost-due-status-icon"></div>
       </div>
-      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.ALMOST_DUE)">{{ client.fullName }}</p>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.ALMOST_DUE)">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
     <div>
@@ -49,7 +49,7 @@
         <h3 class="light-green">{{ 'PAYMENT_STATUS.OVERDUE' | translate }}</h3>
         <div class="overdue-status-icon"></div>
       </div>
-      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.OVERDUE)">{{ client.fullName }}</p>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.OVERDUE)">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
     <div>
@@ -59,7 +59,7 @@
       <p *ngFor="let client of classDetails.waitlistClients">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
-    <div class="flex-row">
+    <div class="flex-row buttons">
       <app-button 
         [label]="'CLASSES.CANCEL'"
         [loading]="loading"

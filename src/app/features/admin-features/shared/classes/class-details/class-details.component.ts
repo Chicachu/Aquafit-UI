@@ -5,7 +5,7 @@ import { ClassDetails } from "@/core/types/classes/classDetails";
 import { SnackBarService } from "@/core/services/snackBarService";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { PaymentStatus } from "@/core/types/enums/paymentStatus";
-import { ClientEnrollmentDetails } from "@/core/types/classes/clientEnrollmentDetails";
+import { ClassClientEnrollmentDetails } from "@/core/types/classes/classClientEnrollmentDetails";
 
 @Component({
   selector: 'app-class-details',
@@ -17,7 +17,7 @@ export class ClassDetailsComponent implements OnInit {
   PaymentStatus = PaymentStatus
   classDetails: ClassDetails | null = null 
   navBarInfo: string[] = []
-  clientsByPaymentStatus: Map<PaymentStatus, ClientEnrollmentDetails[] | []> = new Map()
+  clientsByPaymentStatus: Map<PaymentStatus, ClassClientEnrollmentDetails[] | []> = new Map()
   loading = false
   
   constructor(

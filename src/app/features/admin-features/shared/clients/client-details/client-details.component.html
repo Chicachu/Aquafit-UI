@@ -15,9 +15,19 @@
       </button>
     </div>
 
-    <!-- <div *ngFor="">
-
-    </div> -->
+    <div *ngFor="let classEnrollment of classesGrouped | keyvalue">
+      <h3>{{ 'CLASS_TYPES.' + classEnrollment.key | translate | capitalize }}</h3>
+      <div *ngFor="let locationGroup of classEnrollment.value | keyvalue">
+        <h4>{{ locationGroup.key }}</h4>
+        <ul>
+          <li *ngFor="let classAndEnrollment of locationGroup.value">
+            <a [routerLink]="['./', classAndEnrollment.class._id, 'details']">
+              {{ classAndEnrollment.class.days | weekdays:'/' }} - {{ classAndEnrollment.class.startTime | timeFormat }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -48,9 +58,13 @@
         label="CONTROLS.TIME" 
         [options]="classTimesOptions" 
         controlName="time"
-        [formatOption]="FormatOptions.TIME"
         [disabled]="!selectedType || !selectedLocation">
       </app-dropdown>
+
+      <app-datepicker
+        label="CONTROLS.START_DATE"
+        controlName="start_date">
+      </app-datepicker>
     </form>
   </div>
 </app-modal>

@@ -44,3 +44,25 @@ form {
   width: inherit;
   border: none;
 }
+
+li {
+  color: $light-pink;
+  margin-left: 30px;
+}
+
+h3 {
+  color: $light-green;
+  margin: 10px 5px;
+  margin-left: 0;
+}
+
+h4 {
+  margin: 0;
+  margin-top: 20px;
+  color: $light-green;
+}
+
+ul {
+  padding-left: 0;
+  list-style-type: circle;
+}

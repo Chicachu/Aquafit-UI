@@ -13,6 +13,7 @@ import { Pipes } from "@/core/types/enums/pipes";
 import { FormatOptions } from "@/core/types/enums/formatOptions";
 import { ActivatedRoute, Router } from "@angular/router";
 import { nonEmptyArrayValidator } from "@shared/validators/nonEmptyArray";
+import { BillingFrequency } from "@core/types/enums/billingFrequency";
 
 @Component({
   selector: 'app-edit-class',
@@ -32,6 +33,11 @@ export class EditClassComponent {
       value: Weekday[key as keyof typeof Weekday].toString()
     }))
   timeSlots = this.convertToTimeOptions(Array.from({length: 14}, (_, i) => i + 7)) 
+  billingFrequencyOptions: SelectOption[] = Object.keys(BillingFrequency)
+    .map(key => ({
+      viewValue: key.toUpperCase(),
+      value: BillingFrequency[key as keyof typeof BillingFrequency].toString()
+    }))
   loading = false
 
   constructor(
@@ -50,7 +56,7 @@ export class EditClassComponent {
       start_date: ['', [Validators.required]],
       start_time: ['', [Validators.required]],
       mxn: [null, [Validators.required, Validators.min(0)]],
-      usd: [null, [Validators.required, Validators.min(0)]],
+      billing_frequency: [null, [Validators.required]],
       max_capacity: [null, [Validators.required, Validators.min(1)]]
     })
   }
@@ -81,10 +87,6 @@ export class EditClassComponent {
         {
           amount: this.f['mxn'].value,
           currency: Currency.PESOS
-        },
-        {
-          amount: this.f['usd'].value,
-          currency: Currency.DOLARS
         }
       ]
 
@@ -95,6 +97,7 @@ export class EditClassComponent {
         startDate: this.f['start_date'].value._d,
         startTime: this.f['start_time'].value,
         prices,
+        billingFrequency: this.f['billing_frequency'].value,
         maxCapacity: this.f['max_capacity'].value
       }
 

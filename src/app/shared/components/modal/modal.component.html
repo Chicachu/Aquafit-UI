@@ -2,7 +2,11 @@
   <div class="modal-container" [ngClass]="{'overflow-behavior': true}"> 
     <div class="modal-header flex-row">
       <h3 *ngIf="title">{{ title }}</h3>
-      <button (click)="processButtonClick('close-button')" class="close-button">X</button>
+      <div class="close-button-border">
+        <button (click)="processButtonClick('close-button')" class="close-button">
+          <div class="close-button-icon"></div>
+        </button>
+      </div>
     </div>
 
     <div class="content">

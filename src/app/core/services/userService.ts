@@ -4,7 +4,7 @@ import { User } from "../types/user"
 import { HttpClient } from "@angular/common/http"
 import { Observable, take } from "rxjs"
 import { environment } from "../../../environments/environment"
-import { ClientDetails } from "@core/types/clients/clientDetails"
+import { ClientEnrollmentDetails } from "@core/types/clients/clientEnrollmentDetails"
 
 @Injectable({
   providedIn: 'root'
@@ -57,8 +57,8 @@ export class UserService {
     return this._http.get<User>(`${environment.apiUrl}/users/${userId}`).pipe(take(1))
   }
 
-  getUserDetails(userId: string): Observable<ClientDetails> {
-    return this._http.get<ClientDetails>(``).pipe(take(1))
+  getClientEnrollmentDetails(userId: string): Observable<ClientEnrollmentDetails> {
+    return this._http.get<ClientEnrollmentDetails>(`${environment.apiUrl}/users/${userId}/enrollments`).pipe(take(1))
   }
 
   addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber: string }): Observable<Object> {

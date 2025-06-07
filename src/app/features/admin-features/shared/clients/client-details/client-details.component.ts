@@ -5,13 +5,17 @@ import { UserService } from "@core/services/userService";
 import { User } from "@core/types/user";
 import { SnackBarService } from "@core/services/snackBarService";
 import { ClassService } from "@core/services/classService";
-import { Class } from "@core/types/classes/class";
 import { SelectOption } from "@core/types/selectOption";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ClassType } from "@core/types/enums/classType";
-import { TranslateService } from "@ngx-translate/core";
 import { ClassScheduleMap } from "@core/types/classScheduleMap";
 import { FormatOptions } from "@core/types/enums/formatOptions";
+import { EnrollmentService } from "@core/services/enrollmentService";
+import { BillingFrequency } from "@core/types/enums/billingFrequency";
+import { TranslateService } from "@ngx-translate/core";
+import { ClientEnrollmentDetails } from "@core/types/clients/clientEnrollmentDetails";
+import { Enrollment } from "@core/types/enrollment";
+import { Class } from "@core/types/classes/class";
 
 @Component({
   selector: 'app-client-details',
@@ -32,6 +36,8 @@ export class ClientDetailsComponent {
   selectedLocation: string = ''
   classTimesOptions: SelectOption[] = []
   classScheduleMap: ClassScheduleMap | null = null
+  selectedClassId: string = ''
+  classEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
 
   constructor(
     private route: ActivatedRoute,
@@ -39,21 +45,25 @@ export class ClientDetailsComponent {
     private snackBarService: SnackBarService, 
     private classService: ClassService,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private enrollmentService: EnrollmentService,
+    private translateService: TranslateService
   ) {
     this.classSelectionForm = this.fb.group({
       class_type: ['', [Validators.required]],
       location: ['', [Validators.required]],
-      time: ['', [Validators.required]]
+      time: ['', [Validators.required]],
+      start_date: ['', [Validators.required]]
     })
   }
 
   ngOnInit(): void {
     const userId = this.route.snapshot.paramMap.get('user-id')
     
-    this.userService.getUser(userId!).subscribe({
-      next: (user: User) => {
-        this.client = user
+    this.userService.getClientEnrollmentDetails(userId!).subscribe({
+      next: (clientEnrollmentDetails: ClientEnrollmentDetails) => {
+        this.client = clientEnrollmentDetails.client
+        this.clientId = this.client._id
+        this.classEnrollmentInfo = clientEnrollmentDetails.enrolledClassInfo
       },
       error: ({error}) => {
         this.snackBarService.showError(error.message)
@@ -69,20 +79,25 @@ export class ClientDetailsComponent {
         value: location, 
         viewValue: location
       }))
-
-      this.cdr.detectChanges()
     })
 
     this.classSelectionForm.get('location')?.valueChanges.subscribe((selectedLocation: string) => {
       if (!this.classScheduleMap || !this.selectedType) return
       
       this.selectedLocation = selectedLocation
-      this.classTimesOptions = (this.classScheduleMap[this.selectedType]?.[selectedLocation] || []).map(timeSlot => ({
-        value: timeSlot,
-        viewValue: timeSlot
-      })) 
+      const timeMap = this.classScheduleMap[this.selectedType]?.[selectedLocation] || {};
 
-      this.cdr.detectChanges()
+      // TODO: include days in the time dropdown. 
+      this.classTimesOptions = Object.keys(timeMap).map(timeSlot => ({
+        value: timeSlot, 
+        viewValue: timeSlot
+      }))
+    })
+
+    this.classSelectionForm.get('time')?.valueChanges.subscribe((selectedTime: string) => {
+      if (!this.classScheduleMap || !this.selectedType || !this.selectedLocation) return
+    
+      this.selectedClassId = this.classScheduleMap[this.selectedType]?.[this.selectedLocation]?.[selectedTime]!
     })
   }
 
@@ -114,6 +129,35 @@ export class ClientDetailsComponent {
   public processEnrollmentModalClick(event: { ref: ClientDetailsComponent, buttonTitle: string }): void {
     if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
       this.showEnrollmentModal = false
+    } else if (event.buttonTitle === 'CLIENTS.ENROLL') {
+      this.enrollmentService.enrollClient(this.selectedClassId, this.clientId!, this.f['start_date'].value._d, BillingFrequency.MONTHLY).subscribe({
+        next: () => {
+          this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
+          this.showEnrollmentModal = false
+        }, 
+        error: ({error}) => {
+          this.snackBarService.showError(error.message)
+        }
+      })
     }
+  }
+
+  get classesGrouped(): Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>> | undefined {
+    return this.classEnrollmentInfo?.reduce((typeMap, classEnrollment) => {
+      const { class: classObj, enrollment } = classEnrollment
+
+      if (!typeMap.has(classObj.classType)) {
+        typeMap.set(classObj.classType, new Map<string, { class: Class, enrollment: Enrollment }[]>())
+      }
+      const locationMap = typeMap.get(classObj.classType)!
+
+      const locationKey = classObj.classLocation;
+      const locationClasses = locationMap.get(locationKey) || [];
+
+      locationClasses.push({ class: classObj, enrollment });
+      locationMap.set(locationKey, locationClasses)
+   
+      return typeMap;
+    }, new Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>>());
   }
 }

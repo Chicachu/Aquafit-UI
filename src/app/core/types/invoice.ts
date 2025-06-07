@@ -1,26 +1,29 @@
 import { Currency } from "./enums/currency"
 import { PaymentStatus } from "./enums/paymentStatus"
 import { Document } from "./document"
+import { Price } from "./price"
+import { PaymentType } from "./enums/paymentType"
 
-export type Payment = Document & {
+export type Invoice = Document & {
   clientId: string
   enrollmentId: string
-  amount: {
-    currency: Currency
-    value: number
-  }
+  charge: Price 
   discountsApplied: {
     discountId: string
-    amount: number
+    amountOverride: {
+      amount: number
+      currency: Currency
+    }
   }[]
-  paymentsHistory: {
+  paymentsApplied: {
+    amount: number
     currency: Currency
-    value: number
     date: Date
+    paymentType: PaymentType
   }[]
   paymentStatus: PaymentStatus
   period: {
-    start: Date, 
-    duteDate: Date
+    startDate: Date, 
+    dueDate: Date
   }
 }

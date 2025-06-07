@@ -1,8 +1,8 @@
 import { Class } from "./class";
-import { ClientEnrollmentDetails } from "./clientEnrollmentDetails";
+import { ClassClientEnrollmentDetails } from "../classes/classClientEnrollmentDetails";
 import { User } from "../user";
 
 export type ClassDetails = Class & {
-  clients: ClientEnrollmentDetails[]
+  clients: ClassClientEnrollmentDetails[]
   waitlistClients: User[]
 }

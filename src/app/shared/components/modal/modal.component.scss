@@ -43,6 +43,15 @@
     padding: 20px;
   }
 
+  .close-button-border {
+    border: 1px solid $primary-pink;
+    border-radius: 5px;
+    max-height: fit-content;
+    overflow: hidden;
+    height: 22px;
+    width: 22px;
+  }
+
   .close-button {
     flex: 0 0 auto; 
     padding: 4px 4px;
@@ -51,6 +60,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-width: 0px;
+    border-radius: 5px;
+    background-color: $light-pink;
+
+    .close-button-icon {
+      mask-image: url('../../../../assets/images/icons/close.svg');
+      background-color: $primary-pink;
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      height: 30px;
+      width: 30px;
+      margin-left: -3px;
+      margin-top: -2px;
+    }
   }
 
   .button-container {
@@ -58,7 +82,7 @@
   }
 
   .button {
-    margin-left: 10px;
+    margin-left: 5px;
   }
 }
 

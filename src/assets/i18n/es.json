@@ -37,7 +37,8 @@
     "MAX_CAPACITY": "Capacidad Máxima",
     "SUBMIT": "Enviar",
     "SUBMIT_WAIT_MESSAGE": "Enviando...",
-    "CANCEL": "Cancelar"
+    "CANCEL": "Cancelar",
+    "BILLING_FREQUENCY": "Frecuencia de Facturación"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} es requerido",
@@ -88,7 +89,9 @@
     "ENROLLED": "inscritos",
     "WAIT_LIST": "Listo de espera",
     "CANCEL": "Cancelar la Clase",
-    "TERMINATE": "Terminar la Clase"
+    "CANCELLING": "Cancelando...",
+    "TERMINATE": "Terminar la Clase",
+    "TERMINATING": "Terminando..."
   },
   "WEEKDAYS": {
     "SUNDAY": "Domingo",
@@ -120,5 +123,13 @@
   "CALENDAR": {
     "MASTER": "Principal",
     "VIEW_OPTIONS": "Opciones de Vista"
-  }
+  },
+  "ENROLLMENTS": {
+    "ADD_NEW_ENROLLMENT_SUCCESS": "¡Cliente inscrito exitosamente!"
+  },
+  "BILLING_FREQUENCY": {
+    "ONE_TIME": "Una Vez",
+    "WEEKLY": "Semanal",
+    "MONTHLY": "Mensual"
+  } 
 }

@@ -16,6 +16,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { ClientEnrollmentDetails } from "@core/types/clients/clientEnrollmentDetails";
 import { Enrollment } from "@core/types/enrollment";
 import { Class } from "@core/types/classes/class";
+import { Weekday } from "@core/types/enums/weekday";
 
 @Component({
   selector: 'app-client-details',
@@ -38,6 +39,19 @@ export class ClientDetailsComponent {
   classScheduleMap: ClassScheduleMap | null = null
   selectedClassId: string = ''
   classEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
+  weekdays: SelectOption[] = Object.keys(Weekday)
+    .filter(key => isNaN(Number(key)))
+    .map(key => ({
+      viewValue: key.toUpperCase(),
+      value: Weekday[key as keyof typeof Weekday].toString()
+    }))
+  billingFrequencyOptions: SelectOption[] = Object.keys(BillingFrequency)
+    .map(key => ({
+      viewValue: key.toUpperCase(),
+      value: BillingFrequency[key as keyof typeof BillingFrequency]
+    }))
+  advancedOptionsClassInfo: Class | undefined
+  disabledDaysChips: number[] = []
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +66,9 @@ export class ClientDetailsComponent {
       class_type: ['', [Validators.required]],
       location: ['', [Validators.required]],
       time: ['', [Validators.required]],
-      start_date: ['', [Validators.required]]
+      start_date: ['', [Validators.required]],
+      days_override: ['', []],
+      billing_frequency_override: ['', []]
     })
   }
 
@@ -79,6 +95,11 @@ export class ClientDetailsComponent {
         value: location, 
         viewValue: location
       }))
+
+      this.selectedLocation = ''
+      this.classSelectionForm.get('location')?.reset('', { emitEvent: false })
+      this.selectedClassId = ''
+      this.classSelectionForm.get('time')?.reset('', { emitEvent: false })
     })
 
     this.classSelectionForm.get('location')?.valueChanges.subscribe((selectedLocation: string) => {
@@ -87,11 +108,13 @@ export class ClientDetailsComponent {
       this.selectedLocation = selectedLocation
       const timeMap = this.classScheduleMap[this.selectedType]?.[selectedLocation] || {};
 
-      // TODO: include days in the time dropdown. 
       this.classTimesOptions = Object.keys(timeMap).map(timeSlot => ({
         value: timeSlot, 
         viewValue: timeSlot
       }))
+      
+      this.selectedClassId = ''
+      this.classSelectionForm.get('time')?.reset('', { emitEvent: false })
     })
 
     this.classSelectionForm.get('time')?.valueChanges.subscribe((selectedTime: string) => {
@@ -128,10 +151,12 @@ export class ClientDetailsComponent {
 
   public processEnrollmentModalClick(event: { ref: ClientDetailsComponent, buttonTitle: string }): void {
     if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
+      this.classSelectionForm.reset()
       this.showEnrollmentModal = false
     } else if (event.buttonTitle === 'CLIENTS.ENROLL') {
       this.enrollmentService.enrollClient(this.selectedClassId, this.clientId!, this.f['start_date'].value._d, BillingFrequency.MONTHLY).subscribe({
         next: () => {
+          this.ngOnInit()
           this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
           this.showEnrollmentModal = false
         }, 
@@ -140,6 +165,21 @@ export class ClientDetailsComponent {
         }
       })
     }
+  }
+
+  public onAdvancedOptionsOpened(): void {
+    this.classService.getClassDetails(this.selectedClassId).subscribe({
+      next: (rsp: Class) => {
+        this.advancedOptionsClassInfo = rsp
+        this.disabledDaysChips = Object.values(Weekday)
+          .filter(value => typeof value === 'number')
+          .filter(value => !this.advancedOptionsClassInfo?.days.includes(value))
+        console.log(this.disabledDaysChips)
+      }, 
+      error: ({error}) => {
+        this.snackBarService.showError(error.message)
+      }
+    })
   }
 
   get classesGrouped(): Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>> | undefined {

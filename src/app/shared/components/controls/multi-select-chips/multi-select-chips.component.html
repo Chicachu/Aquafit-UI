@@ -3,13 +3,15 @@
   <div class="buttons">
     <button type="button"
             mat-stroked-button
-            *ngFor="let option of options"
+            *ngFor="let option of options; let i = index"
             [class.selected]="selectedOptions.has(option.value)"
-            (click)="toggleOption(option.value)">
+            (click)="toggleOption(option.value)"
+            [disabled]="disabledChipsIndices?.includes(i)">
       {{ i18nPrefix + '.' + option.viewValue | translate }}
     </button>
-    <div *ngIf="control?.errors">
-      {{getErrorMessage()}}
-    </div>
   </div>
+  
+  <mat-error *ngIf="control?.errors">
+    {{getErrorMessage()}}
+  </mat-error>
 </div>

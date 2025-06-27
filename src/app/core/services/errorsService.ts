@@ -33,7 +33,7 @@ export class ErrorsService {
     if (control?.hasError('pattern')) {
       return this.translateService.instant('ERRORS.INVALID_PATTERN', { field: this.translateService.instant(`CONTROLS.${controlName.toUpperCase()}`) })
     }
-    if(control?.hasError('min') && control.errors) {
+    if (control?.hasError('min') && control.errors) {
       const error = control.errors['min']
       if (error.min === 0) {
         return this.translateService.instant('ERRORS.POSITIVE', { field: this.translateService.instant(`CONTROLS.${controlName.toUpperCase()}`) });

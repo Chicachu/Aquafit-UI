@@ -38,7 +38,9 @@
     "SUBMIT": "Submit",
     "SUBMIT_WAIT_MESSAGE": "Submitting...",
     "CANCEL": "Cancel",
-    "BILLING_FREQUENCY": "Billing Frequency"
+    "BILLING_FREQUENCY": "Billing Frequency",
+    "DAYS_OVERRIDE": "Partial Enrollment", 
+    "BILLING_FREQUENCY_OVERRIDE": "Billing Frequency Override"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} is required",
@@ -125,7 +127,11 @@
     "VIEW_OPTIONS": "View Options"
   },
   "ENROLLMENTS": {
-    "ADD_NEW_ENROLLMENT_SUCCESS": "Successfully enrolled the client!"
+    "ADD_NEW_ENROLLMENT_SUCCESS": "Successfully enrolled the client!",
+    "ADVANCED_OPTIONS": "Advanced Options",
+    "DISCOUNT": "Discount",
+    "TOOLTIP_ADVANCED_OPTIONS_DISABLED": "Complete form to access options",
+    "NOT_ENROLLED": "Client is not enrolled in any classes"
   },
   "BILLING_FREQUENCY": {
     "ONE_TIME": "One Time",

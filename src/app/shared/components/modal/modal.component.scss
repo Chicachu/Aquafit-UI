@@ -27,8 +27,9 @@
   bottom: 0; 
   left: 0; 
   right: 0;
-  max-height: 75vh; 
   max-width: 75vw;
+  min-height: fit-content;
+  max-height: fit-content;
   padding: 15px;
   border-radius: 10px;
 
@@ -37,10 +38,6 @@
     flex: 1; 
     white-space: nowrap;
     text-align: center;
-  }
-
-  .content {
-    padding: 20px;
   }
 
   .close-button-border {
@@ -78,7 +75,8 @@
   }
 
   .button-container {
-    justify-content: end;
+    margin-top: 20px;
+    justify-content: space-around;
   }
 
   .button {

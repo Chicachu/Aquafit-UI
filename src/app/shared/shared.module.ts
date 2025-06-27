@@ -9,12 +9,14 @@ import { MatButtonModule } from "@angular/material/button"
 import { MatCardModule } from "@angular/material/card"
 import { MatIconModule } from "@angular/material/icon"
 import { MatInputModule } from "@angular/material/input"
+import { MatExpansionModule } from '@angular/material/expansion'
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
 import { MatSnackBarModule } from "@angular/material/snack-bar"
 import { MatSelectModule } from "@angular/material/select"
 import { MatFormFieldModule } from "@angular/material/form-field"
 import { MatAutocompleteModule } from "@angular/material/autocomplete"
 import { MatDatepickerModule } from "@angular/material/datepicker"
+import { MatTooltipModule } from "@angular/material/tooltip"
 import { AutocompleteDropdownComponent } from "./components/controls/autocomplete-dropdown/autocomplete-dropdown.component"
 import { DropdownComponent } from "./components/controls/dropdown/dropdown.component"
 import { LanguageSelectorComponent } from "./components/language-selector/language-selector.component"
@@ -30,6 +32,7 @@ const materialModules = [
   MatAutocompleteModule,
   MatCardModule,
   MatDatepickerModule,
+  MatExpansionModule,
   MatInputModule,
   MatButtonModule,
   MatIconModule,
@@ -37,6 +40,7 @@ const materialModules = [
   MatSnackBarModule,
   MatSelectModule,    
   MatFormFieldModule,
+  MatTooltipModule
 ]
 
 const inputComponents = [

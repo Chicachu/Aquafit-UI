@@ -16,7 +16,7 @@ export abstract class BaseFormControlComponent implements OnInit, ErrorMessagePr
   @Input() minLength?: number
   @Input() min?: number
   @Input() pattern?: string
-  @Input() required = true
+  @Input() required = false
   @Input() customErrorMessages?: { [key: string]: string }
   @Input()
   set disabled(value: boolean) {

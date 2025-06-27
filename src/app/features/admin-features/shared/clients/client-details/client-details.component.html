@@ -17,6 +17,7 @@
 
     <div *ngFor="let classEnrollment of classesGrouped | keyvalue">
       <h3>{{ 'CLASS_TYPES.' + classEnrollment.key | translate | capitalize }}</h3>
+      <hr />
       <div *ngFor="let locationGroup of classEnrollment.value | keyvalue">
         <h4>{{ locationGroup.key }}</h4>
         <ul>
@@ -27,6 +28,9 @@
           </li>
         </ul>
       </div>
+    </div>
+    <div *ngIf="!classesGrouped?.size">
+      <p class="not-enrolled">{{ 'ENROLLMENTS.NOT_ENROLLED' | translate }}</p>
     </div>
   </div>
 </div>
@@ -60,11 +64,35 @@
         controlName="time"
         [disabled]="!selectedType || !selectedLocation">
       </app-dropdown>
-
       <app-datepicker
         label="CONTROLS.START_DATE"
         controlName="start_date">
       </app-datepicker>
+
+      <mat-expansion-panel [disabled]="!selectedClassId" (opened)="onAdvancedOptionsOpened()">
+        <mat-expansion-panel-header>
+          {{ 'ENROLLMENTS.ADVANCED_OPTIONS' | translate }}
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+          <app-multi-select-chips
+            *ngIf="advancedOptionsClassInfo && advancedOptionsClassInfo.days.length > 1"
+            label="CONTROLS.DAYS_OVERRIDE"
+            [options]="weekdays"
+            [disabledChipsIndices]="disabledDaysChips"
+            i18nPrefix="WEEKDAYS_SHORT"
+            controlName="days_override">
+          </app-multi-select-chips>
+          <app-dropdown
+            label="CONTROLS.BILLING_FREQUENCY_OVERRIDE"
+            [options]="billingFrequencyOptions"
+            controlName="billing_frequency_override"
+            [i18nPrefix]="'BILLING_FREQUENCY'"
+            [hasNoSelectOption]="true"
+            class="billing-frequency">
+          </app-dropdown>
+        </ng-template>
+      </mat-expansion-panel>
     </form>
   </div>
 </app-modal>

@@ -29,7 +29,7 @@ export class EditClassComponent {
   weekdays: SelectOption[] = Object.keys(Weekday)
     .filter(key => isNaN(Number(key)))
     .map(key => ({
-      viewValue: `${key.toUpperCase()}`,
+      viewValue: key.toUpperCase(),
       value: Weekday[key as keyof typeof Weekday].toString()
     }))
   timeSlots = this.convertToTimeOptions(Array.from({length: 14}, (_, i) => i + 7)) 

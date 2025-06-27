@@ -1,0 +1,5 @@
+06/07/25
+Enrollments: 
+- On class details page, instead of showing overall enrollment over overall capacity, break it down by each day the class runs, 
+  because of partial enrollment. Mon - 5/8 Wed - 8/8 Fri - 4/8 
+- If a client has a partial enrollment, their enrollment details should display that. 

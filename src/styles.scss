@@ -59,9 +59,17 @@ a:hover {
   font-weight: 700 !important; 
 }
 
-.mdc-text-field .mdc-floating-label, .mdc-button .mdc-button__label {
+.mdc-text-field .mdc-floating-label, .mdc-button .mdc-button__label, .mat-select-placeholder, .mdc-list-item__primary-text, .mat-mdc-select-min-line {
   font-family: 'Quicksand', 'Verdana', 'Trebuchet MS', sans-serif !important;
   font-weight: 500 !important;
+}
+
+.mat-expansion-panel-header {
+  padding: 0 15px !important;
+}
+.mat-expansion-panel-content,
+.mat-expansion-panel-body {
+  padding: 5px !important;
 }
 
 .accent-text {

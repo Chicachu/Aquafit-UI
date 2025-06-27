@@ -43,6 +43,8 @@ h2, h3, h4, h5 {
 form {
   width: inherit;
   border: none;
+  min-height: fit-content;
+  padding: 0;
 }
 
 li {
@@ -65,4 +67,14 @@ h4 {
 ul {
   padding-left: 0;
   list-style-type: circle;
+}
+
+.not-enrolled {
+  color: $light-pink;
+  margin-left: 10px;
+}
+
+.billing-frequency {
+  position: relative;
+  top: 10px;
 }

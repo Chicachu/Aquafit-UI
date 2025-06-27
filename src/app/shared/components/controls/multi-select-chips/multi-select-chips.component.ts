@@ -7,11 +7,12 @@ import { SelectOption } from "../../../../core/types/selectOption";
 @Component({
   selector: 'app-multi-select-chips',
   templateUrl: './multi-select-chips.component.html',
-  styleUrls: ['./multi-select-chips.component.scss']
+  styleUrls: ['./multi-select-chips.component.scss', '../base-form-control/base-form-control.component.scss']
 })
 export class MultiSelectChipsComponent extends BaseFormControlComponent {
   @Input() options!: SelectOption[]
   @Input() i18nPrefix!: string
+  @Input() disabledChipsIndices: number[] | undefined 
 
   constructor(formGroup: FormGroupDirective, errorService: ErrorsService) {
     super(formGroup, errorService)

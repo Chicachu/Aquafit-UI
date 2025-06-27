@@ -14,4 +14,5 @@ export class DropdownComponent extends BaseFormControlComponent {
   @Input() options!: SelectOption[]
   @Input() i18nPrefix: string | null = null
   @Input() formatOption: FormatOptions | null = null
+  @Input() hasNoSelectOption = false 
 }

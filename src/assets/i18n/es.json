@@ -38,7 +38,9 @@
     "SUBMIT": "Enviar",
     "SUBMIT_WAIT_MESSAGE": "Enviando...",
     "CANCEL": "Cancelar",
-    "BILLING_FREQUENCY": "Frecuencia de Facturación"
+    "BILLING_FREQUENCY": "Frecuencia de Facturación",
+    "DAYS_OVERRIDE": "Inscripción Parcial",
+    "BILLING_FREQUENCY_OVERRIDE": "Anulación de Frecuencia de Facturación"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} es requerido",
@@ -125,7 +127,11 @@
     "VIEW_OPTIONS": "Opciones de Vista"
   },
   "ENROLLMENTS": {
-    "ADD_NEW_ENROLLMENT_SUCCESS": "¡Cliente inscrito exitosamente!"
+    "ADD_NEW_ENROLLMENT_SUCCESS": "¡Cliente inscrito exitosamente!",
+    "ADVANCED_OPTIONS": "Opciones Avanzadas",
+    "DISCOUNT": "Descuento",
+    "TOOLTIP_ADVANCED_OPTIONS_DISABLED": "Complete el formulario para activar opciones",
+    "NOT_ENROLLED": "El cliente no está inscrito en ninguna clase"
   },
   "BILLING_FREQUENCY": {
     "ONE_TIME": "Una Vez",

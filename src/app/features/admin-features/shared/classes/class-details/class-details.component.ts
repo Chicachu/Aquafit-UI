@@ -19,6 +19,34 @@ export class ClassDetailsComponent implements OnInit {
   navBarInfo: string[] = []
   clientsByPaymentStatus: Map<PaymentStatus, ClassClientEnrollmentDetails[] | []> = new Map()
   loading = false
+  paymentStatusConfig: Partial<{
+    [key in PaymentStatus]: {
+      titleKey: string
+      headingClass: string
+      iconClass?: string
+    }
+  }> = {
+    [PaymentStatus.PAID]: {
+      titleKey: 'PAYMENT_STATUS.PAID',
+      headingClass: 'primary-green',
+      iconClass: 'paid-status-icon'
+    },
+    [PaymentStatus.PENDING]: {
+      titleKey: 'PAYMENT_STATUS.PENDING',
+      headingClass: 'mid-green'
+    },
+    [PaymentStatus.ALMOST_DUE]: {
+      titleKey: 'PAYMENT_STATUS.ALMOST_DUE',
+      headingClass: 'yellow',
+      iconClass: 'almost-due-status-icon'
+    },
+    [PaymentStatus.OVERDUE]: {
+      titleKey: 'PAYMENT_STATUS.OVERDUE',
+      headingClass: 'red',
+      iconClass: 'overdue-status-icon'
+    }
+  }
+  readonly visibleStatuses = Object.keys(this.paymentStatusConfig) as PaymentStatus[]
   
   constructor(
     private classService: ClassService, 
@@ -52,6 +80,13 @@ export class ClassDetailsComponent implements OnInit {
 
   }
 
+  public getStatusSectionClass(status: PaymentStatus): string {
+    const cleanStatus = status.toLowerCase().replace(/[\s_]+/g, '-')
+    return status === PaymentStatus.PENDING
+      ? 'pending-status-section'
+      : `flex-row ${cleanStatus}-status-section`
+  }
+  
   private _separateClientsByPaymentStatus(classDetails: ClassDetails): void {
     classDetails.clients.forEach((client) => {
       const group = this.clientsByPaymentStatus.get(client.currentPayment.paymentStatus) || []
@@ -60,7 +95,5 @@ export class ClassDetailsComponent implements OnInit {
 
       this.clientsByPaymentStatus.set(client.currentPayment.paymentStatus, group)
     })
-    
-    console.log(this.clientsByPaymentStatus)
   }
 }

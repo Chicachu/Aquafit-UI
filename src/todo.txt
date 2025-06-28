@@ -1,3 +1,7 @@
-06/07/25
-Enrollments: 
-- 
+06/28/25
+-class details page does not list the clients enrolled
+-cancel class from class details page
+-terminate class from class details page (less important)
+
+-edit class/client
+-consider using the loading screen.... 

@@ -60,5 +60,7 @@ export class ClassDetailsComponent implements OnInit {
 
       this.clientsByPaymentStatus.set(client.currentPayment.paymentStatus, group)
     })
+    
+    console.log(this.clientsByPaymentStatus)
   }
 }

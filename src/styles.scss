@@ -183,6 +183,30 @@ form {
   color: $light-green;
 }
 
+.white {
+  color: white;
+}
+
+.mid-blue {
+  color: $mid-blue; 
+}
+
+.mid-pink {
+  color: $mid-pink; 
+}
+
+.mid-green {
+  color: $mid-green; 
+}
+
+.yellow {
+  color: #FFFF1A; 
+}
+
+.red {
+  color: red;
+}
+
 @media screen and (min-width: 1000px) and  (max-width: 1300px) {
   .website-content-width {
     max-width: 60vw;

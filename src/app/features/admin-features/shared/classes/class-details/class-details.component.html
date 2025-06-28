@@ -8,7 +8,6 @@
     <!-- <div class="flex-row prices">
       <h3 *ngFor="let price of classDetails.prices">{{ price.amount }} {{ price.currency }}</h3>
     </div> -->
-    <!-- <h3 class="light-green">{{ classDetails.clients.length }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}</h3> -->
      <h3 class="light-green" *ngFor="let enrollmentCount of classDetails.enrollmentCounts | keyvalue">
       {{ enrollmentCount.key | weekdays }} : {{ enrollmentCount.value }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}
      </h3>
@@ -24,42 +23,42 @@
         <mat-icon class="add-icon" matPrefix>{{ 'add' }}</mat-icon>
       </button>
     </div>
-    <div>
+    <div *ngIf="(clientsByPaymentStatus.get(PaymentStatus.PAID)?.length ?? 0) > 0">
       <div class="flex-row paid-status-section">
-        <h3 class="light-green">{{ 'PAYMENT_STATUS.PAID' | translate }}</h3>
+        <h3 class="primary-green">{{ 'PAYMENT_STATUS.PAID' | translate }}</h3>
         <div class="paid-status-icon"></div>
       </div>
-      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PAID)">{{ client.firstName }} {{ client.lastName }}</p>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PAID)" class="white">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
-    <div>
+    <div *ngIf="(clientsByPaymentStatus.get(PaymentStatus.PENDING)?.length ?? 0) > 0">
       <div class="pending-status-section">
-        <h3 class="light-green">{{ 'PAYMENT_STATUS.PENDING' | translate }}</h3>
+        <h3 class="mid-green">{{ 'PAYMENT_STATUS.PENDING' | translate }}</h3>
       </div>
-      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PENDING)">{{ client.firstName }} {{ client.lastName }}</p>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.PENDING)" class="white">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
-    <div>
+    <div *ngIf="(clientsByPaymentStatus.get(PaymentStatus.ALMOST_DUE)?.length ?? 0) > 0">
       <div class="flex-row almost-due-status-section">
-        <h3 class="light-green">{{ 'PAYMENT_STATUS.ALMOST_DUE' | translate }}</h3>
+        <h3 class="yellow">{{ 'PAYMENT_STATUS.ALMOST_DUE' | translate }}</h3>
         <div class="almost-due-status-icon"></div>
       </div>
-      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.ALMOST_DUE)">{{ client.firstName }} {{ client.lastName }}</p>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.ALMOST_DUE)" class="white">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
-    <div>
+    <div *ngIf="(clientsByPaymentStatus.get(PaymentStatus.OVERDUE)?.length ?? 0) > 0">
       <div class="flex-row overdue-status-section">
-        <h3 class="light-green">{{ 'PAYMENT_STATUS.OVERDUE' | translate }}</h3>
+        <h3 class="red">{{ 'PAYMENT_STATUS.OVERDUE' | translate }}</h3>
         <div class="overdue-status-icon"></div>
       </div>
-      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.OVERDUE)">{{ client.firstName }} {{ client.lastName }}</p>
+      <p *ngFor="let client of clientsByPaymentStatus.get(PaymentStatus.OVERDUE)" class="white">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
     <div>
       <div class="waitlist-section">
-        <h3 class="light-green">{{ 'CLASSES.WAIT_LIST' | translate }}</h3>
+        <h3 class="mid-green">{{ 'CLASSES.WAIT_LIST' | translate }}</h3>
       </div>
-      <p *ngFor="let client of classDetails.waitlistClients">{{ client.firstName }} {{ client.lastName }}</p>
+      <p *ngFor="let client of classDetails.waitlistClients" class="white">{{ client.firstName }} {{ client.lastName }}</p>
     </div>
 
     <div class="flex-row buttons">

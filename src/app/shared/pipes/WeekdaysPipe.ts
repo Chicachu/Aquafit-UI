@@ -9,11 +9,15 @@ import { Weekday } from "../../core/types/enums/weekday";
 export class WeekdaysPipe implements PipeTransform {
   constructor(private translate: TranslateService) { }
 
-  transform(days: number[], separator: string = ', ', shorthand: boolean = true): string {
-    if (!days || days.length === 0) return '';
+  transform(days: string | number | number[], separator: string = ', ', shorthand: boolean = true): string {
+    if (!days) return ''
+    const daysArray = Array.isArray(days) ? days : [days]
     const identifier = shorthand ? 'WEEKDAYS_SHORT' : 'WEEKDAYS'
-    return days
-      .map(day => this.translate.instant(`${identifier}.${Weekday[day]}`))
+    return daysArray
+      .map(day => {
+        const dayNum = typeof day === 'string' ? Number(day) : day
+        return this.translate.instant(`${identifier}.${Weekday[dayNum]}`)
+      })
       .join(separator);
   }
 }

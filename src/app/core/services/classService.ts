@@ -21,7 +21,6 @@ export class ClassService {
   }
 
   createNewClass(newClass: CreateClassDTO): Observable<void> {
-    console.log(newClass)
     return this.http.put<void>(`${environment.apiUrl}/classes`, { newClass }).pipe(take(1))
   }
 

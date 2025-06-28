@@ -8,7 +8,10 @@
     <!-- <div class="flex-row prices">
       <h3 *ngFor="let price of classDetails.prices">{{ price.amount }} {{ price.currency }}</h3>
     </div> -->
-    <h3 class="light-green">{{ classDetails.clients.length }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}</h3>
+    <!-- <h3 class="light-green">{{ classDetails.clients.length }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}</h3> -->
+     <h3 class="light-green" *ngFor="let enrollmentCount of classDetails.enrollmentCounts | keyvalue">
+      {{ enrollmentCount.key | weekdays }} : {{ enrollmentCount.value }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}
+     </h3>
   </div>
 
   <!-- Client information -->
@@ -18,7 +21,7 @@
       <button 
         mat-icon-button 
         (click)="addClientToClass()" class="add-class-button">
-        <mat-icon class="add-icon" matPrefix>{{ 'add'}}</mat-icon>
+        <mat-icon class="add-icon" matPrefix>{{ 'add' }}</mat-icon>
       </button>
     </div>
     <div>

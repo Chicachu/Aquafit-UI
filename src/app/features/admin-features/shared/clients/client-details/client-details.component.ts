@@ -43,7 +43,7 @@ export class ClientDetailsComponent {
     .filter(key => isNaN(Number(key)))
     .map(key => ({
       viewValue: key.toUpperCase(),
-      value: Weekday[key as keyof typeof Weekday].toString()
+      value: Weekday[key as keyof typeof Weekday]
     }))
   billingFrequencyOptions: SelectOption[] = Object.keys(BillingFrequency)
     .map(key => ({
@@ -67,8 +67,8 @@ export class ClientDetailsComponent {
       location: ['', [Validators.required]],
       time: ['', [Validators.required]],
       start_date: ['', [Validators.required]],
-      days_override: ['', []],
-      billing_frequency_override: ['', []]
+      days_override: [null, []],
+      billing_frequency_override: [null, []]
     })
   }
 
@@ -154,7 +154,9 @@ export class ClientDetailsComponent {
       this.classSelectionForm.reset()
       this.showEnrollmentModal = false
     } else if (event.buttonTitle === 'CLIENTS.ENROLL') {
-      this.enrollmentService.enrollClient(this.selectedClassId, this.clientId!, this.f['start_date'].value._d, BillingFrequency.MONTHLY).subscribe({
+      const billingFrequency = this.classSelectionForm.controls["billing_frequency_override"].value ?? null
+      const daysOverride = this.classSelectionForm.controls["days_override"].value ?? null
+      this.enrollmentService.enrollClient(this.selectedClassId, this.clientId!, this.f['start_date'].value._d, billingFrequency, daysOverride).subscribe({
         next: () => {
           this.ngOnInit()
           this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
@@ -174,7 +176,6 @@ export class ClientDetailsComponent {
         this.disabledDaysChips = Object.values(Weekday)
           .filter(value => typeof value === 'number')
           .filter(value => !this.advancedOptionsClassInfo?.days.includes(value))
-        console.log(this.disabledDaysChips)
       }, 
       error: ({error}) => {
         this.snackBarService.showError(error.message)

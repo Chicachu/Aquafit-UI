@@ -23,7 +23,15 @@
         <ul>
           <li *ngFor="let classAndEnrollment of locationGroup.value">
             <a [routerLink]="['./', classAndEnrollment.class._id, 'details']">
-              {{ classAndEnrollment.class.days | weekdays:'/' }} - {{ classAndEnrollment.class.startTime | timeFormat }}
+              <ng-container *ngIf="classAndEnrollment.enrollment.daysOfWeekOverride as override; else defaultDays">
+                <ng-container *ngIf="override.length > 0; else defaultDays">
+                  {{ override | weekdays:'/' }}
+                </ng-container>
+              </ng-container>
+              <ng-template #defaultDays>
+                {{ classAndEnrollment.class.days | weekdays:'/' }}
+              </ng-template>
+              - {{ classAndEnrollment.class.startTime | timeFormat }}
             </a>
           </li>
         </ul>

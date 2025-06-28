@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 export class EnrollmentService {
   constructor(private http: HttpClient) {}
 
-  enrollClient(classId: string, clientId: string, startDate: Date, billingFrequency: BillingFrequency): Observable<void> {
-    return this.http.post<void>(`${environment.apiUrl}/enrollments/`, { classId, clientId, startDate, billingFrequency })
+  enrollClient(classId: string, clientId: string, startDate: Date, billingFrequency: BillingFrequency, daysOverride: number[]): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/enrollments/`, { classId, clientId, startDate, billingFrequency, daysOverride })
   }
 }

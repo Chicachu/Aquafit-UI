@@ -30,7 +30,7 @@ export class EditClassComponent {
     .filter(key => isNaN(Number(key)))
     .map(key => ({
       viewValue: key.toUpperCase(),
-      value: Weekday[key as keyof typeof Weekday].toString()
+      value: Weekday[key as keyof typeof Weekday]
     }))
   timeSlots = this.convertToTimeOptions(Array.from({length: 14}, (_, i) => i + 7)) 
   billingFrequencyOptions: SelectOption[] = Object.keys(BillingFrequency)

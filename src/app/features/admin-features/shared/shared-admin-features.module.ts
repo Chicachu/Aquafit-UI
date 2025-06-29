@@ -9,7 +9,7 @@ import { ClassListComponent } from "./classes/class-list/class-list.component";
 import { EditClassComponent } from "./classes/edit-class/edit-class.component";
 import { ClassDetailsComponent } from "./classes/class-details/class-details.component";
 import { MobileCalendarComponent } from "./calendar/mobile-calendar/mobile-calendar.component";
-import { PaymentHistoryComponent } from "./payments/payment-history/payment-history.component";
+import { InvoiceHistoryComponent } from "./payments/invoice-history/invoice-history.component";
 import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-details.component";
 
 @NgModule({
@@ -22,7 +22,7 @@ import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-deta
     ClassListComponent,
     ClassDetailsComponent,
     MobileCalendarComponent,
-    PaymentHistoryComponent,
+    InvoiceHistoryComponent,
     InvoiceDetailsComponent
   ],
   imports: [

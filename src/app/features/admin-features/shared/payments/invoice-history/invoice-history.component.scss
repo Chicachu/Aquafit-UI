@@ -9,22 +9,6 @@ h3, h4, h5 {
   align-items: center;
 }
 
-.paid-status {
-  color: $mid-green;
-}
-
-.almost-due-status {
-  color: yellow;
-}
-
-.overdue-status {
-  color: red;
-}
-
-.pending-status {
-  color: $light-green;
-}
-
 @keyframes flashRedOrange {
   0% { background-color: #ff0000; }
   50% { background-color: #ffa500; }
@@ -33,11 +17,27 @@ h3, h4, h5 {
 
 li {
   padding: 5px;
-  list-style-type: circle;
 }
 
 .flash-alert {
   animation: flashRedOrange 1s infinite;
   color: white;
   width: fit-content;
+}
+
+a {
+  align-items: center;
+  justify-content: space-between;
+  width: 85vw;
+}
+
+.icon {
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  margin-left: 10px;
+  margin-top: 3px;
+}
+
+ul {
+  padding-left: 5vw;
 }

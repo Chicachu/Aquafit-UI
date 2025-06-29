@@ -2,7 +2,7 @@
 -class details page does not list the clients enrolled
 -cancel class from class details page
 -terminate class from class details page (less important)
-
+-if a class doesn't start until x day, then when enrolling clients to that class, disable days before x.
 -edit class/client
 -consider using the loading screen.... 
 -add checkbox to turn off autoenroll for a client

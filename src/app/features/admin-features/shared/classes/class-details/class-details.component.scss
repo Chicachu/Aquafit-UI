@@ -9,32 +9,6 @@
   justify-content: space-evenly;
 }
 
-.paid-status-icon {
-  background-color: green;
-  mask-image: url('../../../../../../assets/images/icons/check_circle.svg');
-  width: 1.5rem;  
-  height: 1.5rem; 
-}
-
-.almost-due-status-icon {
-  background-color: yellow;
-  mask-image: url('../../../../../../assets/images/icons/exclamation_circle.svg');
-  width: 1.5rem;  
-  height: 1.5rem; 
-}
-
-.overdue-status-icon {
-  background-color: red;
-  mask-image: url('../../../../../../assets/images/icons/exclamation_circle.svg');
-  width: 1.5rem;  
-  height: 1.5rem; 
-}
-
-.paid-status-icon, .almost-due-status-icon, .overdue-status-icon {
-  margin-left: 10px;
-  margin-top: 3px;
-}
-
 .paid-status-section {
   border-bottom: 1px solid $light-pink;
   justify-content: space-between;

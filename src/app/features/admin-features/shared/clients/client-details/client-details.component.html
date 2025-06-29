@@ -1,8 +1,8 @@
 <div>
   <app-breadcrumb-nav-bar [title]="'CLIENTS.DETAILS'" [buttonType]="ButtonType.EDIT"></app-breadcrumb-nav-bar>
   <div *ngIf="client" class="flex-column general-info">
-    <h3 class="light-green">{{ client.firstName + ' ' + client.lastName }}</h3>
-    <h3 *ngIf="client.phoneNumber" class="light-blue">{{ client.phoneNumber }}</h3>
+    <h3 class="mid-pink">{{ client.firstName + ' ' + client.lastName }}</h3>
+    <h4 *ngIf="client.phoneNumber" class="light-blue">{{ client.phoneNumber }}</h4>
   </div>
 
   <div class="flex-column client-details-content">
@@ -16,7 +16,7 @@
     </div>
 
     <div *ngFor="let classEnrollment of classesGrouped | keyvalue">
-      <h3>{{ 'CLASS_TYPES.' + classEnrollment.key | translate | capitalize }}</h3>
+      <h3 class="mid-green">{{ 'CLASS_TYPES.' + classEnrollment.key | translate | capitalize }}</h3>
       <hr />
       <div *ngFor="let locationGroup of classEnrollment.value | keyvalue">
         <h4>{{ locationGroup.key }}</h4>

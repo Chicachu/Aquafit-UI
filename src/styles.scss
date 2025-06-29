@@ -207,6 +207,57 @@ form {
   color: red;
 }
 
+.paid-status {
+  color: $mid-green;
+}
+
+.almost-due-status {
+  color: yellow;
+}
+
+.overdue-status {
+  color: red;
+}
+
+.pending-status {
+  color: $light-green;
+}
+
+.paid-status-icon {
+  background-color: green;
+  mask-image: url('/assets/images/icons/check_circle.svg');
+  width: 1.5rem;  
+  height: 1.5rem; 
+}
+
+.almost-due-status-icon {
+  background-color: yellow;
+  mask-image: url('/assets/images/icons/exclamation_circle.svg');
+  width: 1.5rem;  
+  height: 1.5rem; 
+}
+
+.overdue-status-icon {
+  background-color: red;
+  mask-image: url('/assets/images/icons/exclamation_circle.svg');
+  width: 1.5rem;  
+  height: 1.5rem; 
+}
+
+.paid-status-icon, .almost-due-status-icon, .overdue-status-icon {
+  margin-left: 10px;
+  margin-top: 3px;
+}
+
+.arrow-right {
+  background-color: $light-pink;
+  mask-image: url('/assets/images/icons/arrow-right.svg');
+  width: 1.5rem;  
+  height: 1.5rem;
+  position: relative;
+  top: 1px;
+}
+
 @media screen and (min-width: 1000px) and  (max-width: 1300px) {
   .website-content-width {
     max-width: 60vw;

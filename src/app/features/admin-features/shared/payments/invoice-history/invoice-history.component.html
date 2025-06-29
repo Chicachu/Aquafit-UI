@@ -1,0 +1,27 @@
+<div>
+  <app-breadcrumb-nav-bar [title]="'CLIENTS.PAYMENT_HISTORY'" [buttonType]="ButtonType.NONE"></app-breadcrumb-nav-bar>
+
+  <div *ngIf="invoiceHistory">
+    <div class="header flex-column">
+      <h3 class="mid-pink">{{ invoiceHistory.clientName }}</h3>
+      <h4 class="light-green">{{ 'CLASS_TYPES.' + invoiceHistory.classDetails.classType | translate | capitalize }}</h4>
+      <h4 class="light-blue">{{ invoiceHistory.classDetails.classLocation }} - {{ invoiceHistory.classDetails.days! | weekdays }}</h4>
+    </div>
+    <hr>
+    <div>
+      <ul>
+        <a *ngFor="let invoice of invoiceHistory.invoices; let i = index"
+          [routerLink]="[invoice._id]" class="flex-row">
+          <div [ngClass]="getIconClass(invoice.paymentStatus)" class="icon"></div>
+          <li
+              [ngClass]="[
+                getStatusClass(invoice.paymentStatus), 
+                (invoice.paymentStatus !== PaymentStatus.PAID && i != 0) ? 'flash-alert' : '']">
+                [{{ invoice.period.dueDate | translateDate:'shortDate' }}] {{ invoice.charge.amount }} {{ invoice.charge.currency }} - {{ invoice.paymentStatus | capitalize }} 
+          </li>
+          <div class="arrow-right"></div>
+        </a>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -83,7 +83,7 @@
     "ENROLLMENT": "Inscripción a Clases",
     "ENROLL": "Inscribir Cliente",
     "ENROLL_INSTRUCTIONS": "Selecciona una clase para inscribir a",
-    "PAYMENT_HISTORY": "Historial de Pagos"
+    "PAYMENT_HISTORY": "Historial de Facturas"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Agregar Clase",
@@ -127,7 +127,8 @@
     "AMOUNT_DUE": "Monto adeudado",
     "PERIOD": "Período",
     "START": "Inicio",
-    "END": "Fin"
+    "END": "Fin",
+    "APPLY_PAYMENT": "Aplicar Pago"
   },
   "CALENDAR": {
     "MASTER": "Principal",

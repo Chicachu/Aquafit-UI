@@ -1,19 +1,24 @@
 @import '../../../../../../assets/colors.scss';
 
-h4, h5, h6 {
-  margin: 5px 0;
+h3, h4, h5, h6 {
+  margin: 5px 0; 
   padding-right: 20px;
 }
 
 .payment-details {
   justify-content: start;
   align-items: center;
-  margin-left: 15px;
+  margin-left: 5vw;
+  width: 95vw;
 }
 
 .period {
   position: relative;
   top: 14px;
+}
+
+.period > div {
+  justify-content: space-between;
 }
 
 .container {
@@ -26,24 +31,13 @@ h4, h5, h6 {
   align-items: center;
 }
 
-.paid-status {
-  color: $mid-green;
-}
-
-.almost-due-status {
-  color: yellow;
-}
-
-.overdue-status {
-  color: red;
-}
-
-.pending-status {
-  color: $light-green;
-}
-
 .payment-status, .payment-status h3 {
   width: 100vw;
   height: 50px;
   text-align: center;
 }
+
+.first-column {
+  width: 50vw;
+}
+

@@ -83,7 +83,7 @@
     "ENROLLMENT": "Class Enrollment",
     "ENROLL": "Enroll Client",
     "ENROLL_INSTRUCTIONS": "Select a class to enroll",
-    "PAYMENT_HISTORY": "Payment History"
+    "PAYMENT_HISTORY": "Invoice History"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",
@@ -127,7 +127,8 @@
     "AMOUNT_DUE": "Amount due",
     "PERIOD": "Period",
     "START": "Start",
-    "END": "End"
+    "END": "End",
+    "APPLY_PAYMENT": "Apply Payment"
   },
   "CALENDAR": {
     "MASTER": "Master",

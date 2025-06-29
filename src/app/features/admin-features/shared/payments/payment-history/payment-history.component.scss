@@ -1,0 +1,43 @@
+@import '../../../../../../assets/colors.scss';
+
+h3, h4, h5 {
+  margin: 5px 0;
+}
+
+.header {
+  width: 100vw;
+  align-items: center;
+}
+
+.paid-status {
+  color: $mid-green;
+}
+
+.almost-due-status {
+  color: yellow;
+}
+
+.overdue-status {
+  color: red;
+}
+
+.pending-status {
+  color: $light-green;
+}
+
+@keyframes flashRedOrange {
+  0% { background-color: #ff0000; }
+  50% { background-color: #ffa500; }
+  100% { background-color: #ff0000; }
+}
+
+li {
+  padding: 5px;
+  list-style-type: circle;
+}
+
+.flash-alert {
+  animation: flashRedOrange 1s infinite;
+  color: white;
+  width: fit-content;
+}

@@ -1,7 +1,7 @@
 import { NgModule, input } from "@angular/core"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { TranslateModule } from "@ngx-translate/core"
-import { CommonModule } from "@angular/common"
+import { CommonModule, DatePipe } from "@angular/common"
 import { WeekdaysPipe } from "./pipes/WeekdaysPipe"
 import { TimeFormatPipe } from "./pipes/TimeFormat.pipe"
 import { CapitalizePipe } from "./pipes/Capitalize.pipe"
@@ -27,6 +27,7 @@ import { DatepickerComponent } from "./components/controls/datepicker/datepicker
 import { RouterModule } from "@angular/router"
 import { ButtonComponent } from "./components/buttons/button/button.component"
 import { ModalComponent } from "./components/modal/modal.component"
+import { TranslateDatePipe } from "./pipes/Date.pipe"
 
 const materialModules = [
   MatAutocompleteModule,
@@ -57,7 +58,8 @@ const inputComponents = [
 const pipes = [ 
   CapitalizePipe,
   TimeFormatPipe,
-  WeekdaysPipe
+  WeekdaysPipe,
+  TranslateDatePipe
 ]
 
 @NgModule({

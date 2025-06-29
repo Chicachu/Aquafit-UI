@@ -82,7 +82,8 @@
     "DETAILS": "Detalles del Cliente",
     "ENROLLMENT": "Inscripción a Clases",
     "ENROLL": "Inscribir Cliente",
-    "ENROLL_INSTRUCTIONS": "Selecciona una clase para inscribir a"
+    "ENROLL_INSTRUCTIONS": "Selecciona una clase para inscribir a",
+    "PAYMENT_HISTORY": "Historial de Pagos"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Agregar Clase",
@@ -120,7 +121,13 @@
     "ALMOST_DUE": "Próximo a vencer"
   },
   "PAYMENTS": {
-    "TITLE": "Pagos"
+    "TITLE": "Pagos",
+    "DUE_ON": "el",
+    "INVOICE_DETAILS": "Detalles de la factura",
+    "AMOUNT_DUE": "Monto adeudado",
+    "PERIOD": "Período",
+    "START": "Inicio",
+    "END": "Fin"
   },
   "CALENDAR": {
     "MASTER": "Principal",

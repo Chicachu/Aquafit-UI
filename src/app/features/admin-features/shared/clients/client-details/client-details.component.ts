@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from "@angular/core";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { UserService } from "@core/services/userService";
 import { User } from "@core/types/user";
 import { SnackBarService } from "@core/services/snackBarService";
@@ -60,7 +60,8 @@ export class ClientDetailsComponent {
     private classService: ClassService,
     private fb: FormBuilder,
     private enrollmentService: EnrollmentService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router
   ) {
     this.classSelectionForm = this.fb.group({
       class_type: ['', [Validators.required]],

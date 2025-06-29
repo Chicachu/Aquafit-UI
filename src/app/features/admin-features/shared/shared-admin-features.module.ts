@@ -9,6 +9,8 @@ import { ClassListComponent } from "./classes/class-list/class-list.component";
 import { EditClassComponent } from "./classes/edit-class/edit-class.component";
 import { ClassDetailsComponent } from "./classes/class-details/class-details.component";
 import { MobileCalendarComponent } from "./calendar/mobile-calendar/mobile-calendar.component";
+import { PaymentHistoryComponent } from "./payments/payment-history/payment-history.component";
+import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-details.component";
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { MobileCalendarComponent } from "./calendar/mobile-calendar/mobile-calen
     ClientDetailsComponent,
     ClassListComponent,
     ClassDetailsComponent,
-    MobileCalendarComponent
+    MobileCalendarComponent,
+    PaymentHistoryComponent,
+    InvoiceDetailsComponent
   ],
   imports: [
     CommonModule,

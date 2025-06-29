@@ -1,8 +1,8 @@
-import { Currency } from "./enums/currency"
-import { PaymentStatus } from "./enums/paymentStatus"
-import { Document } from "./document"
-import { Price } from "./price"
-import { PaymentType } from "./enums/paymentType"
+import { Currency } from "../enums/currency"
+import { PaymentStatus } from "../enums/paymentStatus"
+import { Document } from "../document"
+import { Price } from "../price"
+import { PaymentType } from "../enums/paymentType"
 
 export type Invoice = Document & {
   clientId: string

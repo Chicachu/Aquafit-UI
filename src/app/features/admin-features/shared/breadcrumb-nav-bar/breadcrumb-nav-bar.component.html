@@ -5,7 +5,7 @@
         {{ title | translate }}
       </h2>
     </div>
-    <div *ngIf="buttonType" class="flex-row">
+    <div *ngIf="buttonType !== 'none'" class="flex-row">
       <button 
         mat-icon-button 
         (click)="emitButtonClick()" class="add-edit-button">

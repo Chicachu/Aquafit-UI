@@ -10,6 +10,8 @@ import { ClassListComponent } from "../shared/classes/class-list/class-list.comp
 import { EditClassComponent } from "../shared/classes/edit-class/edit-class.component";
 import { ClassDetailsComponent } from "../shared/classes/class-details/class-details.component";
 import { ClientDetailsComponent } from "../shared/clients/client-details/client-details.component";
+import { PaymentHistoryComponent } from "../shared/payments/payment-history/payment-history.component";
+import { InvoiceDetailsComponent } from "../shared/payments/invoice-details/invoice-details.component";
 
 const routes: Routes = [
   {
@@ -31,6 +33,16 @@ const routes: Routes = [
     path: 'clients/add-client', 
     pathMatch: 'full',
     component: EditClientComponent
+  },
+  {
+    path: 'clients/:user-id/payments/:enrollment-id',
+    pathMatch: 'full',
+    component: PaymentHistoryComponent
+  },
+  {
+    path: 'clients/:user-id/payments/:enrollment-id/:invoice-id',
+    pathMatch: 'full', 
+    component: InvoiceDetailsComponent
   },
   {
     path: 'classes', 

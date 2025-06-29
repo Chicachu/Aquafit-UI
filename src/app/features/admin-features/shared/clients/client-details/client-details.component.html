@@ -22,21 +22,29 @@
         <h4>{{ locationGroup.key }}</h4>
         <ul>
           <li *ngFor="let classAndEnrollment of locationGroup.value">
-            <a [routerLink]="['./', classAndEnrollment.class._id, 'details']">
-              <ng-container *ngIf="classAndEnrollment.enrollment.daysOfWeekOverride as override; else defaultDays">
-                <ng-container *ngIf="override.length > 0; else defaultDays">
-                  {{ override | weekdays:'/' }}
+            <div class="flex-row details-row">
+              <a [routerLink]="['./', classAndEnrollment?.class?._id, 'details']">
+                <ng-container *ngIf="classAndEnrollment.enrollment.daysOfWeekOverride as override; else defaultDays">
+                  <ng-container *ngIf="override.length > 0; else defaultDays">
+                    {{ override | weekdays:'/' }}
+                  </ng-container>
                 </ng-container>
-              </ng-container>
-              <ng-template #defaultDays>
-                {{ classAndEnrollment.class.days | weekdays:'/' }}
-              </ng-template>
-              - {{ classAndEnrollment.class.startTime | timeFormat }}
-            </a>
+                <ng-template #defaultDays>
+                  {{ classAndEnrollment.class.days | weekdays:'/' }}
+                </ng-template>
+                - {{ classAndEnrollment.class.startTime | timeFormat }}
+              </a>
+              <a
+              [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
+                class="payment-history-link">
+                <mat-icon class="icon">receipt_long</mat-icon>
+              </a>
+            </div>
           </li>
         </ul>
       </div>
     </div>
+
     <div *ngIf="!classesGrouped?.size">
       <p class="not-enrolled">{{ 'ENROLLMENTS.NOT_ENROLLED' | translate }}</p>
     </div>

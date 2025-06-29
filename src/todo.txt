@@ -5,3 +5,6 @@
 
 -edit class/client
 -consider using the loading screen.... 
+-add checkbox to turn off autoenroll for a client
+-ability to cancel an enrollment with options to give full refund or partial refund based on sessions remaining. 
+-clicking on a client from a payment status category on the class details page should navigate the user to payment history for that enrollment - not client details. 

@@ -3,7 +3,8 @@ import { Location } from '@angular/common';
 
 export enum ButtonType {
   EDIT = 'edit', 
-  ADD = 'add'
+  ADD = 'add',
+  NONE = 'none'
 }
 
 @Component({

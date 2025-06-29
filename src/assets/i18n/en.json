@@ -82,7 +82,8 @@
     "DETAILS": "Client Details",
     "ENROLLMENT": "Class Enrollment",
     "ENROLL": "Enroll Client",
-    "ENROLL_INSTRUCTIONS": "Select a class to enroll"
+    "ENROLL_INSTRUCTIONS": "Select a class to enroll",
+    "PAYMENT_HISTORY": "Payment History"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",
@@ -120,7 +121,13 @@
     "ALMOST_DUE": "Due soon"
   },
   "PAYMENTS": {
-    "TITLE": "Payments"
+    "TITLE": "Payments",
+    "DUE_ON": "on",
+    "INVOICE_DETAILS": "Invoice Details",
+    "AMOUNT_DUE": "Amount due",
+    "PERIOD": "Period",
+    "START": "Start",
+    "END": "End"
   },
   "CALENDAR": {
     "MASTER": "Master",

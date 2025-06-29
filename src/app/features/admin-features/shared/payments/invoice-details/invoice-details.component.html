@@ -1,0 +1,31 @@
+<div class="flex-column">
+  <app-breadcrumb-nav-bar [title]="'PAYMENTS.INVOICE_DETAILS'" [buttonType]="ButtonType.NONE"></app-breadcrumb-nav-bar>
+
+  <div class="container" *ngIf="invoiceDetails">
+    <div class="header flex-column">
+      <h4 class="mid-pink">{{ invoiceDetails?.clientName }}</h4>
+      <h5 class="light-green">{{ 'CLASS_TYPES.' + invoiceDetails?.classDetails?.classType | translate | capitalize }}</h5>
+      <h5 class="light-blue">{{ invoiceDetails?.classDetails?.classLocation }} - {{ invoiceDetails?.classDetails?.days! | weekdays }}</h5>
+      <!-- <h4>{{  }}</h4> -->
+    </div>
+    <hr>
+
+    <div class="flex-column">
+      <div [ngClass]="getStatusClass(invoiceDetails?.paymentStatus!)" class="payment-status flex-row">
+        <h3>{{ invoiceDetails.paymentStatus | capitalize }}</h3>
+      </div>
+      <div class="flex-row payment-details white">
+        <h4>{{ 'PAYMENTS.AMOUNT_DUE' | translate }}</h4>
+        <h4>{{ invoiceDetails?.charge?.amount }} {{ invoiceDetails?.charge?.currency }}</h4>
+      </div>
+
+      <div class="flex-row payment-details white">
+        <h4>{{ 'PAYMENTS.PERIOD' | translate }}:</h4>
+        <div class="flex-column period">
+          <h5>{{ 'PAYMENTS.START' | translate }} {{ invoiceDetails?.period?.startDate | translateDate:'shortDate' }}</h5>
+          <h5>{{ 'PAYMENTS.END' | translate }} {{ invoiceDetails?.period?.dueDate | translateDate:'shortDate' }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

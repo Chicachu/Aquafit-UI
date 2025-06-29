@@ -5,6 +5,12 @@ import { LayoutsModule } from "./layouts/layouts.module"
 import { BrowserModule } from "@angular/platform-browser"
 import { RouterModule, Routes } from "@angular/router"
 import { SharedModule } from "./shared/shared.module"
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEn from '@angular/common/locales/en';
+
+registerLocaleData(localeEs, 'es');
+registerLocaleData(localeEn, 'en');
 
 export const routes: Routes = [
   { 

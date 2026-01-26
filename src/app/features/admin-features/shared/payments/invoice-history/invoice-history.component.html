@@ -17,7 +17,7 @@
               [ngClass]="[
                 getStatusClass(invoice.paymentStatus), 
                 (invoice.paymentStatus !== PaymentStatus.PAID && i != 0) ? 'flash-alert' : '']">
-                [{{ invoice.period.dueDate | translateDate:'shortDate' }}] {{ invoice.charge.amount }} {{ invoice.charge.currency }} - {{ invoice.paymentStatus | capitalize }} 
+                [{{ invoice.period.endDate | translateDate:'shortDate' }}] {{ invoice.charge.amount }} {{ invoice.charge.currency }} - {{ invoice.paymentStatus | capitalize }} 
           </li>
           <div class="arrow-right"></div>
         </a>

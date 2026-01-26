@@ -3,6 +3,7 @@ import { PaymentStatus } from "../enums/paymentStatus"
 import { Document } from "../document"
 import { Price } from "../price"
 import { PaymentType } from "../enums/paymentType"
+import { Period } from "../period"
 
 export type Invoice = Document & {
   clientId: string
@@ -22,8 +23,5 @@ export type Invoice = Document & {
     paymentType: PaymentType
   }[]
   paymentStatus: PaymentStatus
-  period: {
-    startDate: Date, 
-    dueDate: Date
-  }
+  period: Period
 }

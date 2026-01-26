@@ -1,0 +1,42 @@
+<div>
+  <app-breadcrumb-nav-bar 
+    [title]="(isEditMode ? 'DISCOUNTS.EDIT_DISCOUNT' : 'DISCOUNTS.ADD_NEW_DISCOUNT') | translate">
+  </app-breadcrumb-nav-bar>
+  <div class="edit-container">
+    <form [formGroup]="discountForm" (ngSubmit)="onSubmit()" class="form-container">
+      <app-text-input
+        label="DISCOUNTS.DESCRIPTION"
+        controlName="description">
+      </app-text-input>
+
+      <app-dropdown
+        label="DISCOUNTS.TYPE"
+        [options]="discountTypes"
+        [i18nPrefix]="'DISCOUNT_TYPES'"
+        controlName="type">
+      </app-dropdown>
+
+      <app-text-input
+        label="DISCOUNTS.AMOUNT"
+        controlName="amount"
+        [min]="0">
+      </app-text-input>
+
+      <app-datepicker
+        label="DISCOUNTS.START_DATE"
+        controlName="start_date">
+      </app-datepicker>
+
+      <app-datepicker
+        label="DISCOUNTS.END_DATE"
+        controlName="end_date">
+      </app-datepicker>
+
+      <app-submit-button
+        [loading]="loading"
+        [label]="(isEditMode ? 'DISCOUNTS.UPDATE' : 'DISCOUNTS.CREATE') | translate"
+        [loadingMessage]="'CONTROLS.SUBMIT_WAIT_MESSAGE'">
+      </app-submit-button>
+    </form>
+  </div>
+</div>

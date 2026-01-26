@@ -64,4 +64,8 @@ export class UserService {
   addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber: string }): Observable<Object> {
     return this._http.put(`${environment.apiUrl}/users/`, { ...reqObj }).pipe(take(1))
   }
+
+  updateClient(userId: string, reqObj: { firstName?: string, lastName?: string, phoneNumber?: string }): Observable<User> {
+    return this._http.put<User>(`${environment.apiUrl}/users/${userId}`, reqObj).pipe(take(1))
+  }
 }

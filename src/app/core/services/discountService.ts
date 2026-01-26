@@ -17,4 +17,12 @@ export class DiscountService {
   getDiscount(discountId: string): Observable<Discount> {
     return this.http.get<Discount>(`${environment.apiUrl}/discounts/${discountId}`).pipe(take(1))
   }
+
+  createDiscount(discountData: any): Observable<Discount> {
+    return this.http.post<Discount>(`${environment.apiUrl}/discounts`, discountData).pipe(take(1))
+  }
+
+  updateDiscount(discountId: string, discountData: any): Observable<Discount> {
+    return this.http.put<Discount>(`${environment.apiUrl}/discounts/${discountId}`, discountData).pipe(take(1))
+  }
 }

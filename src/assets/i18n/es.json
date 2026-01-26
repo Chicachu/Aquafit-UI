@@ -77,8 +77,11 @@
   },
   "CLIENTS": {
     "TITLE": "Clientes",
-    "ADD_NEW_CLIENT": "Agregar cliente" , 
+    "ADD_NEW_CLIENT": "Agregar cliente",
     "ADD_NEW_CLIENT_SUCCESS": "¡Nuevo cliente agregado exitosamente!",
+    "EDIT_CLIENT": "Editar cliente",
+    "UPDATE": "Actualizar",
+    "UPDATE_CLIENT_SUCCESS": "¡Cliente actualizado exitosamente!",
     "DETAILS": "Detalles del Cliente",
     "ENROLLMENT": "Inscripción a Clases",
     "ENROLL": "Inscribir Cliente",
@@ -88,6 +91,9 @@
   "CLASSES": {
     "ADD_NEW_CLASS": "Agregar Clase",
     "ADD_NEW_CLASS_SUCCESS": "¡Clase agregada exitosamente!",
+    "EDIT_CLASS": "Editar Clase",
+    "UPDATE": "Actualizar",
+    "UPDATE_CLASS_SUCCESS": "¡Clase actualizada exitosamente!",
     "CLASS_DETAILS": "Detalles de la Clase",
     "ENROLLED": "inscritos",
     "WAIT_LIST": "Listo de espera",

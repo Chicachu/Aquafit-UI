@@ -1,5 +1,5 @@
 <div>
-  <app-breadcrumb-nav-bar [title]="'CLASSES.ADD_NEW_CLASS'"></app-breadcrumb-nav-bar>
+  <app-breadcrumb-nav-bar [title]="(isEditMode ? 'CLASSES.EDIT_CLASS' : 'CLASSES.ADD_NEW_CLASS') | translate"></app-breadcrumb-nav-bar>
   <div class="edit-container">
     <form [formGroup]="classForm" (ngSubmit)="onSubmit()" class="form-container">
       <!-- Location Autocomplete -->
@@ -79,7 +79,7 @@
       </app-text-input>
 
       <app-submit-button
-        label="CLASSES.ADD_NEW_CLASS"
+        [label]="(isEditMode ? 'CLASSES.UPDATE' : 'CLASSES.ADD_NEW_CLASS') | translate"
         [loading]="loading"
         [loadingMessage]="'CONTROLS.SUBMIT_WAIT_MESSAGE'">
       </app-submit-button>

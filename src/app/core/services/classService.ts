@@ -31,4 +31,12 @@ export class ClassService {
   getClassScheduleMap(): Observable<ClassScheduleMap> {
     return this.http.get<ClassScheduleMap>(`${environment.apiUrl}/classes/classScheduleMap`).pipe(take(1))
   }
+
+  getClass(classId: string): Observable<Class> {
+    return this.http.get<Class>(`${environment.apiUrl}/classes/${classId}`).pipe(take(1))
+  }
+
+  updateClass(classId: string, classData: CreateClassDTO): Observable<void> {
+    return this.http.put<void>(`${environment.apiUrl}/classes/${classId}`, { newClass: classData }).pipe(take(1))
+  }
 }

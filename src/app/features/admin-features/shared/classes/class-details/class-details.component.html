@@ -1,5 +1,9 @@
 <div *ngIf="classDetails">
-  <app-breadcrumb-nav-bar [title]="'CLASSES.CLASS_DETAILS'" [buttonType]="ButtonType.EDIT"></app-breadcrumb-nav-bar>
+  <app-breadcrumb-nav-bar 
+    [title]="'CLASSES.CLASS_DETAILS'" 
+    [buttonType]="canEditClass ? ButtonType.EDIT : ButtonType.NONE"
+    (onButtonClick)="editClass()">
+  </app-breadcrumb-nav-bar>
   <div class="flex-column general-info">
     <h3 class="mid-green">{{ 'CLASS_TYPES.' + classDetails.classType | translate }}</h3>
     <h3 class="light-blue">{{ classDetails.classLocation }}</h3>

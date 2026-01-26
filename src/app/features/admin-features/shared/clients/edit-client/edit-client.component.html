@@ -1,5 +1,5 @@
 <div>
-  <app-breadcrumb-nav-bar [title]="'CLIENTS.ADD_NEW_CLIENT' | translate"></app-breadcrumb-nav-bar>
+  <app-breadcrumb-nav-bar [title]="(isEditMode ? 'CLIENTS.EDIT_CLIENT' : 'CLIENTS.ADD_NEW_CLIENT') | translate"></app-breadcrumb-nav-bar>
   <div class="edit-container">
     <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="form-container">
       <app-text-input
@@ -22,7 +22,7 @@
 
       <app-submit-button
         [loading]="loading"
-        label="CONTROLS.SUBMIT"
+        [label]="(isEditMode ? 'CLIENTS.UPDATE' : 'CONTROLS.SUBMIT') | translate"
         [loadingMessage]="'CONTROLS.SUBMIT_WAIT_MESSAGE'">
       </app-submit-button>
     </form>

@@ -12,6 +12,8 @@ import { MobileCalendarComponent } from "./calendar/mobile-calendar/mobile-calen
 import { InvoiceHistoryComponent } from "./payments/invoice-history/invoice-history.component";
 import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-details.component";
 import { DiscountListComponent } from "./discounts/discount-list/discount-list.component";
+import { DiscountDetailsComponent } from "./discounts/discount-details/discount-details.component";
+import { EditDiscountComponent } from "./discounts/edit-discount/edit-discount.component";
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { DiscountListComponent } from "./discounts/discount-list/discount-list.c
     MobileCalendarComponent,
     InvoiceHistoryComponent,
     InvoiceDetailsComponent,
-    DiscountListComponent
+    DiscountListComponent,
+    DiscountDetailsComponent,
+    EditDiscountComponent
   ],
   imports: [
     CommonModule,

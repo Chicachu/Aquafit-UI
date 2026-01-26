@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { AdminGuard } from "@core/guards/admin.guard";
 import { MobileHomeComponent } from "./home/mobile-home.component";
 import { SharedAdminFeaturesModule } from "../shared/shared-admin-features.module";
 import { CommonModule } from "@angular/common";
@@ -13,6 +14,8 @@ import { ClientDetailsComponent } from "../shared/clients/client-details/client-
 import { InvoiceHistoryComponent } from "../shared/payments/invoice-history/invoice-history.component";
 import { InvoiceDetailsComponent } from "../shared/payments/invoice-details/invoice-details.component";
 import { DiscountListComponent } from "../shared/discounts/discount-list/discount-list.component";
+import { DiscountDetailsComponent } from "../shared/discounts/discount-details/discount-details.component";
+import { EditDiscountComponent } from "../shared/discounts/edit-discount/edit-discount.component";
 
 const routes: Routes = [
   {
@@ -26,12 +29,17 @@ const routes: Routes = [
     component: ClientListComponent
   },
   {
+    path: 'clients/add-client', 
+    pathMatch: 'full',
+    component: EditClientComponent
+  },
+  {
     path: 'clients/:user-id/details',
     pathMatch: 'full', 
     component: ClientDetailsComponent
   },
   {
-    path: 'clients/add-client', 
+    path: 'clients/:user-id/edit',
     pathMatch: 'full',
     component: EditClientComponent
   },
@@ -51,19 +59,40 @@ const routes: Routes = [
     component: ClassListComponent
   },
   {
-    path: 'classes/:class-id/details', 
-    pathMatch: 'full', 
-    component: ClassDetailsComponent 
-  },
-  {
     path: 'classes/add-class',
     pathMatch: 'full',
     component: EditClassComponent
   },
   {
+    path: 'classes/:class-id/details', 
+    pathMatch: 'full', 
+    component: ClassDetailsComponent 
+  },
+  {
+    path: 'classes/:class-id/edit',
+    pathMatch: 'full',
+    component: EditClassComponent,
+    canActivate: [AdminGuard]
+  },
+  {
     path: 'discounts',
     pathMatch: 'full',
     component: DiscountListComponent
+  },
+  {
+    path: 'discounts/add-discount',
+    pathMatch: 'full',
+    component: EditDiscountComponent
+  },
+  {
+    path: 'discounts/:discount-id/details',
+    pathMatch: 'full',
+    component: DiscountDetailsComponent
+  },
+  {
+    path: 'discounts/:discount-id/edit',
+    pathMatch: 'full',
+    component: EditDiscountComponent
   }
 ]
 

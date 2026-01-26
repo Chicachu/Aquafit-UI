@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
 import { ClassType } from "@/core/types/enums/classType";
@@ -20,7 +20,7 @@ import { BillingFrequency } from "@core/types/enums/billingFrequency";
   templateUrl: './edit-class.component.html',
   styleUrls: ['./edit-class.component.scss']
 })
-export class EditClassComponent {
+export class EditClassComponent implements OnInit {
   readonly Pipes = Pipes
   readonly FormatOptions = FormatOptions
   classForm: FormGroup
@@ -39,6 +39,8 @@ export class EditClassComponent {
       value: BillingFrequency[key as keyof typeof BillingFrequency].toString()
     }))
   loading = false
+  isEditMode = false
+  classId: string | null = null
 
   constructor(
     private fb: FormBuilder, 
@@ -59,6 +61,52 @@ export class EditClassComponent {
       billing_frequency: [null, [Validators.required]],
       max_capacity: [null, [Validators.required, Validators.min(1)]]
     })
+  }
+
+  ngOnInit(): void {
+    this.classId = this.route.snapshot.paramMap.get('class-id')
+    this.isEditMode = !!this.classId
+
+    if (this.isEditMode && this.classId) {
+      this.classService.getClass(this.classId).subscribe({
+        next: (classData: any) => {
+          // Handle date conversion - API returns string, need Date object for datepicker
+          const startDate = classData.startDate instanceof Date 
+            ? classData.startDate 
+            : new Date(classData.startDate)
+          
+          // Ensure time format matches dropdown format (HH:00)
+          let startTime = classData.startTime
+          if (startTime && !startTime.includes(':')) {
+            // If time is just a number, format it
+            startTime = `${startTime}:00`
+          } else if (startTime && startTime.split(':').length === 2) {
+            // Ensure format is HH:00
+            const [hours] = startTime.split(':')
+            startTime = `${hours}:00`
+          }
+          
+          // Ensure days are numbers
+          const days = Array.isArray(classData.days) 
+            ? classData.days.map((day: any) => typeof day === 'string' ? parseInt(day) : day)
+            : classData.days
+
+          this.classForm.patchValue({
+            location: classData.classLocation,
+            class_type: classData.classType,
+            days: days,
+            start_date: startDate,
+            start_time: startTime,
+            mxn: classData.prices?.[0]?.amount || null,
+            billing_frequency: classData.billingFrequency?.toString() || classData.billingFrequency,
+            max_capacity: classData.maxCapacity
+          })
+        },
+        error: ({error}) => {
+          this.snackBarService.showError(error.message)
+        }
+      })
+    }
   }
 
   get f() { 
@@ -102,17 +150,32 @@ export class EditClassComponent {
       }
 
       this.loading = true
-      this.classService.createNewClass(classData).subscribe({
-        next: () => {
-          this.loading = false
-          this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
-          this.router.navigate(['../'], { relativeTo: this.route })
-        },
-        error: ({error}) => {
-          this.loading = false
-          this.snackBarService.showError(error.message)
-        }
-      })
+
+      if (this.isEditMode && this.classId) {
+        this.classService.updateClass(this.classId, classData).subscribe({
+          next: () => {
+            this.loading = false
+            this.snackBarService.showSuccess(this.translateService.instant('CLASSES.UPDATE_CLASS_SUCCESS'))
+            this.router.navigate(['../../', this.classId, 'details'], { relativeTo: this.route.parent })
+          },
+          error: ({error}) => {
+            this.loading = false
+            this.snackBarService.showError(error.message)
+          }
+        })
+      } else {
+        this.classService.createNewClass(classData).subscribe({
+          next: () => {
+            this.loading = false
+            this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
+            this.router.navigate(['../'], { relativeTo: this.route })
+          },
+          error: ({error}) => {
+            this.loading = false
+            this.snackBarService.showError(error.message)
+          }
+        })
+      }
     }
     else {
       this.classForm.markAllAsTouched()

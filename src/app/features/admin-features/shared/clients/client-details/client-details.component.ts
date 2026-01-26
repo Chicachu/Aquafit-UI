@@ -202,4 +202,10 @@ export class ClientDetailsComponent {
       return typeMap;
     }, new Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>>());
   }
+
+  editClient(): void {
+    if (this.clientId) {
+      this.router.navigate(['../edit'], { relativeTo: this.route })
+    }
+  }
 }

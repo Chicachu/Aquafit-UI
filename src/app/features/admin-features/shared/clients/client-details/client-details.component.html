@@ -1,5 +1,9 @@
 <div>
-  <app-breadcrumb-nav-bar [title]="'CLIENTS.DETAILS'" [buttonType]="ButtonType.EDIT"></app-breadcrumb-nav-bar>
+  <app-breadcrumb-nav-bar 
+    [title]="'CLIENTS.DETAILS'" 
+    [buttonType]="ButtonType.EDIT"
+    (onButtonClick)="editClient()">
+  </app-breadcrumb-nav-bar>
   <div *ngIf="client" class="flex-column general-info">
     <h3 class="mid-pink">{{ client.firstName + ' ' + client.lastName }}</h3>
     <h4 *ngIf="client.phoneNumber" class="light-blue">{{ client.phoneNumber }}</h4>

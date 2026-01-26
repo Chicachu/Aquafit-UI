@@ -1,0 +1,20 @@
+<div *ngIf="discount">
+  <app-breadcrumb-nav-bar 
+    [title]="'DISCOUNTS.DISCOUNT_DETAILS' | translate" 
+    [buttonType]="ButtonType.EDIT"
+    (onButtonClick)="editDiscount()">
+  </app-breadcrumb-nav-bar>
+  <div class="flex-column general-info">
+    <h3 class="mid-green">{{ discount.description | capitalize }}</h3>
+    <h3 class="light-blue">{{ 'DISCOUNT_TYPES.' + discount.type | translate }}</h3>
+    <h5 class="light-blue" *ngIf="discount.amount">
+      {{ discount.amount }} {{ 'DISCOUNTS.AMOUNT' | translate }}
+    </h5>
+    <h5 class="light-green" *ngIf="discount.period">
+      {{ 'DISCOUNTS.START_DATE' | translate }}: {{ discount.period.startDate | date:'short' }}
+    </h5>
+    <h5 class="light-green" *ngIf="discount.period && discount.period.endDate">
+      {{ 'DISCOUNTS.END_DATE' | translate }}: {{ discount.period.endDate | date:'short' }}
+    </h5>
+  </div>
+</div>

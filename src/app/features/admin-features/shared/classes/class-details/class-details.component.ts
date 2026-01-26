@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ClassService } from "@/core/services/classService";
-import { ActivatedRoute } from "@angular/router";
+import { UserService } from "@/core/services/userService";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ClassDetails } from "@/core/types/classes/classDetails";
 import { SnackBarService } from "@/core/services/snackBarService";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
@@ -19,6 +20,8 @@ export class ClassDetailsComponent implements OnInit {
   navBarInfo: string[] = []
   clientsByPaymentStatus: Map<PaymentStatus, ClassClientEnrollmentDetails[] | []> = new Map()
   loading = false
+  classId: string | null = null
+  canEditClass = false
   paymentStatusConfig: Partial<{
     [key in PaymentStatus]: {
       titleKey: string
@@ -50,13 +53,16 @@ export class ClassDetailsComponent implements OnInit {
   
   constructor(
     private classService: ClassService, 
-    private route: ActivatedRoute, 
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router,
     private snackBarService: SnackBarService
   ) {}
 
   ngOnInit(): void {
-    const classId = this.route.snapshot.paramMap.get('class-id')
-    this.classService.getClassDetails(classId!).subscribe({
+    this.canEditClass = this.userService.isAdmin
+    this.classId = this.route.snapshot.paramMap.get('class-id')
+    this.classService.getClassDetails(this.classId!).subscribe({
       next: (classDetails: ClassDetails) => {
         this.classDetails = classDetails
         this._separateClientsByPaymentStatus(classDetails)
@@ -87,6 +93,12 @@ export class ClassDetailsComponent implements OnInit {
       : `flex-row ${cleanStatus}-status-section`
   }
   
+  editClass(): void {
+    if (this.classId) {
+      this.router.navigate(['../edit'], { relativeTo: this.route })
+    }
+  }
+
   private _separateClientsByPaymentStatus(classDetails: ClassDetails): void {
     classDetails.clients.forEach((client) => {
       const group = this.clientsByPaymentStatus.get(client.currentPayment.paymentStatus) || []

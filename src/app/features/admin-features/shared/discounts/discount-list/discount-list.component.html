@@ -1,0 +1,13 @@
+<div>
+  <app-breadcrumb-nav-bar 
+  [title]="'NAVIGATION.DISCOUNTS' | translate" 
+  [buttonType]="ButtonType.ADD"
+  (onButtonClick)="addNewDiscount()"></app-breadcrumb-nav-bar>
+  <div>
+    <ul>
+      <li *ngFor="let discount of discounts">
+        <a [routerLink]="['./', discount._id, 'details']">{{ discount.description  | capitalize }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

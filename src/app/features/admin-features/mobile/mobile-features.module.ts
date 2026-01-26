@@ -12,6 +12,7 @@ import { ClassDetailsComponent } from "../shared/classes/class-details/class-det
 import { ClientDetailsComponent } from "../shared/clients/client-details/client-details.component";
 import { InvoiceHistoryComponent } from "../shared/payments/invoice-history/invoice-history.component";
 import { InvoiceDetailsComponent } from "../shared/payments/invoice-details/invoice-details.component";
+import { DiscountListComponent } from "../shared/discounts/discount-list/discount-list.component";
 
 const routes: Routes = [
   {
@@ -58,6 +59,11 @@ const routes: Routes = [
     path: 'classes/add-class',
     pathMatch: 'full',
     component: EditClassComponent
+  },
+  {
+    path: 'discounts',
+    pathMatch: 'full',
+    component: DiscountListComponent
   }
 ]
 

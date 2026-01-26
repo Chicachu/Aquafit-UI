@@ -11,6 +11,7 @@ import { ClassDetailsComponent } from "./classes/class-details/class-details.com
 import { MobileCalendarComponent } from "./calendar/mobile-calendar/mobile-calendar.component";
 import { InvoiceHistoryComponent } from "./payments/invoice-history/invoice-history.component";
 import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-details.component";
+import { DiscountListComponent } from "./discounts/discount-list/discount-list.component";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-deta
     ClassDetailsComponent,
     MobileCalendarComponent,
     InvoiceHistoryComponent,
-    InvoiceDetailsComponent
+    InvoiceDetailsComponent,
+    DiscountListComponent
   ],
   imports: [
     CommonModule,

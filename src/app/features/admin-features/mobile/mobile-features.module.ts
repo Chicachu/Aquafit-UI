@@ -16,6 +16,7 @@ import { InvoiceDetailsComponent } from "../shared/payments/invoice-details/invo
 import { DiscountListComponent } from "../shared/discounts/discount-list/discount-list.component";
 import { DiscountDetailsComponent } from "../shared/discounts/discount-details/discount-details.component";
 import { EditDiscountComponent } from "../shared/discounts/edit-discount/edit-discount.component";
+import { InstructorsDetailsComponent } from "../shared/instructors/instructors-details/instructors-details.component";
 
 const routes: Routes = [
   {
@@ -53,6 +54,17 @@ const routes: Routes = [
     path: 'clients/:user-id/payments/:enrollment-id/:invoice-id',
     pathMatch: 'full', 
     component: InvoiceDetailsComponent
+  },
+  {
+    path: 'instructors/:user-id/details',
+    pathMatch: 'full', 
+    component: InstructorsDetailsComponent
+  },
+  {
+    path: 'instructors/:user-id/edit',
+    pathMatch: 'full',
+    component: EditClientComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'classes', 

@@ -14,6 +14,7 @@ import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-deta
 import { DiscountListComponent } from "./discounts/discount-list/discount-list.component";
 import { DiscountDetailsComponent } from "./discounts/discount-details/discount-details.component";
 import { EditDiscountComponent } from "./discounts/edit-discount/edit-discount.component";
+import { InstructorsDetailsComponent } from "./instructors/instructors-details/instructors-details.component";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { EditDiscountComponent } from "./discounts/edit-discount/edit-discount.c
     InvoiceDetailsComponent,
     DiscountListComponent,
     DiscountDetailsComponent,
-    EditDiscountComponent
+    EditDiscountComponent,
+    InstructorsDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -105,6 +105,15 @@
     "UNENROLL_REASON": "Razón (Opcional)",
     "UNENROLL_SUCCESS": "¡Cliente dado de baja exitosamente!"
   },
+  "INSTRUCTORS": {
+    "TITLE": "Instructores",
+    "DETAILS": "Detalles del Instructor",
+    "TEACHING": "Clases que Enseña",
+    "NOT_TEACHING": "El instructor no está enseñando ninguna clase",
+    "ASSIGN_INSTRUCTOR": "Asignar Instructor",
+    "ASSIGN_INSTRUCTIONS": "Selecciona una clase para asignar a este instructor",
+    "ASSIGN_SUCCESS": "¡Instructor asignado exitosamente!"
+  },
   "CLASSES": {
     "ADD_NEW_CLASS": "Agregar Clase",
     "ADD_NEW_CLASS_SUCCESS": "¡Clase agregada exitosamente!",

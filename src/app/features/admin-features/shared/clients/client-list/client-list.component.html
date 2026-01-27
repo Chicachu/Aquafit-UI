@@ -25,7 +25,7 @@
       <ul>
         <li *ngFor="let instructor of instructors">
           <div class="instructor-item">
-            <a [routerLink]="['./', instructor._id, 'details']">{{ instructor.firstName }} {{ instructor.lastName }}</a>
+            <a [routerLink]="['/admin/mobile/instructors', instructor._id, 'details']">{{ instructor.firstName }} {{ instructor.lastName }}</a>
             <span *ngIf="instructor.instructorId" class="instructor-id">{{ instructor.instructorId }}</span>
           </div>
         </li>

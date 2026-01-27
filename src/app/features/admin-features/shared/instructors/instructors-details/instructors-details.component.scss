@@ -1,0 +1,80 @@
+@import '../../../../../../assets/colors.scss';
+
+.general-info {
+  border-bottom: 1px solid $light-blue;
+  text-align: center;
+}
+
+.classes-section {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-instructor-button { 
+  background-color: $light-pink !important;
+  width: fit-content !important;
+  border-radius: 5px;
+  margin-left: 15px;
+  height: 24px;
+  width: 24px !important;
+  color: $primary-pink;
+  font-weight: 900 !important; 
+  border: 1px solid $primary-pink;
+}
+
+.add-icon {
+  left: -9px;
+  top: -9px;
+}
+
+.assignment-modal p, .assignment-modal h5 {
+  text-align: center;
+}
+
+.instructor-details-content {
+  width: 80vw;
+  margin: auto auto;
+}
+
+h2, h3, h4, h5 {
+  margin: 5px 0;
+}
+
+li {
+  color: $light-pink;
+  margin-left: 30px;
+}
+
+h3 {
+  margin: 10px 0;
+  margin-left: 0;
+}
+
+h4 {
+  margin: 0;
+  color: $light-green;
+}
+
+ul {
+  padding-left: 0;
+  list-style-type: circle;
+}
+
+.not-teaching {
+  color: $light-pink;
+  margin-left: 10px;
+}
+
+.details-row {
+  justify-content: space-between;
+}
+
+.terminated-section {
+  opacity: 0.6;
+  margin-top: 20px;
+}
+
+.terminated-header {
+  color: $light-pink;
+  font-style: italic;
+}

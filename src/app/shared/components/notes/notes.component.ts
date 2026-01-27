@@ -5,7 +5,7 @@ import { SnackBarService } from "@core/services/snackBarService";
 import { TranslateService } from "@ngx-translate/core";
 import { Note } from "@core/types/user";
 
-export type ResourceType = 'client' | 'class';
+export type ResourceType = 'client' | 'class' | 'instructor';
 
 @Component({
   selector: 'app-notes',
@@ -48,7 +48,7 @@ export class NotesComponent implements OnInit {
   publishNote(): void {
     if (!this.currentNote.trim() || !this.resourceId || !this.resourceId.trim()) return
 
-    if (this.resourceType === 'client') {
+    if (this.resourceType === 'client' || this.resourceType === 'instructor') {
       this.userService.addNote(this.resourceId, this.currentNote.trim()).subscribe({
         next: (updatedUser) => {
           this.notes = updatedUser.notes || [];
@@ -92,7 +92,7 @@ export class NotesComponent implements OnInit {
       this.showDeleteConfirmModal = false;
       this.noteToDelete = null;
     } else if (event.buttonTitle === 'CONTROLS.DELETE' && this.noteToDelete && this.resourceId) {
-      if (this.resourceType === 'client') {
+      if (this.resourceType === 'client' || this.resourceType === 'instructor') {
         this.userService.deleteNote(this.resourceId, this.noteToDelete._id).subscribe({
           next: (updatedUser) => {
             this.notes = updatedUser.notes || [];

@@ -105,6 +105,15 @@
     "UNENROLL_REASON": "Reason (Optional)",
     "UNENROLL_SUCCESS": "Client unenrolled successfully!"
   },
+  "INSTRUCTORS": {
+    "TITLE": "Instructors",
+    "DETAILS": "Instructor Details",
+    "TEACHING": "Classes Teaching",
+    "NOT_TEACHING": "Instructor is not teaching any classes",
+    "ASSIGN_INSTRUCTOR": "Assign Instructor",
+    "ASSIGN_INSTRUCTIONS": "Select a class to assign this instructor to",
+    "ASSIGN_SUCCESS": "Instructor assigned successfully!"
+  },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",
     "ADD_NEW_CLASS_SUCCESS": "Successfully added new class!",

@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http"
 import { Observable, take } from "rxjs"
 import { environment } from "../../../environments/environment"
 import { ClientEnrollmentDetails } from "@core/types/clients/clientEnrollmentDetails"
+import { InstructorClassDetails } from "@core/types/instructors/instructorClassDetails"
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +80,9 @@ export class UserService {
 
   getNextInstructorId(): Observable<{ instructorId: number }> {
     return this._http.get<{ instructorId: number }>(`${environment.apiUrl}/users/instructors/next-id`).pipe(take(1))
+  }
+
+  getInstructorClassDetails(userId: string): Observable<InstructorClassDetails> {
+    return this._http.get<InstructorClassDetails>(`${environment.apiUrl}/users/${userId}/classes`).pipe(take(1))
   }
 }

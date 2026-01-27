@@ -40,11 +40,19 @@
     
         <ul>
           <li *ngFor="let client of clientsByPaymentStatus.get(status)">
-            <a [routerLink]="['../../../clients', client._id, 'details']">
-              <p class="white">
-                {{ client.firstName }} {{ client.lastName }}
-              </p>
-            </a>
+            <div class="flex-row details-row">
+              <a [routerLink]="['../../../clients', client._id, 'details']">
+                <p class="white">
+                  {{ client.firstName }} {{ client.lastName }}
+                </p>
+              </a>
+              <a
+                *ngIf="client.currentPayment?.enrollmentId"
+                [routerLink]="['../../../clients', client._id, 'payments', client.currentPayment.enrollmentId]"
+                class="payment-history-link">
+                <mat-icon class="icon">receipt_long</mat-icon>
+              </a>
+            </div>
           </li>
         </ul>
       </ng-container>

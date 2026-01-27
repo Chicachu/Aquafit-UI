@@ -108,11 +108,15 @@
   "INSTRUCTORS": {
     "TITLE": "Instructores",
     "DETAILS": "Detalles del Instructor",
+    "PAYMENT_OVERVIEW": "Resumen de Pago",
     "TEACHING": "Clases que Enseña",
     "NOT_TEACHING": "El instructor no está enseñando ninguna clase",
     "ASSIGN_INSTRUCTOR": "Asignar Instructor",
     "ASSIGN_INSTRUCTIONS": "Selecciona una clase para asignar a este instructor",
-    "ASSIGN_SUCCESS": "¡Instructor asignado exitosamente!"
+    "ASSIGN_SUCCESS": "¡Instructor asignado exitosamente!",
+    "UNASSIGN": "Desasignar Instructor",
+    "UNASSIGN_CONFIRM_MESSAGE": "¿Está seguro?",
+    "UNASSIGN_SUCCESS": "¡Instructor desasignado exitosamente!"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Agregar Clase",

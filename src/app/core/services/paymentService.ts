@@ -3,8 +3,15 @@ import { Injectable } from "@angular/core";
 import { Invoice } from "@core/types/invoices/invoice";
 import { InvoiceDetails } from "@core/types/invoices/invoiceDetails";
 import { InvoiceHistory } from "@core/types/invoices/invoiceHistory";
+import { InstructorPayable } from "@core/types/invoices/instructorPayable";
 import { environment } from "environments/environment";
 import { Observable } from "rxjs";
+
+export type InvoicesByUserIdResponse = {
+  invoices: Invoice[];
+  instructorPayables: InstructorPayable[];
+  userName: string;
+};
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +25,9 @@ export class PaymentService {
 
   public getInvoice(userId: string, enrollmentId: string, invoiceId: string): Observable<InvoiceDetails> {
     return this.http.get<InvoiceDetails>(`${environment.apiUrl}/users/${userId}/payments/${enrollmentId}/${invoiceId}`)
+  }
+
+  public getInvoicesByUserId(userId: string): Observable<InvoicesByUserIdResponse> {
+    return this.http.get<InvoicesByUserIdResponse>(`${environment.apiUrl}/users/${userId}/invoices`)
   }
 }

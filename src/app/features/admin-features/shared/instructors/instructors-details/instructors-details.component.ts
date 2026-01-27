@@ -15,6 +15,7 @@ import { ClassScheduleMap } from "@core/types/classScheduleMap";
 import { SelectOption } from "@core/types/selectOption";
 import { AssignmentService } from "@core/services/assignmentService";
 import { Assignment } from "@core/types/assignment";
+import { AssignmentStatus } from "@core/types/enums/assignmentStatus";
 
 @Component({
   selector: 'app-instructors-details',
@@ -23,12 +24,17 @@ import { Assignment } from "@core/types/assignment";
 })
 export class InstructorsDetailsComponent {
   readonly ClassType = ClassType
+  readonly AssignmentStatus = AssignmentStatus
   ButtonType = ButtonType
   instructorId: string | null = null
   instructor: User | null = null
   canEditInstructor = false
   showAssignmentModal = false
   assignmentButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'INSTRUCTORS.ASSIGN_INSTRUCTOR'}]
+  showUnassignModal = false
+  unassignButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'INSTRUCTORS.UNASSIGN'}]
+  unassignForm: FormGroup
+  selectedAssignmentForUnassign: { class: Class, assignment: Assignment } | null = null
   assignmentInfo: { class: Class, assignment: Assignment }[] = []
   activeAssignmentInfo: { class: Class, assignment: Assignment }[] = []
   terminatedAssignmentInfo: { class: Class, assignment: Assignment }[] = []
@@ -44,7 +50,7 @@ export class InstructorsDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    public userService: UserService, 
+    public userService: UserService,
     private snackBarService: SnackBarService,
     private translateService: TranslateService,
     private router: Router,
@@ -58,6 +64,14 @@ export class InstructorsDetailsComponent {
       time: ['', [Validators.required]],
       start_date: ['', [Validators.required]]
     })
+    this.unassignForm = this.fb.group({
+      end_date: ['', [Validators.required]]
+    })
+  }
+
+  get unassignMinDate(): Date | null {
+    const a = this.selectedAssignmentForUnassign?.assignment?.startDate
+    return a ? new Date(a) : null
   }
 
   ngOnInit(): void {
@@ -213,6 +227,8 @@ export class InstructorsDetailsComponent {
         return
       }
 
+      if (item.assignment.status === AssignmentStatus.UNASSIGNED) return
+
       // Check if class is terminated - if so, don't filter it (allow reassignment to active classes)
       if (item.class.endDate) {
         const classEndDate = new Date(item.class.endDate)
@@ -304,6 +320,14 @@ export class InstructorsDetailsComponent {
     }, new Map<ClassType, Map<string, { class: Class, assignment: Assignment }[]>>());
   }
 
+  get canViewPaymentDetails(): boolean {
+    if (!this.instructor) return false
+    return (
+      this.userService.isAdmin ||
+      this.userService.user?._id === this.instructor._id
+    )
+  }
+
   editInstructor(): void {
     if (this.instructorId) {
       this.router.navigate(['../edit'], { relativeTo: this.route })
@@ -313,6 +337,40 @@ export class InstructorsDetailsComponent {
   onNotesUpdated(notes: Note[]): void {
     if (this.instructor) {
       this.instructor.notes = notes
+    }
+  }
+
+  setShowUnassignModal(classAndAssignment: { class: Class, assignment: Assignment }): void {
+    this.selectedAssignmentForUnassign = classAndAssignment
+    this.unassignForm.reset()
+    this.showUnassignModal = true
+  }
+
+  processUnassignModalClick(event: { ref: InstructorsDetailsComponent, buttonTitle: string }): void {
+    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
+      this.unassignForm.reset()
+      this.showUnassignModal = false
+      this.selectedAssignmentForUnassign = null
+    } else if (event.buttonTitle === 'INSTRUCTORS.UNASSIGN') {
+      if (!this.selectedAssignmentForUnassign) return
+      const raw = this.unassignForm.get('end_date')?.value
+      const endDate = raw?._d ? new Date(raw._d) : raw ? new Date(raw) : null
+      if (!endDate) {
+        this.snackBarService.showError(this.translateService.instant('ERRORS.REQUIRED', { field: 'End date' }))
+        return
+      }
+      this.assignmentService.updateAssignment(this.selectedAssignmentForUnassign.assignment._id!, { endDate }).subscribe({
+        next: () => {
+          this.ngOnInit()
+          this.snackBarService.showSuccess(this.translateService.instant('INSTRUCTORS.UNASSIGN_SUCCESS'))
+          this.showUnassignModal = false
+          this.selectedAssignmentForUnassign = null
+          this.unassignForm.reset()
+        },
+        error: ({ error }) => {
+          this.snackBarService.showError(error?.message ?? 'Error updating assignment.')
+        }
+      })
     }
   }
 }

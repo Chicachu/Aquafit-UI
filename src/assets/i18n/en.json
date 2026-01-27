@@ -108,11 +108,15 @@
   "INSTRUCTORS": {
     "TITLE": "Instructors",
     "DETAILS": "Instructor Details",
+    "PAYMENT_OVERVIEW": "Payment Overview",
     "TEACHING": "Classes Teaching",
     "NOT_TEACHING": "Instructor is not teaching any classes",
     "ASSIGN_INSTRUCTOR": "Assign Instructor",
     "ASSIGN_INSTRUCTIONS": "Select a class to assign this instructor to",
-    "ASSIGN_SUCCESS": "Instructor assigned successfully!"
+    "ASSIGN_SUCCESS": "Instructor assigned successfully!",
+    "UNASSIGN": "Unassign Instructor",
+    "UNASSIGN_CONFIRM_MESSAGE": "Are you sure?",
+    "UNASSIGN_SUCCESS": "Instructor unassigned successfully!"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",

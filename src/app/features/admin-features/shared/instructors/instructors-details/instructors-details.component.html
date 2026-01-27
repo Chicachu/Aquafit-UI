@@ -4,9 +4,18 @@
     [buttonType]="canEditInstructor ? ButtonType.EDIT : ButtonType.NONE"
     (onButtonClick)="editInstructor()">
   </app-breadcrumb-nav-bar>
-  <div *ngIf="instructor" class="flex-column general-info">
-    <h3 class="mid-pink">{{ instructor.firstName + ' ' + instructor.lastName }}</h3>
-    <h4 *ngIf="instructor.phoneNumber" class="light-blue">{{ instructor.phoneNumber }}</h4>
+  <div *ngIf="instructor" class="general-info-row flex-row">
+    <div class="payment-button-wrapper">
+      <a *ngIf="canViewPaymentDetails" mat-icon-button [routerLink]="['../payments']" class="payment-button">
+        <mat-icon class="payment-icon">attach_money</mat-icon>
+      </a>
+    </div>
+    <div class="general-info flex-column">
+      <h3 class="mid-pink">{{ instructor.firstName + ' ' + instructor.lastName }}</h3>
+      <h4 *ngIf="instructor.instructorId" class="primary-pink">({{ instructor.instructorId }})</h4>
+      <h4 *ngIf="instructor.phoneNumber" class="light-blue">{{ instructor.phoneNumber }}</h4>
+    </div>
+    <div class="general-info-spacer"></div>
   </div>
 
   <div class="flex-column instructor-details-content">
@@ -32,6 +41,16 @@
               <a [routerLink]="['/admin/mobile/classes', classAndAssignment?.class?._id, 'details']">
                 {{ classAndAssignment.class.days | weekdays:'/' }} - {{ classAndAssignment.class.startTime | timeFormat }}
               </a>
+              <div class="action-buttons">
+                <button
+                  *ngIf="userService.isAdmin && (!classAndAssignment.assignment.status || classAndAssignment.assignment.status === AssignmentStatus.ACTIVE) && !classAndAssignment.assignment.endDate"
+                  mat-icon-button
+                  class="unenroll-button"
+                  type="button"
+                  (click)="setShowUnassignModal(classAndAssignment)">
+                  <mat-icon class="icon">person_remove</mat-icon>
+                </button>
+              </div>
             </div>
           </li>
         </ul>
@@ -64,6 +83,16 @@
                 <a [routerLink]="['/admin/mobile/classes', classAndAssignment?.class?._id, 'details']">
                   {{ classAndAssignment.class.days | weekdays:'/' }} - {{ classAndAssignment.class.startTime | timeFormat }}
                 </a>
+                <div class="action-buttons">
+                  <button
+                    *ngIf="userService.isAdmin && (!classAndAssignment.assignment.status || classAndAssignment.assignment.status === AssignmentStatus.ACTIVE) && !classAndAssignment.assignment.endDate"
+                    mat-icon-button
+                    class="unenroll-button"
+                    type="button"
+                    (click)="setShowUnassignModal(classAndAssignment)">
+                    <mat-icon class="icon">person_remove</mat-icon>
+                  </button>
+                </div>
               </div>
             </li>
           </ul>
@@ -106,6 +135,35 @@
         label="CONTROLS.START_DATE"
         controlName="start_date"
         [allowedWeekdays]="selectedClassDays">
+      </app-datepicker>
+    </div>
+  </div>
+</app-modal>
+
+<app-modal *ngIf="showUnassignModal"
+  [parent]="this"
+  [title]="'INSTRUCTORS.UNASSIGN' | translate"
+  [buttonList]="unassignButtons"
+  (modalClick)="processUnassignModalClick($event)"
+  class="unenroll-modal">
+  <div content>
+    <p>{{ 'INSTRUCTORS.UNASSIGN_CONFIRM_MESSAGE' | translate }}</p>
+    <div *ngIf="selectedAssignmentForUnassign">
+      <h5>
+        {{ 'CLASS_TYPES.' + selectedAssignmentForUnassign.class.classType | translate | capitalize }} -
+        {{ selectedAssignmentForUnassign.class.classLocation }}
+      </h5>
+      <h5>
+        {{ selectedAssignmentForUnassign.class.days | weekdays:'/' }}
+        - {{ selectedAssignmentForUnassign.class.startTime | timeFormat }}
+      </h5>
+    </div>
+    <div [formGroup]="unassignForm">
+      <app-datepicker
+        label="CONTROLS.END_DATE"
+        controlName="end_date"
+        [allowedWeekdays]="selectedAssignmentForUnassign?.class?.days ?? null"
+        [minDate]="unassignMinDate">
       </app-datepicker>
     </div>
   </div>

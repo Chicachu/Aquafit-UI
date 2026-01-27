@@ -1,0 +1,29 @@
+<div>
+  <app-breadcrumb-nav-bar
+    [title]="'INSTRUCTORS.PAYMENT_OVERVIEW'"
+    [buttonType]="ButtonType.NONE">
+  </app-breadcrumb-nav-bar>
+
+  <div *ngIf="instructorName">
+    <div class="header flex-column">
+      <h3 class="mid-pink">{{ instructorName }}</h3>
+    </div>
+    <hr>
+    <div>
+      <ul>
+        <div *ngFor="let period of periods" class="period-row flex-row">
+          <div
+            [ngClass]="[
+              getIconClass(period.paymentStatus),
+              'icon',
+              isOverdue(period.paymentStatus) ? 'flash-icon' : ''
+            ]"></div>
+          <li [ngClass]="getStatusClass(period.paymentStatus)">
+            {{ period.date | translateDate:'MMMM yyyy' }} - {{ period.paymentStatus | capitalize }}
+          </li>
+          <div class="arrow-right"></div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>

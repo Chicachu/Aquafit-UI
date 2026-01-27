@@ -4,6 +4,7 @@ import { Discount } from "@/core/types/discounts/discount";
 import { DiscountService } from "@/core/services/discountService";
 import { SnackBarService } from "@/core/services/snackBarService";
 import { Router } from "@angular/router";
+import { UserService } from "@/core/services/userService";
 
 @Component({
   selector: 'app-discount-list',
@@ -17,8 +18,13 @@ export class DiscountListComponent {
   constructor(
     private discountService: DiscountService,
     private snackBarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {
+  }
+
+  get buttonType(): ButtonType {
+    return this.userService.isAdmin ? ButtonType.ADD : ButtonType.NONE
   }
 
   ngOnInit(): void {

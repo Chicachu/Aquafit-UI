@@ -32,9 +32,7 @@ export class EditClientComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       phoneNumber: ['', [
-        Validators.required,
         Validators.pattern('^[+]?[0-9 ]*$'),
-        Validators.minLength(7),
         Validators.maxLength(15)
       ]]
     });
@@ -68,10 +66,14 @@ export class EditClientComponent implements OnInit {
     if (this.contactForm.valid) {
       this.loading = true 
 
-      const clientData = {
+      const clientData: { firstName: string, lastName: string, phoneNumber?: string } = {
         firstName: this.f['firstName'].value.trim(),
-        lastName: this.f['lastName'].value.trim(),
-        phoneNumber: this.f['phoneNumber'].value.trim()
+        lastName: this.f['lastName'].value.trim()
+      }
+      
+      const phoneNumberValue = this.f['phoneNumber'].value?.trim()
+      if (phoneNumberValue) {
+        clientData.phoneNumber = phoneNumberValue
       }
 
       if (this.isEditMode && this.userId) {
@@ -79,7 +81,7 @@ export class EditClientComponent implements OnInit {
           next: () => {
             this.loading = false
             this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.UPDATE_CLIENT_SUCCESS'))
-            this.router.navigate(['../../', this.userId, 'details'], { relativeTo: this.route.parent })
+            this.router.navigate(['../..'], { relativeTo: this.route.parent })
           },
           error: ({error}) => {
             this.loading = false

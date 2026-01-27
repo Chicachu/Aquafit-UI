@@ -136,7 +136,7 @@ export class EditDiscountComponent implements OnInit {
           next: () => {
             this.loading = false
             this.snackBarService.showSuccess(this.translateService.instant('DISCOUNTS.UPDATE_SUCCESS'))
-            this.router.navigate(['../../', this.discountId, 'details'], { relativeTo: this.route.parent })
+            this.router.navigate(['../..'], { relativeTo: this.route.parent })
           },
           error: ({error}) => {
             this.loading = false

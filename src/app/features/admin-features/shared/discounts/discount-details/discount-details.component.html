@@ -1,7 +1,7 @@
 <div *ngIf="discount">
   <app-breadcrumb-nav-bar 
     [title]="'DISCOUNTS.DISCOUNT_DETAILS' | translate" 
-    [buttonType]="ButtonType.EDIT"
+    [buttonType]="canEditDiscount ? ButtonType.EDIT : ButtonType.NONE"
     (onButtonClick)="editDiscount()">
   </app-breadcrumb-nav-bar>
   <div class="flex-column general-info">

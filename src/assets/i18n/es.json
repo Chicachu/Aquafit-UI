@@ -35,6 +35,7 @@
     "USD": "Precio en USD",
     "DAYS": "Días",
     "MAX_CAPACITY": "Capacidad Máxima",
+    "DESCRIPTION": "Descripción",
     "SUBMIT": "Enviar",
     "SUBMIT_WAIT_MESSAGE": "Enviando...",
     "CANCEL": "Cancelar",
@@ -151,5 +152,27 @@
     "ONE_TIME": "Una Vez",
     "WEEKLY": "Semanal",
     "MONTHLY": "Mensual"
+  },
+  "DISCOUNTS": {
+    "TITLE": "Descuentos",
+    "DISCOUNT_DETAILS": "Detalles del Descuento",
+    "ADD_NEW_DISCOUNT": "Agregar Descuento",
+    "EDIT_DISCOUNT": "Editar Descuento",
+    "DESCRIPTION": "Descripción",
+    "TYPE": "Tipo",
+    "AMOUNT": "Monto",
+    "START_DATE": "Fecha de Inicio",
+    "END_DATE": "Fecha de Finalización",
+    "CREATE": "Crear",
+    "UPDATE": "Actualizar",
+    "CREATE_SUCCESS": "¡Descuento creado exitosamente!",
+    "UPDATE_SUCCESS": "¡Descuento actualizado exitosamente!"
+  },
+  "DISCOUNT_TYPES": {
+    "2 classes, 1 price": "2 Clases, 1 Precio",
+    "2 people, 1 price": "2 Personas, 1 Precio",
+    "percentage": "Porcentaje",
+    "flat": "Fijo",
+    "partial enrollment": "Inscripción Parcial"
   } 
 }

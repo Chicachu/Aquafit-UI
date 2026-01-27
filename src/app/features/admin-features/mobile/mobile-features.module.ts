@@ -41,7 +41,8 @@ const routes: Routes = [
   {
     path: 'clients/:user-id/edit',
     pathMatch: 'full',
-    component: EditClientComponent
+    component: EditClientComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'clients/:user-id/payments/:enrollment-id',
@@ -92,7 +93,8 @@ const routes: Routes = [
   {
     path: 'discounts/:discount-id/edit',
     pathMatch: 'full',
-    component: EditDiscountComponent
+    component: EditDiscountComponent,
+    canActivate: [AdminGuard]
   }
 ]
 

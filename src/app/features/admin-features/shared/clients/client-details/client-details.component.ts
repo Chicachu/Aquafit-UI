@@ -28,6 +28,7 @@ export class ClientDetailsComponent {
   ButtonType = ButtonType
   clientId: string | null = null
   client: User | null = null
+  canEditClient = false
   showEnrollmentModal = false
   enrollmentButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.ENROLL'}]
   classSelectionForm: FormGroup 
@@ -74,6 +75,7 @@ export class ClientDetailsComponent {
   }
 
   ngOnInit(): void {
+    this.canEditClient = this.userService.isAdmin
     const userId = this.route.snapshot.paramMap.get('user-id')
     
     this.userService.getClientEnrollmentDetails(userId!).subscribe({

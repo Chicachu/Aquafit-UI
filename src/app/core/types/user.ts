@@ -5,7 +5,7 @@ import { Document } from "./document"
 export type User = Document & {
   firstName: string
   lastName: string
-  phoneNumber: string
+  phoneNumber?: string | null
   role: Role
   username?: string | null
   password?: string | null

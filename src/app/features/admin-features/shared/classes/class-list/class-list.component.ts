@@ -5,6 +5,7 @@ import { ClassService } from "@/core/services/classService";
 import { SnackBarService } from "@/core/services/snackBarService";
 import { Router } from "@angular/router";
 import { ClassType } from "@/core/types/enums/classType";
+import { UserService } from "@/core/services/userService";
 
 @Component({
   selector: 'app-class-list',
@@ -18,8 +19,13 @@ export class ClassListComponent {
   constructor(
     private classService: ClassService,
     private snackBarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {
+  }
+
+  get buttonType(): ButtonType {
+    return this.userService.isAdmin ? ButtonType.ADD : ButtonType.NONE
   }
 
   ngOnInit(): void {

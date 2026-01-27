@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DiscountService } from "@/core/services/discountService";
+import { UserService } from "@/core/services/userService";
 import { Discount } from "@/core/types/discounts/discount";
 import { SnackBarService } from "@/core/services/snackBarService";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
@@ -15,15 +16,18 @@ export class DiscountDetailsComponent implements OnInit {
   discount: Discount | null = null
   navBarInfo: string[] = []
   loading = false
+  canEditDiscount = false
 
   constructor(
     private discountService: DiscountService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackBarService
   ) {}
 
   ngOnInit(): void {
+    this.canEditDiscount = this.userService.isAdmin
     const discountId = this.route.snapshot.paramMap.get('discount-id')
     if (discountId) {
       this.discountService.getDiscount(discountId).subscribe({

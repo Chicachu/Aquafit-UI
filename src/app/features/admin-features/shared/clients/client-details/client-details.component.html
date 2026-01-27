@@ -1,7 +1,7 @@
 <div>
   <app-breadcrumb-nav-bar 
     [title]="'CLIENTS.DETAILS'" 
-    [buttonType]="ButtonType.EDIT"
+    [buttonType]="canEditClient ? ButtonType.EDIT : ButtonType.NONE"
     (onButtonClick)="editClient()">
   </app-breadcrumb-nav-bar>
   <div *ngIf="client" class="flex-column general-info">

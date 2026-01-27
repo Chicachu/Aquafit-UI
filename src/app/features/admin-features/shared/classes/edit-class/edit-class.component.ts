@@ -156,7 +156,7 @@ export class EditClassComponent implements OnInit {
           next: () => {
             this.loading = false
             this.snackBarService.showSuccess(this.translateService.instant('CLASSES.UPDATE_CLASS_SUCCESS'))
-            this.router.navigate(['../../', this.classId, 'details'], { relativeTo: this.route.parent })
+            this.router.navigate(['../..'], { relativeTo: this.route.parent })
           },
           error: ({error}) => {
             this.loading = false

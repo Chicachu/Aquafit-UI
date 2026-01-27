@@ -1,17 +1,28 @@
-<div>
+<div class="calendar-container">
+  <!-- Location legend -->
+  <div class="location-legend" *ngIf="location === '' && locations.length > 0">
+    <div class="legend-item" *ngFor="let location of locations">
+      <div class="legend-color-box" [style.background-color]="getLocationColor(location)"></div>
+      <span class="legend-text">{{ location }}</span>
+    </div>
+  </div>
+  
   <!-- Today's calendar view -->
   <div class="day-view">
     <ul>
       <li *ngFor="let hour of HOURS_IN_WORKDAY; let i = index">
-        <div *ngIf="classSchedule.get(hour)" 
-          [ngClass]="{ 'class1': classSchedule.get(hour)?.classType === ClassTypes.GROUP_FITNESS,
-                       'class2': classSchedule.get(hour)?.classType === ClassTypes.PRIVATE_REHAB,
-                       'class3': classSchedule.get(hour)?.classType === ClassTypes.FREE_SWIM || classSchedule.get(hour)?.classType === ClassTypes.BABIES,
-                       'class4': classSchedule.get(hour)?.classType === ClassTypes.PRIVATE_FITNESS || classSchedule.get(hour)?.classType === ClassTypes.HOTEL_GROUP}">
-          {{ hour | timeFormat }}
-          {{ 'CLASS_TYPES.' + (classSchedule.get(hour)?.classType || '') | translate | capitalize }}
+        <div *ngIf="classSchedule.get(hour) && classSchedule.get(hour)!.length > 0" class="time-slot">
+          <div class="time">{{ hour | timeFormat }}</div>
+          <div class="class-bubbles">
+            <div *ngFor="let classItem of classSchedule.get(hour)" 
+              class="class-bubble"
+              [style.background-color]="getLocationColor(classItem?.classLocation || '')"
+              [style.color]="getLocationTextColor(classItem?.classLocation || '')">
+              {{ 'CLASS_TYPES.' + (classItem?.classType || '') | translate | capitalize }}
+            </div>
+          </div>
         </div>
-        <div *ngIf="!classSchedule.get(hour)" class="empty">
+        <div *ngIf="!classSchedule.get(hour) || classSchedule.get(hour)!.length === 0" class="empty">
           {{ hour | timeFormat }}
         </div>
       </li>

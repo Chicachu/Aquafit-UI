@@ -81,7 +81,7 @@ export class EditClientComponent implements OnInit {
           next: () => {
             this.loading = false
             this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.UPDATE_CLIENT_SUCCESS'))
-            this.router.navigate(['../..'], { relativeTo: this.route.parent })
+            this.router.navigate(['../details'], { relativeTo: this.route })
           },
           error: ({error}) => {
             this.loading = false

@@ -9,6 +9,7 @@ export class ButtonComponent {
   @Input() loading = false
   @Input() label!: string
   @Input() loadingMessage?: string
+  @Input() disabled = false
   @Output() onClick = new EventEmitter<void>()
 
   constructor() {}

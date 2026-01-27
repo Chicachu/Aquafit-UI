@@ -68,4 +68,12 @@ export class UserService {
   updateClient(userId: string, reqObj: { firstName?: string, lastName?: string, phoneNumber?: string }): Observable<User> {
     return this._http.put<User>(`${environment.apiUrl}/users/${userId}`, reqObj).pipe(take(1))
   }
+
+  addNote(userId: string, content: string): Observable<User> {
+    return this._http.post<User>(`${environment.apiUrl}/users/${userId}/notes`, { content }).pipe(take(1))
+  }
+
+  deleteNote(userId: string, noteId: string): Observable<User> {
+    return this._http.delete<User>(`${environment.apiUrl}/users/${userId}/notes/${noteId}`).pipe(take(1))
+  }
 }

@@ -89,6 +89,15 @@
         (onClick)=terminateClass()>
       </app-button>
     </div>
+
+    <!-- Notes Section -->
+    <app-notes
+      [resourceType]="'class'"
+      [resourceId]="classId || ''"
+      [notes]="classDetails.notes"
+      [readOnly]="isTerminated"
+      (notesUpdated)="onNotesUpdated($event)">
+    </app-notes>
   </div>
 </div>
 
@@ -166,7 +175,7 @@
 <app-modal *ngIf="showCancelConfirmationModal"
   [parent]="this"
   [title]="'CLASSES.CONFIRM_CANCEL_TITLE' | translate"
-  [buttonList]="[{text: 'CONTROLS.CANCEL'}, {text: 'CLASSES.CONFIRM_CANCEL'}]"
+  [buttonList]="cancelButtons"
   (modalClick)="processCancelConfirmationModalClick($event)"
   class="terminate-confirmation-modal">
   <div content> 
@@ -179,6 +188,18 @@
         [allowedWeekdays]="classDetails?.days"
         [disabledDates]="cancelledDates">
       </app-datepicker>
+      <div class="form-field">
+        <label class="form-label">{{ 'CLASSES.CANCELLATION_REASON' | translate }}*</label>
+        <textarea 
+          formControlName="reason"
+          class="cancellation-reason-textarea"
+          placeholder="{{ 'CLASSES.CANCELLATION_REASON_PLACEHOLDER' | translate }}"
+          rows="4">
+        </textarea>
+        <div *ngIf="cancelForm.get('reason')?.invalid && cancelForm.get('reason')?.touched" class="error-message">
+          {{ 'CLASSES.CANCELLATION_REASON_REQUIRED' | translate }}
+        </div>
+      </div>
     </form>
   </div>
 </app-modal>

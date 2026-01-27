@@ -1,0 +1,61 @@
+<div class="notes-section">
+  <div class="flex-row notes-section-header">
+    <h2 class="light-blue">{{ 'CLIENTS.NOTES' | translate }}</h2>
+    <button 
+      *ngIf="!readOnly"
+      mat-icon-button 
+      (click)="toggleNotesInput()" 
+      class="add-note-button">
+      <mat-icon class="add-icon" matPrefix>{{ 'add'}}</mat-icon>
+    </button>
+  </div>
+  <div class="notes-input-container" *ngIf="showNotesInput && !readOnly">
+    <textarea 
+      [(ngModel)]="currentNote"
+      class="notes-textarea"
+      placeholder="{{ 'CLIENTS.NOTE_PLACEHOLDER' | translate }}"
+      rows="4">
+    </textarea>
+    <div class="notes-buttons">
+      <button 
+        mat-icon-button 
+        (click)="clearNote()"
+        class="notes-button notes-cancel-button">
+        <mat-icon class="notes-icon">close</mat-icon>
+      </button>
+      <button 
+        mat-icon-button 
+        (click)="publishNote()"
+        class="notes-button notes-save-button"
+        [disabled]="!currentNote.trim()">
+        <mat-icon class="notes-icon">check</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="published-notes" *ngIf="sortedNotes.length > 0">
+    <div *ngFor="let note of sortedNotes" class="note-item">
+      <div class="note-content">
+        <p class="note-text">{{ note.content }}</p>
+        <span class="note-date">{{ formatNoteDate(note.createdAt) }}</span>
+      </div>
+      <button 
+        *ngIf="!readOnly"
+        mat-icon-button 
+        (click)="confirmDeleteNote(note)"
+        class="note-delete-button">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-modal *ngIf="showDeleteConfirmModal"
+  [parent]="this"
+  [title]="'CLIENTS.DELETE_NOTE_CONFIRM' | translate"
+  [buttonList]="deleteConfirmButtons"
+  (modalClick)="processDeleteModalClick($event)"
+  class="delete-note-modal">
+  <div content>
+    <p>{{ 'CLIENTS.DELETE_NOTE_MESSAGE' | translate }}</p>
+  </div>
+</app-modal>

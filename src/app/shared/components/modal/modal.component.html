@@ -18,6 +18,7 @@
         <app-button 
         class="button"
         [label]="button.text | translate"
+        [disabled]="button.disabled || false"
         (click)="processButtonClick(button.text)"></app-button>
       </ng-container>
     </div>

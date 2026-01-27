@@ -2,7 +2,7 @@
   mat-raised-button 
   color="primary" 
   type="button" 
-  [disabled]="loading"
+  [disabled]="loading || disabled"
   class="button"
   (click)="onButtonClick()"
 >

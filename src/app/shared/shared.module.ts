@@ -27,6 +27,7 @@ import { DatepickerComponent } from "./components/controls/datepicker/datepicker
 import { RouterModule } from "@angular/router"
 import { ButtonComponent } from "./components/buttons/button/button.component"
 import { ModalComponent } from "./components/modal/modal.component"
+import { NotesComponent } from "./components/notes/notes.component"
 import { TranslateDatePipe } from "./pipes/Date.pipe"
 
 const materialModules = [
@@ -66,7 +67,8 @@ const pipes = [
   declarations: [
     ...inputComponents,
     ...pipes,
-    ModalComponent
+    ModalComponent,
+    NotesComponent
   ],
   imports: [
     ...materialModules,
@@ -81,6 +83,7 @@ const pipes = [
     ...inputComponents, 
     ...pipes,
     ModalComponent,
+    NotesComponent,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,

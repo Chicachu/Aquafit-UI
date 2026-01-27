@@ -50,6 +50,18 @@
       </div>
     </div>
 
+    <div *ngIf="!classesGrouped?.size && terminatedClassEnrollmentInfo.length === 0">
+      <p class="not-enrolled">{{ 'ENROLLMENTS.NOT_ENROLLED' | translate }}</p>
+    </div>
+
+    <!-- Notes Section -->
+    <app-notes
+      [resourceType]="'client'"
+      [resourceId]="clientId || ''"
+      [notes]="client?.notes"
+      (notesUpdated)="onNotesUpdated($event)">
+    </app-notes>
+
     <!-- Terminated Classes -->
     <div *ngIf="terminatedClassEnrollmentInfo.length > 0" class="terminated-section">
       <h3 class="terminated-header">{{ 'CLASSES.TERMINATED_CLASSES' | translate }}</h3>
@@ -82,10 +94,6 @@
           </ul>
         </div>
       </div>
-    </div>
-
-    <div *ngIf="!classesGrouped?.size && terminatedClassEnrollmentInfo.length === 0">
-      <p class="not-enrolled">{{ 'ENROLLMENTS.NOT_ENROLLED' | translate }}</p>
     </div>
   </div>
 </div>

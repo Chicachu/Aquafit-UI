@@ -17,6 +17,7 @@ import { ClientEnrollmentDetails } from "@core/types/clients/clientEnrollmentDet
 import { Enrollment } from "@core/types/enrollment";
 import { Class } from "@core/types/classes/class";
 import { Weekday } from "@core/types/enums/weekday";
+import { Note } from "@core/types/user";
 
 @Component({
   selector: 'app-client-details',
@@ -252,6 +253,12 @@ export class ClientDetailsComponent {
   editClient(): void {
     if (this.clientId) {
       this.router.navigate(['../edit'], { relativeTo: this.route })
+    }
+  }
+
+  onNotesUpdated(notes: Note[]): void {
+    if (this.client) {
+      this.client.notes = notes
     }
   }
 }

@@ -140,3 +140,47 @@ ul {
   margin-left: 10px;
   margin-top: 3px;
 }
+
+::ng-deep .terminate-confirmation-modal {
+  .form-field {
+    display: block;
+    width: 100%;
+  }
+
+  .form-label {
+    display: block;
+    color: $light-blue;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  .cancellation-reason-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $light-blue;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+    resize: vertical;
+    min-height: 80px;
+    color: $primary-pink;
+    background-color: white;
+    box-sizing: border-box;
+    display: block;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-pink;
+    }
+
+    &::placeholder {
+      color: $light-pink;
+    }
+  }
+
+  .error-message {
+    color: $error;
+    font-size: 0.875rem;
+    margin-top: 5px;
+  }
+}

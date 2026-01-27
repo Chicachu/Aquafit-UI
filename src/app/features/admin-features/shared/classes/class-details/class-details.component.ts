@@ -10,12 +10,14 @@ import { ClassClientEnrollmentDetails } from "@/core/types/classes/classClientEn
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { EnrollmentService } from "@/core/services/enrollmentService";
 import { TranslateService } from "@ngx-translate/core";
+import { DatePipe } from "@angular/common";
 import { User } from "@/core/types/user";
 import { Role } from "@/core/types/enums/role";
 import { SelectOption } from "@/core/types/selectOption";
 import { BillingFrequency } from "@/core/types/enums/billingFrequency";
 import { Weekday } from "@/core/types/enums/weekday";
 import { Class } from "@/core/types/classes/class";
+import { Note } from "@/core/types/user";
 
 @Component({
   selector: 'app-class-details',
@@ -39,6 +41,12 @@ export class ClassDetailsComponent implements OnInit {
     return this.clientOptions.length > 0 
       ? [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.ENROLL'}]
       : [{text: 'CONTROLS.CANCEL'}]
+  }
+  get cancelButtons() {
+    return [
+      {text: 'CONTROLS.CANCEL'}, 
+      {text: 'CLASSES.CONFIRM_CANCEL', disabled: !this.cancelForm.valid}
+    ]
   }
   enrollmentForm: FormGroup
   terminateForm: FormGroup
@@ -115,7 +123,8 @@ export class ClassDetailsComponent implements OnInit {
 
     // Initialize cancel form with today's date (no min date restriction - can select past dates)
     this.cancelForm = this.fb.group({
-      cancellation_date: [today, [Validators.required]]
+      cancellation_date: [today, [Validators.required]],
+      reason: ['', [Validators.required]]
     })
   }
 
@@ -305,14 +314,40 @@ export class ClassDetailsComponent implements OnInit {
     if (!this.classId || !this.cancelForm.valid) return
 
     const cancellationDate = this.cancelForm.controls['cancellation_date'].value._d || this.cancelForm.controls['cancellation_date'].value
+    const reason = this.cancelForm.controls['reason'].value?.trim()
+    
+    if (!reason) {
+      this.snackBarService.showError('Reason is required')
+      return
+    }
+
     this.loading = true
     this.showCancelConfirmationModal = false
     this.classService.cancelClass(this.classId, cancellationDate).subscribe({
       next: () => {
-        this.snackBarService.showSuccess(this.translateService.instant('CLASSES.CLASS_CANCELLED_SUCCESS'))
-        // Reload class details
-        this.ngOnInit()
-        this.loading = false
+        // Format the cancellation date for the note using locale-aware formatting
+        const locale = this.translateService.currentLang || 'en'
+        const datePipe = new DatePipe(locale)
+        const dateStr = datePipe.transform(cancellationDate, 'shortDate') || new Date(cancellationDate).toLocaleDateString()
+        const prefix = this.translateService.instant('CLASSES.CANCELLATION_REASON_PREFIX')
+        const noteContent = `${prefix} ${dateStr}: ${reason}`
+        
+        // Add the reason as a note
+        this.classService.addNote(this.classId!, noteContent).subscribe({
+          next: () => {
+            this.snackBarService.showSuccess(this.translateService.instant('CLASSES.CLASS_CANCELLED_SUCCESS'))
+            // Reload class details
+            this.ngOnInit()
+            this.loading = false
+          },
+          error: ({error}) => {
+            // Even if note fails, cancellation succeeded
+            this.snackBarService.showSuccess(this.translateService.instant('CLASSES.CLASS_CANCELLED_SUCCESS'))
+            this.snackBarService.showError('Note could not be added: ' + error.message)
+            this.ngOnInit()
+            this.loading = false
+          }
+        })
       },
       error: ({error}) => {
         this.snackBarService.showError(error.message)
@@ -325,7 +360,7 @@ export class ClassDetailsComponent implements OnInit {
     this.showCancelConfirmationModal = false
     // Reset form to today's date when canceling
     const today = new Date()
-    this.cancelForm.patchValue({ cancellation_date: today })
+    this.cancelForm.patchValue({ cancellation_date: today, reason: '' })
   }
 
   processCancelConfirmationModalClick(event: { ref: ClassDetailsComponent, buttonTitle: string }): void {
@@ -407,5 +442,11 @@ export class ClassDetailsComponent implements OnInit {
       return []
     }
     return this.classDetails.cancellations.map(cancellation => new Date(cancellation.date))
+  }
+
+  onNotesUpdated(notes: Note[]): void {
+    if (this.classDetails) {
+      this.classDetails.notes = notes
+    }
   }
 }

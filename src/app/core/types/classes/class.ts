@@ -3,6 +3,7 @@ import { Currency } from "../enums/currency"
 import { Weekday } from "../enums/weekday"
 import { Document } from "../document"
 import { BillingFrequency } from "../enums/billingFrequency"
+import { Note } from "../user"
 
 export type Class = Document & {
   classLocation: string 
@@ -26,6 +27,7 @@ export type Class = Document & {
     instructorId: string
     reason?: string | null
   }[]
+  notes?: Note[] | null
 }
 
 export type CreateClassDTO = {

@@ -47,4 +47,12 @@ export class ClassService {
   cancelClass(classId: string, cancellationDate: Date): Observable<void> {
     return this.http.post<void>(`${environment.apiUrl}/classes/${classId}/cancel`, { cancellationDate }).pipe(take(1))
   }
+
+  addNote(classId: string, content: string): Observable<Class> {
+    return this.http.post<Class>(`${environment.apiUrl}/classes/${classId}/notes`, { content }).pipe(take(1))
+  }
+
+  deleteNote(classId: string, noteId: string): Observable<Class> {
+    return this.http.delete<Class>(`${environment.apiUrl}/classes/${classId}/notes/${noteId}`).pipe(take(1))
+  }
 }

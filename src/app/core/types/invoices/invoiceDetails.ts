@@ -12,6 +12,7 @@ export type InvoiceDetails = {
     classLocation: string
     days: Weekday[]
   }
+  originalPrice?: Price
   charge: Price 
   discountsApplied?: {
       discountId?: string | null
@@ -26,8 +27,7 @@ export type InvoiceDetails = {
       description?: string | null
     }[]
     paymentsApplied: {
-      amount: number
-      currency: Currency
+      charge: Price
       date: Date
       paymentType: PaymentType
     }[]

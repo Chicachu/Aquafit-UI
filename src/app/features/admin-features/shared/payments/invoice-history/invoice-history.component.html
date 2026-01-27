@@ -12,11 +12,13 @@
       <ul>
         <a *ngFor="let invoice of invoiceHistory.invoices; let i = index"
           [routerLink]="[invoice._id]" class="flex-row">
-          <div [ngClass]="getIconClass(invoice.paymentStatus)" class="icon"></div>
-          <li
-              [ngClass]="[
-                getStatusClass(invoice.paymentStatus), 
-                (invoice.paymentStatus !== PaymentStatus.PAID && i != 0) ? 'flash-alert' : '']">
+          <div 
+            [ngClass]="[
+              getIconClass(invoice.paymentStatus), 
+              'icon',
+              (invoice.paymentStatus === PaymentStatus.OVERDUE && i !== 0) ? 'flash-icon' : ''
+            ]"></div>
+          <li [ngClass]="getStatusClass(invoice.paymentStatus)">
                 [{{ invoice.period.endDate | translateDate:'shortDate' }}] {{ invoice.charge.amount }} {{ invoice.charge.currency }} - {{ invoice.paymentStatus | capitalize }} 
           </li>
           <div class="arrow-right"></div>

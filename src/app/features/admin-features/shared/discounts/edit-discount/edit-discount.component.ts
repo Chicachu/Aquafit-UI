@@ -17,6 +17,7 @@ export class EditDiscountComponent implements OnInit {
   discountForm: FormGroup
   discountTypes: SelectOption[] = Object.keys(DiscountType)
     .filter(key => isNaN(Number(key)))
+    .filter(key => DiscountType[key as keyof typeof DiscountType] !== DiscountType.PARTIAL_ENROLLMENT)
     .map(key => ({
       viewValue: DiscountType[key as keyof typeof DiscountType],
       value: DiscountType[key as keyof typeof DiscountType]

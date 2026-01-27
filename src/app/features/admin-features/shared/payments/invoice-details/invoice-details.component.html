@@ -15,12 +15,6 @@
         <h3>{{ invoiceDetails.paymentStatus | capitalize }}</h3>
       </div>
 
-
-      <div class="flex-row payment-details white">
-        <h4 class="first-column">{{ 'PAYMENTS.AMOUNT_DUE' | translate }}:</h4>
-        <h4 class="second-column">{{ invoiceDetails.charge.amount }} {{ invoiceDetails.charge.currency }}</h4>
-      </div>
-
       <div class="flex-row payment-details white">
         <h4 class="first-column">{{ 'PAYMENTS.PERIOD' | translate }}:</h4>
         <div class="flex-column period second-column">
@@ -33,6 +27,36 @@
             <h5>{{ invoiceDetails.period.endDate | translateDate:'shortDate' }}</h5>
           </div>
         </div>
+      </div>
+
+      <hr />
+
+      <div class="flex-row payment-details white" *ngIf="invoiceDetails.originalPrice">
+        <h4 class="first-column">{{ 'PAYMENTS.ORIGINAL_PRICE' | translate }}:</h4>
+        <h4 class="second-column price-value">{{ invoiceDetails.originalPrice.amount }} {{ invoiceDetails.originalPrice.currency }}</h4>
+      </div>
+
+      <div *ngIf="invoiceDetails.discountsApplied && invoiceDetails.discountsApplied.length > 0">
+        <div class="flex-row payment-details white">
+          <h4 class="first-column">{{ 'PAYMENTS.DISCOUNTS' | translate }}:</h4>
+          <div class="second-column"></div>
+        </div>
+        <div *ngFor="let discount of invoiceDetails.discountsApplied" class="flex-row payment-details white discount-row">
+          <h4 class="first-column discount-name">{{ discount.description || 'Discount' }}</h4>
+          <h4 class="second-column price-value">-{{ getDiscountAmount(discount) }} {{ getDiscountCurrency(discount) }}</h4>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="flex-row payment-details white">
+        <h4 class="first-column">{{ 'PAYMENTS.AMOUNT_DUE' | translate }}:</h4>
+        <h4 class="second-column price-value">{{ invoiceDetails.charge.amount }} {{ invoiceDetails.charge.currency }}</h4>
+      </div>
+
+      <div class="flex-row payment-details white">
+        <h4 class="first-column">{{ 'PAYMENTS.DUE_BY' | translate }}:</h4>
+        <h4 class="second-column price-value">{{ invoiceDetails.period.endDate | translateDate:'shortDate' }}</h4>
       </div>
     </div>
   </div>

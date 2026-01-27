@@ -41,3 +41,28 @@ h3, h4, h5, h6 {
   width: 50vw;
 }
 
+.second-column {
+  width: 45vw;
+  text-align: right;
+}
+
+.price-value {
+  text-align: right;
+}
+
+.discount-row {
+  padding-left: 0;
+}
+
+.discount-name {
+  text-transform: capitalize;
+  padding-left: 20px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 15px 5vw;
+  width: 90vw;
+}
+

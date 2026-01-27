@@ -53,4 +53,24 @@ export class InvoiceDetailsComponent {
           return ''
       }
     }
+
+  public getDiscountAmount(discount: any): number {
+    if (discount.amountSnapshot?.amount != null) {
+      return discount.amountSnapshot.amount
+    }
+    if (discount.amountOverride?.amount != null) {
+      return discount.amountOverride.amount
+    }
+    return 0
+  }
+
+  public getDiscountCurrency(discount: any): string {
+    if (discount.amountSnapshot?.currency) {
+      return discount.amountSnapshot.currency
+    }
+    if (discount.amountOverride?.currency) {
+      return discount.amountOverride.currency
+    }
+    return 'MXN'
+  }
 }

@@ -9,7 +9,7 @@ h3, h4, h5 {
   align-items: center;
 }
 
-@keyframes flashRedOrange {
+@keyframes flashIconStroke {
   0% { background-color: #ff0000; }
   50% { background-color: #ffa500; }
   100% { background-color: #ff0000; }
@@ -19,10 +19,8 @@ li {
   padding: 5px;
 }
 
-.flash-alert {
-  animation: flashRedOrange 1s infinite;
-  color: white;
-  width: fit-content;
+.flash-icon {
+  animation: flashIconStroke 1s infinite;
 }
 
 a {

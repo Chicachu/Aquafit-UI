@@ -1,23 +1,103 @@
 @import '../../../../../assets/colors.scss';
 
-ul {
-  display: flex;
-  padding: 0;
-  gap: 1rem;
+.mobile-nav-container {
+  position: relative;
   background-color: $primary-blue;
-  height: 40px;
-  margin: 0;
-  padding: 0 8px;
-  align-items: center;
-  justify-content: space-between;
   border-bottom: 4px solid $primary-green;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  z-index: 1000;
+
+  // Mobile only - hide on larger screens
+  @media (min-width: 768px) {
+    display: none;
+  }
 }
 
-li {
-  padding: 10px 2px;
-  color: $light-green;
+.hamburger-button {
+  color: $light-green !important;
+  
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
 }
 
-li > div {
-  display: block; 
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: $primary-blue;
+  border-bottom: 4px solid $primary-green;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  z-index: 999;
+
+  &.open {
+    max-height: 500px; // Adjust based on number of menu items
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+  }
+
+  li {
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    
+    &:first-child {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    &:last-child {
+      border-bottom: none;
+    }
+
+    a {
+      display: block;
+      padding: 16px 16px;
+      color: $light-green;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 16px;
+      font-weight: 500;
+      -webkit-tap-highlight-color: transparent; // Remove tap highlight on mobile
+
+      // Only apply hover on devices that support it (not touch devices)
+      @media (hover: hover) {
+        &:hover {
+          background-color: $mid-blue;
+        }
+      }
+
+      // Touch feedback for mobile
+      &:active {
+        background-color: $mid-blue;
+      }
+    }
+
+    &.active {
+      a {
+        background-color: $mid-blue;
+        
+        // Ensure active state overrides hover/active states
+        &:hover,
+        &:active {
+          background-color: $mid-blue;
+        }
+      }
+    }
+  }
 }

@@ -1,8 +1,19 @@
 <div class="flex-column">
-  <div>
-    <ul>
-      <li *ngFor="let title of navTitles"><a (click)="navigate(title)">{{ title | translate }}</a></li>
-    </ul>
+  <div class="mobile-nav-container">
+    <button 
+      mat-icon-button 
+      class="hamburger-button"
+      (click)="toggleMenu()"
+      aria-label="Toggle navigation menu">
+      <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+    <div class="dropdown-menu" [class.open]="isMenuOpen">
+      <ul>
+        <li *ngFor="let title of navTitles" [class.active]="isActive(title)">
+          <a (click)="navigate(title, $event)">{{ title | translate }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
   <router-outlet />
 </div>

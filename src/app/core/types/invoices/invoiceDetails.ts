@@ -33,4 +33,6 @@ export type InvoiceDetails = {
     }[]
     paymentStatus: PaymentStatus
     period: Period
+    bonusSessionsApplied?: number
+    originalEndDate?: Date
 }

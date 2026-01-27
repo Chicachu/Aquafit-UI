@@ -24,7 +24,7 @@ export type Class = Document & {
   cancellations?: {
     date: Date
     instructorId: string
-    reason: string
+    reason?: string | null
   }[]
 }
 

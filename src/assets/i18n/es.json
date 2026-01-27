@@ -108,7 +108,12 @@
     "CONFIRM_TERMINATE_TITLE": "¿Terminar Clase?",
     "CONFIRM_TERMINATE_MESSAGE": "¿Está seguro de que desea terminar esta clase?",
     "CONFIRM_TERMINATE_WARNING": "Esta acción no se puede deshacer.",
-    "CONFIRM_TERMINATE": "Sí, Terminar Clase"
+    "CONFIRM_TERMINATE": "Sí, Terminar Clase",
+    "CONFIRM_CANCEL_TITLE": "¿Cancelar Clase?",
+    "CONFIRM_CANCEL_MESSAGE": "¿Está seguro de que desea cancelar esta clase?",
+    "CONFIRM_CANCEL_WARNING": "Esta acción no se puede deshacer.",
+    "CONFIRM_CANCEL": "Sí, Cancelar Clase",
+    "CLASS_CANCELLED_SUCCESS": "¡Clase cancelada exitosamente!"
   },
   "WEEKDAYS": {
     "SUNDAY": "Domingo",
@@ -145,6 +150,11 @@
     "PERIOD": "Período",
     "START": "Inicio",
     "END": "Fin",
+    "ORIGINAL_END": "Fin Original",
+    "NEW_END": "Nuevo Fin",
+    "BONUS_SESSIONS_APPLIED": "Sesiones de Bonificación Aplicadas",
+    "BONUS_SESSION_SINGULAR": "sesión de bonificación",
+    "BONUS_SESSION_PLURAL": "sesiones de bonificación",
     "APPLY_PAYMENT": "Aplicar Pago"
   },
   "CALENDAR": {

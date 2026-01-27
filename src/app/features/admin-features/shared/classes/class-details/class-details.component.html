@@ -67,6 +67,7 @@
 
     <div class="flex-row buttons">
       <app-button 
+        *ngIf="!isTerminated"
         [label]="'CLASSES.CANCEL'"
         [loading]="loading"
         [loadingMessage]="'CLASSES.CANCELLING'"
@@ -149,6 +150,26 @@
         label="CONTROLS.END_DATE"
         controlName="end_date"
         [minDate]="minTerminationDate">
+      </app-datepicker>
+    </form>
+  </div>
+</app-modal>
+
+<app-modal *ngIf="showCancelConfirmationModal"
+  [parent]="this"
+  [title]="'CLASSES.CONFIRM_CANCEL_TITLE' | translate"
+  [buttonList]="[{text: 'CONTROLS.CANCEL'}, {text: 'CLASSES.CONFIRM_CANCEL'}]"
+  (modalClick)="processCancelConfirmationModalClick($event)"
+  class="terminate-confirmation-modal">
+  <div content> 
+    <p>{{ 'CLASSES.CONFIRM_CANCEL_MESSAGE' | translate }}</p>
+    <p class="warning-text">{{ 'CLASSES.CONFIRM_CANCEL_WARNING' | translate }}</p>
+    <form [formGroup]="cancelForm">
+      <app-datepicker
+        label="CONTROLS.END_DATE"
+        controlName="cancellation_date"
+        [allowedWeekdays]="classDetails?.days"
+        [disabledDates]="cancelledDates">
       </app-datepicker>
     </form>
   </div>

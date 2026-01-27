@@ -108,7 +108,12 @@
     "CONFIRM_TERMINATE_TITLE": "Terminate Class?",
     "CONFIRM_TERMINATE_MESSAGE": "Are you sure you want to terminate this class?",
     "CONFIRM_TERMINATE_WARNING": "This action cannot be undone.",
-    "CONFIRM_TERMINATE": "Yes, Terminate Class"
+    "CONFIRM_TERMINATE": "Yes, Terminate Class",
+    "CONFIRM_CANCEL_TITLE": "Cancel Class?",
+    "CONFIRM_CANCEL_MESSAGE": "Are you sure you want to cancel this class?",
+    "CONFIRM_CANCEL_WARNING": "This action cannot be undone.",
+    "CONFIRM_CANCEL": "Yes, Cancel Class",
+    "CLASS_CANCELLED_SUCCESS": "Class cancelled successfully!"
   },
   "WEEKDAYS": {
     "SUNDAY": "Sunday",
@@ -145,6 +150,11 @@
     "PERIOD": "Period",
     "START": "Start",
     "END": "End",
+    "ORIGINAL_END": "Original End",
+    "NEW_END": "New End",
+    "BONUS_SESSIONS_APPLIED": "Bonus Sessions Applied",
+    "BONUS_SESSION_SINGULAR": "bonus session",
+    "BONUS_SESSION_PLURAL": "bonus sessions",
     "APPLY_PAYMENT": "Apply Payment"
   },
   "CALENDAR": {

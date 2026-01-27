@@ -34,6 +34,7 @@ export class ClassDetailsComponent implements OnInit {
   isTerminated = false
   showEnrollmentModal = false
   showTerminateConfirmationModal = false
+  showCancelConfirmationModal = false
   get enrollmentButtons() {
     return this.clientOptions.length > 0 
       ? [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.ENROLL'}]
@@ -41,6 +42,7 @@ export class ClassDetailsComponent implements OnInit {
   }
   enrollmentForm: FormGroup
   terminateForm: FormGroup
+  cancelForm: FormGroup
   availableClients: User[] = []
   clientOptions: SelectOption[] = []
   weekdays: SelectOption[] = Object.keys(Weekday)
@@ -109,6 +111,11 @@ export class ClassDetailsComponent implements OnInit {
     this.minTerminationDate = today
     this.terminateForm = this.fb.group({
       end_date: [today, [Validators.required, this._minDateValidator(today)]]
+    })
+
+    // Initialize cancel form with today's date (no min date restriction - can select past dates)
+    this.cancelForm = this.fb.group({
+      cancellation_date: [today, [Validators.required]]
     })
   }
 
@@ -244,8 +251,89 @@ export class ClassDetailsComponent implements OnInit {
   }
 
   cancelClass(): void {
-    // call api - api will find this class with a class Id, iterate through all clients (except overdue clients) 
-    // and give them a free bonus session. 
+    if (!this.classId || !this.classDetails) return
+    
+    // Find the next available date that matches class days and isn't already cancelled
+    const initialDate = this._findNextAvailableCancellationDate()
+    this.cancelForm.patchValue({ cancellation_date: initialDate })
+    this.showCancelConfirmationModal = true
+  }
+
+  private _findNextAvailableCancellationDate(): Date {
+    if (!this.classDetails) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return today
+    }
+
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const classDays = this.classDetails.days || []
+    const cancellations = this.classDetails.cancellations || []
+    
+    // Helper to check if a date is cancelled
+    const isCancelled = (date: Date): boolean => {
+      const dateStr = date.getTime()
+      return cancellations.some(cancellation => {
+        const cancellationDate = new Date(cancellation.date)
+        cancellationDate.setHours(0, 0, 0, 0)
+        return cancellationDate.getTime() === dateStr
+      })
+    }
+
+    // Helper to check if a date matches class days
+    const matchesClassDays = (date: Date): boolean => {
+      return classDays.includes(date.getDay())
+    }
+
+    // Start from today and look forward up to 30 days
+    let checkDate = new Date(today)
+    for (let i = 0; i < 30; i++) {
+      if (matchesClassDays(checkDate) && !isCancelled(checkDate)) {
+        return checkDate
+      }
+      checkDate = new Date(checkDate)
+      checkDate.setDate(checkDate.getDate() + 1)
+      checkDate.setHours(0, 0, 0, 0)
+    }
+
+    // If no available date found in next 30 days, return today anyway
+    return today
+  }
+
+  confirmCancelClass(): void {
+    if (!this.classId || !this.cancelForm.valid) return
+
+    const cancellationDate = this.cancelForm.controls['cancellation_date'].value._d || this.cancelForm.controls['cancellation_date'].value
+    this.loading = true
+    this.showCancelConfirmationModal = false
+    this.classService.cancelClass(this.classId, cancellationDate).subscribe({
+      next: () => {
+        this.snackBarService.showSuccess(this.translateService.instant('CLASSES.CLASS_CANCELLED_SUCCESS'))
+        // Reload class details
+        this.ngOnInit()
+        this.loading = false
+      },
+      error: ({error}) => {
+        this.snackBarService.showError(error.message)
+        this.loading = false
+      }
+    })
+  }
+
+  cancelCancelClass(): void {
+    this.showCancelConfirmationModal = false
+    // Reset form to today's date when canceling
+    const today = new Date()
+    this.cancelForm.patchValue({ cancellation_date: today })
+  }
+
+  processCancelConfirmationModalClick(event: { ref: ClassDetailsComponent, buttonTitle: string }): void {
+    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
+      this.cancelCancelClass()
+    } else if (event.buttonTitle === 'CLASSES.CONFIRM_CANCEL') {
+      this.confirmCancelClass()
+    }
   }
 
   terminateClass(): void {
@@ -312,5 +400,12 @@ export class ClassDetailsComponent implements OnInit {
 
       this.clientsByPaymentStatus.set(client.currentPayment.paymentStatus, group)
     })
+  }
+
+  get cancelledDates(): Date[] {
+    if (!this.classDetails?.cancellations) {
+      return []
+    }
+    return this.classDetails.cancellations.map(cancellation => new Date(cancellation.date))
   }
 }

@@ -43,4 +43,8 @@ export class ClassService {
   terminateClass(classId: string, endDate: Date): Observable<void> {
     return this.http.post<void>(`${environment.apiUrl}/classes/${classId}/terminate`, { endDate }).pipe(take(1))
   }
+
+  cancelClass(classId: string, cancellationDate: Date): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/classes/${classId}/cancel`, { cancellationDate }).pipe(take(1))
+  }
 }

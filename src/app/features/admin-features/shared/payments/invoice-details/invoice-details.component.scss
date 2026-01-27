@@ -13,12 +13,24 @@ h3, h4, h5, h6 {
 }
 
 .period {
-  position: relative;
-  top: 14px;
+  // Removed top positioning to align Period: label at the top
+}
+
+.period-label {
+  align-self: flex-start;
 }
 
 .period > div {
   justify-content: space-between;
+}
+
+.period-row-label {
+  // Ensure consistent alignment for all period row labels
+  // Reset any margins/padding that might cause misalignment
+  margin: 0;
+  padding: 0;
+  width: auto;
+  min-width: 0;
 }
 
 .container {
@@ -43,7 +55,7 @@ h3, h4, h5, h6 {
 
 .second-column {
   width: 45vw;
-  text-align: right;
+  text-align: left;
 }
 
 .price-value {

@@ -18,6 +18,7 @@ import { Enrollment } from "@core/types/enrollment";
 import { Class } from "@core/types/classes/class";
 import { Weekday } from "@core/types/enums/weekday";
 import { Note } from "@core/types/user";
+import { EnrollmentStatus } from "@core/types/enums/enrollmentStatus";
 
 @Component({
   selector: 'app-client-details',
@@ -26,12 +27,17 @@ import { Note } from "@core/types/user";
 })
 export class ClientDetailsComponent {
   readonly FormatOptions = FormatOptions
+  readonly EnrollmentStatus = EnrollmentStatus
   ButtonType = ButtonType
   clientId: string | null = null
   client: User | null = null
   canEditClient = false
   showEnrollmentModal = false
   enrollmentButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.ENROLL'}]
+  showUnenrollModal = false
+  unenrollButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.UNENROLL'}]
+  unenrollForm: FormGroup
+  selectedEnrollmentForUnenroll: { class: Class, enrollment: Enrollment } | null = null
   classSelectionForm: FormGroup 
   classTypeOptions: SelectOption[] = []
   selectedType: ClassType | null = null 
@@ -42,6 +48,7 @@ export class ClientDetailsComponent {
   selectedClassId: string = ''
   classEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
   activeClassEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
+  unenrolledClassEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
   terminatedClassEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
   weekdays: SelectOption[] = Object.keys(Weekday)
     .filter(key => isNaN(Number(key)))
@@ -74,6 +81,9 @@ export class ClientDetailsComponent {
       start_date: ['', [Validators.required]],
       days_override: [null, []],
       billing_frequency_override: [null, []]
+    })
+    this.unenrollForm = this.fb.group({
+      cancelReason: ['']
     })
   }
 
@@ -115,10 +125,18 @@ export class ClientDetailsComponent {
       this.selectedLocation = selectedLocation
       const timeMap = this.classScheduleMap[this.selectedType]?.[selectedLocation] || {};
 
-      this.classTimesOptions = Object.keys(timeMap).map(timeSlot => ({
-        value: timeSlot, 
-        viewValue: timeSlot
-      }))
+      // Filter out time slots for classes the client is already actively enrolled in
+      const activeClassIds = this._getActiveEnrolledClassIds(this.selectedType, selectedLocation)
+      
+      this.classTimesOptions = Object.keys(timeMap)
+        .filter(timeSlot => {
+          const classId = timeMap[timeSlot]
+          return !activeClassIds.has(classId)
+        })
+        .map(timeSlot => ({
+          value: timeSlot, 
+          viewValue: timeSlot
+        }))
       
       this.selectedClassId = ''
       this.classSelectionForm.get('time')?.reset('', { emitEvent: false })
@@ -190,15 +208,58 @@ export class ClientDetailsComponent {
     })
   }
 
+  private _getActiveEnrolledClassIds(classType: ClassType, location: string): Set<string> {
+    const activeClassIds = new Set<string>()
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    // Check all enrollments (not just activeClassEnrollmentInfo) to include those with endDate that haven't passed
+    this.classEnrollmentInfo.forEach(item => {
+      // Skip if class type or location doesn't match
+      if (item.class.classType !== classType || item.class.classLocation !== location) {
+        return
+      }
+
+      // Check if enrollment is still active
+      // An enrollment is active if:
+      // 1. Status is ACTIVE (not UNENROLLED or TERMINATED)
+      // 2. If it has an endDate, it hasn't passed yet (yesterday or earlier means it's ended)
+      const isActive = item.enrollment.status === EnrollmentStatus.ACTIVE
+      if (isActive) {
+        if (item.enrollment.endDate) {
+          const enrollmentEndDate = new Date(item.enrollment.endDate)
+          enrollmentEndDate.setHours(0, 0, 0, 0)
+          const yesterday = new Date(today)
+          yesterday.setDate(yesterday.getDate() - 1)
+          
+          // If endDate has passed (yesterday or earlier), it's no longer active
+          if (enrollmentEndDate <= yesterday) {
+            return
+          }
+        }
+        
+        // Enrollment is still active, add its classId to the set
+        activeClassIds.add(item.class._id)
+      }
+    })
+
+    return activeClassIds
+  }
+
   private _separateActiveAndTerminated(classEnrollmentInfo: { class: Class, enrollment: Enrollment }[]): void {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
     this.activeClassEnrollmentInfo = []
+    this.unenrolledClassEnrollmentInfo = []
     this.terminatedClassEnrollmentInfo = []
 
     classEnrollmentInfo.forEach(item => {
-      if (item.class.endDate) {
+      // First check enrollment status - if UNENROLLED, add to unenrolled section
+      if (item.enrollment.status === EnrollmentStatus.UNENROLLED) {
+        this.unenrolledClassEnrollmentInfo.push(item)
+      } else if (item.class.endDate) {
+        // Check if class is terminated
         const endDate = new Date(item.class.endDate)
         endDate.setHours(0, 0, 0, 0)
         if (endDate <= today) {
@@ -214,6 +275,25 @@ export class ClientDetailsComponent {
 
   get classesGrouped(): Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>> | undefined {
     return this.activeClassEnrollmentInfo?.reduce((typeMap, classEnrollment) => {
+      const { class: classObj, enrollment } = classEnrollment
+
+      if (!typeMap.has(classObj.classType)) {
+        typeMap.set(classObj.classType, new Map<string, { class: Class, enrollment: Enrollment }[]>())
+      }
+      const locationMap = typeMap.get(classObj.classType)!
+
+      const locationKey = classObj.classLocation;
+      const locationClasses = locationMap.get(locationKey) || [];
+
+      locationClasses.push({ class: classObj, enrollment });
+      locationMap.set(locationKey, locationClasses)
+   
+      return typeMap;
+    }, new Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>>());
+  }
+
+  get unenrolledClassesGrouped(): Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>> | undefined {
+    return this.unenrolledClassEnrollmentInfo?.reduce((typeMap, classEnrollment) => {
       const { class: classObj, enrollment } = classEnrollment
 
       if (!typeMap.has(classObj.classType)) {
@@ -259,6 +339,36 @@ export class ClientDetailsComponent {
   onNotesUpdated(notes: Note[]): void {
     if (this.client) {
       this.client.notes = notes
+    }
+  }
+
+  public setShowUnenrollModal(classAndEnrollment: { class: Class, enrollment: Enrollment }): void {
+    this.selectedEnrollmentForUnenroll = classAndEnrollment
+    this.unenrollForm.reset()
+    this.showUnenrollModal = true
+  }
+
+  public processUnenrollModalClick(event: { ref: ClientDetailsComponent, buttonTitle: string }): void {
+    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
+      this.unenrollForm.reset()
+      this.showUnenrollModal = false
+      this.selectedEnrollmentForUnenroll = null
+    } else if (event.buttonTitle === 'CLIENTS.UNENROLL') {
+      if (!this.selectedEnrollmentForUnenroll) return
+      
+      const cancelReason = this.unenrollForm.get('cancelReason')?.value || undefined
+      this.enrollmentService.unenrollClient(this.selectedEnrollmentForUnenroll.enrollment._id, cancelReason).subscribe({
+        next: () => {
+          this.ngOnInit()
+          this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.UNENROLL_SUCCESS'))
+          this.showUnenrollModal = false
+          this.selectedEnrollmentForUnenroll = null
+          this.unenrollForm.reset()
+        },
+        error: ({error}) => {
+          this.snackBarService.showError(error.message)
+        }
+      })
     }
   }
 }

@@ -42,7 +42,8 @@
     "DELETE": "Delete",
     "BILLING_FREQUENCY": "Billing Frequency",
     "DAYS_OVERRIDE": "Partial Enrollment", 
-    "BILLING_FREQUENCY_OVERRIDE": "Billing Frequency Override"
+    "BILLING_FREQUENCY_OVERRIDE": "Billing Frequency Override",
+    "INSTRUCTOR": "Instructor"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} is required",
@@ -95,7 +96,14 @@
     "NOTE_ADDED": "Note added successfully!",
     "NOTE_DELETED": "Note deleted successfully!",
     "DELETE_NOTE_CONFIRM": "Delete Note?",
-    "DELETE_NOTE_MESSAGE": "Are you sure you want to delete this note? This action cannot be undone."
+    "DELETE_NOTE_MESSAGE": "Are you sure you want to delete this note? This action cannot be undone.",
+    "INSTRUCTORS": "Instructors",
+    "ACTIVE_CLIENTS": "Active Clients",
+    "INACTIVE_CLIENTS": "Inactive Clients",
+    "UNENROLL": "Unenroll Client",
+    "UNENROLL_CONFIRM_MESSAGE": "Are you sure you want to unenroll this client from the class?",
+    "UNENROLL_REASON": "Reason (Optional)",
+    "UNENROLL_SUCCESS": "Client unenrolled successfully!"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",
@@ -112,6 +120,7 @@
     "TERMINATING": "Terminating...",
     "CLASS_TERMINATED_SUCCESS": "Class terminated successfully!",
     "TERMINATED_CLASSES": "Terminated Classes",
+    "UNENROLLED_CLASSES": "Unenrolled Classes",
     "CONFIRM_TERMINATE_TITLE": "Terminate Class?",
     "CONFIRM_TERMINATE_MESSAGE": "Are you sure you want to terminate this class?",
     "CONFIRM_TERMINATE_WARNING": "This action cannot be undone.",

@@ -39,18 +39,28 @@
                 </ng-template>
                 - {{ classAndEnrollment.class.startTime | timeFormat }}
               </a>
-              <a
-              [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
-                class="payment-history-link">
-                <mat-icon class="icon">receipt_long</mat-icon>
-              </a>
+              <div class="action-buttons">
+                <button
+                  *ngIf="canEditClient && classAndEnrollment.enrollment.status === EnrollmentStatus.ACTIVE && !classAndEnrollment.enrollment.endDate"
+                  mat-icon-button
+                  (click)="setShowUnenrollModal(classAndEnrollment)"
+                  class="unenroll-button"
+                  type="button">
+                  <mat-icon class="icon">person_remove</mat-icon>
+                </button>
+                <a
+                  [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
+                  class="payment-history-link">
+                  <mat-icon class="icon">receipt_long</mat-icon>
+                </a>
+              </div>
             </div>
           </li>
         </ul>
       </div>
     </div>
 
-    <div *ngIf="!classesGrouped?.size && terminatedClassEnrollmentInfo.length === 0">
+    <div *ngIf="activeClassEnrollmentInfo.length === 0">
       <p class="not-enrolled">{{ 'ENROLLMENTS.NOT_ENROLLED' | translate }}</p>
     </div>
 
@@ -61,6 +71,40 @@
       [notes]="client?.notes"
       (notesUpdated)="onNotesUpdated($event)">
     </app-notes>
+
+    <!-- Unenrolled Classes -->
+    <div *ngIf="unenrolledClassEnrollmentInfo.length > 0" class="unenrolled-section">
+      <h3 class="unenrolled-header">{{ 'CLASSES.UNENROLLED_CLASSES' | translate }}</h3>
+      <hr />
+      <div *ngFor="let classEnrollment of unenrolledClassesGrouped | keyvalue">
+        <h3 class="mid-green">{{ 'CLASS_TYPES.' + classEnrollment.key | translate | capitalize }}</h3>
+        <div *ngFor="let locationGroup of classEnrollment.value | keyvalue">
+          <h4>{{ locationGroup.key }}</h4>
+          <ul>
+            <li *ngFor="let classAndEnrollment of locationGroup.value">
+              <div class="flex-row details-row">
+                <a [routerLink]="['/admin/mobile/classes', classAndEnrollment?.class?._id, 'details']">
+                  <ng-container *ngIf="classAndEnrollment.enrollment.daysOfWeekOverride as override; else defaultDays">
+                    <ng-container *ngIf="override.length > 0; else defaultDays">
+                      {{ override | weekdays:'/' }}
+                    </ng-container>
+                  </ng-container>
+                  <ng-template #defaultDays>
+                    {{ classAndEnrollment.class.days | weekdays:'/' }}
+                  </ng-template>
+                  - {{ classAndEnrollment.class.startTime | timeFormat }}
+                </a>
+                <a
+                [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
+                  class="payment-history-link">
+                  <mat-icon class="icon">receipt_long</mat-icon>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
     <!-- Terminated Classes -->
     <div *ngIf="terminatedClassEnrollmentInfo.length > 0" class="terminated-section">
@@ -156,6 +200,42 @@
           </app-dropdown>
         </ng-template>
       </mat-expansion-panel>
+    </form>
+  </div>
+</app-modal>
+
+<app-modal *ngIf="showUnenrollModal"
+  [parent]="this"
+  [title]="'CLIENTS.UNENROLL' | translate"
+  [buttonList]="unenrollButtons"
+  (modalClick)="processUnenrollModalClick($event)"
+  class="unenroll-modal">
+  <div content>
+    <p>{{ 'CLIENTS.UNENROLL_CONFIRM_MESSAGE' | translate }}</p>
+    <div *ngIf="selectedEnrollmentForUnenroll">
+      <h5>
+        {{ 'CLASS_TYPES.' + selectedEnrollmentForUnenroll.class.classType | translate | capitalize }} - 
+        {{ selectedEnrollmentForUnenroll.class.classLocation }}
+      </h5>
+      <h5>
+        <ng-container *ngIf="selectedEnrollmentForUnenroll.enrollment.daysOfWeekOverride as override; else defaultDays">
+          <ng-container *ngIf="override.length > 0; else defaultDays">
+            {{ override | weekdays:'/' }}
+          </ng-container>
+        </ng-container>
+        <ng-template #defaultDays>
+          {{ selectedEnrollmentForUnenroll.class.days | weekdays:'/' }}
+        </ng-template>
+        - {{ selectedEnrollmentForUnenroll.class.startTime | timeFormat }}
+      </h5>
+    </div>
+    <form [formGroup]="unenrollForm">
+      <textarea 
+        formControlName="cancelReason"
+        class="unenroll-reason-textarea"
+        placeholder="{{ 'CLIENTS.UNENROLL_REASON' | translate }}"
+        rows="4">
+      </textarea>
     </form>
   </div>
 </app-modal>

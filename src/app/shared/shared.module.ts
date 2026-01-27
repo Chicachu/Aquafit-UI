@@ -17,6 +17,7 @@ import { MatFormFieldModule } from "@angular/material/form-field"
 import { MatAutocompleteModule } from "@angular/material/autocomplete"
 import { MatDatepickerModule } from "@angular/material/datepicker"
 import { MatTooltipModule } from "@angular/material/tooltip"
+import { MatCheckboxModule } from "@angular/material/checkbox"
 import { AutocompleteDropdownComponent } from "./components/controls/autocomplete-dropdown/autocomplete-dropdown.component"
 import { DropdownComponent } from "./components/controls/dropdown/dropdown.component"
 import { LanguageSelectorComponent } from "./components/language-selector/language-selector.component"
@@ -42,7 +43,8 @@ const materialModules = [
   MatSnackBarModule,
   MatSelectModule,    
   MatFormFieldModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatCheckboxModule
 ]
 
 const inputComponents = [

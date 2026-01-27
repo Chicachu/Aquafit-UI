@@ -1,43 +1,92 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { User } from "../../../../../core/types/user";
 import { UserService } from "../../../../../core/services/userService";
 import { SnackBarService } from "../../../../../core/services/snackBarService";
 import { Router } from "@angular/router";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { Role } from "@core/types/enums/role";
+import { EnrollmentService } from "../../../../../core/services/enrollmentService";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.scss']
 })
-export class ClientListComponent {
+export class ClientListComponent implements OnInit {
   ButtonType = ButtonType
   @Input() title: string = ''
-  users: User[] | null = null
+  activeClients: User[] | null = null
+  inactiveClients: User[] | null = null
+  instructors: User[] | null = null
+  get isAdmin(): boolean {
+    return this.usersService.isAdmin
+  }
 
   constructor(
     private usersService: UserService,
     private snackBarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private enrollmentService: EnrollmentService
   ) {}
 
   ngOnInit(): void {
-    this.usersService.getAllUsers(Role.CLIENT).subscribe({
-      next: (users: User[]) => {
-        this.users = users
-        this.users.sort((a: User, b: User) => {
+    // Load clients and active enrollments in parallel
+    forkJoin({
+      users: this.usersService.getAllUsers(Role.CLIENT),
+      activeEnrollments: this.enrollmentService.getAllActiveEnrollments()
+    }).subscribe({
+      next: ({ users, activeEnrollments }) => {
+        // Create a Set of userIds that have active enrollments
+        const activeClientIds = new Set<string>(
+          activeEnrollments.map((enrollment) => enrollment.userId)
+        )
+
+        // Separate clients into active and inactive
+        const active: User[] = []
+        const inactive: User[] = []
+
+        users.forEach((user: User) => {
+          if (activeClientIds.has(user._id)) {
+            active.push(user)
+          } else {
+            inactive.push(user)
+          }
+        })
+
+        // Sort both lists
+        const sortUsers = (a: User, b: User) => {
           if (a.firstName < b.firstName) return -1
           if (b.firstName < a.firstName) return 1
-          if (a.firstName === b.firstName) return 0
-
           return 0
-        })
-      }, 
+        }
+
+        this.activeClients = active.sort(sortUsers)
+        this.inactiveClients = inactive.sort(sortUsers)
+      },
       error: ({error}) => {
         this.snackBarService.showError(error.message)
       }
     })
+
+    // Load instructors if user is admin
+    if (this.isAdmin) {
+      this.usersService.getAllUsers(Role.INSTRUCTOR).subscribe({
+        next: (instructors: User[]) => {
+          this.instructors = instructors
+          this.instructors.sort((a: User, b: User) => {
+            if (a.firstName < b.firstName) return -1
+            if (b.firstName < a.firstName) return 1
+            if (a.firstName === b.firstName) return 0
+
+            return 0
+          })
+        }, 
+        error: ({error}) => {
+          this.snackBarService.showError(error.message)
+        }
+      })
+    }
   }
 
   addNewClient(): void {

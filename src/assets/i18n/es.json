@@ -42,7 +42,8 @@
     "DELETE": "Eliminar",
     "BILLING_FREQUENCY": "Frecuencia de Facturación",
     "DAYS_OVERRIDE": "Inscripción Parcial",
-    "BILLING_FREQUENCY_OVERRIDE": "Anulación de Frecuencia de Facturación"
+    "BILLING_FREQUENCY_OVERRIDE": "Anulación de Frecuencia de Facturación",
+    "INSTRUCTOR": "Instructor"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} es requerido",
@@ -95,7 +96,14 @@
     "NOTE_ADDED": "¡Nota agregada exitosamente!",
     "NOTE_DELETED": "¡Nota eliminada exitosamente!",
     "DELETE_NOTE_CONFIRM": "¿Eliminar Nota?",
-    "DELETE_NOTE_MESSAGE": "¿Está seguro de que desea eliminar esta nota? Esta acción no se puede deshacer."
+    "DELETE_NOTE_MESSAGE": "¿Está seguro de que desea eliminar esta nota? Esta acción no se puede deshacer.",
+    "INSTRUCTORS": "Instructores",
+    "ACTIVE_CLIENTS": "Clientes Activos",
+    "INACTIVE_CLIENTS": "Clientes Inactivos",
+    "UNENROLL": "Dar de Baja Cliente",
+    "UNENROLL_CONFIRM_MESSAGE": "¿Está seguro de que desea dar de baja a este cliente de la clase?",
+    "UNENROLL_REASON": "Razón (Opcional)",
+    "UNENROLL_SUCCESS": "¡Cliente dado de baja exitosamente!"
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Agregar Clase",
@@ -112,6 +120,7 @@
     "TERMINATING": "Terminando...",
     "CLASS_TERMINATED_SUCCESS": "¡Clase terminada exitosamente!",
     "TERMINATED_CLASSES": "Clases Terminadas",
+    "UNENROLLED_CLASSES": "Clases Desinscritas",
     "CONFIRM_TERMINATE_TITLE": "¿Terminar Clase?",
     "CONFIRM_TERMINATE_MESSAGE": "¿Está seguro de que desea terminar esta clase?",
     "CONFIRM_TERMINATE_WARNING": "Esta acción no se puede deshacer.",

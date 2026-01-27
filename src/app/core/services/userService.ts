@@ -61,11 +61,11 @@ export class UserService {
     return this._http.get<ClientEnrollmentDetails>(`${environment.apiUrl}/users/${userId}/enrollments`).pipe(take(1))
   }
 
-  addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber?: string }): Observable<Object> {
+  addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber?: string, role?: Role, instructorId?: number | null }): Observable<Object> {
     return this._http.put(`${environment.apiUrl}/users/`, { ...reqObj }).pipe(take(1))
   }
 
-  updateClient(userId: string, reqObj: { firstName?: string, lastName?: string, phoneNumber?: string }): Observable<User> {
+  updateClient(userId: string, reqObj: { firstName?: string, lastName?: string, phoneNumber?: string, role?: Role, instructorId?: number | null }): Observable<User> {
     return this._http.put<User>(`${environment.apiUrl}/users/${userId}`, reqObj).pipe(take(1))
   }
 
@@ -75,5 +75,9 @@ export class UserService {
 
   deleteNote(userId: string, noteId: string): Observable<User> {
     return this._http.delete<User>(`${environment.apiUrl}/users/${userId}/notes/${noteId}`).pipe(take(1))
+  }
+
+  getNextInstructorId(): Observable<{ instructorId: number }> {
+    return this._http.get<{ instructorId: number }>(`${environment.apiUrl}/users/instructors/next-id`).pipe(take(1))
   }
 }

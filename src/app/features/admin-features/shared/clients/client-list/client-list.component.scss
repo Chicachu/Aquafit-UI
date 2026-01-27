@@ -1,6 +1,44 @@
 @import '../../../../../../assets/colors.scss';
 
+.client-list-content {
+  width: 80vw;
+  margin: auto auto;
+}
+
+.clients-section,
+.instructors-section {
+  margin-top: 24px;
+
+  h2 {
+    color: $light-blue;
+    margin-bottom: 12px;
+    margin-left: 0;
+  }
+
+  ul {
+    padding-left: 0;
+    list-style-type: circle;
+  }
+}
+
 li {
   color: $light-green;
-  padding: 3px 0;
+  margin-left: 30px;
+}
+
+.instructors-section {
+  h2 {
+    color: $light-blue;
+  }
+
+  .instructor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .instructor-id {
+    color: $light-blue;
+    margin-left: 16px;
+  }
 }

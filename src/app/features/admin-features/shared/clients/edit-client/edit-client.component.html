@@ -20,6 +20,14 @@
         controlName="phoneNumber">
       </app-text-input>
 
+      <div class="instructor-checkbox-container" *ngIf="isAdmin">
+        <mat-checkbox 
+          formControlName="isInstructor"
+          class="instructor-checkbox">
+          <span class="instructor-label">{{ 'CONTROLS.INSTRUCTOR' | translate }}{{ instructorId ? ' ' + instructorId : '' }}</span>
+        </mat-checkbox>
+      </div>
+
       <app-submit-button
         [loading]="loading"
         [label]="(isEditMode ? 'CLIENTS.UPDATE' : 'CONTROLS.SUBMIT') | translate"

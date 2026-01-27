@@ -27,7 +27,7 @@
         <ul>
           <li *ngFor="let classAndEnrollment of locationGroup.value">
             <div class="flex-row details-row">
-              <a [routerLink]="['./', classAndEnrollment?.class?._id, 'details']">
+              <a [routerLink]="['/admin/mobile/classes', classAndEnrollment?.class?._id, 'details']">
                 <ng-container *ngIf="classAndEnrollment.enrollment.daysOfWeekOverride as override; else defaultDays">
                   <ng-container *ngIf="override.length > 0; else defaultDays">
                     {{ override | weekdays:'/' }}

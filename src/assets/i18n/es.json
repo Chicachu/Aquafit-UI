@@ -52,7 +52,8 @@
     "ACCESS_DENIED": "Acceso denegado",
     "INVALID_PATTERN": "Por favor ingrese un {{field}} válido",
     "POSITIVE": "{{field}} debe ser un valor positivo",
-    "MIN": "{{field}} debe ser al menos {{min}}"
+    "MIN": "{{field}} debe ser al menos {{min}}",
+    "MIN_DATE": "{{field}} no puede ser anterior a hoy"
   },
   "LANGUAGES": {
     "ENGLISH": "Inglés",
@@ -101,7 +102,13 @@
     "CANCEL": "Cancelar la Clase",
     "CANCELLING": "Cancelando...",
     "TERMINATE": "Terminar la Clase",
-    "TERMINATING": "Terminando..."
+    "TERMINATING": "Terminando...",
+    "CLASS_TERMINATED_SUCCESS": "¡Clase terminada exitosamente!",
+    "TERMINATED_CLASSES": "Clases Terminadas",
+    "CONFIRM_TERMINATE_TITLE": "¿Terminar Clase?",
+    "CONFIRM_TERMINATE_MESSAGE": "¿Está seguro de que desea terminar esta clase?",
+    "CONFIRM_TERMINATE_WARNING": "Esta acción no se puede deshacer.",
+    "CONFIRM_TERMINATE": "Sí, Terminar Clase"
   },
   "WEEKDAYS": {
     "SUNDAY": "Domingo",
@@ -169,7 +176,15 @@
     "CREATE": "Crear",
     "UPDATE": "Actualizar",
     "CREATE_SUCCESS": "¡Descuento creado exitosamente!",
-    "UPDATE_SUCCESS": "¡Descuento actualizado exitosamente!"
+    "UPDATE_SUCCESS": "¡Descuento actualizado exitosamente!",
+    "DEFAULT_DESCRIPTION": "Descuento",
+    "PARTIAL_ENROLLMENT": "Descuento de Inscripción Parcial",
+    "PARTIAL_ENROLLMENT_DAYS": "Inscripción Parcial ({{daysAttending}}/{{totalDays}} días)",
+    "CLASS_TERMINATION_REFUND": "Reembolso por terminación de clase para {{sessions}} {{sessionWord}} {{remainingWord}}",
+    "SESSION_SINGULAR": "sesión",
+    "SESSION_PLURAL": "sesiones",
+    "REMAINING_SINGULAR": "restante",
+    "REMAINING_PLURAL": "restantes"
   },
   "DISCOUNT_TYPES": {
     "2 classes, 1 price": "2 Clases, 1 Precio",

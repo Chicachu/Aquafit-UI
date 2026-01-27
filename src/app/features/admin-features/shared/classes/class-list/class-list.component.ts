@@ -15,6 +15,8 @@ import { UserService } from "@/core/services/userService";
 export class ClassListComponent {
   ButtonType = ButtonType
   classes: Class[] | null = null
+  activeClasses: Class[] = []
+  terminatedClasses: Class[] = []
 
   constructor(
     private classService: ClassService,
@@ -32,9 +34,32 @@ export class ClassListComponent {
     this.classService.getAllClasses().subscribe({
       next: (classes: Class[]) => {
         this.classes = classes
+        this._separateActiveAndTerminated(classes)
       },
       error: ({error}) => {
         this.snackBarService.showError(error.message)
+      }
+    })
+  }
+
+  private _separateActiveAndTerminated(classes: Class[]): void {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    this.activeClasses = []
+    this.terminatedClasses = []
+
+    classes.forEach(classItem => {
+      if (classItem.endDate) {
+        const endDate = new Date(classItem.endDate)
+        endDate.setHours(0, 0, 0, 0)
+        if (endDate <= today) {
+          this.terminatedClasses.push(classItem)
+        } else {
+          this.activeClasses.push(classItem)
+        }
+      } else {
+        this.activeClasses.push(classItem)
       }
     })
   }
@@ -44,7 +69,23 @@ export class ClassListComponent {
   }
 
   get classesGrouped(): Map<ClassType, Map<string, Class[]>> | undefined {
-    return this.classes?.reduce((typeMap, class_) => {
+    return this.activeClasses.reduce((typeMap, class_) => {
+      if (!typeMap.has(class_.classType)) {
+        typeMap.set(class_.classType, new Map<string, Class[]>());
+      }
+      
+      const locationMap = typeMap.get(class_.classType)!;
+      
+      const locationClasses = locationMap.get(class_.classLocation) || [];
+      locationClasses.push(class_);
+      locationMap.set(class_.classLocation, locationClasses);
+   
+      return typeMap;
+    }, new Map<ClassType, Map<string, Class[]>>());
+  }
+
+  get terminatedClassesGrouped(): Map<ClassType, Map<string, Class[]>> | undefined {
+    return this.terminatedClasses.reduce((typeMap, class_) => {
       if (!typeMap.has(class_.classType)) {
         typeMap.set(class_.classType, new Map<string, Class[]>());
       }

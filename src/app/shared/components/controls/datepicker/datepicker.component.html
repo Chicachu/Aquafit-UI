@@ -1,8 +1,8 @@
 <mat-form-field appearance="outline">
   <mat-label>{{(label ?? '') | translate}}</mat-label>
-  <input matInput [formControl]="control" [matDatepicker]="picker">
+  <input matInput [formControl]="control" [matDatepicker]="picker" [matDatepickerFilter]="dateFilter" [min]="minDateValue" [max]="maxDateValue">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
+  <mat-datepicker #picker [startAt]="minDateValue"></mat-datepicker>
   <mat-error *ngIf="control?.errors">
     {{getErrorMessage()}}
   </mat-error>

@@ -7,6 +7,15 @@ import { SnackBarService } from "@/core/services/snackBarService";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { PaymentStatus } from "@/core/types/enums/paymentStatus";
 import { ClassClientEnrollmentDetails } from "@/core/types/classes/classClientEnrollmentDetails";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
+import { EnrollmentService } from "@/core/services/enrollmentService";
+import { TranslateService } from "@ngx-translate/core";
+import { User } from "@/core/types/user";
+import { Role } from "@/core/types/enums/role";
+import { SelectOption } from "@/core/types/selectOption";
+import { BillingFrequency } from "@/core/types/enums/billingFrequency";
+import { Weekday } from "@/core/types/enums/weekday";
+import { Class } from "@/core/types/classes/class";
 
 @Component({
   selector: 'app-class-details',
@@ -22,6 +31,32 @@ export class ClassDetailsComponent implements OnInit {
   loading = false
   classId: string | null = null
   canEditClass = false
+  isTerminated = false
+  showEnrollmentModal = false
+  showTerminateConfirmationModal = false
+  get enrollmentButtons() {
+    return this.clientOptions.length > 0 
+      ? [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.ENROLL'}]
+      : [{text: 'CONTROLS.CANCEL'}]
+  }
+  enrollmentForm: FormGroup
+  terminateForm: FormGroup
+  availableClients: User[] = []
+  clientOptions: SelectOption[] = []
+  weekdays: SelectOption[] = Object.keys(Weekday)
+    .filter(key => isNaN(Number(key)))
+    .map(key => ({
+      viewValue: key.toUpperCase(),
+      value: Weekday[key as keyof typeof Weekday]
+    }))
+  billingFrequencyOptions: SelectOption[] = Object.keys(BillingFrequency)
+    .map(key => ({
+      viewValue: key.toUpperCase(),
+      value: BillingFrequency[key as keyof typeof BillingFrequency]
+    }))
+  advancedOptionsClassInfo: Class | undefined
+  disabledDaysChips: number[] = []
+  minTerminationDate: Date = new Date()
   paymentStatusConfig: Partial<{
     [key in PaymentStatus]: {
       titleKey: string
@@ -56,16 +91,67 @@ export class ClassDetailsComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBarService: SnackBarService
-  ) {}
+    private snackBarService: SnackBarService,
+    private fb: FormBuilder,
+    private enrollmentService: EnrollmentService,
+    private translateService: TranslateService
+  ) {
+    this.enrollmentForm = this.fb.group({
+      client: ['', [Validators.required]],
+      start_date: ['', [Validators.required]],
+      days_override: [null, []],
+      billing_frequency_override: [null, []]
+    })
+
+    // Initialize terminate form with today's date
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    this.minTerminationDate = today
+    this.terminateForm = this.fb.group({
+      end_date: [today, [Validators.required, this._minDateValidator(today)]]
+    })
+  }
+
+  private _minDateValidator(minDate: Date): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null // Don't validate empty values (required validator handles that)
+      }
+      
+      const selectedDate = new Date(control.value._d || control.value)
+      selectedDate.setHours(0, 0, 0, 0)
+      const min = new Date(minDate)
+      min.setHours(0, 0, 0, 0)
+      
+      if (selectedDate < min) {
+        return { minDate: { minDate, actualDate: selectedDate } }
+      }
+      
+      return null
+    }
+  }
 
   ngOnInit(): void {
-    this.canEditClass = this.userService.isAdmin
     this.classId = this.route.snapshot.paramMap.get('class-id')
     this.classService.getClassDetails(this.classId!).subscribe({
       next: (classDetails: ClassDetails) => {
         this.classDetails = classDetails
+        this.clientsByPaymentStatus.clear()
         this._separateClientsByPaymentStatus(classDetails)
+        
+        // Check if class is terminated (has endDate today or in the past)
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        if (classDetails.endDate) {
+          const endDate = new Date(classDetails.endDate)
+          endDate.setHours(0, 0, 0, 0)
+          this.isTerminated = endDate <= today
+        } else {
+          this.isTerminated = false
+        }
+        
+        // Only allow editing if user is admin AND class is not terminated
+        this.canEditClass = this.userService.isAdmin && !this.isTerminated
       },
       error: ({error}) => {
         this.snackBarService.showError(error.message)
@@ -74,7 +160,87 @@ export class ClassDetailsComponent implements OnInit {
   }
 
   addClientToClass(): void {
-    
+    if (!this.classDetails) return
+
+    // Fetch all clients
+    this.userService.getAllUsers(Role.CLIENT).subscribe({
+      next: (allClients: User[]) => {
+        // Get IDs of already enrolled clients (including waitlist)
+        const enrolledClientIds = new Set<string>()
+        this.classDetails!.clients.forEach(client => {
+          enrolledClientIds.add(client._id)
+        })
+        if (this.classDetails!.waitlistClients) {
+          this.classDetails!.waitlistClients.forEach(client => {
+            enrolledClientIds.add(client._id)
+          })
+        }
+
+        // Filter out enrolled clients
+        this.availableClients = allClients.filter(client => !enrolledClientIds.has(client._id))
+        
+        // Create options for dropdown
+        this.clientOptions = this.availableClients.map(client => ({
+          value: client._id,
+          viewValue: `${client.firstName} ${client.lastName}`
+        }))
+
+        // Load class details for advanced options
+        if (this.classId) {
+          this.classService.getClassDetails(this.classId).subscribe({
+            next: (classInfo: Class) => {
+              this.advancedOptionsClassInfo = classInfo
+              this.disabledDaysChips = Object.values(Weekday)
+                .filter(value => typeof value === 'number')
+                .filter(value => !this.advancedOptionsClassInfo?.days.includes(value))
+            },
+            error: ({error}) => {
+              this.snackBarService.showError(error.message)
+            }
+          })
+        }
+
+        this.showEnrollmentModal = true
+      },
+      error: ({error}) => {
+        this.snackBarService.showError(error.message)
+      }
+    })
+  }
+
+  processEnrollmentModalClick(event: { ref: ClassDetailsComponent, buttonTitle: string }): void {
+    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
+      this.enrollmentForm.reset()
+      this.showEnrollmentModal = false
+    } else if (event.buttonTitle === 'CLIENTS.ENROLL') {
+      if (!this.enrollmentForm.valid || !this.classId) {
+        this.snackBarService.showError('Please fill in all required fields')
+        return
+      }
+
+      const clientId = this.enrollmentForm.controls['client'].value
+      const startDate = this.enrollmentForm.controls['start_date'].value._d
+      const billingFrequency = this.enrollmentForm.controls['billing_frequency_override'].value ?? null
+      const daysOverride = this.enrollmentForm.controls['days_override'].value ?? null
+
+      this.enrollmentService.enrollClient(this.classId, clientId, startDate, billingFrequency, daysOverride).subscribe({
+        next: () => {
+          // Reload class details
+          this.ngOnInit()
+          this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
+          this.enrollmentForm.reset()
+          this.showEnrollmentModal = false
+        },
+        error: ({error}) => {
+          this.snackBarService.showError(error.message)
+        }
+      })
+    }
+  }
+
+  onAdvancedOptionsOpened(): void {
+    // Class info is already loaded in addClientToClass
+    // This method is kept for consistency with client-details component
   }
 
   cancelClass(): void {
@@ -83,7 +249,46 @@ export class ClassDetailsComponent implements OnInit {
   }
 
   terminateClass(): void {
+    if (!this.classId || !this.canEditClass) return
+    // Reset form to today's date when opening modal
+    const today = new Date()
+    this.terminateForm.patchValue({ end_date: today })
+    this.showTerminateConfirmationModal = true
+  }
 
+  confirmTerminateClass(): void {
+    if (!this.classId || !this.canEditClass || !this.terminateForm.valid) return
+
+    const endDate = this.terminateForm.controls['end_date'].value._d || this.terminateForm.controls['end_date'].value
+    this.loading = true
+    this.showTerminateConfirmationModal = false
+    this.classService.terminateClass(this.classId, endDate).subscribe({
+      next: () => {
+        this.snackBarService.showSuccess(this.translateService.instant('CLASSES.CLASS_TERMINATED_SUCCESS'))
+        // Reload class details
+        this.ngOnInit()
+        this.loading = false
+      },
+      error: ({error}) => {
+        this.snackBarService.showError(error.message)
+        this.loading = false
+      }
+    })
+  }
+
+  cancelTerminateClass(): void {
+    this.showTerminateConfirmationModal = false
+    // Reset form to today's date when canceling
+    const today = new Date()
+    this.terminateForm.patchValue({ end_date: today })
+  }
+
+  processTerminateConfirmationModalClick(event: { ref: ClassDetailsComponent, buttonTitle: string }): void {
+    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
+      this.cancelTerminateClass()
+    } else if (event.buttonTitle === 'CLASSES.CONFIRM_TERMINATE') {
+      this.confirmTerminateClass()
+    }
   }
 
   public getStatusSectionClass(status: PaymentStatus): string {
@@ -94,7 +299,7 @@ export class ClassDetailsComponent implements OnInit {
   }
   
   editClass(): void {
-    if (this.classId) {
+    if (this.classId && this.canEditClass) {
       this.router.navigate(['../edit'], { relativeTo: this.route })
     }
   }

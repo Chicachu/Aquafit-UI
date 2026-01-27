@@ -52,7 +52,8 @@
     "ACCESS_DENIED": "Access denied",
     "INVALID_PATTERN": "Please enter a valid {{field}}",
     "POSITIVE": "{{field}} must be a positive value",
-    "MIN": "{{field}} must be at least {{min}}"
+    "MIN": "{{field}} must be at least {{min}}",
+    "MIN_DATE": "{{field}} cannot be before today"
   },
   "LANGUAGES": {
     "ENGLISH": "English", 
@@ -101,7 +102,13 @@
     "CANCEL": "Cancel Class",
     "CANCELLING": "Cancelling...",
     "TERMINATE": "Terminate Class",
-    "TERMINATING": "Terminating..."
+    "TERMINATING": "Terminating...",
+    "CLASS_TERMINATED_SUCCESS": "Class terminated successfully!",
+    "TERMINATED_CLASSES": "Terminated Classes",
+    "CONFIRM_TERMINATE_TITLE": "Terminate Class?",
+    "CONFIRM_TERMINATE_MESSAGE": "Are you sure you want to terminate this class?",
+    "CONFIRM_TERMINATE_WARNING": "This action cannot be undone.",
+    "CONFIRM_TERMINATE": "Yes, Terminate Class"
   },
   "WEEKDAYS": {
     "SUNDAY": "Sunday",
@@ -169,7 +176,15 @@
     "CREATE": "Create",
     "UPDATE": "Update",
     "CREATE_SUCCESS": "Successfully created discount!",
-    "UPDATE_SUCCESS": "Discount updated successfully!"
+    "UPDATE_SUCCESS": "Discount updated successfully!",
+    "DEFAULT_DESCRIPTION": "Discount",
+    "PARTIAL_ENROLLMENT": "Partial Enrollment Discount",
+    "PARTIAL_ENROLLMENT_DAYS": "Partial Enrollment ({{daysAttending}}/{{totalDays}} days)",
+    "CLASS_TERMINATION_REFUND": "Class termination refund for {{sessions}} remaining {{sessionWord}}",
+    "SESSION_SINGULAR": "session",
+    "SESSION_PLURAL": "sessions",
+    "REMAINING_SINGULAR": "remaining",
+    "REMAINING_PLURAL": "remaining"
   },
   "DISCOUNT_TYPES": {
     "2 classes, 1 price": "2 Classes, 1 Price",

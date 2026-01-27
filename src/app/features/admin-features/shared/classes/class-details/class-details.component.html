@@ -22,6 +22,7 @@
     <div class="flex-row clients-section">
       <h2 class="light-blue">{{ 'CLIENTS.TITLE' | translate }}</h2>
       <button 
+        *ngIf="!isTerminated"
         mat-icon-button 
         (click)="addClientToClass()" class="add-class-button">
         <mat-icon class="add-icon" matPrefix>{{ 'add' }}</mat-icon>
@@ -37,11 +38,15 @@
           <div *ngIf="paymentStatusConfig[status]?.iconClass" [ngClass]="paymentStatusConfig[status]?.iconClass"></div>
         </div>
     
-        <a *ngFor="let client of clientsByPaymentStatus.get(status)" [routerLink]="['../../../clients', client._id, 'details']">
-          <p class="white">
-            {{ client.firstName }} {{ client.lastName }}
-          </p>
-        </a>
+        <ul>
+          <li *ngFor="let client of clientsByPaymentStatus.get(status)">
+            <a [routerLink]="['../../../clients', client._id, 'details']">
+              <p class="white">
+                {{ client.firstName }} {{ client.lastName }}
+              </p>
+            </a>
+          </li>
+        </ul>
       </ng-container>
     </ng-container>
 
@@ -49,11 +54,15 @@
       <div class="waitlist-section">
         <h3 class="mid-green">{{ 'CLASSES.WAIT_LIST' | translate }}</h3>
       </div>
-      <a *ngFor="let client of classDetails.waitlistClients" [routerLink]="['../../../clients', client._id, 'details']">
-        <p class="white">
-          {{ client.firstName }} {{ client.lastName }}
-        </p>
-      </a>
+      <ul>
+        <li *ngFor="let client of classDetails.waitlistClients">
+          <a [routerLink]="['../../../clients', client._id, 'details']">
+            <p class="white">
+              {{ client.firstName }} {{ client.lastName }}
+            </p>
+          </a>
+        </li>
+      </ul>
     </div>
 
     <div class="flex-row buttons">
@@ -63,14 +72,86 @@
         [loadingMessage]="'CLASSES.CANCELLING'"
         (onClick)="cancelClass()">
       </app-button>
-      <app-submit-button 
+      <app-button 
+        *ngIf="canEditClass && !isTerminated"
         [label]="'CLASSES.TERMINATE'"
         [loading]="loading"
         [loadingMessage]="'CLASSES.TERMINATING'"
         (onClick)=terminateClass()>
-      </app-submit-button>
+      </app-button>
     </div>
   </div>
 </div>
+
+<app-modal *ngIf="showEnrollmentModal"
+  [parent]="this"
+  [title]="'CLIENTS.ENROLL' | translate"
+  [buttonList]="enrollmentButtons"
+  (modalClick)="processEnrollmentModalClick($event)"
+  class="enrollment-modal">
+  <div content> 
+    <p>{{ 'CLIENTS.ENROLL_INSTRUCTIONS' | translate }}</p>
+    <h5 *ngIf="classDetails">{{ 'CLASS_TYPES.' + classDetails.classType | translate }} - {{ classDetails.classLocation }} - {{ classDetails.startTime | timeFormat }}</h5>
+
+    <p *ngIf="clientOptions.length === 0" class="no-clients-message">All clients are already enrolled in this class.</p>
+
+    <form [formGroup]="enrollmentForm">
+      <app-dropdown 
+        *ngIf="clientOptions.length"
+        label="CLIENTS.TITLE" 
+        [options]="clientOptions" 
+        controlName="client">
+      </app-dropdown>
+      <app-datepicker
+        label="CONTROLS.START_DATE"
+        controlName="start_date">
+      </app-datepicker>
+
+      <mat-expansion-panel [disabled]="!enrollmentForm.get('client')?.value" (opened)="onAdvancedOptionsOpened()">
+        <mat-expansion-panel-header>
+          {{ 'ENROLLMENTS.ADVANCED_OPTIONS' | translate }}
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+          <app-multi-select-chips
+            *ngIf="advancedOptionsClassInfo && advancedOptionsClassInfo.days.length > 1"
+            label="CONTROLS.DAYS_OVERRIDE"
+            [options]="weekdays"
+            [disabledChipsIndices]="disabledDaysChips"
+            i18nPrefix="WEEKDAYS_SHORT"
+            controlName="days_override">
+          </app-multi-select-chips>
+          <app-dropdown
+            label="CONTROLS.BILLING_FREQUENCY_OVERRIDE"
+            [options]="billingFrequencyOptions"
+            controlName="billing_frequency_override"
+            [i18nPrefix]="'BILLING_FREQUENCY'"
+            [hasNoSelectOption]="true"
+            class="billing-frequency">
+          </app-dropdown>
+        </ng-template>
+      </mat-expansion-panel>
+    </form>
+  </div>
+</app-modal>
+
+<app-modal *ngIf="showTerminateConfirmationModal"
+  [parent]="this"
+  [title]="'CLASSES.CONFIRM_TERMINATE_TITLE' | translate"
+  [buttonList]="[{text: 'CONTROLS.CANCEL'}, {text: 'CLASSES.CONFIRM_TERMINATE'}]"
+  (modalClick)="processTerminateConfirmationModalClick($event)"
+  class="terminate-confirmation-modal">
+  <div content> 
+    <p>{{ 'CLASSES.CONFIRM_TERMINATE_MESSAGE' | translate }}</p>
+    <p class="warning-text">{{ 'CLASSES.CONFIRM_TERMINATE_WARNING' | translate }}</p>
+    <form [formGroup]="terminateForm">
+      <app-datepicker
+        label="CONTROLS.END_DATE"
+        controlName="end_date"
+        [minDate]="minTerminationDate">
+      </app-datepicker>
+    </form>
+  </div>
+</app-modal>
 
  

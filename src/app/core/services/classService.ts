@@ -39,4 +39,8 @@ export class ClassService {
   updateClass(classId: string, classData: CreateClassDTO): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/classes/${classId}`, { newClass: classData }).pipe(take(1))
   }
+
+  terminateClass(classId: string, endDate: Date): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/classes/${classId}/terminate`, { endDate }).pipe(take(1))
+  }
 }

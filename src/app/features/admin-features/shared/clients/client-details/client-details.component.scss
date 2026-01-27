@@ -80,3 +80,13 @@ ul {
 .details-row {
   justify-content: space-between;
 }
+
+.terminated-section {
+  opacity: 0.6;
+  margin-top: 20px;
+}
+
+.terminated-header {
+  color: $light-pink;
+  font-style: italic;
+}

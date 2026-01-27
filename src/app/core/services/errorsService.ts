@@ -41,6 +41,9 @@ export class ErrorsService {
         return this.translateService.instant('ERRORS.MIN', { field: this.translateService.instant(`CONTROLS.${controlName.toUpperCase()}`), min: error.min });
       }
     }
+    if (control?.hasError('minDate')) {
+      return this.translateService.instant('ERRORS.MIN_DATE', { field: this.translateService.instant(`CONTROLS.${controlName.toUpperCase()}`) });
+    }
     return '';
   }
 }

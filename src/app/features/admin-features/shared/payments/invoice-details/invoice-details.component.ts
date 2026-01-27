@@ -5,6 +5,7 @@ import { SnackBarService } from "@core/services/snackBarService";
 import { InvoiceDetails } from "@core/types/invoices/invoiceDetails";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { PaymentStatus } from "@core/types/enums/paymentStatus";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-invoice-details',
@@ -15,7 +16,8 @@ export class InvoiceDetailsComponent {
   constructor(
     private _route: ActivatedRoute, 
     private _paymentService: PaymentService,
-    private _snackBarService: SnackBarService
+    private _snackBarService: SnackBarService,
+    private _translateService: TranslateService
   ) {}
   ButtonType = ButtonType
   invoiceId: string = ''
@@ -72,5 +74,45 @@ export class InvoiceDetailsComponent {
       return discount.amountOverride.currency
     }
     return 'MXN'
+  }
+
+  public getTranslatedDiscountDescription(description: string | null | undefined): string {
+    if (!description) {
+      return this._translateService.instant('DISCOUNTS.DEFAULT_DESCRIPTION')
+    }
+
+    // Handle class termination refund
+    const terminationMatch = description.match(/Class termination refund for (\d+) remaining session\(s\)/)
+    if (terminationMatch) {
+      const sessions = parseInt(terminationMatch[1])
+      const sessionKey = sessions === 1 ? 'SESSION_SINGULAR' : 'SESSION_PLURAL'
+      const remainingKey = sessions === 1 ? 'REMAINING_SINGULAR' : 'REMAINING_PLURAL'
+      return this._translateService.instant('DISCOUNTS.CLASS_TERMINATION_REFUND', { 
+        sessions,
+        sessionWord: this._translateService.instant(`DISCOUNTS.${sessionKey}`),
+        remainingWord: this._translateService.instant(`DISCOUNTS.${remainingKey}`)
+      })
+    }
+
+    // Handle partial enrollment with days
+    const partialDaysMatch = description.match(/Partial Enrollment \((\d+)\/(\d+) days\)/)
+    if (partialDaysMatch) {
+      const daysAttending = partialDaysMatch[1]
+      const totalDays = partialDaysMatch[2]
+      return this._translateService.instant('DISCOUNTS.PARTIAL_ENROLLMENT_DAYS', { daysAttending, totalDays })
+    }
+
+    // Handle simple partial enrollment
+    if (description === 'Partial Enrollment Discount') {
+      return this._translateService.instant('DISCOUNTS.PARTIAL_ENROLLMENT')
+    }
+
+    // For any other description, try to translate it directly or return as-is
+    // Check if it matches a known discount type translation key
+    const translationKey = `DISCOUNTS.${description.toUpperCase().replace(/\s+/g, '_')}`
+    const translated = this._translateService.instant(translationKey)
+    
+    // If translation key doesn't exist, it returns the key itself, so return original description
+    return translated !== translationKey ? translated : description
   }
 }

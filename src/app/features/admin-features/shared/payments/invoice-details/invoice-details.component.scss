@@ -52,11 +52,17 @@ h3, h4, h5, h6 {
 
 .discount-row {
   padding-left: 0;
+  margin-bottom: 8px;
 }
 
 .discount-name {
   text-transform: capitalize;
   padding-left: 20px;
+}
+
+.discount-description {
+  font-size: 0.85em;
+  margin: 0;
 }
 
 hr {

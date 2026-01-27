@@ -40,6 +40,8 @@ export class ClientDetailsComponent {
   classScheduleMap: ClassScheduleMap | null = null
   selectedClassId: string = ''
   classEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
+  activeClassEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
+  terminatedClassEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
   weekdays: SelectOption[] = Object.keys(Weekday)
     .filter(key => isNaN(Number(key)))
     .map(key => ({
@@ -83,6 +85,7 @@ export class ClientDetailsComponent {
         this.client = clientEnrollmentDetails.client
         this.clientId = this.client._id
         this.classEnrollmentInfo = clientEnrollmentDetails.enrolledClassInfo
+        this._separateActiveAndTerminated(this.classEnrollmentInfo)
       },
       error: ({error}) => {
         this.snackBarService.showError(error.message)
@@ -186,8 +189,49 @@ export class ClientDetailsComponent {
     })
   }
 
+  private _separateActiveAndTerminated(classEnrollmentInfo: { class: Class, enrollment: Enrollment }[]): void {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    this.activeClassEnrollmentInfo = []
+    this.terminatedClassEnrollmentInfo = []
+
+    classEnrollmentInfo.forEach(item => {
+      if (item.class.endDate) {
+        const endDate = new Date(item.class.endDate)
+        endDate.setHours(0, 0, 0, 0)
+        if (endDate <= today) {
+          this.terminatedClassEnrollmentInfo.push(item)
+        } else {
+          this.activeClassEnrollmentInfo.push(item)
+        }
+      } else {
+        this.activeClassEnrollmentInfo.push(item)
+      }
+    })
+  }
+
   get classesGrouped(): Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>> | undefined {
-    return this.classEnrollmentInfo?.reduce((typeMap, classEnrollment) => {
+    return this.activeClassEnrollmentInfo?.reduce((typeMap, classEnrollment) => {
+      const { class: classObj, enrollment } = classEnrollment
+
+      if (!typeMap.has(classObj.classType)) {
+        typeMap.set(classObj.classType, new Map<string, { class: Class, enrollment: Enrollment }[]>())
+      }
+      const locationMap = typeMap.get(classObj.classType)!
+
+      const locationKey = classObj.classLocation;
+      const locationClasses = locationMap.get(locationKey) || [];
+
+      locationClasses.push({ class: classObj, enrollment });
+      locationMap.set(locationKey, locationClasses)
+   
+      return typeMap;
+    }, new Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>>());
+  }
+
+  get terminatedClassesGrouped(): Map<ClassType, Map<string, { class: Class, enrollment: Enrollment }[]>> | undefined {
+    return this.terminatedClassEnrollmentInfo?.reduce((typeMap, classEnrollment) => {
       const { class: classObj, enrollment } = classEnrollment
 
       if (!typeMap.has(classObj.classType)) {

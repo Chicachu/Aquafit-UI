@@ -42,7 +42,9 @@
           <div class="second-column"></div>
         </div>
         <div *ngFor="let discount of invoiceDetails.discountsApplied" class="flex-row payment-details white discount-row">
-          <h4 class="first-column discount-name">{{ discount.description || 'Discount' }}</h4>
+          <div class="first-column discount-name">
+            <h5 class="discount-description">{{ getTranslatedDiscountDescription(discount.description) }}</h5>
+          </div>
           <h4 class="second-column price-value">-{{ getDiscountAmount(discount) }} {{ getDiscountCurrency(discount) }}</h4>
         </div>
       </div>

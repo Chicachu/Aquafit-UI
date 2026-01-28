@@ -1,11 +1,12 @@
 @import '../../../../../../assets/colors.scss';
 
-.client-list-content {
+.employees-list-content {
   width: 80vw;
   margin: auto auto;
 }
 
-.clients-section {
+.instructors-section,
+.employees-section {
   margin-top: 24px;
 
   h2 {
@@ -23,4 +24,17 @@
 li {
   color: $light-green;
   margin-left: 30px;
+}
+
+.instructors-section {
+  .instructor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .instructor-id {
+    color: $light-blue;
+    margin-left: 16px;
+  }
 }

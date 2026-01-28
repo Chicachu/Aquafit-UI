@@ -1,6 +1,7 @@
 import { Component, HostListener } from "@angular/core";
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
+import { UserService } from "@core/services/userService";
 
 @Component({
   selector: 'app-mobile-layout',
@@ -9,12 +10,28 @@ import { filter } from "rxjs/operators";
 })
 export class MobileLayoutComponent {
   navItems: Map<string, string> = new Map() 
-  navTitles: string[]
+  navTitles: string[] = []
   isMenuOpen: boolean = false
   currentRoute: string = ''
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    this.navItems = this.route.snapshot.data['navItems']
+  // Admin-only menu items
+  private readonly adminOnlyItems = ['NAVIGATION.DISCOUNTS', 'NAVIGATION.SALARY_CONFIGURATION', 'NAVIGATION.EMPLOYEES']
+
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+    private userService: UserService
+  ) {
+    const allNavItems = this.route.snapshot.data['navItems'] as Map<string, string>
+    
+    // Filter menu items based on admin status
+    this.navItems = new Map()
+    for (const [title, path] of allNavItems.entries()) {
+      if (!this.adminOnlyItems.includes(title) || this.userService.isAdmin) {
+        this.navItems.set(title, path)
+      }
+    }
+    
     this.navTitles = Array.from(this.navItems.keys())
     
     // Track current route
@@ -66,6 +83,10 @@ export class MobileLayoutComponent {
 
   isActive(navItemTitle: string): boolean {
     return this.getActiveNavItem() === navItemTitle
+  }
+
+  getNavItemLabel(title: string): string {
+    return title
   }
 
   @HostListener('document:click', ['$event'])

@@ -18,6 +18,11 @@ import { DiscountDetailsComponent } from "../shared/discounts/discount-details/d
 import { EditDiscountComponent } from "../shared/discounts/edit-discount/edit-discount.component";
 import { InstructorsDetailsComponent } from "../shared/instructors/instructors-details/instructors-details.component";
 import { InstructorPaymentOverviewComponent } from "../shared/instructors/instructor-payment-overview/instructor-payment-overview.component";
+import { EmployeeDetailsComponent } from "../shared/employees/employee-details/employee-details.component";
+import { EmployeesListComponent } from "../shared/employees/employees-list/employees-list.component";
+import { AddEmployeeComponent } from "../shared/employees/add-employee/add-employee.component";
+import { EditEmployeeComponent } from "../shared/employees/edit-employee/edit-employee.component";
+import { SalaryConfigurationComponent } from "../shared/salary-configuration/salary-configuration.component";
 
 const routes: Routes = [
   {
@@ -62,9 +67,32 @@ const routes: Routes = [
     component: InstructorsDetailsComponent
   },
   {
+    path: 'employees',
+    pathMatch: 'full',
+    component: EmployeesListComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'employees/add',
+    pathMatch: 'full',
+    component: AddEmployeeComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'employees/:user-id/details',
+    pathMatch: 'full',
+    component: EmployeeDetailsComponent
+  },
+  {
+    path: 'employees/:user-id/edit',
+    pathMatch: 'full',
+    component: EditEmployeeComponent,
+    canActivate: [AdminGuard]
+  },
+  {
     path: 'instructors/:user-id/edit',
     pathMatch: 'full',
-    component: EditClientComponent,
+    component: EditEmployeeComponent,
     canActivate: [AdminGuard]
   },
   {
@@ -96,22 +124,31 @@ const routes: Routes = [
   {
     path: 'discounts',
     pathMatch: 'full',
-    component: DiscountListComponent
+    component: DiscountListComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'discounts/add-discount',
     pathMatch: 'full',
-    component: EditDiscountComponent
+    component: EditDiscountComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'discounts/:discount-id/details',
     pathMatch: 'full',
-    component: DiscountDetailsComponent
+    component: DiscountDetailsComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'discounts/:discount-id/edit',
     pathMatch: 'full',
     component: EditDiscountComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'salary-configuration',
+    pathMatch: 'full',
+    component: SalaryConfigurationComponent,
     canActivate: [AdminGuard]
   }
 ]

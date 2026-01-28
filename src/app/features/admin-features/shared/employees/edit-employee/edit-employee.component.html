@@ -1,7 +1,12 @@
 <div>
   <app-breadcrumb-nav-bar [title]="(editBreadcrumbTitle) | translate"></app-breadcrumb-nav-bar>
   <div class="edit-container">
-    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="form-container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+      <div class="staff-id-display" *ngIf="staffId !== null">
+        <span class="staff-id-label">{{ 'EMPLOYEES.STAFF_ID' | translate }}:</span>
+        <span class="staff-id-value">{{ staffId }}</span>
+      </div>
+
       <app-text-input
         [type]="TextInputType.TEXT"
         label="CONTROLS.FIRSTNAME"
@@ -20,9 +25,16 @@
         controlName="phoneNumber">
       </app-text-input>
 
+      <app-dropdown
+        label="EMPLOYEES.ROLE"
+        [options]="roleOptions"
+        [i18nPrefix]="'EMPLOYEES'"
+        controlName="role">
+      </app-dropdown>
+
       <app-submit-button
         [loading]="loading"
-        [label]="(isEditMode ? 'CLIENTS.UPDATE' : 'CONTROLS.SUBMIT') | translate"
+        [label]="'CLIENTS.UPDATE' | translate"
         [loadingMessage]="'CONTROLS.SUBMIT_WAIT_MESSAGE'">
       </app-submit-button>
     </form>

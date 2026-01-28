@@ -78,8 +78,8 @@ export class UserService {
     return this._http.delete<User>(`${environment.apiUrl}/users/${userId}/notes/${noteId}`).pipe(take(1))
   }
 
-  getNextInstructorId(): Observable<{ instructorId: number }> {
-    return this._http.get<{ instructorId: number }>(`${environment.apiUrl}/users/instructors/next-id`).pipe(take(1))
+  getNextEmployeeId(): Observable<{ employeeId: number }> {
+    return this._http.get<{ employeeId: number }>(`${environment.apiUrl}/users/next-employee-id`).pipe(take(1))
   }
 
   getInstructorClassDetails(userId: string): Observable<InstructorClassDetails> {

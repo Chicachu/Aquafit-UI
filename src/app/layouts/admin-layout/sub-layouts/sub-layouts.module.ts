@@ -7,10 +7,12 @@ import { LayoutGuard } from "../../../core/guards/layout.guard";
 import { ReactiveFormsModule } from "@angular/forms";
 
 const navItems = new Map([
-  ["NAVIGATION.CALENDAR", "/admin/mobile/home"], 
+  ["NAVIGATION.CALENDAR", "/admin/mobile/home"],
   ["NAVIGATION.CLIENTS", "/admin/mobile/clients"],
+  ["NAVIGATION.EMPLOYEES", "/admin/mobile/employees"],
   ["NAVIGATION.CLASSES", "/admin/mobile/classes"],
-  ["NAVIGATION.DISCOUNTS", "/admin/mobile/discounts"]
+  ["NAVIGATION.DISCOUNTS", "/admin/mobile/discounts"],
+  ["NAVIGATION.SALARY_CONFIGURATION", "/admin/mobile/salary-configuration"]
 ])
 
 const routes: Routes = [

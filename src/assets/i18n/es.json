@@ -43,7 +43,8 @@
     "BILLING_FREQUENCY": "Frecuencia de Facturación",
     "DAYS_OVERRIDE": "Inscripción Parcial",
     "BILLING_FREQUENCY_OVERRIDE": "Anulación de Frecuencia de Facturación",
-    "INSTRUCTOR": "Instructor"
+    "INSTRUCTOR": "Instructor",
+    "PAYMENTVALUE": "Pago por sesión"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} es requerido",
@@ -67,9 +68,11 @@
   },
   "NAVIGATION": {
     "CALENDAR": "Calendario",
-    "CLASSES": "Clases", 
+    "CLASSES": "Clases",
     "CLIENTS": "Clientes",
-    "DISCOUNTS": "Descuentos"
+    "EMPLOYEES": "Empleados",
+    "DISCOUNTS": "Descuentos",
+    "SALARY_CONFIGURATION": "Configuración de Salarios"
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Fitness grupal",
@@ -98,12 +101,26 @@
     "DELETE_NOTE_CONFIRM": "¿Eliminar Nota?",
     "DELETE_NOTE_MESSAGE": "¿Está seguro de que desea eliminar esta nota? Esta acción no se puede deshacer.",
     "INSTRUCTORS": "Instructores",
+    "EMPLOYEES": "Empleados",
     "ACTIVE_CLIENTS": "Clientes Activos",
     "INACTIVE_CLIENTS": "Clientes Inactivos",
     "UNENROLL": "Dar de Baja Cliente",
     "UNENROLL_CONFIRM_MESSAGE": "¿Está seguro de que desea dar de baja a este cliente de la clase?",
     "UNENROLL_REASON": "Razón (Opcional)",
     "UNENROLL_SUCCESS": "¡Cliente dado de baja exitosamente!"
+  },
+  "EMPLOYEES": {
+    "TITLE": "Empleados",
+    "DETAILS": "Detalles del Empleado",
+    "EDIT_EMPLOYEE": "Editar Empleado",
+    "EDIT_INSTRUCTOR": "Editar Instructor",
+    "ADD_EMPLOYEE": "Agregar Empleado",
+    "ADD_EMPLOYEE_SUCCESS": "¡Empleado agregado exitosamente!",
+    "UPDATE_SUCCESS": "¡Actualizado exitosamente!",
+    "STAFF_ID": "ID de Personal",
+    "ROLE": "Rol",
+    "INSTRUCTOR": "Instructor",
+    "EMPLOYEE": "Empleado"
   },
   "INSTRUCTORS": {
     "TITLE": "Instructores",
@@ -165,6 +182,15 @@
     "THURSDAY": "Jue",
     "FRIDAY": "Vie",
     "SATURDAY": "Sáb"
+  },
+  "WEEKDAYS_LETTER": {
+    "SUNDAY": "Do",
+    "MONDAY": "Lu",
+    "TUESDAY": "Ma",
+    "WEDNESDAY": "Mi",
+    "THURSDAY": "Ju",
+    "FRIDAY": "Vi",
+    "SATURDAY": "Sá"
   },
   "PAYMENT_STATUS": {
     "PAID": "Pagado",
@@ -235,5 +261,21 @@
     "percentage": "Porcentaje",
     "flat": "Fijo",
     "partial enrollment": "Inscripción Parcial"
-  } 
+  },
+  "SALARY_CONFIGURATION": {
+    "COMING_SOON": "Configuración de salarios próximamente...",
+    "SELECT_INSTRUCTOR": "Seleccione un instructor para ver y configurar el pago de sus asignaciones.",
+    "ASSIGNMENTS": "Asignaciones",
+    "SET_PAYMENT": "Establecer valor de pago",
+    "SET_SALARY": "Establecer Salario",
+    "PAYMENT_VALUE": "Pago por sesión",
+    "APPLY_TO_ALL_ASSIGNMENTS": "Aplicar a todas las asignaciones",
+    "APPLY": "Aplicar",
+    "APPLY_SUCCESS": "Valor de pago actualizado.",
+    "APPLY_SUCCESS_ALL": "Valor de pago aplicado a todas las asignaciones.",
+    "APPLY_ERROR": "Error al actualizar el valor de pago.",
+    "ENTER_VALID_NUMBER": "Por favor ingrese un número válido.",
+    "TOTAL": "Total:",
+    "ESTIMATED_MONTHLY_SALARY": "Salario Mensual Estimado:"
+  }
 }

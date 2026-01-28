@@ -1,5 +1,9 @@
+@import '../../../../../assets/colors.scss';
+
 .mobile-home {
   padding: 0;
   width: 100vw;
   border: none;
+  background-color: $background-blue;
+  border-radius: 10px;
 }

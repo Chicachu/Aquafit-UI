@@ -1,0 +1,80 @@
+<div>
+  <app-breadcrumb-nav-bar 
+    [title]="'NAVIGATION.SALARY_CONFIGURATION' | translate" 
+    [buttonType]="ButtonType.NONE">
+  </app-breadcrumb-nav-bar>
+  <form [formGroup]="instructorForm" class="salary-config-form">
+    <app-dropdown 
+      [label]="'CONTROLS.INSTRUCTOR' | translate"
+      [options]="instructorOptions"
+      controlName="instructor">
+    </app-dropdown>
+  </form>
+
+  <div *ngIf="selectedInstructorId" class="assignments-section">
+    <h2 class="assignments-heading">{{ 'SALARY_CONFIGURATION.ASSIGNMENTS' | translate }}</h2>
+    <div *ngIf="activeAssignments.length === 0" class="no-assignments">
+      {{ 'INSTRUCTORS.NOT_TEACHING' | translate }}
+    </div>
+    <div *ngIf="activeAssignments.length > 0" class="assignments-grouped">
+      <div *ngFor="let locationGroup of assignmentsGroupedByLocationThenType | keyvalue" class="location-group">
+        <h3 class="location-heading">{{ locationGroup.key }}</h3>
+        <div *ngFor="let classTypeGroup of locationGroup.value | keyvalue" class="class-type-group">
+          <h4 class="class-type-heading">{{ 'CLASS_TYPES.' + classTypeGroup.key | translate | capitalize }}</h4>
+          <ul class="assignments-list">
+            <li *ngFor="let item of classTypeGroup.value" class="assignment-row flex-row">
+              <span class="class-days-time">{{ item.class.days | weekdays:'letter' }} - {{ item.class.startTime | timeFormat }}</span>
+              <div class="payment-and-icon">
+                <span class="payment-cell">{{ getPaymentDisplay(item) }}</span>
+                <button
+                  mat-icon-button
+                  type="button"
+                  class="payment-icon-button"
+                  (click)="openPaymentModal(item)"
+                  aria-label="Set payment">
+                  <mat-icon class="payment-icon">payments</mat-icon>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="total-row">
+        <h4 class="total-label">{{ 'SALARY_CONFIGURATION.ESTIMATED_MONTHLY_SALARY' | translate }}</h4>
+        <h4 class="total-value">{{ estimatedMonthlySalaryDisplay }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!selectedInstructorId" class="placeholder-message">
+    <p>{{ 'SALARY_CONFIGURATION.SELECT_INSTRUCTOR' | translate }}</p>
+  </div>
+</div>
+
+<app-modal
+  *ngIf="showPaymentModal && selectedAssignmentForPayment"
+  [parent]="this"
+  [title]="'SALARY_CONFIGURATION.SET_SALARY' | translate"
+  [buttonList]="paymentModalButtons"
+  (modalClick)="processPaymentModalClick($event)"
+  class="payment-modal">
+  <div content>
+    <h5 class="modal-line">{{ 'CLASS_TYPES.' + selectedAssignmentForPayment.class.classType | translate | capitalize }} - {{ selectedAssignmentForPayment.class.classLocation }}</h5>
+    <h5 class="modal-line">{{ selectedAssignmentForPayment.class.days | weekdays:'/' }} - {{ selectedAssignmentForPayment.class.startTime | timeFormat }}</h5>
+
+    <form [formGroup]="paymentForm" class="payment-form-fields">
+      <app-text-input
+        label="SALARY_CONFIGURATION.PAYMENT_VALUE"
+        controlName="paymentValue"
+        [type]="TextInputType.NUMBER">
+      </app-text-input>
+
+      <mat-checkbox
+        [checked]="applyToAllAssignments"
+        (change)="applyToAllAssignments = $event.checked"
+        class="apply-to-all-checkbox">
+        {{ 'SALARY_CONFIGURATION.APPLY_TO_ALL_ASSIGNMENTS' | translate }}
+      </mat-checkbox>
+    </form>
+  </div>
+</app-modal>

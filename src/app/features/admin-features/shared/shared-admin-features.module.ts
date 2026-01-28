@@ -16,6 +16,11 @@ import { DiscountDetailsComponent } from "./discounts/discount-details/discount-
 import { EditDiscountComponent } from "./discounts/edit-discount/edit-discount.component";
 import { InstructorsDetailsComponent } from "./instructors/instructors-details/instructors-details.component";
 import { InstructorPaymentOverviewComponent } from "./instructors/instructor-payment-overview/instructor-payment-overview.component";
+import { EmployeeDetailsComponent } from "./employees/employee-details/employee-details.component";
+import { EmployeesListComponent } from "./employees/employees-list/employees-list.component";
+import { AddEmployeeComponent } from "./employees/add-employee/add-employee.component";
+import { EditEmployeeComponent } from "./employees/edit-employee/edit-employee.component";
+import { SalaryConfigurationComponent } from "./salary-configuration/salary-configuration.component";
 
 @NgModule({
   declarations: [
@@ -33,7 +38,12 @@ import { InstructorPaymentOverviewComponent } from "./instructors/instructor-pay
     DiscountDetailsComponent,
     EditDiscountComponent,
     InstructorsDetailsComponent,
-    InstructorPaymentOverviewComponent
+    InstructorPaymentOverviewComponent,
+    EmployeeDetailsComponent,
+    EmployeesListComponent,
+    AddEmployeeComponent,
+    EditEmployeeComponent,
+    SalaryConfigurationComponent
   ],
   imports: [
     CommonModule,

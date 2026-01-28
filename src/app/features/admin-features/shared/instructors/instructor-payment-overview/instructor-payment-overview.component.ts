@@ -34,13 +34,13 @@ export class InstructorPaymentOverviewComponent {
     if (!this.userId) return;
 
     this.paymentService.getInvoicesByUserId(this.userId).subscribe({
-      next: ({ invoices, instructorPayables, userName }) => {
+      next: ({ invoices, employeePayables, userName }) => {
         this.instructorName = userName;
         const fromInvoices = invoices.map((i) => ({
           date: new Date(i.period.endDate),
           paymentStatus: i.paymentStatus
         }));
-        const fromPayables = (instructorPayables || []).map((p) => ({
+        const fromPayables = (employeePayables || []).map((p) => ({
           date: new Date(p.period.endDate),
           paymentStatus: p.paymentStatus
         }));

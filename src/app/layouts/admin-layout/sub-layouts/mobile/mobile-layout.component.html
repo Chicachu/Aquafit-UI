@@ -10,7 +10,7 @@
     <div class="dropdown-menu" [class.open]="isMenuOpen">
       <ul>
         <li *ngFor="let title of navTitles" [class.active]="isActive(title)">
-          <a (click)="navigate(title, $event)">{{ title | translate }}</a>
+          <a (click)="navigate(title, $event)">{{ getNavItemLabel(title) | translate }}</a>
         </li>
       </ul>
     </div>

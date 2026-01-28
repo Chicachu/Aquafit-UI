@@ -18,10 +18,6 @@ export class ClientListComponent implements OnInit {
   @Input() title: string = ''
   activeClients: User[] | null = null
   inactiveClients: User[] | null = null
-  instructors: User[] | null = null
-  get isAdmin(): boolean {
-    return this.usersService.isAdmin
-  }
 
   constructor(
     private usersService: UserService,
@@ -68,25 +64,6 @@ export class ClientListComponent implements OnInit {
         this.snackBarService.showError(error.message)
       }
     })
-
-    // Load instructors if user is admin
-    if (this.isAdmin) {
-      this.usersService.getAllUsers(Role.INSTRUCTOR).subscribe({
-        next: (instructors: User[]) => {
-          this.instructors = instructors
-          this.instructors.sort((a: User, b: User) => {
-            if (a.firstName < b.firstName) return -1
-            if (b.firstName < a.firstName) return 1
-            if (a.firstName === b.firstName) return 0
-
-            return 0
-          })
-        }, 
-        error: ({error}) => {
-          this.snackBarService.showError(error.message)
-        }
-      })
-    }
   }
 
   addNewClient(): void {

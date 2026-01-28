@@ -43,7 +43,8 @@
     "BILLING_FREQUENCY": "Billing Frequency",
     "DAYS_OVERRIDE": "Partial Enrollment", 
     "BILLING_FREQUENCY_OVERRIDE": "Billing Frequency Override",
-    "INSTRUCTOR": "Instructor"
+    "INSTRUCTOR": "Instructor",
+    "PAYMENTVALUE": "Payment per session"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} is required",
@@ -67,9 +68,11 @@
   },
   "NAVIGATION": {
     "CALENDAR": "Calendar",
-    "CLASSES": "Classes", 
+    "CLASSES": "Classes",
     "CLIENTS": "Clients",
-    "DISCOUNTS": "Discounts"
+    "EMPLOYEES": "Employees",
+    "DISCOUNTS": "Discounts",
+    "SALARY_CONFIGURATION": "Salary Configuration"
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Group fitness", 
@@ -98,12 +101,26 @@
     "DELETE_NOTE_CONFIRM": "Delete Note?",
     "DELETE_NOTE_MESSAGE": "Are you sure you want to delete this note? This action cannot be undone.",
     "INSTRUCTORS": "Instructors",
+    "EMPLOYEES": "Employees",
     "ACTIVE_CLIENTS": "Active Clients",
     "INACTIVE_CLIENTS": "Inactive Clients",
     "UNENROLL": "Unenroll Client",
     "UNENROLL_CONFIRM_MESSAGE": "Are you sure you want to unenroll this client from the class?",
     "UNENROLL_REASON": "Reason (Optional)",
     "UNENROLL_SUCCESS": "Client unenrolled successfully!"
+  },
+  "EMPLOYEES": {
+    "TITLE": "Employees",
+    "DETAILS": "Employee Details",
+    "EDIT_EMPLOYEE": "Edit Employee",
+    "EDIT_INSTRUCTOR": "Edit Instructor",
+    "ADD_EMPLOYEE": "Add Employee",
+    "ADD_EMPLOYEE_SUCCESS": "Employee added successfully!",
+    "UPDATE_SUCCESS": "Updated successfully!",
+    "STAFF_ID": "Staff ID",
+    "ROLE": "Role",
+    "INSTRUCTOR": "Instructor",
+    "EMPLOYEE": "Employee"
   },
   "INSTRUCTORS": {
     "TITLE": "Instructors",
@@ -165,6 +182,15 @@
     "THURSDAY": "Thur",
     "FRIDAY": "Fri",
     "SATURDAY": "Sat"
+  },
+  "WEEKDAYS_LETTER": {
+    "SUNDAY": "Su",
+    "MONDAY": "M",
+    "TUESDAY": "Tu",
+    "WEDNESDAY": "W",
+    "THURSDAY": "Th",
+    "FRIDAY": "F",
+    "SATURDAY": "Sa"
   },
   "PAYMENT_STATUS": {
     "PAID": "Paid",
@@ -235,5 +261,21 @@
     "percentage": "Percentage",
     "flat": "Flat",
     "partial enrollment": "Partial Enrollment"
-  } 
+  },
+  "SALARY_CONFIGURATION": {
+    "COMING_SOON": "Salary configuration coming soon...",
+    "SELECT_INSTRUCTOR": "Select an instructor to view and set payment for their assignments.",
+    "ASSIGNMENTS": "Assignments",
+    "SET_PAYMENT": "Set Payment Value",
+    "SET_SALARY": "Set Salary",
+    "PAYMENT_VALUE": "Payment per session",
+    "APPLY_TO_ALL_ASSIGNMENTS": "Apply to all assignments",
+    "APPLY": "Apply",
+    "APPLY_SUCCESS": "Payment value updated.",
+    "APPLY_SUCCESS_ALL": "Payment value applied to all assignments.",
+    "APPLY_ERROR": "Failed to update payment value.",
+    "ENTER_VALID_NUMBER": "Please enter a valid number.",
+    "TOTAL": "Total:",
+    "ESTIMATED_MONTHLY_SALARY": "Estimated Monthly Salary:"
+  }
 }

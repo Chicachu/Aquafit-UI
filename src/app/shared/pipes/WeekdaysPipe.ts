@@ -12,12 +12,14 @@ export class WeekdaysPipe implements PipeTransform {
   transform(days: string | number | number[], separator: string = ', ', shorthand: boolean = true): string {
     if (!days) return ''
     const daysArray = Array.isArray(days) ? days : [days]
-    const identifier = shorthand ? 'WEEKDAYS_SHORT' : 'WEEKDAYS'
+    const useLetterAbbrev = separator === 'letter' || separator === 'single'
+    const joinSeparator = useLetterAbbrev ? ' ' : separator
+    const identifier = useLetterAbbrev ? 'WEEKDAYS_LETTER' : (shorthand ? 'WEEKDAYS_SHORT' : 'WEEKDAYS')
     return daysArray
       .map(day => {
         const dayNum = typeof day === 'string' ? Number(day) : day
         return this.translate.instant(`${identifier}.${Weekday[dayNum]}`)
       })
-      .join(separator);
+      .join(joinSeparator)
   }
 }

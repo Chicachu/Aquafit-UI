@@ -1,0 +1,20 @@
+<div>
+  <app-breadcrumb-nav-bar 
+    [title]="'EMPLOYEES.DETAILS' | translate" 
+    [buttonType]="canEditEmployee ? ButtonType.EDIT : ButtonType.NONE"
+    (onButtonClick)="editEmployee()">
+  </app-breadcrumb-nav-bar>
+  <div *ngIf="employee" class="flex-column general-info">
+    <h3 class="mid-pink">{{ employee.firstName + ' ' + employee.lastName }}</h3>
+    <h4 *ngIf="employee.phoneNumber" class="light-blue">{{ employee.phoneNumber }}</h4>
+  </div>
+
+  <div class="flex-column employee-details-content">
+    <app-notes
+      [resourceType]="'employee'"
+      [resourceId]="employeeId || ''"
+      [notes]="employee?.notes"
+      (notesUpdated)="onNotesUpdated($event)">
+    </app-notes>
+  </div>
+</div>

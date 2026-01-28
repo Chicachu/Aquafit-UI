@@ -1,21 +1,4 @@
-@import '../../../../../../assets/colors.scss';
-
 button {
   display: block;
   margin: 5px auto;
-}
-
-.instructor-checkbox-container {
-  text-align: left;
-  margin: -25px 0 24px 0;
-}
-
-.instructor-checkbox {
-  ::ng-deep .mat-checkbox-label {
-    color: $primary-pink;
-  }
-  
-  ::ng-deep .instructor-label {
-    color: $primary-pink;
-  }
 }

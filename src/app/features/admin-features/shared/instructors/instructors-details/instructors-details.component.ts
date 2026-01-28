@@ -16,6 +16,7 @@ import { SelectOption } from "@core/types/selectOption";
 import { AssignmentService } from "@core/services/assignmentService";
 import { Assignment } from "@core/types/assignment";
 import { AssignmentStatus } from "@core/types/enums/assignmentStatus";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-instructors-details',
@@ -45,6 +46,8 @@ export class InstructorsDetailsComponent {
   selectedLocation: string = ''
   classTimesOptions: SelectOption[] = []
   classScheduleMap: ClassScheduleMap | null = null
+  /** Class IDs that have any active assignment (any instructor). Used to hide those classes from the Assign Instructor modal. */
+  classIdsWithActiveAssignment: Set<string> = new Set()
   selectedClassId: string = ''
   selectedClassDays: number[] | null = null
 
@@ -165,21 +168,25 @@ export class InstructorsDetailsComponent {
     this.selectedClassDays = null
     this.classLocationOptions = []
     this.classTimesOptions = []
+    this.classIdsWithActiveAssignment = new Set()
 
-    this.classService.getClassScheduleMap().subscribe({
-      next: (classScheduleMap: ClassScheduleMap) => {
+    forkJoin({
+      classScheduleMap: this.classService.getClassScheduleMap(),
+      classIds: this.assignmentService.getClassIdsWithActiveAssignments()
+    }).subscribe({
+      next: ({ classScheduleMap, classIds }) => {
         if (classScheduleMap) {
           this.classScheduleMap = classScheduleMap
+          this.classIdsWithActiveAssignment = new Set(classIds)
           this.classTypeOptions = Object.keys(classScheduleMap).map(classType => ({
             viewValue: classType, 
             value: classType
           }))
-
           this.showAssignmentModal = true
         }
-      }, 
-      error: ({error}) => {
-        this.snackBarService.showError(error.message)
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? '')
       }
     })
   }
@@ -215,49 +222,9 @@ export class InstructorsDetailsComponent {
     }
   }
 
-  private _getAssignedClassIds(classType: ClassType, location: string): Set<string> {
-    const assignedClassIds = new Set<string>()
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    // Check all assignments (not just activeAssignmentInfo) to include those with endDate that haven't passed
-    this.assignmentInfo.forEach(item => {
-      // Skip if class type or location doesn't match
-      if (item.class.classType !== classType || item.class.classLocation !== location) {
-        return
-      }
-
-      if (item.assignment.status === AssignmentStatus.UNASSIGNED) return
-
-      // Check if class is terminated - if so, don't filter it (allow reassignment to active classes)
-      if (item.class.endDate) {
-        const classEndDate = new Date(item.class.endDate)
-        classEndDate.setHours(0, 0, 0, 0)
-        if (classEndDate <= today) {
-          // Class is terminated, don't filter it out (instructor can be reassigned to a new active class)
-          return
-        }
-      }
-
-      // Check if assignment is still active
-      // An assignment is active if it doesn't have an endDate, or the endDate hasn't passed yet
-      if (item.assignment.endDate) {
-        const assignmentEndDate = new Date(item.assignment.endDate)
-        assignmentEndDate.setHours(0, 0, 0, 0)
-        const yesterday = new Date(today)
-        yesterday.setDate(yesterday.getDate() - 1)
-        
-        // If endDate has passed (yesterday or earlier), it's no longer active
-        if (assignmentEndDate <= yesterday) {
-          return
-        }
-      }
-      
-      // Assignment is still active, add its classId to the set to filter it out
-      assignedClassIds.add(item.class._id)
-    })
-
-    return assignedClassIds
+  /** Class IDs that have any active assignment (any instructor). Used to hide them from the Assign Instructor modal time-slot list. */
+  private _getAssignedClassIds(_classType: ClassType, _location: string): Set<string> {
+    return this.classIdsWithActiveAssignment
   }
 
   private _separateActiveAndTerminated(assignmentInfo: { class: Class, assignment: Assignment }[]): void {

@@ -22,5 +22,5 @@ export type User = Document & {
   } | null
   accessToken?: string | null
   notes?: Note[] | null
-  instructorId?: number | null
+  employeeId?: number | null
 }

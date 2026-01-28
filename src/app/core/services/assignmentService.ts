@@ -19,10 +19,10 @@ export class AssignmentService {
       .pipe(take(1), map((res) => res.classIds))
   }
 
-  assignInstructor(classId: string, instructorId: string, startDate: Date, endDate?: Date | null): Observable<Assignment> {
+  assignInstructor(classId: string, employeeId: string, startDate: Date, endDate?: Date | null): Observable<Assignment> {
     return this.http.post<Assignment>(`${environment.apiUrl}/assignments/`, {
       classId,
-      instructorId,
+      employeeId,
       startDate,
       endDate
     }).pipe(take(1))

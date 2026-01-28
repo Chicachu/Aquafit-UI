@@ -21,6 +21,7 @@ import { EmployeesListComponent } from "./employees/employees-list/employees-lis
 import { AddEmployeeComponent } from "./employees/add-employee/add-employee.component";
 import { EditEmployeeComponent } from "./employees/edit-employee/edit-employee.component";
 import { SalaryConfigurationComponent } from "./salary-configuration/salary-configuration.component";
+import { CheckInsComponent } from "./check-ins/check-ins.component";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { SalaryConfigurationComponent } from "./salary-configuration/salary-conf
     EmployeesListComponent,
     AddEmployeeComponent,
     EditEmployeeComponent,
-    SalaryConfigurationComponent
+    SalaryConfigurationComponent,
+    CheckInsComponent
   ],
   imports: [
     CommonModule,

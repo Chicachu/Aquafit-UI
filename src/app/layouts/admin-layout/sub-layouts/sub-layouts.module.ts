@@ -11,6 +11,7 @@ const navItems = new Map([
   ["NAVIGATION.CLIENTS", "/admin/mobile/clients"],
   ["NAVIGATION.EMPLOYEES", "/admin/mobile/employees"],
   ["NAVIGATION.CLASSES", "/admin/mobile/classes"],
+  ["NAVIGATION.CHECK_INS", "/admin/mobile/check-ins"],
   ["NAVIGATION.DISCOUNTS", "/admin/mobile/discounts"],
   ["NAVIGATION.SALARY_CONFIGURATION", "/admin/mobile/salary-configuration"]
 ])

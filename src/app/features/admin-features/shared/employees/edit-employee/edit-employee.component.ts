@@ -58,7 +58,7 @@ export class EditEmployeeComponent implements OnInit {
     this.userService.getUser(this.userId).subscribe({
       next: (user: User) => {
         this.loadedRole = user.role
-        this.staffId = user.instructorId ?? null
+        this.staffId = user.employeeId ?? null
         this.form.patchValue({
           firstName: user.firstName,
           lastName: user.lastName,
@@ -85,7 +85,7 @@ export class EditEmployeeComponent implements OnInit {
         lastName: this.f['lastName'].value.trim(),
         phoneNumber: this.f['phoneNumber'].value?.trim(),
         role,
-        instructorId: this.staffId
+        employeeId: this.staffId
       }).subscribe({
         next: () => {
           this.loading = false

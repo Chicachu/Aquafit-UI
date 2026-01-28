@@ -71,8 +71,24 @@
     "CLASSES": "Classes",
     "CLIENTS": "Clients",
     "EMPLOYEES": "Employees",
+    "CHECK_INS": "Time Tracking",
     "DISCOUNTS": "Discounts",
     "SALARY_CONFIGURATION": "Salary Configuration"
+  },
+  "CHECK_INS": {
+    "INTRO": "Record check-in and check-out for working hours. Time entries are used to calculate instructor and employee payables.",
+    "CHECK_IN": "Check in",
+    "CHECK_OUT": "Check out",
+    "YOUR_BADGE": "Your badge QR code",
+    "BADGE_HINT": "Print or save this QR code to use as your badge until you have a physical one. The code contains your user ID.",
+    "CHECK_IN_SUCCESS": "Check-in recorded.",
+    "CHECK_OUT_SUCCESS": "Check-out recorded.",
+    "SUBMIT_ERROR": "Failed to record entry.",
+    "NOT_LOGGED_IN": "You must be logged in to record entries.",
+    "ENTRIES_HISTORY": "Time Entries",
+    "NO_ENTRIES": "No entries yet.",
+    "LOADING_ENTRIES": "Loading entries...",
+    "LOAD_ENTRIES_ERROR": "Could not load entries."
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Group fitness", 

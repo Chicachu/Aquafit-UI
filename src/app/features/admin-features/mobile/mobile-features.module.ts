@@ -23,6 +23,7 @@ import { EmployeesListComponent } from "../shared/employees/employees-list/emplo
 import { AddEmployeeComponent } from "../shared/employees/add-employee/add-employee.component";
 import { EditEmployeeComponent } from "../shared/employees/edit-employee/edit-employee.component";
 import { SalaryConfigurationComponent } from "../shared/salary-configuration/salary-configuration.component";
+import { CheckInsComponent } from "../shared/check-ins/check-ins.component";
 
 const routes: Routes = [
   {
@@ -150,6 +151,11 @@ const routes: Routes = [
     pathMatch: 'full',
     component: SalaryConfigurationComponent,
     canActivate: [AdminGuard]
+  },
+  {
+    path: 'check-ins',
+    pathMatch: 'full',
+    component: CheckInsComponent
   }
 ]
 

@@ -1,0 +1,61 @@
+<div class="flex-column">
+  <app-breadcrumb-nav-bar
+    [title]="'NAVIGATION.CHECK_INS' | translate"
+    [buttonType]="buttonType">
+  </app-breadcrumb-nav-bar>
+  <div class="check-ins-content">
+    <p>{{ 'CHECK_INS.INTRO' | translate }}</p>
+
+    <!-- Check-in and Check-out buttons -->
+    <section class="buttons-section">
+      <button
+        mat-raised-button
+        color="primary"
+        class="action-button check-in-button"
+        [disabled]="isSubmitting"
+        (click)="submitCheckIn()">
+        {{ 'CHECK_INS.CHECK_IN' | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        class="action-button check-out-button"
+        [disabled]="isSubmitting"
+        (click)="submitCheckOut()">
+        {{ 'CHECK_INS.CHECK_OUT' | translate }}
+      </button>
+    </section>
+
+    <!-- Loading entries -->
+    <section *ngIf="isLoadingEntries" class="loading-section">
+      <p>{{ 'CHECK_INS.LOADING_ENTRIES' | translate }}</p>
+    </section>
+
+    <!-- Entries list -->
+    <section *ngIf="!isLoadingEntries" class="entries-section">
+      <h3>{{ 'CHECK_INS.ENTRIES_HISTORY' | translate }}</h3>
+      <div *ngIf="entries.length === 0" class="no-entries">
+        <p>{{ 'CHECK_INS.NO_ENTRIES' | translate }}</p>
+      </div>
+      <ul *ngIf="entries.length > 0" class="entries-list">
+        <li *ngFor="let entry of entries" class="entry-item">
+          <div class="entry-content">
+            <span class="entry-type" [class.check-in]="entry.type === CheckInType.CHECK_IN" [class.check-out]="entry.type === CheckInType.CHECK_OUT">
+              {{ entry.type === CheckInType.CHECK_IN ? ('CHECK_INS.CHECK_IN' | translate) : ('CHECK_INS.CHECK_OUT' | translate) }}
+            </span>
+            <span class="entry-date">{{ entry.date | date:'short' }}</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Your badge QR (instructors & employees) -->
+    <section *ngIf="showBadgeSection && badgeQrUrl" class="badge-section">
+      <h3>{{ 'CHECK_INS.YOUR_BADGE' | translate }}</h3>
+      <p class="badge-hint">{{ 'CHECK_INS.BADGE_HINT' | translate }}</p>
+      <div class="badge-qr-wrap">
+        <img [src]="badgeQrUrl" alt="Your badge QR code" class="badge-qr" />
+      </div>
+    </section>
+  </div>
+</div>

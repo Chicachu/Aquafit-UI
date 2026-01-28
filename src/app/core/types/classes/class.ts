@@ -19,12 +19,12 @@ export type Class = Document & {
   maxCapacity: number
   checkIns?: {
     date: Date
-    instructorId: string
+    employeeId: string
     clientIds: string[]
   }[]
   cancellations?: {
     date: Date
-    instructorId: string
+    employeeId: string
     reason?: string | null
   }[]
   notes?: Note[] | null

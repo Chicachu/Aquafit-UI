@@ -71,8 +71,24 @@
     "CLASSES": "Clases",
     "CLIENTS": "Clientes",
     "EMPLOYEES": "Empleados",
+    "CHECK_INS": "Registro de Tiempo",
     "DISCOUNTS": "Descuentos",
     "SALARY_CONFIGURATION": "Configuración de Salarios"
+  },
+  "CHECK_INS": {
+    "INTRO": "Registra entrada y salida para las horas trabajadas. Los registros se usan para calcular los pagos de instructores y empleados.",
+    "CHECK_IN": "Registrar entrada",
+    "CHECK_OUT": "Registrar salida",
+    "YOUR_BADGE": "Tu código QR de gafete",
+    "BADGE_HINT": "Imprime o guarda este código QR para usarlo como gafete hasta tener uno físico. El código contiene tu ID de usuario.",
+    "CHECK_IN_SUCCESS": "Entrada registrada.",
+    "CHECK_OUT_SUCCESS": "Salida registrada.",
+    "SUBMIT_ERROR": "Error al registrar entrada.",
+    "NOT_LOGGED_IN": "Debes iniciar sesión para registrar entradas.",
+    "ENTRIES_HISTORY": "Registros de Tiempo",
+    "NO_ENTRIES": "Aún no hay registros.",
+    "LOADING_ENTRIES": "Cargando registros...",
+    "LOAD_ENTRIES_ERROR": "No se pudieron cargar los registros."
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Fitness grupal",

@@ -67,7 +67,7 @@ export class AddEmployeeComponent implements OnInit {
         lastName: this.f['lastName'].value.trim(),
         phoneNumber: this.f['phoneNumber'].value?.trim(),
         role,
-        instructorId: this.staffId
+        employeeId: this.staffId
       }).subscribe({
         next: () => {
           this.loading = false

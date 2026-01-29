@@ -1,4 +1,19 @@
 <div class="calendar-container">
+  <!-- Date navigation -->
+  <div class="date-navigation">
+    <button class="nav-arrow" (click)="previousDay()" aria-label="Previous day">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="date-label">{{ getFormattedDate() }}</span>
+    <button class="nav-arrow" (click)="nextDay()" aria-label="Next day">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  
   <!-- Location legend -->
   <div class="location-legend" *ngIf="location === '' && locations.length > 0">
     <div class="legend-item" *ngFor="let location of locations">

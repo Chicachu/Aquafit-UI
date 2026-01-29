@@ -5,6 +5,7 @@ import { CalendarClass } from '@/core/types/calendarClass';
 import { SnackBarService } from '@/core/services/snackBarService';
 import { ClassType } from '@/core/types/enums/classType';
 import { ClassService } from '@/core/services/classService';
+import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
 
 @Component({
@@ -20,16 +21,19 @@ export class MobileCalendarComponent implements OnChanges, OnInit {
   classSchedule: Map<string, CalendarClass[]> = new Map()
   locations: string[] = []
   locationColors: Map<string, string> = new Map()
+  currentDate: Date = new Date()
   private readonly locationColorPalette = ['#4CAF50', '#E91E63', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4', '#FF5722', '#795548']
 
   constructor(
     private scheduleService: ScheduleService, 
     private snackBarService: SnackBarService,
-    private classService: ClassService
+    private classService: ClassService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
     this._loadLocations()
+    this._loadSchedule()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,10 +74,11 @@ export class MobileCalendarComponent implements OnChanges, OnInit {
   }
 
   private _loadSchedule(): void {
-    this.scheduleService.getAllClasses(ScheduleView.DAY, new Date(), this.location).pipe(
+    this.scheduleService.getAllClasses(ScheduleView.DAY, this.currentDate, this.location).pipe(
       map(response => new Map(Object.entries(response))))
       .subscribe({
         next: (calendarClasses: Map<string, CalendarClass[]>) => {
+          this.classSchedule = new Map()
           for (const values of calendarClasses.values()) {
             values.forEach((value) => {
               const hour = new Date(value.date).getHours()
@@ -89,5 +94,30 @@ export class MobileCalendarComponent implements OnChanges, OnInit {
           this.snackBarService.showError(error.message)
         }
     })
+  }
+
+  previousDay(): void {
+    const newDate = new Date(this.currentDate)
+    newDate.setDate(newDate.getDate() - 1)
+    this.currentDate = newDate
+    this._loadSchedule()
+  }
+
+  nextDay(): void {
+    const newDate = new Date(this.currentDate)
+    newDate.setDate(newDate.getDate() + 1)
+    this.currentDate = newDate
+    this._loadSchedule()
+  }
+
+  getFormattedDate(): string {
+    const day = this.currentDate.getDate()
+    const month = this.currentDate.getMonth() + 1
+    const currentLang = this.translateService.currentLang || 'en'
+    
+    if (currentLang === 'es') {
+      return `${day}/${month}`
+    }
+    return `${month}/${day}`
   }
 }

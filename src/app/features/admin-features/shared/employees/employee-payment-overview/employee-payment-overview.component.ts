@@ -8,19 +8,21 @@ import { PaymentStatus } from "@core/types/enums/paymentStatus";
 export interface PaymentPeriodRow {
   date: Date;
   paymentStatus: PaymentStatus;
+  /** Set only for employee payables; used to link to details. */
+  payableId?: string;
 }
 
 @Component({
-  selector: 'app-instructor-payment-overview',
-  templateUrl: './instructor-payment-overview.component.html',
-  styleUrls: ['./instructor-payment-overview.component.scss']
+  selector: "app-employee-payment-overview",
+  templateUrl: "./employee-payment-overview.component.html",
+  styleUrls: ["./employee-payment-overview.component.scss"],
 })
-export class InstructorPaymentOverviewComponent {
+export class EmployeePaymentOverviewComponent {
   readonly ButtonType = ButtonType;
   readonly PaymentStatus = PaymentStatus;
 
   userId: string | null = null;
-  instructorName: string = '';
+  employeeName = "";
   periods: PaymentPeriodRow[] = [];
 
   constructor(
@@ -30,57 +32,58 @@ export class InstructorPaymentOverviewComponent {
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('user-id');
+    this.userId = this.route.snapshot.paramMap.get("user-id");
     if (!this.userId) return;
 
     this.paymentService.getInvoicesByUserId(this.userId).subscribe({
       next: ({ invoices, employeePayables, userName }) => {
-        this.instructorName = userName;
+        this.employeeName = userName ?? "";
         const fromInvoices = invoices.map((i) => ({
           date: new Date(i.period.endDate),
-          paymentStatus: i.paymentStatus
+          paymentStatus: i.paymentStatus,
         }));
-        const fromPayables = (employeePayables || []).map((p) => ({
+        const fromPayables = (employeePayables ?? []).map((p) => ({
           date: new Date(p.period.endDate),
-          paymentStatus: p.paymentStatus
+          paymentStatus: p.paymentStatus,
+          payableId: p._id,
         }));
         const combined = [...fromInvoices, ...fromPayables];
         combined.sort((a, b) => b.date.getTime() - a.date.getTime());
         this.periods = combined;
       },
       error: ({ error }) => {
-        this.snackBarService.showError(error?.message ?? 'Error loading invoices.');
-      }
+        this.snackBarService.showError(error?.message ?? "Error loading invoices.");
+      },
     });
   }
 
   getIconClass(paymentStatus: PaymentStatus): string {
     switch (paymentStatus) {
       case PaymentStatus.PAID:
-        return 'paid-status-icon';
+        return "paid-status-icon";
       case PaymentStatus.ALMOST_DUE:
-        return 'almost-due-status-icon';
+        return "almost-due-status-icon";
       case PaymentStatus.OVERDUE:
-        return 'overdue-status-icon';
+        return "overdue-status-icon";
       case PaymentStatus.PENDING:
-        return '';
+        return "";
       default:
-        return '';
+        return "";
     }
   }
 
   getStatusClass(paymentStatus: PaymentStatus): string {
     switch (paymentStatus) {
       case PaymentStatus.PAID:
-        return 'paid-status';
+        return "paid-status";
       case PaymentStatus.ALMOST_DUE:
-        return 'almost-due-status';
+        return "almost-due-status";
       case PaymentStatus.OVERDUE:
-        return 'overdue-status';
+        return "overdue-status";
       case PaymentStatus.PENDING:
-        return 'pending-status';
+        return "pending-status";
       default:
-        return '';
+        return "";
     }
   }
 

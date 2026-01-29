@@ -9,10 +9,10 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-field-container">
             <app-text-input
-              [type]="TextInputType.EMAIL"
-              label="CONTROLS.EMAIL"
+              [type]="TextInputType.TEXT"
+              label="CONTROLS.EMAIL_OR_EMPLOYEE_ID"
               controlName="email"
-              [placeholder]="'CONTROLS.EMAIL_PLACEHOLDER'">
+              [placeholder]="'CONTROLS.EMAIL_OR_EMPLOYEE_ID_PLACEHOLDER'">
             </app-text-input>
 
             <app-text-input

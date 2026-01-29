@@ -30,4 +30,10 @@ export class PaymentService {
   public getInvoicesByUserId(userId: string): Observable<InvoicesByUserIdResponse> {
     return this.http.get<InvoicesByUserIdResponse>(`${environment.apiUrl}/users/${userId}/invoices`)
   }
+
+  public getPayableById(userId: string, payableId: string): Observable<EmployeePayable> {
+    return this.http.get<EmployeePayable>(
+      `${environment.apiUrl}/users/${userId}/payables/${encodeURIComponent(payableId)}`
+    )
+  }
 }

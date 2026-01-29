@@ -1,0 +1,46 @@
+<div>
+  <app-breadcrumb-nav-bar
+    [title]="'EMPLOYEES.PAYMENT_OVERVIEW' | translate"
+    [buttonType]="ButtonType.NONE">
+  </app-breadcrumb-nav-bar>
+
+  <div *ngIf="employeeName">
+    <div class="header flex-column">
+      <h3 class="mid-pink">{{ employeeName }}</h3>
+    </div>
+    <hr>
+    <div>
+      <ul>
+        <ng-container *ngFor="let period of periods">
+          <a
+            *ngIf="period.payableId && userId"
+            [routerLink]="['/admin/mobile/employees', userId, 'payments', 'details', period.payableId]"
+            class="period-row flex-row period-link">
+            <div
+              [ngClass]="[
+                getIconClass(period.paymentStatus),
+                'icon',
+                isOverdue(period.paymentStatus) ? 'flash-icon' : ''
+              ]"></div>
+            <li [ngClass]="getStatusClass(period.paymentStatus)">
+              {{ period.date | translateDate:'MMMM yyyy' }} - {{ period.paymentStatus | capitalize }}
+            </li>
+            <div class="arrow-right"></div>
+          </a>
+          <div *ngIf="!period.payableId" class="period-row flex-row">
+            <div
+              [ngClass]="[
+                getIconClass(period.paymentStatus),
+                'icon',
+                isOverdue(period.paymentStatus) ? 'flash-icon' : ''
+              ]"></div>
+            <li [ngClass]="getStatusClass(period.paymentStatus)">
+              {{ period.date | translateDate:'MMMM yyyy' }} - {{ period.paymentStatus | capitalize }}
+            </li>
+            <div class="arrow-right"></div>
+          </div>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</div>

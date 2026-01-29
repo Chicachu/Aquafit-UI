@@ -3,6 +3,7 @@ import { BreadcrumbNavBarComponent } from './breadcrumb-nav-bar/breadcrumb-nav-b
 import { ClientListComponent } from "./clients/client-list/client-list.component";
 import { SharedModule } from "../../../shared/shared.module";
 import { CommonModule } from "@angular/common";
+import { TranslateModule } from "@ngx-translate/core";
 import { ClientDetailsComponent } from "./clients/client-details/client-details.component";
 import { EditClientComponent } from "./clients/edit-client/edit-client.component";
 import { ClassListComponent } from "./classes/class-list/class-list.component";
@@ -14,14 +15,14 @@ import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-deta
 import { DiscountListComponent } from "./discounts/discount-list/discount-list.component";
 import { DiscountDetailsComponent } from "./discounts/discount-details/discount-details.component";
 import { EditDiscountComponent } from "./discounts/edit-discount/edit-discount.component";
-import { InstructorsDetailsComponent } from "./instructors/instructors-details/instructors-details.component";
-import { InstructorPaymentOverviewComponent } from "./instructors/instructor-payment-overview/instructor-payment-overview.component";
 import { EmployeeDetailsComponent } from "./employees/employee-details/employee-details.component";
+import { EmployeePaymentOverviewComponent } from "./employees/employee-payment-overview/employee-payment-overview.component";
 import { EmployeesListComponent } from "./employees/employees-list/employees-list.component";
 import { AddEmployeeComponent } from "./employees/add-employee/add-employee.component";
 import { EditEmployeeComponent } from "./employees/edit-employee/edit-employee.component";
 import { SalaryConfigurationComponent } from "./salary-configuration/salary-configuration.component";
 import { CheckInsComponent } from "./check-ins/check-ins.component";
+import { EmployeePayableDetailsComponent } from "./employees/employee-payable-details/employee-payable-details.component";
 
 @NgModule({
   declarations: [
@@ -38,18 +39,19 @@ import { CheckInsComponent } from "./check-ins/check-ins.component";
     DiscountListComponent,
     DiscountDetailsComponent,
     EditDiscountComponent,
-    InstructorsDetailsComponent,
-    InstructorPaymentOverviewComponent,
     EmployeeDetailsComponent,
+    EmployeePaymentOverviewComponent,
     EmployeesListComponent,
     AddEmployeeComponent,
     EditEmployeeComponent,
     SalaryConfigurationComponent,
-    CheckInsComponent
+    CheckInsComponent,
+    EmployeePayableDetailsComponent
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    TranslateModule
   ],
   exports: [
     SharedModule,

@@ -12,6 +12,9 @@
         <li *ngFor="let title of navTitles" [class.active]="isActive(title)">
           <a (click)="navigate(title, $event)">{{ getNavItemLabel(title) | translate }}</a>
         </li>
+        <li *ngIf="canShowMyAccount" [class.active]="isMyAccountActive()">
+          <a (click)="navigateToMyAccount($event)">{{ 'NAVIGATION.MY_ACCOUNT' | translate }}</a>
+        </li>
       </ul>
     </div>
   </div>

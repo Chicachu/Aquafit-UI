@@ -10,7 +10,7 @@
       <ul>
         <li *ngFor="let instructor of instructors">
           <div class="instructor-item">
-            <a [routerLink]="['/admin/mobile/instructors', instructor._id, 'details']">{{ instructor.firstName }} {{ instructor.lastName }}</a>
+            <a [routerLink]="['/admin/mobile/employees', instructor._id, 'details']">{{ instructor.firstName }} {{ instructor.lastName }}</a>
             <span *ngIf="instructor.employeeId" class="instructor-id">{{ instructor.employeeId }}</span>
           </div>
         </li>

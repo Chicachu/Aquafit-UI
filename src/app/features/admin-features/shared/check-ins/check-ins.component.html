@@ -6,32 +6,76 @@
   <div class="check-ins-content">
     <p>{{ 'CHECK_INS.INTRO' | translate }}</p>
 
-    <!-- Check-in and Check-out buttons -->
+    <form [formGroup]="simulateForm" class="simulate-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="employee-number-field">
+          <mat-label>{{ 'CHECK_INS.EMPLOYEE_NUMBER' | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="employeeNumber"
+            [placeholder]="'CHECK_INS.EMPLOYEE_NUMBER_PLACEHOLDER' | translate"
+            inputmode="numeric"
+            maxlength="6">
+          <mat-error *ngIf="simulateForm.get('employeeNumber')?.hasError('required')">
+            {{ 'ERRORS.REQUIRED' | translate:{ field: ('CHECK_INS.EMPLOYEE_NUMBER' | translate) } }}
+          </mat-error>
+          <mat-error *ngIf="simulateForm.get('employeeNumber')?.hasError('pattern')">
+            {{ 'CHECK_INS.EMPLOYEE_NUMBER_PLACEHOLDER' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-row date-time-row">
+        <app-datepicker
+          label="CHECK_INS.SIMULATED_DATE"
+          controlName="simulatedDate">
+        </app-datepicker>
+        <mat-form-field appearance="outline" class="time-field">
+          <mat-label>{{ 'CHECK_INS.SIMULATED_TIME' | translate }}</mat-label>
+          <input
+            matInput
+            type="time"
+            formControlName="simulatedTime">
+          <mat-error *ngIf="simulateForm.get('simulatedTime')?.invalid && simulateForm.get('simulatedTime')?.touched">
+            {{ 'ERRORS.REQUIRED' | translate:{ field: ('CHECK_INS.SIMULATED_TIME' | translate) } }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-row buttons-row">
+        <button
+          mat-stroked-button
+          type="button"
+          [disabled]="isLoadingEntries || !simulateForm.get('employeeNumber')?.value?.trim()"
+          (click)="loadEntries()">
+          {{ 'CHECK_INS.LOAD_ENTRIES' | translate }}
+        </button>
+      </div>
+    </form>
+
     <section class="buttons-section">
       <button
+        type="button"
         mat-raised-button
         color="primary"
         class="action-button check-in-button"
-        [disabled]="isSubmitting"
+        [disabled]="!canSubmit"
         (click)="submitCheckIn()">
         {{ 'CHECK_INS.CHECK_IN' | translate }}
       </button>
       <button
+        type="button"
         mat-raised-button
         color="accent"
         class="action-button check-out-button"
-        [disabled]="isSubmitting"
+        [disabled]="!canSubmit"
         (click)="submitCheckOut()">
         {{ 'CHECK_INS.CHECK_OUT' | translate }}
       </button>
     </section>
 
-    <!-- Loading entries -->
     <section *ngIf="isLoadingEntries" class="loading-section">
       <p>{{ 'CHECK_INS.LOADING_ENTRIES' | translate }}</p>
     </section>
 
-    <!-- Entries list -->
     <section *ngIf="!isLoadingEntries" class="entries-section">
       <h3>{{ 'CHECK_INS.ENTRIES_HISTORY' | translate }}</h3>
       <div *ngIf="entries.length === 0" class="no-entries">
@@ -47,15 +91,6 @@
           </div>
         </li>
       </ul>
-    </section>
-
-    <!-- Your badge QR (instructors & employees) -->
-    <section *ngIf="showBadgeSection && badgeQrUrl" class="badge-section">
-      <h3>{{ 'CHECK_INS.YOUR_BADGE' | translate }}</h3>
-      <p class="badge-hint">{{ 'CHECK_INS.BADGE_HINT' | translate }}</p>
-      <div class="badge-qr-wrap">
-        <img [src]="badgeQrUrl" alt="Your badge QR code" class="badge-qr" />
-      </div>
     </section>
   </div>
 </div>

@@ -29,6 +29,13 @@ li {
   width: 85vw;
 }
 
+.period-link {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
 .icon {
   min-width: 1.5rem;
   min-height: 1.5rem;

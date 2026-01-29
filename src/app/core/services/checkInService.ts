@@ -13,7 +13,6 @@ export type EmployeeCheckIn = {
   employeeId: string;
   type: CheckInType;
   date: string;
-  assignmentId?: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -22,7 +21,6 @@ export type CreateCheckInRequest = {
   employeeId: string;
   type: CheckInType;
   date: string;
-  assignmentId?: string | null;
 };
 
 @Injectable({
@@ -31,20 +29,28 @@ export type CreateCheckInRequest = {
 export class CheckInService {
   constructor(private http: HttpClient) {}
 
-  createEntry(employeeId: string, type: CheckInType, date: Date, assignmentId?: string | null): Observable<EmployeeCheckIn> {
+  createEntry(employeeId: string, type: CheckInType, date: Date): Observable<EmployeeCheckIn> {
+    const eid = employeeId == null ? "" : String(employeeId).trim();
+    const body: CreateCheckInRequest = {
+      employeeId: eid,
+      type,
+      date: date.toISOString(),
+    };
     return this.http
-      .post<EmployeeCheckIn>(`${environment.apiUrl}/check-ins`, {
-        employeeId,
-        type,
-        date: date.toISOString(),
-        assignmentId: assignmentId || null,
-      } as CreateCheckInRequest)
+      .post<EmployeeCheckIn>(`${environment.apiUrl}/check-ins`, body)
       .pipe(take(1));
   }
 
   getMyEntries(): Observable<EmployeeCheckIn[]> {
     return this.http
       .get<EmployeeCheckIn[]>(`${environment.apiUrl}/check-ins/my-entries`)
+      .pipe(take(1));
+  }
+
+  getEntriesByEmployeeId(employeeId: string): Observable<EmployeeCheckIn[]> {
+    const id = employeeId == null ? "" : String(employeeId).trim();
+    return this.http
+      .get<EmployeeCheckIn[]>(`${environment.apiUrl}/check-ins/entries/${encodeURIComponent(id)}`)
       .pipe(take(1));
   }
 }

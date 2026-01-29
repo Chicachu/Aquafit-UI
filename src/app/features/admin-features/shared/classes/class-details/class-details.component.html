@@ -22,7 +22,7 @@
     <div class="flex-row clients-section">
       <h2 class="light-blue">{{ 'CLIENTS.TITLE' | translate }}</h2>
       <button 
-        *ngIf="!isTerminated"
+        *ngIf="userService.isAdmin && !isTerminated"
         mat-icon-button 
         (click)="addClientToClass()" class="add-class-button">
         <mat-icon class="add-icon" matPrefix>{{ 'add' }}</mat-icon>
@@ -75,7 +75,7 @@
 
     <div class="flex-row buttons">
       <app-button 
-        *ngIf="!isTerminated"
+        *ngIf="userService.isAdmin && !isTerminated"
         [label]="'CLASSES.CANCEL'"
         [loading]="loading"
         [loadingMessage]="'CLASSES.CANCELLING'"
@@ -90,12 +90,12 @@
       </app-button>
     </div>
 
-    <!-- Notes Section -->
+    <!-- Notes Section (read-only for instructors; admins can add/delete unless class terminated) -->
     <app-notes
       [resourceType]="'class'"
       [resourceId]="classId || ''"
       [notes]="classDetails.notes"
-      [readOnly]="isTerminated"
+      [readOnly]="isTerminated || !userService.isAdmin"
       (notesUpdated)="onNotesUpdated($event)">
     </app-notes>
   </div>

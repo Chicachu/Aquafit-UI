@@ -4,7 +4,7 @@ import { AuthenticationService } from '../../../core/services/authenticationServ
 import { SnackBarService } from '../../../core/services/snackBarService';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../../core/types/user';
-import { internalEmailRegex } from '../../../core/constants';
+import { Role } from '../../../core/types/enums/role';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/userService';
 import { ErrorMessageProvider, ErrorsService } from '../../../core/services/errorsService';
@@ -49,12 +49,10 @@ export class LoginComponent {
         next: (user: User) => {
           this.loading = false;
           this.userService.user = user
-          this.snackBarService.showSuccess(this.translateService.instant('LOGIN.WELCOME', { name: user.username }));
-          if (internalEmailRegex.test(user.username!)) {
-            this.router.navigate(['/admin/home'])
-          } else {
-            this.router.navigate(['/home'])
-          }
+          const displayName = user.firstName ?? user.username ?? (user.employeeId != null ? String(user.employeeId) : '')
+          this.snackBarService.showSuccess(this.translateService.instant('LOGIN.WELCOME', { name: displayName }))
+          const isStaff = user.role === Role.ADMIN || user.role === Role.INSTRUCTOR || user.role === Role.EMPLOYEE
+          this.router.navigate([isStaff ? '/admin/home' : '/home'])
           this.loginForm.reset()
         },
         error: ({error}) => {

@@ -34,8 +34,12 @@ export class LayoutGuard implements CanActivate {
             return true
           }
           
-          let targetUrl = (this.userService.user?.role === Role.INSTRUCTOR || this.userService.user?.role === Role.ADMIN) 
-            ? ( isMobileSize ? '/admin/mobile/home' : '/admin/home') : '/home'
+          const isStaff = this.userService.user?.role === Role.ADMIN ||
+            this.userService.user?.role === Role.INSTRUCTOR ||
+            this.userService.user?.role === Role.EMPLOYEE
+          const targetUrl = isStaff
+            ? (isMobileSize ? '/admin/mobile/home' : '/admin/home')
+            : '/home'
           this.router.navigate([targetUrl])
           return false;
         })

@@ -3,9 +3,10 @@ import { Role } from "../types/enums/role"
 import { User } from "../types/user"
 import { HttpClient } from "@angular/common/http"
 import { Observable, take } from "rxjs"
+import { map } from "rxjs/operators"
 import { environment } from "../../../environments/environment"
 import { ClientEnrollmentDetails } from "@core/types/clients/clientEnrollmentDetails"
-import { InstructorClassDetails } from "@core/types/instructors/instructorClassDetails"
+import { EmployeeClassDetails } from "@core/types/employees/employeeClassDetails"
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +67,7 @@ export class UserService {
     return this._http.put(`${environment.apiUrl}/users/`, { ...reqObj }).pipe(take(1))
   }
 
-  updateClient(userId: string, reqObj: { firstName?: string, lastName?: string, phoneNumber?: string, role?: Role, employeeId?: number | null }): Observable<User> {
+  updateClient(userId: string, reqObj: { firstName?: string, lastName?: string, phoneNumber?: string, role?: Role, employeeId?: number | null, password?: string }): Observable<User> {
     return this._http.put<User>(`${environment.apiUrl}/users/${userId}`, reqObj).pipe(take(1))
   }
 
@@ -82,7 +83,17 @@ export class UserService {
     return this._http.get<{ employeeId: number }>(`${environment.apiUrl}/users/next-employee-id`).pipe(take(1))
   }
 
-  getInstructorClassDetails(userId: string): Observable<InstructorClassDetails> {
-    return this._http.get<InstructorClassDetails>(`${environment.apiUrl}/users/${userId}/classes`).pipe(take(1))
+  getEmployeeClassDetails(userId: string): Observable<EmployeeClassDetails> {
+    return this._http
+      .get<{ instructor: User; assignmentInfo: EmployeeClassDetails["assignmentInfo"] }>(
+        `${environment.apiUrl}/users/${userId}/classes`
+      )
+      .pipe(
+        take(1),
+        map((res) => ({
+          employee: res.instructor,
+          assignmentInfo: res.assignmentInfo ?? []
+        }))
+      )
   }
 }

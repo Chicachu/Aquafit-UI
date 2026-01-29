@@ -2,6 +2,7 @@ import { Component, HostListener } from "@angular/core";
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
 import { UserService } from "@core/services/userService";
+import { Role } from "@core/types/enums/role";
 
 @Component({
   selector: 'app-mobile-layout',
@@ -14,8 +15,35 @@ export class MobileLayoutComponent {
   isMenuOpen: boolean = false
   currentRoute: string = ''
 
-  // Admin-only menu items
-  private readonly adminOnlyItems = ['NAVIGATION.DISCOUNTS', 'NAVIGATION.SALARY_CONFIGURATION', 'NAVIGATION.EMPLOYEES']
+  private readonly adminOnlyItems = ['NAVIGATION.DISCOUNTS', 'NAVIGATION.SALARY_CONFIGURATION', 'NAVIGATION.EMPLOYEES', 'NAVIGATION.CHECK_INS']
+  private readonly instructorOrAdminItems = ['NAVIGATION.CALENDAR', 'NAVIGATION.CLASSES', 'NAVIGATION.CLIENTS']
+
+  get canShowMyAccount(): boolean {
+    const role = this.userService.userRole
+    return role === Role.INSTRUCTOR || role === Role.EMPLOYEE
+  }
+
+  get myAccountPath(): string | null {
+    const id = this.userService.user?._id
+    return id ? `/admin/mobile/employees/${id}/details` : null
+  }
+
+  isMyAccountActive(): boolean {
+    const path = this.myAccountPath
+    if (!path) return false
+    const normalized = this.currentRoute.replace(/\/$/, '')
+    const normalizedPath = path.replace(/\/$/, '')
+    return normalized === normalizedPath
+  }
+
+  navigateToMyAccount(event?: Event): void {
+    if (event) event.preventDefault()
+    const path = this.myAccountPath
+    if (path) {
+      this.router.navigate([path])
+      this.isMenuOpen = false
+    }
+  }
 
   constructor(
     private route: ActivatedRoute, 
@@ -23,13 +51,15 @@ export class MobileLayoutComponent {
     private userService: UserService
   ) {
     const allNavItems = this.route.snapshot.data['navItems'] as Map<string, string>
-    
-    // Filter menu items based on admin status
+    const role = this.userService.user?.role
+    const isAdmin = this.userService.isAdmin
+    const isInstructor = role === Role.INSTRUCTOR
+
     this.navItems = new Map()
     for (const [title, path] of allNavItems.entries()) {
-      if (!this.adminOnlyItems.includes(title) || this.userService.isAdmin) {
-        this.navItems.set(title, path)
-      }
+      if (this.adminOnlyItems.includes(title) && !isAdmin) continue
+      if (this.instructorOrAdminItems.includes(title) && !isAdmin && !isInstructor) continue
+      this.navItems.set(title, path)
     }
     
     this.navTitles = Array.from(this.navItems.keys())

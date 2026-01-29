@@ -1,0 +1,61 @@
+<div class="flex-column">
+  <app-breadcrumb-nav-bar
+    [title]="'PAYMENTS.PAYABLE_DETAILS' | translate"
+    [buttonType]="ButtonType.NONE">
+  </app-breadcrumb-nav-bar>
+
+  <div class="container" *ngIf="payable as p">
+    <div class="header flex-column">
+      <h3 class="mid-pink">{{ (p.period.endDate | translateDate:'MMMM yyyy') }}</h3>
+    </div>
+    <hr>
+
+    <div class="flex-column">
+      <div [ngClass]="getStatusClass(p.paymentStatus)" class="payment-status flex-row">
+        <h3>{{ p.paymentStatus | capitalize }}</h3>
+      </div>
+
+      <div class="flex-row payment-details white">
+        <h4 class="first-column period-label">{{ 'PAYMENTS.PERIOD' | translate }}:</h4>
+        <div class="flex-column period second-column">
+          <div class="flex-row">
+            <h5 class="period-row-label">{{ 'PAYMENTS.START' | translate }}</h5>
+            <h5>{{ p.period.startDate | translateDate:'shortDate' }}</h5>
+          </div>
+          <div class="flex-row">
+            <h5 class="period-row-label">{{ 'PAYMENTS.END' | translate }}</h5>
+            <h5>{{ p.period.endDate | translateDate:'shortDate' }}</h5>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div *ngIf="p.lineItems && p.lineItems.length > 0">
+        <div class="flex-row payment-details white">
+          <h4 class="first-column">{{ 'PAYMENTS.EARNINGS_BREAKDOWN' | translate }}:</h4>
+          <div class="second-column"></div>
+        </div>
+        <div *ngFor="let item of p.lineItems; trackBy: trackByAssignmentId" class="flex-row payment-details white line-item-row">
+          <div class="first-column line-item-desc">
+            <h5 class="line-item-class" *ngIf="item.classType || item.classLocation || item.days?.length || item.startTime">{{ formatClassLine(item) }}</h5>
+            <h5 class="line-item-sessions">{{ 'PAYMENTS.SESSIONS_WORKED' | translate:{ count: item.sessionsCount } }}</h5>
+          </div>
+          <h4 class="second-column price-value">{{ formatPrice(item.amount) }}</h4>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="flex-row payment-details white">
+        <h4 class="first-column">{{ 'PAYMENTS.PAYABLE' | translate }}:</h4>
+        <h4 class="second-column price-value">{{ formatPrice(p.charge) }}</h4>
+      </div>
+
+      <div class="flex-row payment-details white">
+        <h4 class="first-column">{{ 'PAYMENTS.PAY_DAY' | translate }}:</h4>
+        <h4 class="second-column price-value">{{ p.period.endDate | translateDate:'shortDate' }}</h4>
+      </div>
+    </div>
+  </div>
+</div>

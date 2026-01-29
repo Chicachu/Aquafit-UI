@@ -98,7 +98,7 @@ export class ClassDetailsComponent implements OnInit {
   
   constructor(
     private classService: ClassService, 
-    private userService: UserService,
+    public userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackBarService,

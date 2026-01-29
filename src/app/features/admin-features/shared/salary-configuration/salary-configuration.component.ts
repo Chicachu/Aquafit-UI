@@ -7,10 +7,11 @@ import { User } from "@core/types/user";
 import { SelectOption } from "@core/types/selectOption";
 import { SnackBarService } from "@core/services/snackBarService";
 import { TranslateService } from "@ngx-translate/core";
-import { InstructorClassDetails } from "@core/types/instructors/instructorClassDetails";
+import { EmployeeClassDetails } from "@core/types/employees/employeeClassDetails";
 import { Class } from "@core/types/classes/class";
 import { Assignment } from "@core/types/assignment";
 import { AssignmentService } from "@core/services/assignmentService";
+import { AssignmentStatus } from "@core/types/enums/assignmentStatus";
 import { Currency } from "@core/types/enums/currency";
 import { TextInputType } from "@core/types/enums/textInputType";
 import { forkJoin } from "rxjs";
@@ -93,8 +94,8 @@ export class SalaryConfigurationComponent implements OnInit {
 
     if (!this.selectedInstructorId) return
 
-    this.userService.getInstructorClassDetails(this.selectedInstructorId).subscribe({
-      next: (details: InstructorClassDetails) => {
+    this.userService.getEmployeeClassDetails(this.selectedInstructorId).subscribe({
+      next: (details: EmployeeClassDetails) => {
         this.assignmentInfo = details.assignmentInfo ?? []
         this._filterActiveAssignments()
       },
@@ -104,16 +105,13 @@ export class SalaryConfigurationComponent implements OnInit {
     })
   }
 
+  /** Uses status only for assignment; cron checks assignment endDate. Class endDate = class terminated. */
   private _filterActiveAssignments(): void {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
     this.activeAssignments = this.assignmentInfo.filter((item) => {
-      if (item.assignment.endDate) {
-        const end = new Date(item.assignment.endDate)
-        end.setHours(0, 0, 0, 0)
-        if (end < today) return false
-      }
+      if (item.assignment.status === AssignmentStatus.UNASSIGNED) return false
       if (item.class.endDate) {
         const classEnd = new Date(item.class.endDate)
         classEnd.setHours(0, 0, 0, 0)

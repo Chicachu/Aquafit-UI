@@ -1,6 +1,9 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AdminGuard } from "@core/guards/admin.guard";
+import { StaffGuard } from "@core/guards/staff.guard";
+import { InstructorOrAdminGuard } from "@core/guards/instructor-or-admin.guard";
+import { PaymentOverviewGuard } from "@core/guards/payment-overview.guard";
 import { MobileHomeComponent } from "./home/mobile-home.component";
 import { SharedAdminFeaturesModule } from "../shared/shared-admin-features.module";
 import { CommonModule } from "@angular/common";
@@ -16,9 +19,9 @@ import { InvoiceDetailsComponent } from "../shared/payments/invoice-details/invo
 import { DiscountListComponent } from "../shared/discounts/discount-list/discount-list.component";
 import { DiscountDetailsComponent } from "../shared/discounts/discount-details/discount-details.component";
 import { EditDiscountComponent } from "../shared/discounts/edit-discount/edit-discount.component";
-import { InstructorsDetailsComponent } from "../shared/instructors/instructors-details/instructors-details.component";
-import { InstructorPaymentOverviewComponent } from "../shared/instructors/instructor-payment-overview/instructor-payment-overview.component";
 import { EmployeeDetailsComponent } from "../shared/employees/employee-details/employee-details.component";
+import { EmployeePaymentOverviewComponent } from "../shared/employees/employee-payment-overview/employee-payment-overview.component";
+import { EmployeePayableDetailsComponent } from "../shared/employees/employee-payable-details/employee-payable-details.component";
 import { EmployeesListComponent } from "../shared/employees/employees-list/employees-list.component";
 import { AddEmployeeComponent } from "../shared/employees/add-employee/add-employee.component";
 import { EditEmployeeComponent } from "../shared/employees/edit-employee/edit-employee.component";
@@ -29,22 +32,26 @@ const routes: Routes = [
   {
     path: 'home',
     pathMatch: 'full',
-    component: MobileHomeComponent
+    component: MobileHomeComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
-    path: 'clients', 
+    path: 'clients',
     pathMatch: 'full',
-    component: ClientListComponent
+    component: ClientListComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
-    path: 'clients/add-client', 
+    path: 'clients/add-client',
     pathMatch: 'full',
-    component: EditClientComponent
+    component: EditClientComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
     path: 'clients/:user-id/details',
-    pathMatch: 'full', 
-    component: ClientDetailsComponent
+    pathMatch: 'full',
+    component: ClientDetailsComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
     path: 'clients/:user-id/edit',
@@ -55,17 +62,14 @@ const routes: Routes = [
   {
     path: 'clients/:user-id/payments/:enrollment-id',
     pathMatch: 'full',
-    component: InvoiceHistoryComponent
+    component: InvoiceHistoryComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
     path: 'clients/:user-id/payments/:enrollment-id/:invoice-id',
-    pathMatch: 'full', 
-    component: InvoiceDetailsComponent
-  },
-  {
-    path: 'instructors/:user-id/details',
-    pathMatch: 'full', 
-    component: InstructorsDetailsComponent
+    pathMatch: 'full',
+    component: InvoiceDetailsComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
     path: 'employees',
@@ -91,30 +95,34 @@ const routes: Routes = [
     canActivate: [AdminGuard]
   },
   {
-    path: 'instructors/:user-id/edit',
+    path: 'employees/:user-id/payments',
     pathMatch: 'full',
-    component: EditEmployeeComponent,
-    canActivate: [AdminGuard]
+    component: EmployeePaymentOverviewComponent,
+    canActivate: [PaymentOverviewGuard]
   },
   {
-    path: 'instructors/:user-id/payments',
+    path: 'employees/:user-id/payments/details/:payable-id',
     pathMatch: 'full',
-    component: InstructorPaymentOverviewComponent
+    component: EmployeePayableDetailsComponent,
+    canActivate: [PaymentOverviewGuard]
   },
   {
-    path: 'classes', 
-    pathMatch: 'full', 
-    component: ClassListComponent
+    path: 'classes',
+    pathMatch: 'full',
+    component: ClassListComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
     path: 'classes/add-class',
     pathMatch: 'full',
-    component: EditClassComponent
+    component: EditClassComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
-    path: 'classes/:class-id/details', 
-    pathMatch: 'full', 
-    component: ClassDetailsComponent 
+    path: 'classes/:class-id/details',
+    pathMatch: 'full',
+    component: ClassDetailsComponent,
+    canActivate: [InstructorOrAdminGuard]
   },
   {
     path: 'classes/:class-id/edit',
@@ -155,7 +163,8 @@ const routes: Routes = [
   {
     path: 'check-ins',
     pathMatch: 'full',
-    component: CheckInsComponent
+    component: CheckInsComponent,
+    canActivate: [AdminGuard]
   }
 ]
 

@@ -32,6 +32,21 @@
         controlName="role">
       </app-dropdown>
 
+      <app-text-input
+        [type]="TextInputType.PASSWORD"
+        label="CONTROLS.PASSWORD"
+        controlName="password"
+        [placeholder]="'CONTROLS.PASSWORD_PLACEHOLDER'"
+        [minLength]="6">
+      </app-text-input>
+      <app-text-input
+        [type]="TextInputType.PASSWORD"
+        label="CONTROLS.CONFIRM_PASSWORD_TITLE"
+        controlName="confirmPassword"
+        [placeholder]="'CONTROLS.PASSWORD_PLACEHOLDER'"
+        [minLength]="6">
+      </app-text-input>
+
       <app-submit-button
         [loading]="loading"
         [label]="'CLIENTS.UPDATE' | translate"

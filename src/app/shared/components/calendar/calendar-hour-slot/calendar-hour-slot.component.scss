@@ -1,0 +1,31 @@
+@import '../../../../../assets/colors.scss';
+
+.time-slot {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  gap: 10px;
+}
+
+.time {
+  color: $light-pink;
+  min-width: 60px;
+  font-weight: 500;
+}
+
+.items-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.empty {
+  background-color: $background-blue;
+  color: $light-pink;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}

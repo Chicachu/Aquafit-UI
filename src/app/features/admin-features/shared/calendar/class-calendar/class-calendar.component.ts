@@ -3,32 +3,31 @@ import { ScheduleService } from '@/core/services/scheduleService';
 import { ScheduleView } from '@/core/types/scheduleView';
 import { CalendarClass } from '@/core/types/calendarClass';
 import { SnackBarService } from '@/core/services/snackBarService';
-import { ClassType } from '@/core/types/enums/classType';
 import { ClassService } from '@/core/services/classService';
-import { TranslateService } from '@ngx-translate/core';
+import { CalendarHourSlotItem } from '@/shared/components/calendar/calendar-hour-slot/calendar-hour-slot.component';
+import { LegendItem } from '@/shared/components/calendar/mobile-calendar/mobile-calendar.component';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-mobile-calendar',
-  templateUrl: './mobile-calendar.component.html',
-  styleUrls: ['./mobile-calendar.component.scss']
+  selector: 'app-class-calendar',
+  templateUrl: './class-calendar.component.html',
+  styleUrls: ['./class-calendar.component.scss']
 })
-export class MobileCalendarComponent implements OnChanges, OnInit {
+export class ClassCalendarComponent implements OnChanges, OnInit {
   @Input() location: string = ''
-  ClassTypes = ClassType
   readonly HOURS_IN_WORKDAY = ["7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
 
-  classSchedule: Map<string, CalendarClass[]> = new Map()
+  classSchedule: Map<string, CalendarHourSlotItem[]> = new Map()
   locations: string[] = []
   locationColors: Map<string, string> = new Map()
+  legendItems: LegendItem[] = []
   currentDate: Date = new Date()
   private readonly locationColorPalette = ['#4CAF50', '#E91E63', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4', '#FF5722', '#795548']
 
   constructor(
     private scheduleService: ScheduleService, 
     private snackBarService: SnackBarService,
-    private classService: ClassService,
-    private translateService: TranslateService
+    private classService: ClassService
   ) {}
 
   ngOnInit(): void {
@@ -39,8 +38,14 @@ export class MobileCalendarComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['location']) {
       this.classSchedule = new Map()
+      this._updateLegendItems()
       this._loadSchedule()
     }
+  }
+
+  onDateChange(date: Date): void {
+    this.currentDate = date
+    this._loadSchedule()
   }
 
   private _loadLocations(): void {
@@ -49,13 +54,26 @@ export class MobileCalendarComponent implements OnChanges, OnInit {
         this.locations = locations
         locations.forEach((location, index) => {
           const colorIndex = index % this.locationColorPalette.length
-          this.locationColors.set(location, this.locationColorPalette[colorIndex])
+          const color = this.locationColorPalette[colorIndex]
+          this.locationColors.set(location, color)
         })
+        this._updateLegendItems()
       },
       error: ({error}) => {
         this.snackBarService.showError(error.message)
       }
     })
+  }
+
+  private _updateLegendItems(): void {
+    if (this.location === '' && this.locations.length > 0) {
+      this.legendItems = this.locations.map(loc => ({
+        label: loc,
+        color: this.getLocationColor(loc)
+      }))
+    } else {
+      this.legendItems = []
+    }
   }
 
   getLocationColor(location: string): string {
@@ -86,7 +104,7 @@ export class MobileCalendarComponent implements OnChanges, OnInit {
               if (!this.classSchedule.has(timeKey)) {
                 this.classSchedule.set(timeKey, [])
               }
-              this.classSchedule.get(timeKey)!.push(value)
+              this.classSchedule.get(timeKey)!.push(value as CalendarHourSlotItem)
             }) 
           }
         }, 
@@ -94,30 +112,5 @@ export class MobileCalendarComponent implements OnChanges, OnInit {
           this.snackBarService.showError(error.message)
         }
     })
-  }
-
-  previousDay(): void {
-    const newDate = new Date(this.currentDate)
-    newDate.setDate(newDate.getDate() - 1)
-    this.currentDate = newDate
-    this._loadSchedule()
-  }
-
-  nextDay(): void {
-    const newDate = new Date(this.currentDate)
-    newDate.setDate(newDate.getDate() + 1)
-    this.currentDate = newDate
-    this._loadSchedule()
-  }
-
-  getFormattedDate(): string {
-    const day = this.currentDate.getDate()
-    const month = this.currentDate.getMonth() + 1
-    const currentLang = this.translateService.currentLang || 'en'
-    
-    if (currentLang === 'es') {
-      return `${day}/${month}`
-    }
-    return `${month}/${day}`
   }
 }

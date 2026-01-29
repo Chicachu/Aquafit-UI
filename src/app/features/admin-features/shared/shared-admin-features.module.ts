@@ -9,7 +9,7 @@ import { EditClientComponent } from "./clients/edit-client/edit-client.component
 import { ClassListComponent } from "./classes/class-list/class-list.component";
 import { EditClassComponent } from "./classes/edit-class/edit-class.component";
 import { ClassDetailsComponent } from "./classes/class-details/class-details.component";
-import { MobileCalendarComponent } from "./calendar/mobile-calendar/mobile-calendar.component";
+import { ClassCalendarComponent } from "./calendar/class-calendar/class-calendar.component";
 import { InvoiceHistoryComponent } from "./payments/invoice-history/invoice-history.component";
 import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-details.component";
 import { DiscountListComponent } from "./discounts/discount-list/discount-list.component";
@@ -33,7 +33,7 @@ import { EmployeePayableDetailsComponent } from "./employees/employee-payable-de
     ClientDetailsComponent,
     ClassListComponent,
     ClassDetailsComponent,
-    MobileCalendarComponent,
+    ClassCalendarComponent,
     InvoiceHistoryComponent,
     InvoiceDetailsComponent,
     DiscountListComponent,
@@ -55,7 +55,7 @@ import { EmployeePayableDetailsComponent } from "./employees/employee-payable-de
   ],
   exports: [
     SharedModule,
-    MobileCalendarComponent
+    ClassCalendarComponent
   ]
 })
 export class SharedAdminFeaturesModule { }

@@ -1,0 +1,18 @@
+<ng-template #itemTemplate let-classItem>
+  <div 
+    class="class-bubble"
+    [style.background-color]="getLocationColor(classItem?.classLocation || '')"
+    [style.color]="getLocationTextColor(classItem?.classLocation || '')">
+    {{ 'CLASS_TYPES.' + (classItem?.classType || '') | translate | capitalize }}
+  </div>
+</ng-template>
+
+<app-mobile-calendar
+  [hours]="HOURS_IN_WORKDAY"
+  [schedule]="classSchedule"
+  [legendItems]="legendItems"
+  [showLegend]="location === '' && locations.length > 0"
+  [itemTemplate]="itemTemplate"
+  [initialDate]="currentDate"
+  (dateChange)="onDateChange($event)">
+</app-mobile-calendar>

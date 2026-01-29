@@ -1,0 +1,18 @@
+<div *ngIf="items && items.length > 0" class="time-slot">
+  <div class="time">{{ hour | timeFormat }}</div>
+  <div class="items-container">
+    <ng-container *ngFor="let item of items">
+      <ng-container *ngIf="itemTemplate">
+        <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+<div *ngIf="!items || items.length === 0" class="empty">
+  <ng-container *ngIf="emptyTemplate; else defaultEmpty">
+    <ng-container *ngTemplateOutlet="emptyTemplate; context: { $implicit: hour }"></ng-container>
+  </ng-container>
+  <ng-template #defaultEmpty>
+    {{ hour | timeFormat }}
+  </ng-template>
+</div>

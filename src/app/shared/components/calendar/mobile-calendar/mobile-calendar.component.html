@@ -1,0 +1,38 @@
+<div class="calendar-container">
+  <!-- Date navigation -->
+  <div class="date-navigation">
+    <button class="nav-arrow" (click)="previousDay()" aria-label="Previous day">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="date-label">{{ getFormattedDate() }}</span>
+    <button class="nav-arrow" (click)="nextDay()" aria-label="Next day">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  
+  <!-- Legend -->
+  <div class="location-legend" *ngIf="showLegend && legendItems.length > 0">
+    <div class="legend-item" *ngFor="let legendItem of legendItems">
+      <div class="legend-color-box" [style.background-color]="legendItem.color"></div>
+      <span class="legend-text">{{ legendItem.label }}</span>
+    </div>
+  </div>
+  
+  <!-- Calendar day view -->
+  <div class="day-view">
+    <ul>
+      <li *ngFor="let hour of hours; let i = index">
+        <app-calendar-hour-slot 
+          [hour]="hour"
+          [items]="schedule.get(hour) || []"
+          [itemTemplate]="itemTemplate"
+          [emptyTemplate]="emptyTemplate">
+        </app-calendar-hour-slot>
+      </li>
+    </ul>
+  </div>
+</div>

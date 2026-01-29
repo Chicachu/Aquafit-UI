@@ -30,6 +30,8 @@ import { ButtonComponent } from "./components/buttons/button/button.component"
 import { ModalComponent } from "./components/modal/modal.component"
 import { NotesComponent } from "./components/notes/notes.component"
 import { TranslateDatePipe } from "./pipes/Date.pipe"
+import { CalendarHourSlotComponent } from "./components/calendar/calendar-hour-slot/calendar-hour-slot.component"
+import { MobileCalendarComponent } from "./components/calendar/mobile-calendar/mobile-calendar.component"
 
 const materialModules = [
   MatAutocompleteModule,
@@ -65,12 +67,18 @@ const pipes = [
   TranslateDatePipe
 ]
 
+const calendarComponents = [
+  CalendarHourSlotComponent,
+  MobileCalendarComponent
+]
+
 @NgModule({
   declarations: [
     ...inputComponents,
     ...pipes,
     ModalComponent,
-    NotesComponent
+    NotesComponent,
+    ...calendarComponents
   ],
   imports: [
     ...materialModules,
@@ -86,6 +94,7 @@ const pipes = [
     ...pipes,
     ModalComponent,
     NotesComponent,
+    ...calendarComponents,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,

@@ -4,27 +4,41 @@ import { Observable, take } from "rxjs"
 import { environment } from "../../../environments/environment"
 import { ScheduleView } from "../types/scheduleView"
 import { CalendarClass } from "../types/calendarClass"
+import { CacheService } from "./cacheService"
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScheduleService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private cacheService: CacheService
+  ) {}
 
   public getAllClasses(view: ScheduleView, date: Date, location: string): Observable<Map<string, CalendarClass[]>> {
-    let params = new HttpParams()
-    params = params.set('view', view)
-    params = params.set('date', date.toISOString())
-    params = params.set('location', location)
-    
-    let month, year 
-    if (view === ScheduleView.MONTH) {
-      year = date.getFullYear()
-      month = date.getMonth()
-      params = params.set('year', year).set('month', month)
-    }
-  
-    return this.http.get<Map<string, CalendarClass[]>>(`${environment.apiUrl}/schedules/classes`, { params }).pipe(take(1))
+    // Create cache key based on view, date, and location
+    const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+    const cacheKey = `schedule:${view}:${dateKey}:${location}`;
+
+    return this.cacheService.get(
+      cacheKey,
+      () => {
+        let params = new HttpParams()
+        params = params.set('view', view)
+        params = params.set('date', date.toISOString())
+        params = params.set('location', location)
+        
+        let month, year 
+        if (view === ScheduleView.MONTH) {
+          year = date.getFullYear()
+          month = date.getMonth()
+          params = params.set('year', year).set('month', month)
+        }
+      
+        return this.http.get<Map<string, CalendarClass[]>>(`${environment.apiUrl}/schedules/classes`, { params }).pipe(take(1))
+      },
+      1 * 60 * 1000 // 1 minute TTL - schedule data changes frequently
+    );
   }
 }
 

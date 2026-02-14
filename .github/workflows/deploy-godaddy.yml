@@ -46,11 +46,11 @@ jobs:
           dir="${{ secrets.FTP_REMOTE_DIR }}"
           echo "path=${dir%/}/" >> $GITHUB_OUTPUT
 
-      - name: Add .htaccess for Angular routing
+      - name: Add .htaccess for Angular routing (optional)
         run: |
           BUILD_DIR="./dist/aquafit-ui/browser"
           [ -d "$BUILD_DIR" ] || BUILD_DIR="./dist/aquafit-ui"
-          cp deploy/.htaccess "$BUILD_DIR/"
+          if [ -f deploy/.htaccess ]; then cp deploy/.htaccess "$BUILD_DIR/"; fi
 
       - name: Deploy to GoDaddy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6

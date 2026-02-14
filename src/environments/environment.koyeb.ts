@@ -4,5 +4,5 @@
  */
 export const environment = {
   production: false,
-  apiUrl: 'https://your-app-name.koyeb.app/api',
+  apiUrl: 'https://aquafit-vallarta.koyeb.app/api',
 };

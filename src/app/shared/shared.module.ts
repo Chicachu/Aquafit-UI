@@ -22,6 +22,7 @@ import { AutocompleteDropdownComponent } from "./components/controls/autocomplet
 import { DropdownComponent } from "./components/controls/dropdown/dropdown.component"
 import { LanguageSelectorComponent } from "./components/language-selector/language-selector.component"
 import { TextInputComponent } from "./components/controls/text-input/text-input.component"
+import { PhoneInputComponent } from "./components/controls/phone-input/phone-input.component"
 import { MultiSelectChipsComponent } from "./components/controls/multi-select-chips/multi-select-chips.component"
 import { SubmitButtonComponent } from "./components/buttons/submit-button/submit-button.component"
 import { DatepickerComponent } from "./components/controls/datepicker/datepicker.component"
@@ -55,6 +56,7 @@ const inputComponents = [
   LanguageSelectorComponent,
   MultiSelectChipsComponent,
   TextInputComponent,
+  PhoneInputComponent,
   SubmitButtonComponent,
   ButtonComponent,
   DatepickerComponent

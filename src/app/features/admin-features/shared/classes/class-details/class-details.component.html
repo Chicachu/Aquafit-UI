@@ -24,6 +24,7 @@
       <button 
         *ngIf="userService.isAdmin && !isTerminated"
         mat-icon-button 
+        [disabled]="isClassFull"
         (click)="addClientToClass()" class="add-class-button">
         <mat-icon class="add-icon" matPrefix>{{ 'add' }}</mat-icon>
       </button>
@@ -43,11 +44,11 @@
             <div class="flex-row details-row">
               <a [routerLink]="['../../../clients', client._id, 'details']">
                 <p class="white">
-                  {{ client.firstName }} {{ client.lastName }}
+                  {{ client.firstName }} {{ client.lastName }}<sup *ngIf="client.isPartiallyEnrolled" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup>
                 </p>
               </a>
               <a
-                *ngIf="client.currentPayment?.enrollmentId"
+                *ngIf="userService.isAdmin && client.currentPayment?.enrollmentId"
                 [routerLink]="['../../../clients', client._id, 'payments', client.currentPayment.enrollmentId]"
                 class="payment-history-link">
                 <mat-icon class="icon">receipt_long</mat-icon>
@@ -57,21 +58,6 @@
         </ul>
       </ng-container>
     </ng-container>
-
-    <div *ngIf="classDetails.waitlistClients">
-      <div class="waitlist-section">
-        <h3 class="mid-green">{{ 'CLASSES.WAIT_LIST' | translate }}</h3>
-      </div>
-      <ul>
-        <li *ngFor="let client of classDetails.waitlistClients">
-          <a [routerLink]="['../../../clients', client._id, 'details']">
-            <p class="white">
-              {{ client.firstName }} {{ client.lastName }}
-            </p>
-          </a>
-        </li>
-      </ul>
-    </div>
 
     <div class="flex-row buttons">
       <app-button 
@@ -90,14 +76,36 @@
       </app-button>
     </div>
 
-    <!-- Notes Section (read-only for instructors; admins can add/delete unless class terminated) -->
+    <!-- Notes Section (instructors and admins can add/publish/delete unless class terminated; notes shown desc by date) -->
     <app-notes
       [resourceType]="'class'"
       [resourceId]="classId || ''"
       [notes]="classDetails.notes"
-      [readOnly]="isTerminated || !userService.isAdmin"
+      [readOnly]="isTerminated"
       (notesUpdated)="onNotesUpdated($event)">
     </app-notes>
+
+    <!-- Waitlist Section -->
+    <div class="flex-row waitlist-section-header">
+      <h2 class="light-blue">{{ 'CLASSES.WAIT_LIST' | translate }}</h2>
+      <button 
+        *ngIf="canAddToWaitlist"
+        mat-icon-button 
+        (click)="openWaitlistModal()" 
+        class="add-button">
+        <mat-icon matPrefix>add</mat-icon>
+      </button>
+    </div>
+    <ul>
+      <li *ngFor="let entry of waitlistEntries">
+        <a *ngIf="waitlistUsers.get(entry.userId)" [routerLink]="['../../../clients', entry.userId, 'details']" class="white">
+          {{ waitlistUsers.get(entry.userId)!.firstName }} {{ waitlistUsers.get(entry.userId)!.lastName }}
+        </a>
+      </li>
+      <li *ngIf="waitlistEntries.length === 0">
+        <p class="light-blue">{{ 'CLIENTS.NO_WAITLIST_ENTRIES' | translate }}</p>
+      </li>
+    </ul>
   </div>
 </div>
 
@@ -122,10 +130,14 @@
       </app-dropdown>
       <app-datepicker
         label="CONTROLS.START_DATE"
-        controlName="start_date">
+        controlName="start_date"
+        [allowedWeekdays]="classDetails?.days">
       </app-datepicker>
 
-      <mat-expansion-panel [disabled]="!enrollmentForm.get('client')?.value" (opened)="onAdvancedOptionsOpened()">
+      <mat-expansion-panel 
+        [disabled]="!enrollmentForm.get('client')?.value" 
+        [expanded]="autoExpandAdvancedOptions && needsPartialEnrollment"
+        (opened)="onAdvancedOptionsOpened()">
         <mat-expansion-panel-header>
           {{ 'ENROLLMENTS.ADVANCED_OPTIONS' | translate }}
         </mat-expansion-panel-header>
@@ -134,7 +146,7 @@
           <app-multi-select-chips
             *ngIf="advancedOptionsClassInfo && advancedOptionsClassInfo.days.length > 1"
             label="CONTROLS.DAYS_OVERRIDE"
-            [options]="weekdays"
+            [options]="needsPartialEnrollment ? availableWeekdayOptions : weekdays"
             [disabledChipsIndices]="disabledDaysChips"
             i18nPrefix="WEEKDAYS_SHORT"
             controlName="days_override">
@@ -200,6 +212,35 @@
           {{ 'CLASSES.CANCELLATION_REASON_REQUIRED' | translate }}
         </div>
       </div>
+    </form>
+  </div>
+</app-modal>
+
+<app-modal *ngIf="showWaitlistModal"
+  [parent]="this"
+  [title]="'CLIENTS.ADD_TO_WAITLIST' | translate"
+  [buttonList]="waitlistModalButtons"
+  (modalClick)="handleWaitlistModalClick($event)"
+  class="waitlist-modal">
+  <div content>
+    <p *ngIf="hasAvailableSpace && classDetails" class="waitlist-warning">
+      {{ 'CLIENTS.WAITLIST_SPACE_WARNING' | translate }} {{ getFormattedAvailableDays() }}.
+    </p>
+    <form [formGroup]="waitlistForm" style="border: none; background: transparent; padding: 0; margin: 0;">
+      <app-text-input
+        label="CONTROLS.FIRSTNAME"
+        controlName="firstName">
+      </app-text-input>
+      <app-text-input
+        label="CONTROLS.LASTNAME"
+        controlName="lastName">
+      </app-text-input>
+      <app-phone-input
+        label="CONTROLS.PHONENUMBER"
+        controlName="phoneNumber"
+        [countryCode]="true"
+        [countryCodeControlName]="'countryCode'">
+      </app-phone-input>
     </form>
   </div>
 </app-modal>

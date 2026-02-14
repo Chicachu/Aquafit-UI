@@ -25,7 +25,7 @@
       </mat-option>
     </div>
   </mat-select>
-  <mat-error *ngIf="control?.errors">
+  <mat-error *ngIf="showValidation && control?.errors">
     {{getErrorMessage()}}
   </mat-error>
 </mat-form-field>

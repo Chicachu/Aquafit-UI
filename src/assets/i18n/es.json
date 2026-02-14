@@ -41,6 +41,8 @@
     "SUBMIT": "Enviar",
     "SUBMIT_WAIT_MESSAGE": "Enviando...",
     "CANCEL": "Cancelar",
+    "NO": "No",
+    "YES": "Sí",
     "DELETE": "Eliminar",
     "BILLING_FREQUENCY": "Frecuencia de Facturación",
     "DAYS_OVERRIDE": "Inscripción Parcial",
@@ -126,10 +128,18 @@
     "EMPLOYEES": "Empleados",
     "ACTIVE_CLIENTS": "Clientes Activos",
     "INACTIVE_CLIENTS": "Clientes Inactivos",
+    "WAITLIST": "Lista de Espera",
+    "ADD_TO_WAITLIST": "Agregar a Lista de Espera",
+    "NO_WAITLIST_ENTRIES": "No hay entradas en la lista de espera, agregar a la lista de espera desde clases individuales",
+    "WAITLIST_SPACE_WARNING": "¿Está seguro? Actualmente hay espacio disponible en esta clase los",
     "UNENROLL": "Dar de Baja Cliente",
     "UNENROLL_CONFIRM_MESSAGE": "¿Está seguro de que desea dar de baja a este cliente de la clase?",
     "UNENROLL_REASON": "Razón (Opcional)",
-    "UNENROLL_SUCCESS": "¡Cliente dado de baja exitosamente!"
+    "UNENROLL_SUCCESS": "¡Cliente dado de baja exitosamente!",
+    "DELETE_USER": "Eliminar Usuario",
+    "DELETE_USER_CONFIRM_MESSAGE": "¿Está seguro de que desea eliminar este usuario? Esta acción no se puede deshacer.",
+    "DELETE_USER_CONFIRM_YES": "Sí, estoy seguro",
+    "DELETE_USER_SUCCESS": "Usuario eliminado exitosamente."
   },
   "EMPLOYEES": {
     "TITLE": "Empleados",
@@ -175,6 +185,8 @@
     "UPDATE_CLASS_SUCCESS": "¡Clase actualizada exitosamente!",
     "CLASS_DETAILS": "Detalles de la Clase",
     "ENROLLED": "inscritos",
+    "PARTIAL_ENROLLMENT_LETTER": "P",
+    "PARTIAL_ENROLLMENT_TITLE": "Inscripción parcial",
     "WAIT_LIST": "Listo de espera",
     "CANCEL": "Cancelar la Clase",
     "CANCELLING": "Cancelando...",
@@ -195,7 +207,12 @@
     "CANCELLATION_REASON": "Razón",
     "CANCELLATION_REASON_PLACEHOLDER": "Ingrese la razón de la cancelación...",
     "CANCELLATION_REASON_REQUIRED": "La razón es requerida",
-    "CANCELLATION_REASON_PREFIX": "Razón de cancelación el"
+    "CANCELLATION_REASON_PREFIX": "Razón de cancelación el",
+    "FILTER_BY_TYPE": "Filtrar por Tipo",
+    "FILTER_BY_LOCATION": "Filtrar por Ubicación",
+    "SELECT_CLASS": "Clase",
+    "ALL_TYPES": "Todos los Tipos",
+    "ALL_LOCATIONS": "Todas las Ubicaciones"
   },
   "WEEKDAYS": {
     "SUNDAY": "Domingo",

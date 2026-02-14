@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { ScheduleService } from '@/core/services/scheduleService';
 import { ScheduleView } from '@/core/types/scheduleView';
 import { CalendarClass } from '@/core/types/calendarClass';
@@ -7,6 +8,11 @@ import { ClassService } from '@/core/services/classService';
 import { CalendarHourSlotItem } from '@/shared/components/calendar/calendar-hour-slot/calendar-hour-slot.component';
 import { LegendItem } from '@/shared/components/calendar/mobile-calendar/mobile-calendar.component';
 import { map } from 'rxjs';
+
+interface ClassItemWithStyles extends CalendarHourSlotItem {
+  backgroundColor?: string;
+  textColor?: string;
+}
 
 @Component({
   selector: 'app-class-calendar',
@@ -17,18 +23,28 @@ export class ClassCalendarComponent implements OnChanges, OnInit {
   @Input() location: string = ''
   readonly HOURS_IN_WORKDAY = ["7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
 
-  classSchedule: Map<string, CalendarHourSlotItem[]> = new Map()
+  classSchedule: Map<string, ClassItemWithStyles[]> = new Map()
   locations: string[] = []
   locationColors: Map<string, string> = new Map()
+  locationTextColors: Map<string, string> = new Map()
   legendItems: LegendItem[] = []
   currentDate: Date = new Date()
+  isLoading: boolean = false
   private readonly locationColorPalette = ['#4CAF50', '#E91E63', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4', '#FF5722', '#795548']
+  private readonly lightColors = ['#FF9800', '#00BCD4', '#4CAF50'] // Colors that need dark text
 
   constructor(
-    private scheduleService: ScheduleService, 
+    private scheduleService: ScheduleService,
     private snackBarService: SnackBarService,
-    private classService: ClassService
+    private classService: ClassService,
+    private router: Router
   ) {}
+
+  goToClassDetails(classId: string | undefined): void {
+    if (classId) {
+      this.router.navigate(['/admin/mobile/classes', classId, 'details'])
+    }
+  }
 
   ngOnInit(): void {
     this._loadLocations()
@@ -56,6 +72,8 @@ export class ClassCalendarComponent implements OnChanges, OnInit {
           const colorIndex = index % this.locationColorPalette.length
           const color = this.locationColorPalette[colorIndex]
           this.locationColors.set(location, color)
+          // Pre-compute text color
+          this.locationTextColors.set(location, this.lightColors.includes(color) ? '#000000' : '#FFFFFF')
         })
         this._updateLegendItems()
       },
@@ -81,36 +99,50 @@ export class ClassCalendarComponent implements OnChanges, OnInit {
   }
 
   getLocationTextColor(location: string): string {
-    // Use white text for darker colors, dark text for lighter colors
-    const color = this.getLocationColor(location)
-    // Light colors that need dark text: orange (#FF9800), cyan (#00BCD4), green (#4CAF50)
-    const lightColors = ['#FF9800', '#00BCD4', '#4CAF50']
-    if (lightColors.includes(color)) {
-      return '#000000'
-    }
-    return '#FFFFFF'
+    return this.locationTextColors.get(location) || '#FFFFFF'
   }
 
   private _loadSchedule(): void {
+    this.isLoading = true
     this.scheduleService.getAllClasses(ScheduleView.DAY, this.currentDate, this.location).pipe(
-      map(response => new Map(Object.entries(response))))
-      .subscribe({
-        next: (calendarClasses: Map<string, CalendarClass[]>) => {
-          this.classSchedule = new Map()
-          for (const values of calendarClasses.values()) {
-            values.forEach((value) => {
-              const hour = new Date(value.date).getHours()
-              const timeKey = `${hour.toString()}:00`
-              if (!this.classSchedule.has(timeKey)) {
-                this.classSchedule.set(timeKey, [])
-              }
-              this.classSchedule.get(timeKey)!.push(value as CalendarHourSlotItem)
-            }) 
-          }
-        }, 
-        error: ({error}) => {
-          this.snackBarService.showError(error.message)
-        }
+      map(response => {
+        // Optimize data transformation
+        const scheduleMap = new Map<string, ClassItemWithStyles[]>()
+        const responseMap = new Map(Object.entries(response))
+        
+        // Process all classes and group by hour, pre-computing styles
+        responseMap.forEach((classes: CalendarClass[]) => {
+          classes.forEach((classItem: CalendarClass) => {
+            const hour = new Date(classItem.date).getHours()
+            const timeKey = `${hour}:00`
+            
+            if (!scheduleMap.has(timeKey)) {
+              scheduleMap.set(timeKey, [])
+            }
+            
+            // Pre-compute styles to avoid repeated function calls in template
+            const location = classItem.classLocation || ''
+            const itemWithStyles: ClassItemWithStyles = {
+              ...classItem,
+              backgroundColor: this.getLocationColor(location),
+              textColor: this.getLocationTextColor(location)
+            }
+            
+            scheduleMap.get(timeKey)!.push(itemWithStyles)
+          })
+        })
+        
+        return scheduleMap
+      })
+    ).subscribe({
+      next: (scheduleMap) => {
+        this.classSchedule = scheduleMap
+        this.isLoading = false
+      }, 
+      error: ({error}) => {
+        this.isLoading = false
+        this.snackBarService.showError(error.message)
+      }
     })
   }
 }

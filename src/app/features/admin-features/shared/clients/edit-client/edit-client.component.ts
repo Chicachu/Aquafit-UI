@@ -35,6 +35,7 @@ export class EditClientComponent implements OnInit {
     this.contactForm = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
+      countryCode: ['+52', Validators.required],
       phoneNumber: ['', [
         Validators.pattern('^[+]?[0-9 ]*$'),
         Validators.maxLength(15)
@@ -49,10 +50,23 @@ export class EditClientComponent implements OnInit {
     if (this.isEditMode && this.userId) {
       this.userService.getUser(this.userId).subscribe({
         next: (user: User) => {
+          let phoneNumber = user.phoneNumber ?? ''
+          let countryCode = '+52' // Default
+          
+          // Extract country code from phone number if it exists
+          if (phoneNumber) {
+            const match = phoneNumber.match(/^(\+\d{1,3})\s?(.+)$/)
+            if (match) {
+              countryCode = match[1]
+              phoneNumber = match[2]
+            }
+          }
+          
           this.contactForm.patchValue({
             firstName: user.firstName,
             lastName: user.lastName,
-            phoneNumber: user.phoneNumber ?? ''
+            countryCode: countryCode,
+            phoneNumber: phoneNumber
           })
         },
         error: ({ error }) => {
@@ -82,8 +96,16 @@ export class EditClientComponent implements OnInit {
       }
 
       const phoneNumberValue = this.f['phoneNumber'].value?.trim()
+      const countryCodeValue = this.f['countryCode'].value
       if (phoneNumberValue) {
-        clientData.phoneNumber = phoneNumberValue
+        // Combine country code with phone number if country code exists
+        let combinedPhoneNumber = phoneNumberValue
+        if (countryCodeValue && phoneNumberValue) {
+          // Remove any existing country code from phone number
+          combinedPhoneNumber = phoneNumberValue.replace(/^\+\d{1,3}\s?/, '')
+          combinedPhoneNumber = `${countryCodeValue} ${combinedPhoneNumber}`.trim()
+        }
+        clientData.phoneNumber = combinedPhoneNumber
       }
 
       if (this.isEditMode && this.userId) {

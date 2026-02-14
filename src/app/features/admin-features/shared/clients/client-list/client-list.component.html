@@ -3,6 +3,18 @@
   [title]="'NAVIGATION.CLIENTS' | translate" 
   [buttonType]="ButtonType.ADD"
   (onButtonClick)="addNewClient()"></app-breadcrumb-nav-bar>
+  
+  <!-- Location Filter -->
+  <form [formGroup]="filterForm" class="filters-container">
+    <app-dropdown
+      label="CLASSES.FILTER_BY_LOCATION"
+      [options]="locationOptions"
+      [formatOption]="FormatOptions.TRANSLATE"
+      [showValidation]="false"
+      controlName="location">
+    </app-dropdown>
+  </form>
+  
   <div class="client-list-content">
     <div class="clients-section">
       <h2>{{ 'CLIENTS.ACTIVE_CLIENTS' | translate }}</h2>
@@ -18,6 +30,20 @@
         <li *ngFor="let user of inactiveClients">
           <a [routerLink]="['./', user._id, 'details']">{{ user.firstName }} {{ user.lastName }}</a>
         </li>
+      </ul>
+    </div>
+    <div class="clients-section">
+      <h2>{{ 'CLIENTS.WAITLIST' | translate }}</h2>
+      <ul>
+        <li *ngFor="let entry of deduplicatedWaitlistEntries">
+          <a [routerLink]="['./', entry.userId, 'details']">{{ entry.firstName }} {{ entry.lastName }}</a>
+          <span class="class-info">
+            <ng-container *ngFor="let classInfo of entry.classInfo; let last = last">
+              <a [routerLink]="['../classes', classInfo.classId, 'details']">{{ classInfo.className }}</a><span *ngIf="!last">, </span>
+            </ng-container>
+          </span>
+        </li>
+        <li *ngIf="deduplicatedWaitlistEntries.length === 0" class="no-entries">{{ 'CLIENTS.NO_WAITLIST_ENTRIES' | translate }}</li>
       </ul>
     </div>
   </div>

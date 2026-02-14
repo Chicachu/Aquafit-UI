@@ -1,8 +1,28 @@
-<div class="flex-column">
+<div class="flex-column class-list-wrapper">
   <app-breadcrumb-nav-bar 
   [title]="'NAVIGATION.CLASSES'" 
   [buttonType]="buttonType"
   (onButtonClick)="addNewClass()"></app-breadcrumb-nav-bar>
+  
+  <!-- Filters -->
+  <form [formGroup]="filterForm" class="filters-container">
+    <app-dropdown
+      label="CLASSES.FILTER_BY_TYPE"
+      [options]="classTypeOptions"
+      [formatOption]="FormatOptions.TRANSLATE"
+      [showValidation]="false"
+      controlName="classType">
+    </app-dropdown>
+    
+    <app-dropdown
+      label="CLASSES.FILTER_BY_LOCATION"
+      [options]="locationOptions"
+      [formatOption]="FormatOptions.TRANSLATE"
+      [showValidation]="false"
+      controlName="location">
+    </app-dropdown>
+  </form>
+  
   <div>
   <div class="flex-column class-container">
     <!-- Active Classes -->

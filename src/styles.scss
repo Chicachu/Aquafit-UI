@@ -35,6 +35,12 @@ $Aquafit-UI-theme: mat.define-theme((
 // @include mat.color-variants-backwards-compatibility($Aquafit-UI-theme);
 /* You can add global styles to this file, and also import other style files */
 
+/* Country code select panel - wider when open */
+.country-code-select-panel {
+  min-width: 120px !important;
+  max-width: 150px !important;
+}
+
 html, body { 
   height: 100%; 
 }

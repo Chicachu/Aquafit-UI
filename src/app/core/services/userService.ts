@@ -72,6 +72,19 @@ export class UserService {
     );
   }
 
+  lookupByFirstNameAndLastName(
+    firstName: string,
+    lastName: string
+  ): Observable<{ found: false } | { found: true; user: { _id: string; firstName: string; lastName: string; phoneNumber: string | null } }> {
+    const params = { firstName: firstName.trim(), lastName: lastName.trim() };
+    return this._http
+      .get<{ found: false } | { found: true; user: { _id: string; firstName: string; lastName: string; phoneNumber: string | null } }>(
+        `${environment.apiUrl}/users/lookup-by-name`,
+        { params }
+      )
+      .pipe(take(1));
+  }
+
   getClientEnrollmentDetails(userId: string): Observable<ClientEnrollmentDetails> {
     return this.cacheService.get(
       `users:${userId}:enrollments`,
@@ -124,6 +137,24 @@ export class UserService {
       take(1),
       tap(() => {
         this.cacheService.invalidate(`users:${userId}`);
+      })
+    );
+  }
+
+  getCanDeleteUser(userId: string): Observable<{ canDelete: boolean; reason?: string }> {
+    return this._http
+      .get<{ canDelete: boolean; reason?: string }>(`${environment.apiUrl}/users/${userId}/can-delete`)
+      .pipe(take(1));
+  }
+
+  deleteUser(userId: string): Observable<void> {
+    return this._http.delete<void>(`${environment.apiUrl}/users/${userId}`).pipe(
+      take(1),
+      tap(() => {
+        this.cacheService.invalidate(`users:${userId}`);
+        this.cacheService.invalidate(`users:${userId}:enrollments`);
+        this.cacheService.invalidate(`users:${userId}:classes`);
+        this.cacheService.invalidatePattern('users:all*');
       })
     );
   }

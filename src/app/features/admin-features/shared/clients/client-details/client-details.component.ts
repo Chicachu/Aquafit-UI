@@ -32,10 +32,13 @@ export class ClientDetailsComponent {
   clientId: string | null = null
   client: User | null = null
   canEditClient = false
+  canDeleteUser = false
   showEnrollmentModal = false
+  showDeleteUserModal = false
   enrollmentButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.ENROLL'}]
   showUnenrollModal = false
   unenrollButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.UNENROLL'}]
+  deleteUserButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.DELETE_USER_CONFIRM_YES'}]
   unenrollForm: FormGroup
   selectedEnrollmentForUnenroll: { class: Class, enrollment: Enrollment } | null = null
   classSelectionForm: FormGroup 
@@ -87,6 +90,45 @@ export class ClientDetailsComponent {
     })
   }
 
+  get isAdmin(): boolean {
+    return this.userService.isAdmin
+  }
+
+  private _loadCanDeleteUser(): void {
+    if (!this.clientId || !this.isAdmin) return
+    this.userService.getCanDeleteUser(this.clientId).subscribe({
+      next: (res) => {
+        this.canDeleteUser = res.canDelete
+      }
+    })
+  }
+
+  openDeleteUserModal(): void {
+    this.showDeleteUserModal = true
+  }
+
+  processDeleteUserModalClick(event: { ref: ClientDetailsComponent; buttonTitle: string }): void {
+    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
+      this.showDeleteUserModal = false
+    } else if (event.buttonTitle === 'CLIENTS.DELETE_USER_CONFIRM_YES') {
+      this.confirmDeleteUser()
+    }
+  }
+
+  private confirmDeleteUser(): void {
+    if (!this.clientId) return
+    this.userService.deleteUser(this.clientId).subscribe({
+      next: () => {
+        this.showDeleteUserModal = false
+        this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.DELETE_USER_SUCCESS'))
+        this.router.navigate(['/admin/mobile/clients'])
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? this.translateService.instant('errors.somethingWentWrong'))
+      }
+    })
+  }
+
   ngOnInit(): void {
     this.canEditClient = this.userService.isAdmin
     const userId = this.route.snapshot.paramMap.get('user-id')
@@ -97,6 +139,7 @@ export class ClientDetailsComponent {
         this.clientId = this.client._id
         this.classEnrollmentInfo = clientEnrollmentDetails.enrolledClassInfo
         this._separateActiveAndTerminated(this.classEnrollmentInfo)
+        this._loadCanDeleteUser()
       },
       error: ({error}) => {
         this.snackBarService.showError(error.message)

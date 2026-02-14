@@ -14,11 +14,12 @@
         controlName="lastName">
       </app-text-input>
 
-      <app-text-input
-        [type]="TextInputType.PHONE"
+      <app-phone-input
         label="CONTROLS.PHONENUMBER"
-        controlName="phoneNumber">
-      </app-text-input>
+        controlName="phoneNumber"
+        [countryCode]="true"
+        [countryCodeControlName]="'countryCode'">
+      </app-phone-input>
 
       <app-submit-button
         [loading]="loading"

@@ -1,0 +1,32 @@
+<div class="phone-input-container">
+  <mat-form-field 
+    *ngIf="countryCode && countryCodeControlName && getCountryCodeControl()"
+    class="country-code-dropdown"
+    appearance="outline">
+    <mat-select [formControl]="getCountryCodeControl()!" panelClass="country-code-select-panel">
+      <mat-select-trigger>
+        {{ getCountryCodeControl()!.value || defaultCountryCode }}
+      </mat-select-trigger>
+      <mat-option *ngFor="let option of countryCodeOptions" [value]="option.value">
+        {{ option.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field class='text-input phone-number-input' appearance="outline">
+    <mat-label>{{ (label ?? '') | translate }}</mat-label>
+    <input 
+      matInput 
+      type="tel"
+      [formControl]="control"
+      [placeholder]="(placeholder ?? '') | translate"
+      [required]="required"
+      (input)="onInputChange($event)"
+    >
+    <mat-icon matPrefix>phone</mat-icon>
+
+    <mat-error *ngIf="control?.errors">
+      {{getErrorMessage()}}
+    </mat-error>
+  </mat-form-field>
+</div>

@@ -49,6 +49,7 @@
                   <mat-icon class="icon">person_remove</mat-icon>
                 </button>
                 <a
+                  *ngIf="isAdmin"
                   [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>
@@ -95,7 +96,8 @@
                   - {{ classAndEnrollment.class.startTime | timeFormat }}
                 </a>
                 <a
-                [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
+                  *ngIf="isAdmin"
+                  [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>
                 </a>
@@ -129,7 +131,8 @@
                   - {{ classAndEnrollment.class.startTime | timeFormat }}
                 </a>
                 <a
-                [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
+                  *ngIf="isAdmin"
+                  [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>
                 </a>
@@ -137,6 +140,17 @@
             </li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <!-- Delete User (admin only, enabled when no enrollments, no unpaid invoices, not on waitlist) -->
+    <div *ngIf="isAdmin" class="delete-user-section">
+      <div class="flex-row buttons">
+        <app-button
+          [label]="'CLIENTS.DELETE_USER'"
+          [disabled]="!canDeleteUser"
+          (onClick)="openDeleteUserModal()">
+        </app-button>
       </div>
     </div>
   </div>
@@ -237,5 +251,16 @@
         rows="4">
       </textarea>
     </form>
+  </div>
+</app-modal>
+
+<app-modal *ngIf="showDeleteUserModal"
+  [parent]="this"
+  [title]="'CLIENTS.DELETE_USER' | translate"
+  [buttonList]="deleteUserButtons"
+  (modalClick)="processDeleteUserModalClick($event)"
+  class="delete-user-modal">
+  <div content>
+    <p>{{ 'CLIENTS.DELETE_USER_CONFIRM_MESSAGE' | translate }}</p>
   </div>
 </app-modal>

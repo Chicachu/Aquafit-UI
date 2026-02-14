@@ -5,4 +5,5 @@ export type ClassClientEnrollmentDetails = Document & {
   firstName: string
   lastName: string
   currentPayment: Invoice
+  isPartiallyEnrolled?: boolean
 }

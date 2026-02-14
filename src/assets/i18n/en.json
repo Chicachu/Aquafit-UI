@@ -41,6 +41,8 @@
     "SUBMIT": "Submit",
     "SUBMIT_WAIT_MESSAGE": "Submitting...",
     "CANCEL": "Cancel",
+    "NO": "No",
+    "YES": "Yes",
     "DELETE": "Delete",
     "BILLING_FREQUENCY": "Billing Frequency",
     "DAYS_OVERRIDE": "Partial Enrollment", 
@@ -126,10 +128,18 @@
     "EMPLOYEES": "Employees",
     "ACTIVE_CLIENTS": "Active Clients",
     "INACTIVE_CLIENTS": "Inactive Clients",
+    "WAITLIST": "Waitlist",
+    "ADD_TO_WAITLIST": "Add to Waitlist",
+    "NO_WAITLIST_ENTRIES": "No waitlist entries, add to waitlist from individual classes",
+    "WAITLIST_SPACE_WARNING": "Are you sure? There is currently open space in this class on",
     "UNENROLL": "Unenroll Client",
     "UNENROLL_CONFIRM_MESSAGE": "Are you sure you want to unenroll this client from the class?",
     "UNENROLL_REASON": "Reason (Optional)",
-    "UNENROLL_SUCCESS": "Client unenrolled successfully!"
+    "UNENROLL_SUCCESS": "Client unenrolled successfully!",
+    "DELETE_USER": "Delete User",
+    "DELETE_USER_CONFIRM_MESSAGE": "Are you sure you want to delete this user? This action cannot be undone.",
+    "DELETE_USER_CONFIRM_YES": "Yes, I'm sure",
+    "DELETE_USER_SUCCESS": "User deleted successfully."
   },
   "EMPLOYEES": {
     "TITLE": "Employees",
@@ -175,6 +185,8 @@
     "UPDATE_CLASS_SUCCESS": "Class updated successfully!",
     "CLASS_DETAILS": "Class Details",
     "ENROLLED": "enrolled",
+    "PARTIAL_ENROLLMENT_LETTER": "P",
+    "PARTIAL_ENROLLMENT_TITLE": "Partial enrollment",
     "WAIT_LIST": "Waitlist",
     "CANCEL": "Cancel Class",
     "CANCELLING": "Cancelling...",
@@ -195,7 +207,12 @@
     "CANCELLATION_REASON": "Reason",
     "CANCELLATION_REASON_PLACEHOLDER": "Enter the reason for cancellation...",
     "CANCELLATION_REASON_REQUIRED": "Reason is required",
-    "CANCELLATION_REASON_PREFIX": "Reason for cancellation on"
+    "CANCELLATION_REASON_PREFIX": "Reason for cancellation on",
+    "FILTER_BY_TYPE": "Filter by Type",
+    "FILTER_BY_LOCATION": "Filter by Location",
+    "SELECT_CLASS": "Class",
+    "ALL_TYPES": "All Types",
+    "ALL_LOCATIONS": "All Locations"
   },
   "WEEKDAYS": {
     "SUNDAY": "Sunday",

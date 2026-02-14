@@ -147,3 +147,14 @@ ul {
   color: $light-pink;
   font-style: italic;
 }
+
+.delete-user-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid $light-blue;
+
+  .buttons {
+    margin-top: 15px;
+    justify-content: center;
+  }
+}

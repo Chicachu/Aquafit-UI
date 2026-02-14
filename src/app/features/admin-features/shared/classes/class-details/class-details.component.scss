@@ -41,6 +41,12 @@ li {
   margin-left: 30px;
 }
 
+.partial-badge {
+  color: $light-pink;
+  font-size: 0.75em;
+  margin-left: 2px;
+}
+
 ul {
   padding-left: 0;
   list-style-type: circle;
@@ -66,6 +72,28 @@ ul {
 .clients-section {
   align-items: center;
   justify-content: space-between;
+}
+
+.waitlist-section-header {
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+
+  .add-button {
+    background-color: $light-pink !important;
+    width: fit-content !important;
+    border-radius: 5px;
+    height: 24px;
+    width: 24px !important;
+    color: $primary-pink;
+    font-weight: 900 !important;
+    border: 1px solid $primary-pink;
+
+    .mat-icon {
+      left: -9px;
+      top: -9px;
+    }
+  }
 }
 
 .class-details-content {
@@ -102,6 +130,65 @@ ul {
   color: $light-pink;
   text-align: center;
   margin: 10px 0;
+}
+
+.waitlist-modal {
+  .content {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .waitlist-warning {
+    color: $primary-pink;
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding: 12px;
+    background-color: rgba(255, 192, 203, 0.1);
+    border-left: 3px solid $primary-pink;
+    border-radius: 4px;
+  }
+  
+  form {
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    min-height: fit-content;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    
+    ::ng-deep {
+      .mat-mdc-form-field {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+      }
+      
+      .mat-mdc-text-field-wrapper {
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      // Ensure phone input container respects modal width
+      app-phone-input {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        
+        .phone-input-container {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
+    }
+  }
 }
 
 .terminate-confirmation-modal p {

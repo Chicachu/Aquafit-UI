@@ -67,6 +67,15 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "koyeb": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.koyeb.ts"
+              }]
             }
           },
           "defaultConfiguration": "production"
@@ -79,6 +88,9 @@
             },
             "development": {
               "buildTarget": "Aquafit-UI:build:development"
+            },
+            "koyeb": {
+              "buildTarget": "Aquafit-UI:build:koyeb"
             }
           },
           "defaultConfiguration": "development"

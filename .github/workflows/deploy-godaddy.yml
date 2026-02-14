@@ -4,7 +4,7 @@
 #   FTP_SERVER     - e.g. ftp.yourdomain.com
 #   FTP_USERNAME   - your GoDaddy FTP username
 #   FTP_PASSWORD   - your GoDaddy FTP password
-#   FTP_REMOTE_DIR - use ./ to upload to the FTP account's home directory (set that to your domain root in cPanel)
+#   FTP_REMOTE_DIR - use ./ (upload to FTP account home = public_html so index.html is at domain root)
 
 name: Build and deploy to GoDaddy
 
@@ -44,6 +44,7 @@ jobs:
         id: server-dir
         run: |
           dir="${{ secrets.FTP_REMOTE_DIR }}"
+          [ -z "$dir" ] && dir="./"
           echo "path=${dir%/}/" >> $GITHUB_OUTPUT
 
       - name: Add .htaccess for Angular routing (optional)

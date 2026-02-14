@@ -1,0 +1,19 @@
+# =============================================================================
+# ROOT .htaccess for subdomain routing (upload to public_html on GoDaddy)
+# =============================================================================
+# This makes test.aquafitvallarta.com serve files from the test/ folder.
+#
+# How to use:
+# 1. Upload this file to your document root (public_html) as .htaccess
+#    OR merge the block below into your existing root .htaccess (put it first).
+# 2. Ensure the A record for "test" points to your hosting IP (in GoDaddy DNS).
+# 3. Your test deploy (FTP_REMOTE_DIR_TEST=test/) uploads the test UI to test/
+# =============================================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # If host is test.aquafitvallarta.com, serve from the test/ subfolder
+  RewriteCond %{HTTP_HOST} ^test\.aquafitvallarta\.com$ [NC]
+  RewriteRule ^(.*)$ test/$1 [L]
+</IfModule>

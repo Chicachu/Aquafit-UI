@@ -1,0 +1,67 @@
+# Build and deploy Aquafit UI to GoDaddy TEST subdomain when pushing to the test branch.
+#
+# Required GitHub secrets (same as production, plus optional override for test path):
+#   FTP_SERVER         - e.g. ftp.yourdomain.com
+#   FTP_USERNAME       - your GoDaddy FTP username
+#   FTP_PASSWORD       - your GoDaddy FTP password
+#   FTP_REMOTE_DIR_TEST - e.g. test/ (upload to public_html/test so test.aquafitvallarta.com works)
+
+name: Build and deploy TEST to GoDaddy
+
+on:
+  push:
+    branches: [test]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (test)
+        run: npx ng build --configuration=test
+
+      - name: Set build output path
+        id: build-output
+        run: |
+          if [ -d ./dist/aquafit-ui/browser ]; then
+            echo "path=./dist/aquafit-ui/browser/" >> $GITHUB_OUTPUT
+          else
+            echo "path=./dist/aquafit-ui/" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set server dir for test (ensure trailing slash)
+        id: server-dir
+        run: |
+          dir="${{ secrets.FTP_REMOTE_DIR_TEST }}"
+          [ -z "$dir" ] && dir="test/"
+          echo "path=${dir%/}/" >> $GITHUB_OUTPUT
+
+      - name: Add .htaccess for Angular routing
+        run: |
+          BUILD_DIR="./dist/aquafit-ui/browser"
+          [ -d "$BUILD_DIR" ] || BUILD_DIR="./dist/aquafit-ui"
+          if [ -f deploy/.htaccess ]; then cp deploy/.htaccess "$BUILD_DIR/"; fi
+
+      - name: Deploy to GoDaddy (test)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftps
+          security: loose
+          timeout: 60000
+          local-dir: ${{ steps.build-output.outputs.path }}
+          server-dir: ${{ steps.server-dir.outputs.path }}

@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { UserService } from "../../../../core/services/userService";
 
 @Component({
@@ -7,11 +8,17 @@ import { UserService } from "../../../../core/services/userService";
   styleUrls: ['./top-header.component.scss']
 })
 export class TopHeaderComponent {
-  loggedIn = false
+  get loggedIn(): boolean {
+    return this.userService.isUserLoggedIn;
+  }
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {
-    this.loggedIn = this.userService.isUserLoggedIn
+  logout(): void {
+    this.userService.clearSession();
+    this.router.navigate(['/login']);
   }
 }

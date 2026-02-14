@@ -47,8 +47,21 @@ export class UserService {
 
   private _checkSessionStorage() {
     if (!this._user) {
-      this._user = <User>JSON.parse(sessionStorage.getItem('user')!)
+      try {
+        const raw = sessionStorage.getItem('user')
+        const parsed = raw ? JSON.parse(raw) : null
+        this._user = parsed && typeof parsed === 'object' && parsed._id && parsed.accessToken ? parsed : null
+        if (!this._user && raw) sessionStorage.removeItem('user')
+      } catch {
+        this._user = null
+        sessionStorage.removeItem('user')
+      }
     }
+  }
+
+  clearSession(): void {
+    this._user = null
+    sessionStorage.removeItem('user')
   }
 
   register(username: string, password: string, role: Role): Observable<User> {

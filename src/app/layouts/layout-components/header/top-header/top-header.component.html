@@ -1,6 +1,7 @@
 <div class="header-top-bar">
   <div class="website-content-width flex-row">
-    <a [routerLink]="['/login']">{{ (loggedIn ? 'LOGOUT.TITLE' : 'LOGIN.TITLE') | translate }}</a>
+    <a *ngIf="loggedIn" [routerLink]="['/login']" (click)="logout()">{{ 'LOGOUT.TITLE' | translate }}</a>
+<a *ngIf="!loggedIn" [routerLink]="['/login']">{{ 'LOGIN.TITLE' | translate }}</a>
     <app-language-selector></app-language-selector>
   </div>
 </div>

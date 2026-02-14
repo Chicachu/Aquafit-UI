@@ -35,7 +35,13 @@ export class LoginComponent {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.userService.isUserLoggedIn) {
+      const user = this.userService.user!;
+      const isStaff = user.role === Role.ADMIN || user.role === Role.INSTRUCTOR || user.role === Role.EMPLOYEE;
+      this.router.navigate([isStaff ? '/admin/home' : '/home']);
+    }
+  }
 
   get f() { 
     return this.loginForm.controls; 

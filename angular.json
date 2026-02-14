@@ -90,7 +90,8 @@
               "buildTarget": "Aquafit-UI:build:development"
             },
             "koyeb": {
-              "buildTarget": "Aquafit-UI:build:koyeb"
+              "buildTarget": "Aquafit-UI:build:koyeb",
+              "proxyConfig": "proxy.conf.koyeb.json"
             }
           },
           "defaultConfiguration": "development"

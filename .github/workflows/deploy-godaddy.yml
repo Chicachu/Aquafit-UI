@@ -1,0 +1,50 @@
+# Build and deploy Aquafit UI to GoDaddy when pushing to main.
+#
+# Required GitHub secrets (Settings → Secrets and variables → Actions):
+#   FTP_SERVER     - e.g. ftp.yourdomain.com
+#   FTP_USERNAME   - your GoDaddy FTP username
+#   FTP_PASSWORD   - your GoDaddy FTP password
+#   FTP_REMOTE_DIR - e.g. public_html (folder on GoDaddy where the site is served from)
+
+name: Build and deploy to GoDaddy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (production)
+        run: npx ng build --configuration=production --base-href /admin/
+
+      - name: Set build output path
+        id: build-output
+        run: |
+          if [ -d ./dist/aquafit-ui/browser ]; then
+            echo "path=./dist/aquafit-ui/browser" >> $GITHUB_OUTPUT
+          else
+            echo "path=./dist/aquafit-ui" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy to GoDaddy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ${{ steps.build-output.outputs.path }}
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}

@@ -1,5 +1,4 @@
 export const environment = {
   production: true,
-  // Koyeb API base URL — replace with your actual Koyeb service URL
-  apiUrl: 'https://your-app-name.koyeb.app/api',
+  apiUrl: 'https://splendid-fernanda-aquafit-vallarta-cf01ae24.koyeb.app/api',
 };

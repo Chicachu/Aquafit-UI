@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://splendid-fernanda-aquafit-vallarta-cf01ae24.koyeb.app",
+    "secure": true,
+    "changeOrigin": true
+  }
+}

@@ -40,6 +40,12 @@ jobs:
             echo "path=./dist/aquafit-ui/" >> $GITHUB_OUTPUT
           fi
 
+      - name: Set server dir (ensure trailing slash)
+        id: server-dir
+        run: |
+          dir="${{ secrets.FTP_REMOTE_DIR }}"
+          echo "path=${dir%/}/" >> $GITHUB_OUTPUT
+
       - name: Deploy to GoDaddy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -47,4 +53,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ${{ steps.build-output.outputs.path }}
-          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          server-dir: ${{ steps.server-dir.outputs.path }}

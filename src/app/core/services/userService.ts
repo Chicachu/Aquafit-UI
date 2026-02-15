@@ -22,46 +22,46 @@ export class UserService {
 
   set user(user: User) {
     this._user = {...user}
-    sessionStorage.setItem('user', JSON.stringify(this._user))
+    localStorage.setItem('user', JSON.stringify(this._user))
   }
 
   get user(): User | null {
-    this._checkSessionStorage()
+    this._restoreFromStorage()
     return this._user
   }
 
   get isUserLoggedIn(): boolean {
-    this._checkSessionStorage()
+    this._restoreFromStorage()
     return !!this._user
   }
 
   get userRole(): Role | undefined {
-    this._checkSessionStorage()
+    this._restoreFromStorage()
     return this._user?.role
   }
 
-  get isAdmin(): boolean { 
-    this._checkSessionStorage()
+  get isAdmin(): boolean {
+    this._restoreFromStorage()
     return this._user?.role === Role.ADMIN
   }
 
-  private _checkSessionStorage() {
+  private _restoreFromStorage(): void {
     if (!this._user) {
       try {
-        const raw = sessionStorage.getItem('user')
+        const raw = localStorage.getItem('user')
         const parsed = raw ? JSON.parse(raw) : null
         this._user = parsed && typeof parsed === 'object' && parsed._id && parsed.accessToken ? parsed : null
-        if (!this._user && raw) sessionStorage.removeItem('user')
+        if (!this._user && raw) localStorage.removeItem('user')
       } catch {
         this._user = null
-        sessionStorage.removeItem('user')
+        localStorage.removeItem('user')
       }
     }
   }
 
   clearSession(): void {
     this._user = null
-    sessionStorage.removeItem('user')
+    localStorage.removeItem('user')
   }
 
   register(username: string, password: string, role: Role): Observable<User> {

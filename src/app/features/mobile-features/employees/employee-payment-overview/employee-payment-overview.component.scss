@@ -1,0 +1,48 @@
+@import '../../../../../assets/colors.scss';
+
+h3, h4, h5 {
+  margin: 5px 0;
+}
+
+.header {
+  width: 100vw;
+  align-items: center;
+}
+
+@keyframes flashIconStroke {
+  0% { background-color: #ff0000; }
+  50% { background-color: #ffa500; }
+  100% { background-color: #ff0000; }
+}
+
+li {
+  padding: 5px;
+}
+
+.flash-icon {
+  animation: flashIconStroke 1s infinite;
+}
+
+.period-row {
+  align-items: center;
+  justify-content: space-between;
+  width: 85vw;
+}
+
+.period-link {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.icon {
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  margin-left: 10px;
+  margin-top: 3px;
+}
+
+ul {
+  padding-left: 5vw;
+}

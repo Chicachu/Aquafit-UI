@@ -1,0 +1,289 @@
+@import '../../../../../assets/colors.scss';
+
+.general-info {
+  border-bottom: 1px solid $light-blue;
+  text-align: center;
+}
+
+.prices {
+  justify-content: space-evenly;
+}
+
+.paid-status-section {
+  border-bottom: 1px solid $light-pink;
+  justify-content: space-between;
+}
+
+.pending-status-section {
+  border-bottom: 1px solid $light-pink;
+}
+
+.almost-due-status-section {
+  border-bottom: 1px solid $light-pink;
+  justify-content: space-between;
+}
+
+.overdue-status-section {
+  border-bottom: 1px solid $light-pink;
+  justify-content: space-between;
+}
+
+.waitlist-section {
+  border-bottom: 1px solid $light-pink;
+}
+
+h2, h3, h4, h5 {
+  margin: 5px 0;
+}
+
+li {
+  color: $light-pink;
+  margin-left: 30px;
+}
+
+.partial-badge {
+  color: $light-pink;
+  font-size: 0.75em;
+  margin-left: 2px;
+}
+
+ul {
+  padding-left: 0;
+  list-style-type: circle;
+}
+
+.add-icon {
+  left: -9px;
+  top: -9px;
+}
+
+.add-class-button { 
+  background-color: $light-pink !important;
+  width: fit-content !important;
+  border-radius: 5px;
+  margin-left: 15px;
+  height: 24px;
+  width: 24px !important;
+  color: $primary-pink;
+  font-weight: 900 !important; 
+  border: 1px solid $primary-pink;
+}
+
+.clients-section {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.waitlist-section-header {
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+
+  .add-button {
+    background-color: $light-pink !important;
+    width: fit-content !important;
+    border-radius: 5px;
+    height: 24px;
+    width: 24px !important;
+    color: $primary-pink;
+    font-weight: 900 !important;
+    border: 1px solid $primary-pink;
+
+    .mat-icon {
+      left: -9px;
+      top: -9px;
+    }
+  }
+}
+
+.class-details-content {
+  width: 80vw;
+  margin: auto auto;
+}
+
+.buttons {
+  margin-top: 15px;
+  justify-content: space-between;
+}
+
+.buttons > * {
+  width: 45%;
+}
+
+.enrollment-modal p, .enrollment-modal h5 {
+  text-align: center;
+}
+
+.enrollment-modal form {
+  width: inherit;
+  border: none;
+  min-height: fit-content;
+  padding: 0;
+}
+
+.enrollment-modal .billing-frequency {
+  position: relative;
+  top: 10px;
+}
+
+.enrollment-modal .no-clients-message {
+  color: $light-pink;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.waitlist-modal {
+  .content {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .waitlist-warning {
+    color: $primary-pink;
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding: 12px;
+    background-color: rgba(255, 192, 203, 0.1);
+    border-left: 3px solid $primary-pink;
+    border-radius: 4px;
+  }
+  
+  form {
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    min-height: fit-content;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    
+    ::ng-deep {
+      .mat-mdc-form-field {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+      }
+      
+      .mat-mdc-text-field-wrapper {
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      // Ensure phone input container respects modal width
+      app-phone-input {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        
+        .phone-input-container {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.terminate-confirmation-modal p {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.terminate-confirmation-modal .warning-text {
+  color: $primary-pink;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.terminate-confirmation-modal form {
+  width: inherit;
+  border: none;
+  min-height: fit-content;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.details-row {
+  justify-content: space-between;
+}
+
+.payment-history-link {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.icon {
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  margin-left: 10px;
+  margin-top: 3px;
+}
+
+::ng-deep .terminate-confirmation-modal {
+  .form-field {
+    display: block;
+    width: 100%;
+  }
+
+  .form-label {
+    display: block;
+    color: $light-blue;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  .cancelled-by-group {
+    margin-bottom: 16px;
+  }
+
+  .cancelled-by-label {
+    color: #000;
+  }
+
+  .cancelled-by-radio-group {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin-top: 8px;
+    align-items: center;
+  }
+
+  .cancellation-reason-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $light-blue;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+    resize: vertical;
+    min-height: 80px;
+    color: $primary-pink;
+    background-color: white;
+    box-sizing: border-box;
+    display: block;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-pink;
+    }
+
+    &::placeholder {
+      color: $light-pink;
+    }
+  }
+
+  .error-message {
+    color: $error;
+    font-size: 0.875rem;
+    margin-top: 5px;
+  }
+}

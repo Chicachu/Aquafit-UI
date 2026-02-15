@@ -1,0 +1,127 @@
+@import '../../../../../assets/colors.scss';
+
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  
+  // Override global form styles - remove pink border and background
+  border: none !important;
+  background-color: transparent !important;
+  text-align: left !important;
+  border-radius: 0 !important;
+  
+  // Remove primary pink border from form fields and ensure they don't overflow
+  ::ng-deep {
+    .mat-mdc-form-field {
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: 0 !important;
+      
+      .mat-mdc-text-field-wrapper {
+        max-width: 100%;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      
+      // Hide the subscript wrapper (error messages/hints area)
+      .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        margin-top: 0 !important;
+      }
+      
+      // Hide the entire outline
+      .mdc-notched-outline {
+        display: none !important;
+      }
+      
+      // Remove any border from the input container
+      .mdc-text-field--outlined {
+        border: none !important;
+        
+        .mdc-notched-outline {
+          display: none !important;
+        }
+      }
+      
+      // Remove border on hover
+      &:hover .mdc-notched-outline {
+        display: none !important;
+      }
+      
+      // Remove border on focus
+      &.mat-focused .mdc-notched-outline {
+        display: none !important;
+      }
+      
+      // Remove border when invalid
+      &.mat-form-field-invalid .mdc-notched-outline {
+        display: none !important;
+      }
+    }
+    
+    // Remove margin from app-dropdown components and hide validation area when showValidation is false
+    app-dropdown {
+      margin-bottom: 0 !important;
+      display: block;
+      
+      &[ng-reflect-show-validation="false"],
+      &[show-validation="false"] {
+        .mat-mdc-form-field {
+          margin-bottom: 0 !important;
+          
+          .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+            height: 0 !important;
+            min-height: 0 !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.client-list-content {
+  width: 80vw;
+  margin: auto auto;
+}
+
+.clients-section {
+  margin-top: 24px;
+
+  h2 {
+    color: $light-blue;
+    margin-bottom: 12px;
+    margin-left: 0;
+  }
+
+  ul {
+    padding-left: 0;
+    list-style-type: circle;
+  }
+}
+
+li {
+  color: $light-green;
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .class-info {
+    font-size: 0.9em;
+    color: $light-blue;
+    margin-left: 0;
+  }
+}
+
+.no-entries {
+  color: $light-blue;
+  font-style: italic;
+}

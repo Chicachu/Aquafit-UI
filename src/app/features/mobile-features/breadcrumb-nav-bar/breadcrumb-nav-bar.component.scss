@@ -1,0 +1,36 @@
+@import '../../../../assets/colors.scss';
+
+.breadcrumb-container {
+  background-color: $background-blue;
+  color: $light-blue;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $light-blue;
+  box-shadow: inset 0 -6px 6px rgb(193, 226, 242, .2), 0 8px 8px rgb(0, 0, 0, .1);
+}
+
+.icon-container {
+  margin-left: 8px;
+}
+
+h2 {
+  margin: 8px 15px;
+  display: block;
+}
+
+.add-edit-button { 
+  background-color: $light-pink !important;
+  width: fit-content !important;
+  border-radius: 5px;
+  margin-right: 15px;
+  height: 24px;
+  width: 24px !important;
+  color: $primary-pink;
+  font-weight: 900 !important; 
+  border: 1px solid $primary-pink;
+}
+
+.mat-icon {
+  left: -9px;
+  top: -9px;
+}

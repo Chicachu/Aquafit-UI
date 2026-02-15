@@ -1,0 +1,40 @@
+@import '../../../../../assets/colors.scss';
+
+.employees-list-content {
+  width: 80vw;
+  margin: auto auto;
+}
+
+.instructors-section,
+.employees-section {
+  margin-top: 24px;
+
+  h2 {
+    color: $light-blue;
+    margin-bottom: 12px;
+    margin-left: 0;
+  }
+
+  ul {
+    padding-left: 0;
+    list-style-type: circle;
+  }
+}
+
+li {
+  color: $light-green;
+  margin-left: 30px;
+}
+
+.instructors-section {
+  .instructor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .instructor-id {
+    color: $light-blue;
+    margin-left: 16px;
+  }
+}

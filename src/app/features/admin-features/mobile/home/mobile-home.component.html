@@ -1,9 +1,0 @@
-<form [formGroup]="calendarOptionsForm" class="mobile-home"> 
-  <app-dropdown 
-    label="CALENDAR.VIEW_OPTIONS"
-    [options]="calendarLocationOptions"
-    [formatOption]="FormatOptions.TRANSLATE"
-    controlName="calendarView"></app-dropdown>
-
-  <app-class-calendar [location]="selectedLocation"></app-class-calendar>
-</form>

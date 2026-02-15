@@ -1,6 +1,3 @@
-@import '../../../assets/colors.scss';
-
-.admin-layout-container {
-  min-height: 100vh;
-  background-color: $background-blue;
+:host {
+  display: block;
 }

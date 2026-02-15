@@ -3,6 +3,6 @@
  * Set apiUrl to your Koyeb test API service URL once it exists.
  */
 export const environment = {
-  production: true,
-  apiUrl: 'https://YOUR-TEST-API-SERVICE.koyeb.app/api',
+  production: false,
+  apiUrl: 'https://vulnerable-cristionna-aquafit-vallarta-b312932c.koyeb.app/api',
 };

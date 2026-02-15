@@ -29,7 +29,7 @@ jobs:
         run: npm ci
 
       - name: Build (test)
-        run: npx ng build --configuration=test
+        run: npx ng build --configuration=test --base-href ./
 
       - name: Set build output path
         id: build-output

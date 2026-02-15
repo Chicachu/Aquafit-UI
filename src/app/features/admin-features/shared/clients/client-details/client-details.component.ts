@@ -385,6 +385,12 @@ export class ClientDetailsComponent {
     }
   }
 
+  /** Whether the enrollment has a days override (partial enrollment). Used in template to avoid strict null errors. */
+  isPartiallyEnrolled(item: { class: Class, enrollment: Enrollment } | null | undefined): boolean {
+    const override = item?.enrollment?.daysOfWeekOverride
+    return Array.isArray(override) && override.length > 0
+  }
+
   public setShowUnenrollModal(classAndEnrollment: { class: Class, enrollment: Enrollment }): void {
     this.selectedEnrollmentForUnenroll = classAndEnrollment
     this.unenrollForm.reset()

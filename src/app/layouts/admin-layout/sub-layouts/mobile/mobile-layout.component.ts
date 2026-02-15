@@ -15,8 +15,10 @@ export class MobileLayoutComponent {
   isMenuOpen: boolean = false
   currentRoute: string = ''
 
-  private readonly adminOnlyItems = ['NAVIGATION.DISCOUNTS', 'NAVIGATION.SALARY_CONFIGURATION', 'NAVIGATION.EMPLOYEES', 'NAVIGATION.CHECK_INS']
+  private readonly adminOnlyItems = ['NAVIGATION.DISCOUNTS', 'NAVIGATION.SALARY_CONFIGURATION', 'NAVIGATION.EMPLOYEES']
   private readonly instructorOrAdminItems = ['NAVIGATION.CALENDAR', 'NAVIGATION.CLASSES', 'NAVIGATION.CLIENTS']
+  /** Time Tracking (CHECK_INS) is only available to this specific user */
+  private readonly timeTrackingAllowedUsername = 'admin@aquafitvallarta.com'
 
   get canShowMyAccount(): boolean {
     const role = this.userService.userRole
@@ -56,9 +58,12 @@ export class MobileLayoutComponent {
     const isInstructor = role === Role.INSTRUCTOR
 
     this.navItems = new Map()
+    const username = this.userService.user?.username ?? ''
     for (const [title, path] of allNavItems.entries()) {
-      if (this.adminOnlyItems.includes(title) && !isAdmin) continue
-      if (this.instructorOrAdminItems.includes(title) && !isAdmin && !isInstructor) continue
+      if (title === 'NAVIGATION.CHECK_INS') {
+        if (username !== this.timeTrackingAllowedUsername) continue
+      } else if (this.adminOnlyItems.includes(title) && !isAdmin) continue
+      else if (this.instructorOrAdminItems.includes(title) && !isAdmin && !isInstructor) continue
       this.navItems.set(title, path)
     }
     

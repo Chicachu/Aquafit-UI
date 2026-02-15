@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AdminGuard } from "@core/guards/admin.guard";
+import { TimeTrackingGuard } from "@core/guards/time-tracking.guard";
 import { StaffGuard } from "@core/guards/staff.guard";
 import { InstructorOrAdminGuard } from "@core/guards/instructor-or-admin.guard";
 import { PaymentOverviewGuard } from "@core/guards/payment-overview.guard";
@@ -164,7 +165,7 @@ const routes: Routes = [
     path: 'check-ins',
     pathMatch: 'full',
     component: CheckInsComponent,
-    canActivate: [AdminGuard]
+    canActivate: [TimeTrackingGuard]
   }
 ]
 

@@ -36,8 +36,7 @@
                 </ng-container>
                 <ng-template #defaultDays>
                   {{ classAndEnrollment.class.days | weekdays:'/' }}
-                </ng-template>
-                - {{ classAndEnrollment.class.startTime | timeFormat }}
+                </ng-template><sup *ngIf="isPartiallyEnrolled(classAndEnrollment)" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup> - {{ classAndEnrollment.class.startTime | timeFormat }}
               </a>
               <div class="action-buttons">
                 <button
@@ -92,8 +91,7 @@
                   </ng-container>
                   <ng-template #defaultDays>
                     {{ classAndEnrollment.class.days | weekdays:'/' }}
-                  </ng-template>
-                  - {{ classAndEnrollment.class.startTime | timeFormat }}
+                  </ng-template><sup *ngIf="isPartiallyEnrolled(classAndEnrollment)" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup> - {{ classAndEnrollment.class.startTime | timeFormat }}
                 </a>
                 <a
                   *ngIf="isAdmin"
@@ -127,8 +125,7 @@
                   </ng-container>
                   <ng-template #defaultDays>
                     {{ classAndEnrollment.class.days | weekdays:'/' }}
-                  </ng-template>
-                  - {{ classAndEnrollment.class.startTime | timeFormat }}
+                  </ng-template><sup *ngIf="isPartiallyEnrolled(classAndEnrollment)" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup> - {{ classAndEnrollment.class.startTime | timeFormat }}
                 </a>
                 <a
                   *ngIf="isAdmin"
@@ -239,8 +236,7 @@
         </ng-container>
         <ng-template #defaultDays>
           {{ selectedEnrollmentForUnenroll.class.days | weekdays:'/' }}
-        </ng-template>
-        - {{ selectedEnrollmentForUnenroll.class.startTime | timeFormat }}
+        </ng-template><sup *ngIf="isPartiallyEnrolled(selectedEnrollmentForUnenroll)" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup> - {{ selectedEnrollmentForUnenroll.class.startTime | timeFormat }}
       </h5>
     </div>
     <form [formGroup]="unenrollForm">

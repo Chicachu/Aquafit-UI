@@ -171,14 +171,14 @@ export class ClientListComponent implements OnInit {
       return
     }
 
-    // Filter active clients - show clients who have at least one enrollment at the selected location
+    // Filter active clients - show only clients who have at least one enrollment at the selected location
     this.activeClients = this.allActiveClients.filter(client => {
       const userLocations = this.userLocationsMap.get(client._id)
       return userLocations && userLocations.has(selectedLocation)
     })
 
-    // Inactive clients don't have enrollments, so they're not filtered by location
-    this.inactiveClients = filteredInactiveClients
+    // Inactive clients have no enrollments, so they don't belong to any location - only show them when "All" is selected
+    this.inactiveClients = []
   }
 
   addNewClient(): void {

@@ -58,11 +58,14 @@ export class MobileCalendarComponent implements OnChanges, OnInit {
     const day = this.currentDate.getDate()
     const month = this.currentDate.getMonth() + 1
     const currentLang = this.translateService.currentLang || 'en'
-    
+    const locale = currentLang === 'es' ? 'es' : 'en-US'
+    const shortDay = this.currentDate.toLocaleDateString(locale, { weekday: 'short' }).replace(/\.$/, '')
+    const dayName = shortDay.charAt(0).toUpperCase() + shortDay.slice(1)
+
     if (currentLang === 'es') {
-      return `${day}/${month}`
+      return `${day}/${month} - ${dayName}`
     }
-    return `${month}/${day}`
+    return `${month}/${day} - ${dayName}`
   }
 
   getCurrentDate(): Date {

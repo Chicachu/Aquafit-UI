@@ -96,8 +96,15 @@ export class ClassService {
     );
   }
 
-  cancelClass(classId: string, cancellationDate: Date): Observable<void> {
-    return this.http.post<void>(`${environment.apiUrl}/classes/${classId}/cancel`, { cancellationDate }).pipe(
+  cancelClass(classId: string, cancellationDate: Date, cancelledBy?: 'instructor' | 'client', reason?: string): Observable<void> {
+    const body: { cancellationDate: Date; cancelledBy?: 'instructor' | 'client'; reason?: string } = { cancellationDate }
+    if (cancelledBy) {
+      body.cancelledBy = cancelledBy
+    }
+    if (reason != null && reason.trim()) {
+      body.reason = reason.trim()
+    }
+    return this.http.post<void>(`${environment.apiUrl}/classes/${classId}/cancel`, body).pipe(
       take(1),
       tap(() => {
         this.cacheService.invalidate(`classes:${classId}`);

@@ -241,6 +241,22 @@ ul {
     font-weight: 500;
   }
 
+  .cancelled-by-group {
+    margin-bottom: 16px;
+  }
+
+  .cancelled-by-label {
+    color: #000;
+  }
+
+  .cancelled-by-radio-group {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin-top: 8px;
+    align-items: center;
+  }
+
   .cancellation-reason-textarea {
     width: 100%;
     padding: 10px;

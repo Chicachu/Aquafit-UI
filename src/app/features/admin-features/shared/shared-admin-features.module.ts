@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { MatRadioModule } from "@angular/material/radio";
 import { BreadcrumbNavBarComponent } from './breadcrumb-nav-bar/breadcrumb-nav-bar.component'
 import { ClientListComponent } from "./clients/client-list/client-list.component";
 import { SharedModule } from "../../../shared/shared.module";
@@ -51,7 +52,8 @@ import { EmployeePayableDetailsComponent } from "./employees/employee-payable-de
   imports: [
     CommonModule,
     SharedModule,
-    TranslateModule
+    TranslateModule,
+    MatRadioModule
   ],
   exports: [
     SharedModule,

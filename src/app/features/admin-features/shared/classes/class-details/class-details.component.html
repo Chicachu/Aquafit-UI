@@ -61,11 +61,11 @@
 
     <div class="flex-row buttons">
       <app-button 
-        *ngIf="userService.isAdmin && !isTerminated"
+        *ngIf="userService.isAdmin && !isTerminated && showCancelButton"
         [label]="'CLASSES.CANCEL'"
         [loading]="loading"
         [loadingMessage]="'CLASSES.CANCELLING'"
-        (onClick)="cancelClass()">
+        (onClick)="openCancelClassModal()">
       </app-button>
       <app-button 
         *ngIf="canEditClass && !isTerminated"
@@ -200,8 +200,14 @@
         [allowedWeekdays]="classDetails?.days"
         [disabledDates]="cancelledDates">
       </app-datepicker>
+      <div *ngIf="isPrivateFitnessClass" class="form-field cancelled-by-group">
+        <label class="form-label cancelled-by-label">{{ 'CLASSES.CANCELLED_BY_LABEL' | translate }}</label>
+        <mat-radio-group formControlName="cancelled_by" class="cancelled-by-radio-group">
+          <mat-radio-button value="instructor">{{ 'CLASSES.CANCELLED_BY_INSTRUCTOR' | translate }}</mat-radio-button>
+          <mat-radio-button value="client">{{ 'CLASSES.CANCELLED_BY_CLIENT' | translate }}</mat-radio-button>
+        </mat-radio-group>
+      </div>
       <div class="form-field">
-        <label class="form-label">{{ 'CLASSES.CANCELLATION_REASON' | translate }}*</label>
         <textarea 
           formControlName="reason"
           class="cancellation-reason-textarea"

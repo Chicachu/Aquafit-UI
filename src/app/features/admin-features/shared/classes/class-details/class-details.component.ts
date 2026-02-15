@@ -17,6 +17,7 @@ import { SelectOption } from "@/core/types/selectOption";
 import { BillingFrequency } from "@/core/types/enums/billingFrequency";
 import { Weekday } from "@/core/types/enums/weekday";
 import { Class } from "@/core/types/classes/class";
+import { ClassType } from "@/core/types/enums/classType";
 import { Note } from "@/core/types/user";
 import { WaitlistService, WaitlistEntry, CreateWaitlistEntryDTO } from "@/core/services/waitlistService";
 import { forkJoin } from "rxjs";
@@ -36,6 +37,18 @@ export class ClassDetailsComponent implements OnInit {
   get canAddToWaitlist(): boolean {
     return !this.isTerminated && (this.userService.isAdmin || this.userService.userRole === Role.INSTRUCTOR)
   }
+
+  /** Show Cancel class button only for Group fitness and Private fitness */
+  get showCancelButton(): boolean {
+    if (!this.classDetails?.classType) return false
+    return this.classDetails.classType === ClassType.GROUP_FITNESS || this.classDetails.classType === ClassType.PRIVATE_FITNESS
+  }
+
+  /** True when class is Private Fitness (show Instructor/Client radio in cancel modal) */
+  get isPrivateFitnessClass(): boolean {
+    return this.classDetails?.classType === ClassType.PRIVATE_FITNESS
+  }
+
   classDetails: ClassDetails | null = null 
   navBarInfo: string[] = []
   clientsByPaymentStatus: Map<PaymentStatus, ClassClientEnrollmentDetails[] | []> = new Map()
@@ -204,9 +217,11 @@ export class ClassDetailsComponent implements OnInit {
     })
 
     // Initialize cancel form with today's date (no min date restriction - can select past dates)
+    // cancelled_by only used for Private Fitness; default 'instructor'
     this.cancelForm = this.fb.group({
       cancellation_date: [today, [Validators.required]],
-      reason: ['', [Validators.required]]
+      reason: ['', [Validators.required]],
+      cancelled_by: ['instructor', []]
     })
 
     // Initialize waitlist form
@@ -425,9 +440,9 @@ export class ClassDetailsComponent implements OnInit {
     // This method is kept for consistency with client-details component
   }
 
-  cancelClass(): void {
+  openCancelClassModal(): void {
     if (!this.classId || !this.classDetails) return
-    
+
     // Find the next available date that matches class days and isn't already cancelled
     const initialDate = this._findNextAvailableCancellationDate()
     this.cancelForm.patchValue({ cancellation_date: initialDate })
@@ -476,12 +491,15 @@ export class ClassDetailsComponent implements OnInit {
     return today
   }
 
-  confirmCancelClass(): void {
+  cancelClass(): void {
     if (!this.classId || !this.cancelForm.valid) return
 
     const cancellationDate = this.cancelForm.controls['cancellation_date'].value._d || this.cancelForm.controls['cancellation_date'].value
     const reason = this.cancelForm.controls['reason'].value?.trim()
-    
+    const cancelledBy = this.isPrivateFitnessClass
+      ? (this.cancelForm.controls['cancelled_by'].value as 'instructor' | 'client')
+      : undefined
+
     if (!reason) {
       this.snackBarService.showError('Reason is required')
       return
@@ -489,7 +507,7 @@ export class ClassDetailsComponent implements OnInit {
 
     this.loading = true
     this.showCancelConfirmationModal = false
-    this.classService.cancelClass(this.classId, cancellationDate).subscribe({
+    this.classService.cancelClass(this.classId, cancellationDate, cancelledBy, reason).subscribe({
       next: () => {
         // Format the cancellation date for the note using locale-aware formatting
         const locale = this.translateService.currentLang || 'en'
@@ -522,18 +540,19 @@ export class ClassDetailsComponent implements OnInit {
     })
   }
 
-  cancelCancelClass(): void {
+  /** Close the cancel-class modal without submitting (user clicked Cancel or X). */
+  closeCancelClassModal(): void {
     this.showCancelConfirmationModal = false
-    // Reset form to today's date when canceling
+    // Reset form to today's date and default cancelled_by when closing
     const today = new Date()
-    this.cancelForm.patchValue({ cancellation_date: today, reason: '' })
+    this.cancelForm.patchValue({ cancellation_date: today, reason: '', cancelled_by: 'instructor' })
   }
 
   processCancelConfirmationModalClick(event: { ref: ClassDetailsComponent, buttonTitle: string }): void {
     if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
-      this.cancelCancelClass()
+      this.closeCancelClassModal()
     } else if (event.buttonTitle === 'CLASSES.CONFIRM_CANCEL') {
-      this.confirmCancelClass()
+      this.cancelClass()
     }
   }
 

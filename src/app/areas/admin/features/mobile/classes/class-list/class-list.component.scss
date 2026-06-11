@@ -149,9 +149,36 @@ a {
     width: 100%;
   }
 
-  .class-container,
+  .class-container {
+    width: 100%;
+    margin-top: 0;
+  }
+
   .class-container > div {
     width: 100%;
+  }
+
+  h3,
+  h4 {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  hr {
+    margin: 0;
+    width: 100%;
+  }
+
+  ul {
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+  }
+
+  li {
+    margin-left: 16px;
   }
 
   .class-list-link.selected {

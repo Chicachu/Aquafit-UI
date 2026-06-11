@@ -26,22 +26,21 @@
   overflow: hidden;
 
   &-1 {
-    flex: 0 0 320px;
-    width: 320px;
-    max-width: 320px;
+    flex: 0 0 360px;
+    width: 360px;
+    max-width: 360px;
     border-right: 1px solid rgba($light-pink, 0.25);
+  }
+
+  &-2,
+  &-3 {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 0;
   }
 
   &-2 {
-    flex: 1;
-    min-width: 0;
     border-right: 1px solid rgba($light-pink, 0.25);
-  }
-
-  &-3 {
-    flex: 0 0 380px;
-    width: 380px;
-    max-width: 380px;
   }
 }
 
@@ -54,5 +53,60 @@
 
 :host ::ng-deep app-class-details.panel-view {
   display: block;
+  width: 100%;
+  min-width: 0;
   min-height: 100%;
+  box-sizing: border-box;
+
+  .general-info {
+    padding: 8px 16px;
+    box-sizing: border-box;
+  }
+
+  .class-details-content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .clients-section,
+  .waitlist-section-header,
+  .paid-status-section,
+  .pending-status-section,
+  .almost-due-status-section,
+  .overdue-status-section,
+  .buttons,
+  app-notes {
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+  }
+
+  ul {
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+  }
+
+  li {
+    margin-left: 16px;
+  }
+
+  .details-row > a:first-child {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .payment-history-link {
+    flex-shrink: 0;
+  }
 }

@@ -26,8 +26,13 @@ type AssignmentWithClass = { class: Class; assignment: Assignment };
 export class SalaryConfigurationComponent implements OnInit {
   ButtonType = ButtonType
   readonly TextInputType = TextInputType
-  instructorForm: FormGroup
-  instructorOptions: SelectOption[] = []
+  readonly Role = Role
+  salaryConfigForm: FormGroup
+  roleOptions: SelectOption[] = [
+    { value: Role.INSTRUCTOR, viewValue: 'INSTRUCTOR' },
+    { value: Role.MANAGER, viewValue: 'MANAGER' }
+  ]
+  employeeOptions: SelectOption[] = []
   selectedInstructorId: string = ''
   assignmentInfo: AssignmentWithClass[] = []
   activeAssignments: AssignmentWithClass[] = []
@@ -48,42 +53,63 @@ export class SalaryConfigurationComponent implements OnInit {
     private assignmentService: AssignmentService,
     private translateService: TranslateService
   ) {
-    this.instructorForm = this.fb.group({
-      instructor: ['']
+    this.salaryConfigForm = this.fb.group({
+      role: [null as Role | null],
+      employee: [{ value: null as string | null, disabled: true }]
     })
 
     this.paymentForm = this.fb.group({
       paymentValue: ['', [Validators.required, Validators.min(0)]]
     })
 
-    this.instructorForm.get('instructor')?.valueChanges.subscribe(value => {
-      this.selectedInstructorId = value || ''
+    this.salaryConfigForm.get('role')?.valueChanges.subscribe((role: Role | null) => {
+      this._onRoleChange(role)
+    })
+
+    this.salaryConfigForm.get('employee')?.valueChanges.subscribe((value: string | null) => {
+      this.selectedInstructorId = value ?? ''
       this._loadAssignments()
     })
   }
 
-  ngOnInit(): void {
-    this._loadInstructors()
+  ngOnInit(): void {}
+
+  get selectedRole(): Role | null {
+    return this.salaryConfigForm.get('role')?.value ?? null
   }
 
-  private _loadInstructors(): void {
-    this.userService.getAllUsers(Role.INSTRUCTOR).subscribe({
-      next: (instructors: User[]) => {
-        instructors.sort((a: User, b: User) => {
+  private _onRoleChange(role: Role | null): void {
+    const employeeControl = this.salaryConfigForm.get('employee')
+    this.employeeOptions = []
+    employeeControl?.setValue(null, { emitEvent: false })
+    this.selectedInstructorId = ''
+    this.assignmentInfo = []
+    this.activeAssignments = []
+
+    if (!role) {
+      employeeControl?.disable({ emitEvent: false })
+      return
+    }
+
+    this.userService.getAllUsers(role).subscribe({
+      next: (users: User[]) => {
+        users.sort((a: User, b: User) => {
           if (a.firstName < b.firstName) return -1
           if (b.firstName < a.firstName) return 1
           if (a.lastName < b.lastName) return -1
           if (b.lastName < a.lastName) return 1
           return 0
         })
-
-        this.instructorOptions = instructors.map((instructor: User) => ({
-          value: instructor._id,
-          viewValue: `${instructor.firstName} ${instructor.lastName}`
+        this.employeeOptions = users.map((u: User) => ({
+          value: u._id,
+          viewValue: `${u.firstName} ${u.lastName}`
         }))
+        employeeControl?.enable({ emitEvent: false })
+        employeeControl?.setValue(null, { emitEvent: false })
       },
-      error: ({error}) => {
-        this.snackBarService.showError(error.message)
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? '')
+        employeeControl?.disable({ emitEvent: false })
       }
     })
   }

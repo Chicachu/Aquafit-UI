@@ -1,7 +1,7 @@
 <div>
   <app-breadcrumb-nav-bar
     [title]="'NAVIGATION.EMPLOYEES' | translate"
-    [buttonType]="ButtonType.ADD"
+    [buttonType]="canAddEmployee ? ButtonType.ADD : ButtonType.NONE"
     (onButtonClick)="addNewEmployee()">
   </app-breadcrumb-nav-bar>
   <div class="employees-list-content">
@@ -12,6 +12,28 @@
           <div class="instructor-item">
             <a [routerLink]="['/admin/mobile/employees', instructor._id, 'details']">{{ instructor.firstName }} {{ instructor.lastName }}</a>
             <span *ngIf="instructor.employeeId" class="instructor-id">{{ instructor.employeeId }}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="managers-section">
+      <h2>{{ 'EMPLOYEES.MANAGERS' | translate }}</h2>
+      <ul>
+        <li *ngFor="let manager of managers">
+          <div class="manager-item">
+            <a [routerLink]="['/admin/mobile/employees', manager._id, 'details']">{{ manager.firstName }} {{ manager.lastName }}</a>
+            <span *ngIf="manager.employeeId" class="manager-id">{{ manager.employeeId }}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="receptionists-section">
+      <h2>{{ 'EMPLOYEES.RECEPTIONISTS' | translate }}</h2>
+      <ul>
+        <li *ngFor="let receptionist of receptionists">
+          <div class="receptionist-item">
+            <a [routerLink]="['/admin/mobile/employees', receptionist._id, 'details']">{{ receptionist.firstName }} {{ receptionist.lastName }}</a>
+            <span *ngIf="receptionist.employeeId" class="receptionist-id">{{ receptionist.employeeId }}</span>
           </div>
         </li>
       </ul>

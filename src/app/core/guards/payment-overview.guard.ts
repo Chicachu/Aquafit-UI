@@ -21,7 +21,7 @@ export class PaymentOverviewGuard implements CanActivate {
     const userId = route.paramMap.get('user-id');
     const selfId = this.userService.user?._id;
 
-    if (this.userService.isAdmin) return true;
+    if (this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist) return true;
     if ((role === Role.INSTRUCTOR || role === Role.EMPLOYEE) && userId && selfId && userId === selfId) {
       return true;
     }

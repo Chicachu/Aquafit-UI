@@ -19,6 +19,7 @@ import { Class } from "@core/types/classes/class";
 import { Weekday } from "@core/types/enums/weekday";
 import { Note } from "@core/types/user";
 import { EnrollmentStatus } from "@core/types/enums/enrollmentStatus";
+import { Role } from "@core/types/enums/role";
 
 @Component({
   selector: 'app-client-details',
@@ -31,7 +32,6 @@ export class ClientDetailsComponent {
   ButtonType = ButtonType
   clientId: string | null = null
   client: User | null = null
-  canEditClient = false
   canDeleteUser = false
   showEnrollmentModal = false
   showDeleteUserModal = false
@@ -94,6 +94,18 @@ export class ClientDetailsComponent {
     return this.userService.isAdmin
   }
 
+  get canEditClient(): boolean {
+    return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist
+  }
+
+  get canUnenroll(): boolean {
+    return this.userService.isAdmin || this.userService.isManager || this.userService.userRole === Role.INSTRUCTOR
+  }
+
+  get canViewClientPayments(): boolean {
+    return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist
+  }
+
   private _loadCanDeleteUser(): void {
     if (!this.clientId || !this.isAdmin) return
     this.userService.getCanDeleteUser(this.clientId).subscribe({
@@ -130,7 +142,6 @@ export class ClientDetailsComponent {
   }
 
   ngOnInit(): void {
-    this.canEditClient = this.userService.isAdmin
     const userId = this.route.snapshot.paramMap.get('user-id')
     
     this.userService.getClientEnrollmentDetails(userId!).subscribe({

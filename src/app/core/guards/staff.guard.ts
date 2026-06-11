@@ -15,7 +15,7 @@ export class StaffGuard implements CanActivate {
 
   canActivate(): boolean {
     const role = this.userService.user?.role;
-    if (role === Role.ADMIN || role === Role.EMPLOYEE || role === Role.INSTRUCTOR) {
+    if (role === Role.ADMIN || role === Role.MANAGER || role === Role.RECEPTIONIST || role === Role.EMPLOYEE || role === Role.INSTRUCTOR) {
       return true;
     }
     this.router.navigate(['/admin/mobile/check-ins']);

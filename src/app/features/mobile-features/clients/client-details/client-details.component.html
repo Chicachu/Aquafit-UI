@@ -40,7 +40,7 @@
               </a>
               <div class="action-buttons">
                 <button
-                  *ngIf="canEditClient && classAndEnrollment.enrollment.status === EnrollmentStatus.ACTIVE && !classAndEnrollment.enrollment.endDate"
+                  *ngIf="canEditClient && canUnenroll && classAndEnrollment.enrollment.status === EnrollmentStatus.ACTIVE && !classAndEnrollment.enrollment.endDate"
                   mat-icon-button
                   (click)="setShowUnenrollModal(classAndEnrollment)"
                   class="unenroll-button"
@@ -48,7 +48,7 @@
                   <mat-icon class="icon">person_remove</mat-icon>
                 </button>
                 <a
-                  *ngIf="isAdmin"
+                  *ngIf="canViewClientPayments"
                   [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>
@@ -94,7 +94,7 @@
                   </ng-template><sup *ngIf="isPartiallyEnrolled(classAndEnrollment)" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup> - {{ classAndEnrollment.class.startTime | timeFormat }}
                 </a>
                 <a
-                  *ngIf="isAdmin"
+                  *ngIf="canViewClientPayments"
                   [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>
@@ -128,7 +128,7 @@
                   </ng-template><sup *ngIf="isPartiallyEnrolled(classAndEnrollment)" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup> - {{ classAndEnrollment.class.startTime | timeFormat }}
                 </a>
                 <a
-                  *ngIf="isAdmin"
+                  *ngIf="canViewClientPayments"
                   [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>

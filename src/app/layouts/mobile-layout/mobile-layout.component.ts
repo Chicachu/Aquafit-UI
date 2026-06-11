@@ -15,7 +15,8 @@ export class MobileLayoutComponent {
   isMenuOpen: boolean = false
   currentRoute: string = ''
 
-  private readonly adminOnlyItems = ['NAVIGATION.DISCOUNTS', 'NAVIGATION.SALARY_CONFIGURATION', 'NAVIGATION.EMPLOYEES']
+  private readonly adminOnlyItems = ['NAVIGATION.DISCOUNTS', 'NAVIGATION.SALARY_CONFIGURATION']
+  private readonly employeesNavItem = 'NAVIGATION.EMPLOYEES'
   private readonly instructorOrAdminItems = ['NAVIGATION.CALENDAR', 'NAVIGATION.CLASSES', 'NAVIGATION.CLIENTS']
   /** Time Tracking (CHECK_INS) is only available to this specific user */
   private readonly timeTrackingAllowedUsername = 'admin@aquafitvallarta.com'
@@ -23,6 +24,14 @@ export class MobileLayoutComponent {
   get canShowMyAccount(): boolean {
     const role = this.userService.userRole
     return role === Role.INSTRUCTOR || role === Role.EMPLOYEE
+  }
+
+  private get isAdminOrManager(): boolean {
+    return this.userService.isAdmin || this.userService.isManager
+  }
+
+  private get canSeeEmployeesNav(): boolean {
+    return this.isAdminOrManager || this.userService.isReceptionist
   }
 
   get myAccountPath(): string | null {
@@ -54,16 +63,17 @@ export class MobileLayoutComponent {
   ) {
     const allNavItems = this.route.snapshot.data['navItems'] as Map<string, string>
     const role = this.userService.user?.role
-    const isAdmin = this.userService.isAdmin
     const isInstructor = role === Role.INSTRUCTOR
 
     this.navItems = new Map()
     const username = this.userService.user?.username ?? ''
+    const isReceptionist = role === Role.RECEPTIONIST
     for (const [title, path] of allNavItems.entries()) {
       if (title === 'NAVIGATION.CHECK_INS') {
         if (username !== this.timeTrackingAllowedUsername) continue
-      } else if (this.adminOnlyItems.includes(title) && !isAdmin) continue
-      else if (this.instructorOrAdminItems.includes(title) && !isAdmin && !isInstructor) continue
+      } else if (this.adminOnlyItems.includes(title) && !this.isAdminOrManager) continue
+      else if (title === this.employeesNavItem && !this.canSeeEmployeesNav) continue
+      else if (this.instructorOrAdminItems.includes(title) && !this.isAdminOrManager && !isInstructor && !isReceptionist) continue
       this.navItems.set(title, path)
     }
 

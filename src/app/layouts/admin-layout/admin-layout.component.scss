@@ -1,3 +1,8 @@
+@import '../../../assets/colors.scss';
+
 :host {
   display: block;
+  min-height: 100vh;
+  background: $background-blue;
+  background: linear-gradient(180deg, $background-blue 0%, $background-blue-gradient-light 100%);
 }

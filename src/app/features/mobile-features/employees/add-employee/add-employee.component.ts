@@ -21,6 +21,8 @@ export class AddEmployeeComponent implements OnInit {
   staffId: number | null = null
   roleOptions: SelectOption[] = [
     { value: Role.INSTRUCTOR, viewValue: 'INSTRUCTOR' },
+    { value: Role.MANAGER, viewValue: 'MANAGER' },
+    { value: Role.RECEPTIONIST, viewValue: 'RECEPTIONIST' },
     { value: Role.EMPLOYEE, viewValue: 'EMPLOYEE' }
   ]
 

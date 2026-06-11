@@ -6,6 +6,8 @@
 }
 
 .instructors-section,
+.managers-section,
+.receptionists-section,
 .employees-section {
   margin-top: 24px;
 
@@ -34,6 +36,32 @@ li {
   }
 
   .instructor-id {
+    color: $light-blue;
+    margin-left: 16px;
+  }
+}
+
+.managers-section {
+  .manager-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .manager-id {
+    color: $light-blue;
+    margin-left: 16px;
+  }
+}
+
+.receptionists-section {
+  .receptionist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .receptionist-id {
     color: $light-blue;
     margin-left: 16px;
   }

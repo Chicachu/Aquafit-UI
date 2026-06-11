@@ -14,7 +14,13 @@ import { Router } from "@angular/router";
 export class EmployeesListComponent implements OnInit {
   ButtonType = ButtonType
   instructors: User[] | null = null
+  managers: User[] | null = null
+  receptionists: User[] | null = null
   employees: User[] | null = null
+
+  get canAddEmployee(): boolean {
+    return this.userService.isAdmin || this.userService.isManager
+  }
 
   constructor(
     private userService: UserService,
@@ -32,6 +38,24 @@ export class EmployeesListComponent implements OnInit {
     this.userService.getAllUsers(Role.INSTRUCTOR).subscribe({
       next: (instructors: User[]) => {
         this.instructors = instructors.sort(sortUsers)
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? '')
+      }
+    })
+
+    this.userService.getAllUsers(Role.MANAGER).subscribe({
+      next: (managers: User[]) => {
+        this.managers = managers.sort(sortUsers)
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? '')
+      }
+    })
+
+    this.userService.getAllUsers(Role.RECEPTIONIST).subscribe({
+      next: (receptionists: User[]) => {
+        this.receptionists = receptionists.sort(sortUsers)
       },
       error: ({ error }) => {
         this.snackBarService.showError(error?.message ?? '')

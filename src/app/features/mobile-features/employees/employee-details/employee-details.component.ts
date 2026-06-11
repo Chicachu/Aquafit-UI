@@ -86,6 +86,8 @@ export class EmployeeDetailsComponent {
     if (!this.employee || this.employee.role !== Role.INSTRUCTOR) return false;
     return (
       this.userService.isAdmin ||
+      this.userService.isManager ||
+      this.userService.isReceptionist ||
       this.userService.user?._id === this.employee._id
     );
   }
@@ -157,7 +159,7 @@ export class EmployeeDetailsComponent {
   }
 
   ngOnInit(): void {
-    this.canEditEmployee = this.userService.isAdmin;
+    this.canEditEmployee = this.userService.isAdmin || this.userService.isManager;
     const userId = this.route.snapshot.paramMap.get("user-id");
     this.employeeId = userId;
 

@@ -38,7 +38,7 @@ export class LoginComponent {
   ngOnInit(): void {
     if (this.userService.isUserLoggedIn) {
       const user = this.userService.user!;
-      const isStaff = user.role === Role.ADMIN || user.role === Role.INSTRUCTOR || user.role === Role.EMPLOYEE;
+      const isStaff = user.role === Role.ADMIN || user.role === Role.MANAGER || user.role === Role.RECEPTIONIST || user.role === Role.INSTRUCTOR || user.role === Role.EMPLOYEE;
       this.router.navigate([isStaff ? '/admin/home' : '/home']);
     }
   }
@@ -57,7 +57,7 @@ export class LoginComponent {
           this.userService.user = user
           const displayName = user.firstName ?? user.username ?? (user.employeeId != null ? String(user.employeeId) : '')
           this.snackBarService.showSuccess(this.translateService.instant('LOGIN.WELCOME', { name: displayName }))
-          const isStaff = user.role === Role.ADMIN || user.role === Role.INSTRUCTOR || user.role === Role.EMPLOYEE
+          const isStaff = user.role === Role.ADMIN || user.role === Role.MANAGER || user.role === Role.RECEPTIONIST || user.role === Role.INSTRUCTOR || user.role === Role.EMPLOYEE
           this.router.navigate([isStaff ? '/admin/home' : '/home'])
           this.loginForm.reset()
         },

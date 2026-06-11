@@ -24,7 +24,7 @@
       <div class="flex-row classes-section">
         <h2 class="light-blue">{{ 'EMPLOYEES.TEACHING' | translate }}</h2>
         <button
-          *ngIf="userService.isAdmin"
+          *ngIf="(userService.isAdmin || userService.isManager)"
           mat-icon-button
           (click)="setShowAssignmentModal()"
           class="add-assign-button">
@@ -45,7 +45,7 @@
                 </a>
                 <div class="action-buttons">
                   <button
-                    *ngIf="userService.isAdmin && (!classAndAssignment.assignment.status || classAndAssignment.assignment.status === AssignmentStatus.ACTIVE)"
+                    *ngIf="(userService.isAdmin || userService.isManager) && (!classAndAssignment.assignment.status || classAndAssignment.assignment.status === AssignmentStatus.ACTIVE)"
                     mat-icon-button
                     class="unenroll-button"
                     type="button"

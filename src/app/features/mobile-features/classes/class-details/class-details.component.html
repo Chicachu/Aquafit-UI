@@ -22,7 +22,7 @@
     <div class="flex-row clients-section">
       <h2 class="light-blue">{{ 'CLIENTS.TITLE' | translate }}</h2>
       <button 
-        *ngIf="userService.isAdmin && !isTerminated"
+        *ngIf="canEnrollClientToClass"
         mat-icon-button 
         [disabled]="isClassFull"
         (click)="addClientToClass()" class="add-class-button">
@@ -48,7 +48,7 @@
                 </p>
               </a>
               <a
-                *ngIf="userService.isAdmin && client.currentPayment?.enrollmentId"
+                *ngIf="canViewPaymentsInClass && client.currentPayment?.enrollmentId"
                 [routerLink]="['../../../clients', client._id, 'payments', client.currentPayment.enrollmentId]"
                 class="payment-history-link">
                 <mat-icon class="icon">receipt_long</mat-icon>
@@ -61,14 +61,14 @@
 
     <div class="flex-row buttons">
       <app-button 
-        *ngIf="userService.isAdmin && !isTerminated && showCancelButton"
+        *ngIf="canCancelClass"
         [label]="'CLASSES.CANCEL'"
         [loading]="loading"
         [loadingMessage]="'CLASSES.CANCELLING'"
         (onClick)="openCancelClassModal()">
       </app-button>
       <app-button 
-        *ngIf="canEditClass && !isTerminated"
+        *ngIf="canTerminateClass"
         [label]="'CLASSES.TERMINATE'"
         [loading]="loading"
         [loadingMessage]="'CLASSES.TERMINATING'"

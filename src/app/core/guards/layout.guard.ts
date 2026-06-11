@@ -35,6 +35,8 @@ export class LayoutGuard implements CanActivate {
           }
           
           const isStaff = this.userService.user?.role === Role.ADMIN ||
+            this.userService.user?.role === Role.MANAGER ||
+            this.userService.user?.role === Role.RECEPTIONIST ||
             this.userService.user?.role === Role.INSTRUCTOR ||
             this.userService.user?.role === Role.EMPLOYEE
           const targetUrl = isStaff

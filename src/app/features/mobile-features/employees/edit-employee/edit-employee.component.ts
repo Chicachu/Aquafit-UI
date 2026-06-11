@@ -25,11 +25,16 @@ export class EditEmployeeComponent implements OnInit {
   loadedRole: Role | null = null
   roleOptions: SelectOption[] = [
     { value: Role.INSTRUCTOR, viewValue: 'INSTRUCTOR' },
+    { value: Role.MANAGER, viewValue: 'MANAGER' },
+    { value: Role.RECEPTIONIST, viewValue: 'RECEPTIONIST' },
     { value: Role.EMPLOYEE, viewValue: 'EMPLOYEE' }
   ]
 
   get editBreadcrumbTitle(): string {
-    return this.loadedRole === Role.INSTRUCTOR ? 'EMPLOYEES.EDIT_INSTRUCTOR' : 'EMPLOYEES.EDIT_EMPLOYEE'
+    if (this.loadedRole === Role.INSTRUCTOR) return 'EMPLOYEES.EDIT_INSTRUCTOR'
+    if (this.loadedRole === Role.MANAGER) return 'EMPLOYEES.EDIT_MANAGER'
+    if (this.loadedRole === Role.RECEPTIONIST) return 'EMPLOYEES.EDIT_RECEPTIONIST'
+    return 'EMPLOYEES.EDIT_EMPLOYEE'
   }
 
   constructor(

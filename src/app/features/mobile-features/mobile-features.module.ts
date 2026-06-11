@@ -4,6 +4,8 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatRadioModule } from "@angular/material/radio";
 import { TranslateModule } from "@ngx-translate/core";
 import { AdminGuard } from "@core/guards/admin.guard";
+import { AdminOrManagerGuard } from "@core/guards/admin-or-manager.guard";
+import { EmployeesListGuard } from "@core/guards/employees-list.guard";
 import { TimeTrackingGuard } from "@core/guards/time-tracking.guard";
 import { StaffGuard } from "@core/guards/staff.guard";
 import { InstructorOrAdminGuard } from "@core/guards/instructor-or-admin.guard";
@@ -80,24 +82,25 @@ const routes: Routes = [
     path: 'employees',
     pathMatch: 'full',
     component: EmployeesListComponent,
-    canActivate: [AdminGuard]
+    canActivate: [EmployeesListGuard]
   },
   {
     path: 'employees/add',
     pathMatch: 'full',
     component: AddEmployeeComponent,
-    canActivate: [AdminGuard]
+    canActivate: [AdminOrManagerGuard]
   },
   {
     path: 'employees/:user-id/details',
     pathMatch: 'full',
-    component: EmployeeDetailsComponent
+    component: EmployeeDetailsComponent,
+    canActivate: [EmployeesListGuard]
   },
   {
     path: 'employees/:user-id/edit',
     pathMatch: 'full',
     component: EditEmployeeComponent,
-    canActivate: [AdminGuard]
+    canActivate: [AdminOrManagerGuard]
   },
   {
     path: 'employees/:user-id/payments',
@@ -163,7 +166,7 @@ const routes: Routes = [
     path: 'salary-configuration',
     pathMatch: 'full',
     component: SalaryConfigurationComponent,
-    canActivate: [AdminGuard]
+    canActivate: [AdminOrManagerGuard]
   },
   {
     path: 'check-ins',

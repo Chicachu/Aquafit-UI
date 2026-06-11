@@ -45,6 +45,16 @@ export class UserService {
     return this._user?.role === Role.ADMIN
   }
 
+  get isManager(): boolean {
+    this._restoreFromStorage()
+    return this._user?.role === Role.MANAGER
+  }
+
+  get isReceptionist(): boolean {
+    this._restoreFromStorage()
+    return this._user?.role === Role.RECEPTIONIST
+  }
+
   private _restoreFromStorage(): void {
     if (!this._user) {
       try {

@@ -3,11 +3,17 @@
     [title]="'NAVIGATION.SALARY_CONFIGURATION' | translate" 
     [buttonType]="ButtonType.NONE">
   </app-breadcrumb-nav-bar>
-  <form [formGroup]="instructorForm" class="salary-config-form">
-    <app-dropdown 
-      [label]="'CONTROLS.INSTRUCTOR' | translate"
-      [options]="instructorOptions"
-      controlName="instructor">
+  <form [formGroup]="salaryConfigForm" class="salary-config-form">
+    <app-dropdown
+      [label]="'SALARY_CONFIGURATION.ROLE' | translate"
+      [options]="roleOptions"
+      [i18nPrefix]="'EMPLOYEES'"
+      controlName="role">
+    </app-dropdown>
+    <app-dropdown
+      [label]="'SALARY_CONFIGURATION.EMPLOYEE' | translate"
+      [options]="employeeOptions"
+      controlName="employee">
     </app-dropdown>
   </form>
 
@@ -46,8 +52,11 @@
     </div>
   </div>
 
-  <div *ngIf="!selectedInstructorId" class="placeholder-message">
-    <p>{{ 'SALARY_CONFIGURATION.SELECT_INSTRUCTOR' | translate }}</p>
+  <div *ngIf="!selectedRole" class="placeholder-message">
+    <p>{{ 'SALARY_CONFIGURATION.SELECT_ROLE' | translate }}</p>
+  </div>
+  <div *ngIf="selectedRole && !selectedInstructorId" class="placeholder-message">
+    <p>{{ 'SALARY_CONFIGURATION.SELECT_EMPLOYEE' | translate }}</p>
   </div>
 </div>
 

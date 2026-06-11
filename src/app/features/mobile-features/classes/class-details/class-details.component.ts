@@ -35,7 +35,23 @@ export class ClassDetailsComponent implements OnInit {
   Role = Role
 
   get canAddToWaitlist(): boolean {
-    return !this.isTerminated && (this.userService.isAdmin || this.userService.userRole === Role.INSTRUCTOR)
+    return !this.isTerminated && (this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist || this.userService.userRole === Role.INSTRUCTOR)
+  }
+
+  get canCancelClass(): boolean {
+    return !this.isTerminated && this.showCancelButton && (this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist || this.userService.userRole === Role.INSTRUCTOR)
+  }
+
+  get canTerminateClass(): boolean {
+    return !this.isTerminated && (this.userService.isAdmin || this.userService.isManager || this.userService.userRole === Role.INSTRUCTOR)
+  }
+
+  get canEnrollClientToClass(): boolean {
+    return !this.isTerminated && (this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist || this.userService.userRole === Role.INSTRUCTOR)
+  }
+
+  get canViewPaymentsInClass(): boolean {
+    return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist
   }
 
   /** Show Cancel class button only for Group fitness and Private fitness */
@@ -309,7 +325,7 @@ export class ClassDetailsComponent implements OnInit {
           this.isTerminated = false
         }
         
-        // Only allow editing if user is admin AND class is not terminated
+        // Only allow editing class details if user is admin AND class is not terminated
         this.canEditClass = this.userService.isAdmin && !this.isTerminated
         
         // Load waitlist entries for this class
@@ -557,7 +573,7 @@ export class ClassDetailsComponent implements OnInit {
   }
 
   terminateClass(): void {
-    if (!this.classId || !this.canEditClass) return
+    if (!this.classId || !this.canTerminateClass) return
     // Reset form to today's date when opening modal
     const today = new Date()
     this.terminateForm.patchValue({ end_date: today })
@@ -565,7 +581,7 @@ export class ClassDetailsComponent implements OnInit {
   }
 
   confirmTerminateClass(): void {
-    if (!this.classId || !this.canEditClass || !this.terminateForm.valid) return
+    if (!this.classId || !this.canTerminateClass || !this.terminateForm.valid) return
 
     const endDate = this.terminateForm.controls['end_date'].value._d || this.terminateForm.controls['end_date'].value
     this.loading = true

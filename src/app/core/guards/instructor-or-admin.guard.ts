@@ -15,7 +15,7 @@ export class InstructorOrAdminGuard implements CanActivate {
 
   canActivate(): boolean {
     const role = this.userService.user?.role;
-    if (role === Role.ADMIN || role === Role.INSTRUCTOR) {
+    if (role === Role.ADMIN || role === Role.MANAGER || role === Role.RECEPTIONIST || role === Role.INSTRUCTOR) {
       return true;
     }
     this.router.navigate(['/admin/mobile/check-ins']);

@@ -1,0 +1,70 @@
+<div *ngIf="classDetails" class="enroll-container">
+  <div *ngIf="panelView" class="panel-view-header">
+    <h2 class="light-blue">{{ 'CLIENTS.ENROLL' | translate }}</h2>
+  </div>
+
+  <div class="enroll-content">
+    <p>{{ 'CLASSES.ENROLL_CLIENT_INSTRUCTIONS' | translate }}</p>
+    <h5>{{ 'CLASS_TYPES.' + classDetails.classType | translate }} - {{ classDetails.classLocation }} - {{ classDetails.startTime | timeFormat }}</h5>
+
+    <p *ngIf="clientOptions.length === 0" class="no-clients-message light-blue">
+      All clients are already enrolled in this class.
+    </p>
+
+    <form [formGroup]="enrollmentForm" class="enroll-form">
+      <app-dropdown
+        *ngIf="clientOptions.length"
+        label="CLIENTS.TITLE"
+        [options]="clientOptions"
+        controlName="client">
+      </app-dropdown>
+      <app-datepicker
+        label="CONTROLS.START_DATE"
+        controlName="start_date"
+        [allowedWeekdays]="classDetails.days">
+      </app-datepicker>
+
+      <mat-expansion-panel
+        [disabled]="!enrollmentForm.get('client')?.value"
+        [expanded]="autoExpandAdvancedOptions && needsPartialEnrollment">
+        <mat-expansion-panel-header>
+          {{ 'ENROLLMENTS.ADVANCED_OPTIONS' | translate }}
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+          <app-multi-select-chips
+            *ngIf="advancedOptionsClassInfo && advancedOptionsClassInfo.days.length > 1"
+            label="CONTROLS.DAYS_OVERRIDE"
+            [options]="needsPartialEnrollment ? availableWeekdayOptions : weekdays"
+            [disabledChipsIndices]="disabledDaysChips"
+            i18nPrefix="WEEKDAYS_SHORT"
+            controlName="days_override">
+          </app-multi-select-chips>
+          <app-dropdown
+            label="CONTROLS.BILLING_FREQUENCY_OVERRIDE"
+            [options]="billingFrequencyOptions"
+            controlName="billing_frequency_override"
+            [i18nPrefix]="'BILLING_FREQUENCY'"
+            [hasNoSelectOption]="true"
+            class="billing-frequency">
+          </app-dropdown>
+        </ng-template>
+      </mat-expansion-panel>
+    </form>
+
+    <div class="flex-row buttons">
+      <app-button
+        [label]="'CONTROLS.CANCEL'"
+        (onClick)="cancel()">
+      </app-button>
+      <app-button
+        *ngIf="clientOptions.length"
+        [label]="'CLIENTS.ENROLL'"
+        [loading]="loading"
+        [loadingMessage]="'CONTROLS.SUBMIT_WAIT_MESSAGE'"
+        [disabled]="!enrollmentForm.valid"
+        (onClick)="submit()">
+      </app-button>
+    </div>
+  </div>
+</div>

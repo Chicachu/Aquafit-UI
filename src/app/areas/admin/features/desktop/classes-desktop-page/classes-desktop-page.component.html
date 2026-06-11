@@ -13,6 +13,12 @@
     </div>
   </section>
   <section class="panel panel-3">
-    <div class="panel-body"></div>
+    <div class="panel-body">
+      <app-class-enroll
+        *ngIf="showEnrollPanel && activeClassId"
+        [classId]="activeClassId"
+        [panelView]="true">
+      </app-class-enroll>
+    </div>
   </section>
 </div>

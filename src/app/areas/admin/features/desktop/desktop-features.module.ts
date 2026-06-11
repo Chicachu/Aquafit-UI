@@ -10,7 +10,6 @@ import { DesktopClassCalendarComponent } from "./desktop-calendar/desktop-class-
 import { ClassesDesktopPageComponent } from "./classes-desktop-page/classes-desktop-page.component";
 import { ClassDetailsComponent } from "../mobile/classes/class-details/class-details.component";
 import { EditClassComponent } from "../mobile/classes/edit-class/edit-class.component";
-
 const routes: Routes = [
   {
     path: 'home',
@@ -26,6 +25,11 @@ const routes: Routes = [
         component: EditClassComponent,
         canActivate: [AdminGuard],
         data: { panelView: true }
+      },
+      {
+        path: ':class-id/details/enroll',
+        component: ClassDetailsComponent,
+        data: { panelView: true, showEnrollPanel: true }
       },
       {
         path: ':class-id/details',

@@ -9,13 +9,15 @@ import { BreadcrumbNavBarComponent } from '../mobile/breadcrumb-nav-bar/breadcru
 import { ClassListComponent } from '../mobile/classes/class-list/class-list.component';
 import { ClassDetailsComponent } from '../mobile/classes/class-details/class-details.component';
 import { EditClassComponent } from '../mobile/classes/edit-class/edit-class.component';
+import { ClassEnrollComponent } from '../mobile/classes/class-enroll/class-enroll.component';
 
 @NgModule({
   declarations: [
     BreadcrumbNavBarComponent,
     ClassListComponent,
     ClassDetailsComponent,
-    EditClassComponent
+    EditClassComponent,
+    ClassEnrollComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { EditClassComponent } from '../mobile/classes/edit-class/edit-class.comp
     BreadcrumbNavBarComponent,
     ClassListComponent,
     ClassDetailsComponent,
-    EditClassComponent
+    EditClassComponent,
+    ClassEnrollComponent
   ]
 })
 export class AdminSharedFeaturesModule {}

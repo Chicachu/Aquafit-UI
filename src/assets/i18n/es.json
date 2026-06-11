@@ -190,6 +190,7 @@
     "UPDATE": "Actualizar",
     "UPDATE_CLASS_SUCCESS": "¡Clase actualizada exitosamente!",
     "CLASS_DETAILS": "Detalles de la Clase",
+    "ENROLL_CLIENT_INSTRUCTIONS": "Selecciona un cliente para inscribir",
     "ENROLLED": "inscritos",
     "NO_CLIENTS_ENROLLED": "No hay clientes inscritos en esta clase.",
     "PARTIAL_ENROLLMENT_LETTER": "P",

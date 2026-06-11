@@ -114,9 +114,23 @@ export class ClassListComponent implements OnInit, OnDestroy {
   }
 
   private _updateSelectedClassId(): void {
-    this.selectedClassId = this.route.snapshot.paramMap.get('class-id')
-      ?? this.route.firstChild?.snapshot.paramMap.get('class-id')
-      ?? null
+    this.selectedClassId = this._findClassIdInRouteTree(this.route)
+  }
+
+  private _findClassIdInRouteTree(route: ActivatedRoute): string | null {
+    const classId = route.snapshot.paramMap.get('class-id')
+    if (classId) {
+      return classId
+    }
+
+    if (route.firstChild) {
+      const childClassId = this._findClassIdInRouteTree(route.firstChild)
+      if (childClassId) {
+        return childClassId
+      }
+    }
+
+    return null
   }
 
   private _updateGroupedClasses(): void {

@@ -52,7 +52,7 @@
             </a>
             <a
               *ngIf="panelView"
-              [routerLink]="'/admin/classes/' + class._id + '/details'"
+              [routerLink]="['/admin/classes', class._id, 'details']"
               class="flex-row class-list-link"
               [class.selected]="isClassSelected(class._id)">
               {{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}
@@ -80,7 +80,7 @@
               </a>
               <a
                 *ngIf="panelView"
-                [routerLink]="'/admin/classes/' + class._id + '/details'"
+                [routerLink]="['/admin/classes', class._id, 'details']"
                 class="flex-row class-list-link"
                 [class.selected]="isClassSelected(class._id)">
                 {{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}

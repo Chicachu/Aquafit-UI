@@ -190,6 +190,7 @@
     "UPDATE": "Update",
     "UPDATE_CLASS_SUCCESS": "Class updated successfully!",
     "CLASS_DETAILS": "Class Details",
+    "ENROLL_CLIENT_INSTRUCTIONS": "Select a client to enroll",
     "ENROLLED": "enrolled",
     "NO_CLIENTS_ENROLLED": "There are no clients enrolled in this class.",
     "PARTIAL_ENROLLMENT_LETTER": "P",

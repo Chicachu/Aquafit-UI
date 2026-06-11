@@ -1,27 +1,23 @@
 import { Component, HostBinding, Input, OnDestroy, OnInit } from "@angular/core";
 import { ClassService } from "@/core/services/classService";
 import { UserService } from "@/core/services/userService";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { ClassDetails } from "@/core/types/classes/classDetails";
 import { SnackBarService } from "@/core/services/snackBarService";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { PaymentStatus } from "@/core/types/enums/paymentStatus";
 import { ClassClientEnrollmentDetails } from "@/core/types/classes/classClientEnrollmentDetails";
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
-import { EnrollmentService } from "@/core/services/enrollmentService";
 import { TranslateService } from "@ngx-translate/core";
 import { DatePipe } from "@angular/common";
 import { User } from "@/core/types/user";
 import { Role } from "@/core/types/enums/role";
-import { SelectOption } from "@/core/types/selectOption";
-import { BillingFrequency } from "@/core/types/enums/billingFrequency";
 import { Weekday } from "@/core/types/enums/weekday";
-import { Class } from "@/core/types/classes/class";
 import { ClassType } from "@/core/types/enums/classType";
 import { Note } from "@/core/types/user";
 import { WaitlistService, WaitlistEntry, CreateWaitlistEntryDTO } from "@/core/services/waitlistService";
 import { forkJoin } from "rxjs";
-import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
+import { debounceTime, distinctUntilChanged, filter, map } from "rxjs/operators";
 import { CacheService } from "@/core/services/cacheService";
 import { Subscription } from "rxjs";
 
@@ -43,7 +39,7 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
   }
 
   get canCancelClass(): boolean {
-    return !this.isTerminated && this.showCancelButton && (this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist || this.userService.userRole === Role.INSTRUCTOR)
+    return !this.isTerminated && (this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist || this.userService.userRole === Role.INSTRUCTOR)
   }
 
   get canTerminateClass(): boolean {
@@ -62,12 +58,6 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     return (this.classDetails?.clients?.length ?? 0) > 0
   }
 
-  /** Show Cancel class button only for Group fitness and Private fitness */
-  get showCancelButton(): boolean {
-    if (!this.classDetails?.classType) return false
-    return this.classDetails.classType === ClassType.GROUP_FITNESS || this.classDetails.classType === ClassType.PRIVATE_FITNESS
-  }
-
   /** True when class is Private Fitness (show Instructor/Client radio in cancel modal) */
   get isPrivateFitnessClass(): boolean {
     return this.classDetails?.classType === ClassType.PRIVATE_FITNESS
@@ -76,6 +66,7 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
   classDetails: ClassDetails | null = null
   navBarInfo: string[] = []
   private routeSubscription?: Subscription
+  private routerSubscription?: Subscription
   clientsByPaymentStatus: Map<PaymentStatus, ClassClientEnrollmentDetails[] | []> = new Map()
   loading = false
   classId: string | null = null
@@ -88,12 +79,6 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
   waitlistEntries: WaitlistEntry[] = []
   waitlistUsers: Map<string, User> = new Map() // userId -> User
   waitlistForm: FormGroup
-  get enrollmentButtons() {
-    return this.clientOptions.length > 0 
-      ? [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.ENROLL'}]
-      : [{text: 'CONTROLS.CANCEL'}]
-  }
-
   get isClassFull(): boolean {
     if (!this.classDetails || !this.classDetails.enrollmentCounts || !this.classDetails.days) return false
     
@@ -116,19 +101,6 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
-  get availableWeekdayOptions(): SelectOption[] {
-    if (!this.needsPartialEnrollment) {
-      // Return all weekdays if partial enrollment is not needed
-      return this.weekdays
-    }
-    
-    // Filter to only show available days when partial enrollment is needed
-    return this.weekdays.filter(option => {
-      const dayValue = option.value as Weekday
-      return this.availableDays.includes(dayValue)
-    })
-  }
-
   get hasAvailableSpace(): boolean {
     return this.availableDays.length > 0
   }
@@ -146,44 +118,14 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     return dayNames.join(', ') + ' & ' + lastDay
   }
 
-  get needsPartialEnrollment(): boolean {
-    if (!this.classDetails || !this.classDetails.enrollmentCounts || !this.classDetails.days) return false
-    
-    // Check if some days are full but not all
-    const hasFullDays = this.classDetails.days.some(day => {
-      const count = this.classDetails!.enrollmentCounts[day] || 0
-      return count >= this.classDetails!.maxCapacity
-    })
-    const hasAvailableDays = this.availableDays.length > 0
-    
-    return hasFullDays && hasAvailableDays
-  }
-
-  autoExpandAdvancedOptions = false
   get cancelButtons() {
     return [
       {text: 'CONTROLS.CANCEL'}, 
       {text: 'CLASSES.CONFIRM_CANCEL', disabled: !this.cancelForm.valid}
     ]
   }
-  enrollmentForm: FormGroup
   terminateForm: FormGroup
   cancelForm: FormGroup
-  availableClients: User[] = []
-  clientOptions: SelectOption[] = []
-  weekdays: SelectOption[] = Object.keys(Weekday)
-    .filter(key => isNaN(Number(key)))
-    .map(key => ({
-      viewValue: key.toUpperCase(),
-      value: Weekday[key as keyof typeof Weekday]
-    }))
-  billingFrequencyOptions: SelectOption[] = Object.keys(BillingFrequency)
-    .map(key => ({
-      viewValue: key.toUpperCase(),
-      value: BillingFrequency[key as keyof typeof BillingFrequency]
-    }))
-  advancedOptionsClassInfo: Class | undefined
-  disabledDaysChips: number[] = []
   minTerminationDate: Date = new Date()
   paymentStatusConfig: Partial<{
     [key in PaymentStatus]: {
@@ -221,18 +163,10 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBarService: SnackBarService,
     private fb: FormBuilder,
-    private enrollmentService: EnrollmentService,
     private translateService: TranslateService,
     private waitlistService: WaitlistService,
     private cacheService: CacheService
   ) {
-    this.enrollmentForm = this.fb.group({
-      client: ['', [Validators.required]],
-      start_date: ['', [Validators.required]],
-      days_override: [null, []], // Will be made required if partial enrollment is needed
-      billing_frequency_override: [null, []]
-    })
-
     // Initialize terminate form with today's date
     const today = new Date()
     today.setHours(0, 0, 0, 0)
@@ -314,7 +248,7 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
       this.panelView = true
     }
 
-    this.routeSubscription = this.route.paramMap.pipe(
+    this.routeSubscription = this._getClassIdRoute().paramMap.pipe(
       map(params => params.get('class-id')),
       distinctUntilChanged()
     ).subscribe(classId => {
@@ -325,10 +259,33 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
       this.classId = classId
       this._loadClassDetails()
     })
+
+    if (this.panelView) {
+      this.routerSubscription = this.router.events.pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        if (this.classId) {
+          this._loadClassDetails()
+        }
+      })
+    }
   }
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe()
+    this.routerSubscription?.unsubscribe()
+  }
+
+  private _getClassIdRoute(): ActivatedRoute {
+    if (this.route.snapshot.paramMap.has('class-id')) {
+      return this.route
+    }
+
+    if (this.route.parent?.snapshot.paramMap.has('class-id')) {
+      return this.route.parent
+    }
+
+    return this.route
   }
 
   private _loadClassDetails(): void {
@@ -366,120 +323,30 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
   addClientToClass(): void {
     if (!this.classDetails) return
 
-    // Fetch all clients
-    this.userService.getAllUsers(Role.CLIENT).subscribe({
-      next: (allClients: User[]) => {
-        // Get IDs of already enrolled clients (including waitlist)
-        const enrolledClientIds = new Set<string>()
-        this.classDetails!.clients.forEach(client => {
-          enrolledClientIds.add(client._id)
-        })
-        if (this.classDetails!.waitlistClients) {
-          this.classDetails!.waitlistClients.forEach(client => {
-            enrolledClientIds.add(client._id)
-          })
-        }
+    if (this.panelView && this.classId) {
+      this.router.navigate(['/admin/classes', this.classId, 'details', 'enroll'])
+      return
+    }
 
-        // Filter out enrolled clients
-        this.availableClients = allClients.filter(client => !enrolledClientIds.has(client._id))
-        
-        // Create options for dropdown
-        this.clientOptions = this.availableClients.map(client => ({
-          value: client._id,
-          viewValue: `${client.firstName} ${client.lastName}`
-        }))
-
-        // Load class details for advanced options
-        if (this.classId) {
-          this.classService.getClassDetails(this.classId).subscribe({
-            next: (classInfo: Class) => {
-              this.advancedOptionsClassInfo = classInfo
-              
-              // If partial enrollment is needed, set up the form and auto-expand
-              if (this.needsPartialEnrollment) {
-                this.autoExpandAdvancedOptions = true
-                // Filter disabled days to only show full days (days at capacity)
-                this.disabledDaysChips = Object.values(Weekday)
-                  .filter(value => typeof value === 'number')
-                  .filter((dayValue: Weekday) => {
-                    // Disable days that are full
-                    const count = this.classDetails!.enrollmentCounts[dayValue] || 0
-                    return count >= this.classDetails!.maxCapacity
-                  })
-                
-                // Make days_override required when partial enrollment is needed
-                const daysOverrideControl = this.enrollmentForm.get('days_override')
-                if (daysOverrideControl) {
-                  daysOverrideControl.setValidators([Validators.required])
-                  daysOverrideControl.updateValueAndValidity()
-                }
-              } else {
-                this.autoExpandAdvancedOptions = false
-                // Original logic: disable days not in class
-                this.disabledDaysChips = Object.values(Weekday)
-                  .filter(value => typeof value === 'number')
-                  .filter(value => !this.advancedOptionsClassInfo?.days.includes(value))
-                
-                // Remove required validator if not needed
-                const daysOverrideControl = this.enrollmentForm.get('days_override')
-                if (daysOverrideControl) {
-                  daysOverrideControl.clearValidators()
-                  daysOverrideControl.updateValueAndValidity()
-                }
-              }
-            },
-            error: ({error}) => {
-              this.snackBarService.showError(error.message)
-            }
-          })
-        }
-
-        this.showEnrollmentModal = true
-      },
-      error: ({error}) => {
-        this.snackBarService.showError(error.message)
-      }
-    })
+    this.showEnrollmentModal = true
   }
 
-  processEnrollmentModalClick(event: { ref: ClassDetailsComponent, buttonTitle: string }): void {
-    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
-      this.enrollmentForm.reset()
-      this.autoExpandAdvancedOptions = false
-      this.showEnrollmentModal = false
-    } else if (event.buttonTitle === 'CLIENTS.ENROLL') {
-      if (!this.enrollmentForm.valid || !this.classId) {
-        this.snackBarService.showError('Please fill in all required fields')
-        return
-      }
-
-      const clientId = this.enrollmentForm.controls['client'].value
-      const startDate = this.enrollmentForm.controls['start_date'].value._d
-      const billingFrequency = this.enrollmentForm.controls['billing_frequency_override'].value ?? null
-      const daysOverride = this.enrollmentForm.controls['days_override'].value ?? null
-
-      this.enrollmentService.enrollClient(this.classId, clientId, startDate, billingFrequency, daysOverride).subscribe({
-        next: () => {
-          // Invalidate cache and reload class details to show the newly enrolled client
-          if (this.classId) {
-            this.cacheService.invalidate(`classes:details:${this.classId}`)
-          }
-          this._loadClassDetails()
-          this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
-          this.enrollmentForm.reset()
-          this.autoExpandAdvancedOptions = false
-          this.showEnrollmentModal = false
-        },
-        error: ({error}) => {
-          this.snackBarService.showError(error.message)
-        }
-      })
+  onEnrollmentModalClick(event: { ref: ClassDetailsComponent, buttonTitle: string }): void {
+    if (event.buttonTitle === 'close-button') {
+      this.closeEnrollmentModal()
     }
   }
 
-  onAdvancedOptionsOpened(): void {
-    // Class info is already loaded in addClientToClass
-    // This method is kept for consistency with client-details component
+  closeEnrollmentModal(): void {
+    this.showEnrollmentModal = false
+  }
+
+  onClientEnrolled(): void {
+    if (this.classId) {
+      this.cacheService.invalidate(`classes:details:${this.classId}`)
+    }
+    this._loadClassDetails()
+    this.showEnrollmentModal = false
   }
 
   openCancelClassModal(): void {

@@ -110,28 +110,6 @@ ul {
   width: 45%;
 }
 
-.enrollment-modal p, .enrollment-modal h5 {
-  text-align: center;
-}
-
-.enrollment-modal form {
-  width: inherit;
-  border: none;
-  min-height: fit-content;
-  padding: 0;
-}
-
-.enrollment-modal .billing-frequency {
-  position: relative;
-  top: 10px;
-}
-
-.enrollment-modal .no-clients-message {
-  color: $light-pink;
-  text-align: center;
-  margin: 10px 0;
-}
-
 .waitlist-modal {
   .content {
     padding: 0;

@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
-import { PaymentService } from "@core/services/paymentService";
+import { InvoiceAndPaymentsService } from "@core/services/invoiceAndPaymentsService";
 import { SnackBarService } from "@core/services/snackBarService";
 import { PaymentStatus } from "@core/types/enums/paymentStatus";
 
@@ -27,7 +27,7 @@ export class EmployeePaymentOverviewComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private paymentService: PaymentService,
+    private invoiceAndPaymentsService: InvoiceAndPaymentsService,
     private snackBarService: SnackBarService
   ) {}
 
@@ -35,7 +35,7 @@ export class EmployeePaymentOverviewComponent {
     this.userId = this.route.snapshot.paramMap.get("user-id");
     if (!this.userId) return;
 
-    this.paymentService.getInvoicesByUserId(this.userId).subscribe({
+    this.invoiceAndPaymentsService.getInvoicesByUserId(this.userId).subscribe({
       next: ({ invoices, employeePayables, userName }) => {
         this.employeeName = userName ?? "";
         const fromInvoices = invoices.map((i) => ({

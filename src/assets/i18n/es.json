@@ -281,7 +281,19 @@
     "BONUS_SESSIONS_APPLIED": "Sesiones de Bonificación Aplicadas",
     "BONUS_SESSION_SINGULAR": "sesión de bonificación",
     "BONUS_SESSION_PLURAL": "sesiones de bonificación",
-    "APPLY_PAYMENT": "Aplicar Pago"
+    "APPLY_PAYMENT": "Aplicar Pago",
+    "PAYMENT_TYPE": "Tipo de Pago",
+    "AMOUNT": "Monto",
+    "REMAINING_BALANCE": "Saldo restante",
+    "INVALID_AMOUNT": "Ingrese un monto mayor que cero.",
+    "AMOUNT_EXCEEDS_REMAINING": "El monto no puede exceder el saldo restante de esta factura.",
+    "PAYMENT_TYPE_REQUIRED": "El tipo de pago es obligatorio.",
+    "APPLY_PAYMENT_SUCCESS": "Pago aplicado exitosamente.",
+    "APPLY_PAYMENT_ERROR": "No se pudo aplicar el pago."
+  },
+  "PAYMENT_TYPE": {
+    "CASH": "Efectivo",
+    "TRANSFER": "Transferencia"
   },
   "CALENDAR": {
     "MASTER": "Principal",

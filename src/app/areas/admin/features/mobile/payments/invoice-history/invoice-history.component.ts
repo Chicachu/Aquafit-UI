@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { PaymentService } from "@core/services/paymentService";
+import { InvoiceAndPaymentsService } from "@core/services/invoiceAndPaymentsService";
 import { SnackBarService } from "@core/services/snackBarService";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { InvoiceHistory } from "@core/types/invoices/invoiceHistory";
@@ -14,7 +14,7 @@ import { PaymentStatus } from "@core/types/enums/paymentStatus";
 export class InvoiceHistoryComponent {
   // component for showing payment history for a specific enrollment 
   constructor(
-    private _paymentService: PaymentService, 
+    private _invoiceAndPaymentsService: InvoiceAndPaymentsService, 
     private _route: ActivatedRoute,
     private _snackBarService: SnackBarService
   ) {}
@@ -29,7 +29,7 @@ export class InvoiceHistoryComponent {
     this.enrollmentId = this._route.snapshot.paramMap.get('enrollment-id')
     
     if (this.userId && this.enrollmentId) {
-      this._paymentService.getInvoiceHistory(this.userId, this.enrollmentId).subscribe({
+      this._invoiceAndPaymentsService.getInvoiceHistory(this.userId, this.enrollmentId).subscribe({
         next: (invoiceHistory: InvoiceHistory) => {
           this.invoiceHistory = invoiceHistory
           console.log(this.invoiceHistory)

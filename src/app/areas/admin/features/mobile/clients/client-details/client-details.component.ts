@@ -144,7 +144,7 @@ export class ClientDetailsComponent {
   ngOnInit(): void {
     const userId = this.route.snapshot.paramMap.get('user-id')
     
-    this.userService.getClientEnrollmentDetails(userId!).subscribe({
+    this.enrollmentService.getClientEnrollmentDetails(userId!).subscribe({
       next: (clientEnrollmentDetails: ClientEnrollmentDetails) => {
         this.client = clientEnrollmentDetails.client
         this.clientId = this.client._id
@@ -417,7 +417,7 @@ export class ClientDetailsComponent {
       if (!this.selectedEnrollmentForUnenroll) return
       
       const cancelReason = this.unenrollForm.get('cancelReason')?.value || undefined
-      this.enrollmentService.unenrollClient(this.selectedEnrollmentForUnenroll.enrollment._id, cancelReason).subscribe({
+      this.enrollmentService.unenrollClient(this.selectedEnrollmentForUnenroll.enrollment._id, cancelReason, this.clientId!).subscribe({
         next: () => {
           this.ngOnInit()
           this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.UNENROLL_SUCCESS'))

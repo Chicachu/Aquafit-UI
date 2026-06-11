@@ -281,7 +281,19 @@
     "BONUS_SESSIONS_APPLIED": "Bonus Sessions Applied",
     "BONUS_SESSION_SINGULAR": "bonus session",
     "BONUS_SESSION_PLURAL": "bonus sessions",
-    "APPLY_PAYMENT": "Apply Payment"
+    "APPLY_PAYMENT": "Apply Payment",
+    "PAYMENT_TYPE": "Payment Type",
+    "AMOUNT": "Amount",
+    "REMAINING_BALANCE": "Remaining balance",
+    "INVALID_AMOUNT": "Enter an amount greater than zero.",
+    "AMOUNT_EXCEEDS_REMAINING": "Amount cannot exceed the remaining balance on this invoice.",
+    "PAYMENT_TYPE_REQUIRED": "Payment type is required.",
+    "APPLY_PAYMENT_SUCCESS": "Payment applied successfully.",
+    "APPLY_PAYMENT_ERROR": "Failed to apply payment."
+  },
+  "PAYMENT_TYPE": {
+    "CASH": "Cash",
+    "TRANSFER": "Transfer"
   },
   "CALENDAR": {
     "MASTER": "Master",

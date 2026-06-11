@@ -79,5 +79,43 @@
         <h4 class="second-column price-value">{{ invoiceDetails.period.endDate | translateDate:'shortDate' }}</h4>
       </div>
     </div>
+
+    <div class="apply-payment-row">
+      <app-button
+        [label]="'PAYMENTS.APPLY_PAYMENT'"
+        [disabled]="!canApplyPayment"
+        (onClick)="applyPayment()">
+      </app-button>
+    </div>
   </div>
 </div>
+
+<app-modal
+  *ngIf="showApplyPaymentModal && invoiceDetails"
+  [parent]="this"
+  [title]="'PAYMENTS.APPLY_PAYMENT' | translate"
+  [buttonList]="paymentModalButtons"
+  (modalClick)="processApplyPaymentModalClick($event)"
+  class="apply-payment-modal">
+  <div content>
+    <p class="remaining-balance">
+      {{ 'PAYMENTS.REMAINING_BALANCE' | translate }}:
+      {{ remainingBalance }} {{ invoiceDetails.charge.currency }}
+    </p>
+
+    <form [formGroup]="paymentForm" class="payment-form-fields">
+      <app-dropdown
+        label="PAYMENTS.PAYMENT_TYPE"
+        [options]="paymentTypeOptions"
+        controlName="paymentType"
+        i18nPrefix="PAYMENT_TYPE">
+      </app-dropdown>
+
+      <app-text-input
+        label="PAYMENTS.AMOUNT"
+        controlName="amount"
+        [type]="TextInputType.NUMBER">
+      </app-text-input>
+    </form>
+  </div>
+</app-modal>

@@ -1,10 +1,14 @@
 import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
-import { PaymentService } from "@core/services/paymentService";
+import { InvoiceAndPaymentsService } from "@core/services/invoiceAndPaymentsService";
 import { SnackBarService } from "@core/services/snackBarService";
 import { InvoiceDetails } from "@core/types/invoices/invoiceDetails";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { PaymentStatus } from "@core/types/enums/paymentStatus";
+import { PaymentType } from "@core/types/enums/paymentType";
+import { TextInputType } from "@core/types/enums/textInputType";
+import { SelectOption } from "@core/types/selectOption";
 import { TranslateService } from "@ngx-translate/core";
 
 @Component({
@@ -19,14 +23,57 @@ export class InvoiceDetailsComponent implements OnInit, OnChanges {
   @Input() invoiceId: string | null = null
 
   ButtonType = ButtonType
+  PaymentStatus = PaymentStatus
+  readonly TextInputType = TextInputType
   invoiceDetails: InvoiceDetails | null = null
+
+  showApplyPaymentModal = false
+  applyingPayment = false
+  paymentForm: FormGroup
+  paymentModalButtons = [
+    { text: 'CONTROLS.CANCEL' },
+    { text: 'PAYMENTS.APPLY_PAYMENT' }
+  ]
+  paymentTypeOptions: SelectOption[] = [
+    { value: PaymentType.CASH, viewValue: 'CASH' },
+    { value: PaymentType.TRANSFER, viewValue: 'TRANSFER' }
+  ]
+
+  get remainingBalance(): number {
+    if (!this.invoiceDetails) {
+      return 0
+    }
+
+    const totalPaid = (this.invoiceDetails.paymentsApplied || []).reduce(
+      (sum, payment) => sum + (payment.charge?.amount ?? 0),
+      0
+    )
+
+    return Math.max(0, this.invoiceDetails.charge.amount - totalPaid)
+  }
+
+  get canApplyPayment(): boolean {
+    if (!this.invoiceDetails?.paymentStatus) {
+      return false
+    }
+
+    return this.invoiceDetails.paymentStatus !== PaymentStatus.PAID
+      && this.invoiceDetails.paymentStatus !== PaymentStatus.CANCELLED
+      && this.remainingBalance > 0
+  }
 
   constructor(
     private route: ActivatedRoute,
-    private paymentService: PaymentService,
+    private invoiceAndPaymentsService: InvoiceAndPaymentsService,
     private snackBarService: SnackBarService,
-    private translateService: TranslateService
-  ) {}
+    private translateService: TranslateService,
+    private fb: FormBuilder
+  ) {
+    this.paymentForm = this.fb.group({
+      paymentType: [PaymentType.CASH, Validators.required],
+      amount: ['', [Validators.required, Validators.min(0)]]
+    })
+  }
 
   ngOnInit(): void {
     if (this.route.snapshot.data['panelView'] === true) {
@@ -127,12 +174,84 @@ export class InvoiceDetailsComponent implements OnInit, OnChanges {
     return translated !== translationKey ? translated : description
   }
 
+  applyPayment(): void {
+    if (!this.canApplyPayment) {
+      return
+    }
+
+    this.paymentForm.reset({
+      paymentType: PaymentType.CASH,
+      amount: ''
+    })
+    this.showApplyPaymentModal = true
+  }
+
+  processApplyPaymentModalClick(event: { buttonTitle: string }): void {
+    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
+      this._closeApplyPaymentModal()
+      return
+    }
+
+    if (event.buttonTitle !== 'PAYMENTS.APPLY_PAYMENT' || this.applyingPayment) {
+      return
+    }
+
+    if (!this.userId || !this.enrollmentId || !this.invoiceId) {
+      return
+    }
+
+    const rawAmount = this.paymentForm.get('amount')?.value
+    const amount = typeof rawAmount === 'string' ? parseFloat(rawAmount) : Number(rawAmount)
+    const paymentType = this.paymentForm.get('paymentType')?.value as PaymentType
+
+    if (isNaN(amount) || amount <= 0) {
+      this.snackBarService.showError(this.translateService.instant('PAYMENTS.INVALID_AMOUNT'))
+      return
+    }
+
+    if (amount > this.remainingBalance) {
+      this.snackBarService.showError(this.translateService.instant('PAYMENTS.AMOUNT_EXCEEDS_REMAINING'))
+      return
+    }
+
+    if (!paymentType) {
+      this.snackBarService.showError(this.translateService.instant('PAYMENTS.PAYMENT_TYPE_REQUIRED'))
+      return
+    }
+
+    this.applyingPayment = true
+
+    this.invoiceAndPaymentsService.applyPayment(this.userId, this.enrollmentId, this.invoiceId, {
+      amount,
+      paymentType
+    }).subscribe({
+      next: (invoiceDetails: InvoiceDetails) => {
+        this.invoiceDetails = invoiceDetails
+        this.snackBarService.showSuccess(this.translateService.instant('PAYMENTS.APPLY_PAYMENT_SUCCESS'))
+        this._closeApplyPaymentModal()
+        this.applyingPayment = false
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message || this.translateService.instant('PAYMENTS.APPLY_PAYMENT_ERROR'))
+        this.applyingPayment = false
+      }
+    })
+  }
+
+  private _closeApplyPaymentModal(): void {
+    this.showApplyPaymentModal = false
+    this.paymentForm.reset({
+      paymentType: PaymentType.CASH,
+      amount: ''
+    })
+  }
+
   private _loadInvoice(): void {
     if (!this.userId || !this.enrollmentId || !this.invoiceId) {
       return
     }
 
-    this.paymentService.getInvoice(this.userId, this.enrollmentId, this.invoiceId).subscribe({
+    this.invoiceAndPaymentsService.getInvoice(this.userId, this.enrollmentId, this.invoiceId).subscribe({
       next: (invoiceDetails: InvoiceDetails) => {
         this.invoiceDetails = invoiceDetails
       },

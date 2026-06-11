@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ButtonType } from "../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { UserService } from "@core/services/userService";
+import { ScheduleService } from "@core/services/scheduleService";
 import { Role } from "@core/types/enums/role";
 import { User } from "@core/types/user";
 import { SelectOption } from "@core/types/selectOption";
@@ -49,6 +50,7 @@ export class SalaryConfigurationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private scheduleService: ScheduleService,
     private snackBarService: SnackBarService,
     private assignmentService: AssignmentService,
     private translateService: TranslateService
@@ -120,7 +122,7 @@ export class SalaryConfigurationComponent implements OnInit {
 
     if (!this.selectedInstructorId) return
 
-    this.userService.getEmployeeClassDetails(this.selectedInstructorId).subscribe({
+    this.scheduleService.getEmployeeClassDetails(this.selectedInstructorId).subscribe({
       next: (details: EmployeeClassDetails) => {
         this.assignmentInfo = details.assignmentInfo ?? []
         this._filterActiveAssignments()
@@ -183,6 +185,7 @@ export class SalaryConfigurationComponent implements OnInit {
       forkJoin(updates).subscribe({
         next: () => {
           this.snackBarService.showSuccess(this.translateService.instant('SALARY_CONFIGURATION.APPLY_SUCCESS_ALL'))
+          this.scheduleService.invalidateEmployeeClassDetails(this.selectedInstructorId)
           this.showPaymentModal = false
           this.selectedAssignmentForPayment = null
           this._loadAssignments()
@@ -195,6 +198,7 @@ export class SalaryConfigurationComponent implements OnInit {
         .subscribe({
           next: () => {
             this.snackBarService.showSuccess(this.translateService.instant('SALARY_CONFIGURATION.APPLY_SUCCESS'))
+            this.scheduleService.invalidateEmployeeClassDetails(this.selectedInstructorId)
             this.showPaymentModal = false
             this.selectedAssignmentForPayment = null
             this._loadAssignments()

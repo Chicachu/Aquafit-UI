@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
-import { PaymentService } from "@core/services/paymentService";
+import { InvoiceAndPaymentsService } from "@core/services/invoiceAndPaymentsService";
 import { SnackBarService } from "@core/services/snackBarService";
 import { EmployeePayable, PayableLineItem } from "@core/types/invoices/employeePayable";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
@@ -23,7 +23,7 @@ export class EmployeePayableDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private paymentService: PaymentService,
+    private invoiceAndPaymentsService: InvoiceAndPaymentsService,
     private snackBarService: SnackBarService,
     private translate: TranslateService
   ) {}
@@ -33,7 +33,7 @@ export class EmployeePayableDetailsComponent {
     this.payableId = this.route.snapshot.paramMap.get("payable-id");
     if (!this.userId || !this.payableId) return;
 
-    this.paymentService.getPayableById(this.userId, this.payableId).subscribe({
+    this.invoiceAndPaymentsService.getPayableById(this.userId, this.payableId).subscribe({
       next: (p) => {
         this.payable = p;
       },

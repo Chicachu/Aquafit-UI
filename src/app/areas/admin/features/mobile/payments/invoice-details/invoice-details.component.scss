@@ -84,11 +84,43 @@ hr {
   width: 90vw;
 }
 
+.apply-payment-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  padding: 16px 5vw;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.apply-payment-modal {
+  .remaining-balance {
+    text-align: center;
+    margin: 0 0 16px;
+    color: $mid-green;
+  }
+}
+
+.payment-form-fields {
+  margin-top: 8px;
+  text-align: initial;
+  width: auto;
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
 :host(.panel-view) {
   display: block;
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
+
+  .apply-payment-row {
+    padding: 16px;
+    border-top: 1px solid $light-blue;
+  }
 
   .container {
     width: 100%;

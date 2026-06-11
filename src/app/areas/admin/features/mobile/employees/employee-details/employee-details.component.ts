@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserService } from "@core/services/userService";
+import { ScheduleService } from "@core/services/scheduleService";
 import { User, Note } from "@core/types/user";
 import { SnackBarService } from "@core/services/snackBarService";
 import { TranslateService } from "@ngx-translate/core";
@@ -64,7 +65,8 @@ export class EmployeeDetailsComponent {
     private router: Router,
     private classService: ClassService,
     private fb: FormBuilder,
-    private assignmentService: AssignmentService
+    private assignmentService: AssignmentService,
+    private scheduleService: ScheduleService
   ) {
     this.classSelectionForm = this.fb.group({
       class_type: ["", [Validators.required]],
@@ -180,7 +182,7 @@ export class EmployeeDetailsComponent {
 
   private _loadClassDetails(): void {
     if (!this.employeeId) return;
-    this.userService.getEmployeeClassDetails(this.employeeId).subscribe({
+    this.scheduleService.getEmployeeClassDetails(this.employeeId).subscribe({
       next: (details: EmployeeClassDetails) => {
         this.assignmentInfo = details.assignmentInfo ?? [];
         this._separateActiveAndTerminated(this.assignmentInfo);
@@ -293,6 +295,9 @@ export class EmployeeDetailsComponent {
       }
       this.assignmentService.assignInstructor(this.selectedClassId, this.employeeId, startDate).subscribe({
         next: () => {
+          if (this.employeeId) {
+            this.scheduleService.invalidateEmployeeClassDetails(this.employeeId);
+          }
           this.classSelectionForm.reset();
           this.selectedType = null;
           this.selectedLocation = "";
@@ -334,6 +339,9 @@ export class EmployeeDetailsComponent {
         .updateAssignment(this.selectedAssignmentForUnassign.assignment._id!, { endDate })
         .subscribe({
           next: () => {
+            if (this.employeeId) {
+              this.scheduleService.invalidateEmployeeClassDetails(this.employeeId);
+            }
             this._loadClassDetails();
             this.snackBarService.showSuccess(this.translateService.instant("EMPLOYEES.UNASSIGN_SUCCESS"));
             this.showUnassignModal = false;

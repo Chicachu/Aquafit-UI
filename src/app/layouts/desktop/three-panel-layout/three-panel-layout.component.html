@@ -1,0 +1,22 @@
+<div
+  class="three-panel-layout"
+  [style.--panel-1-width]="panel1Width"
+  [style.--panel-3-width]="panel3Width">
+  <section class="panel panel-1">
+    <div class="panel-body">
+      <ng-content select="[panelOne]"></ng-content>
+    </div>
+  </section>
+  <section class="panel panel-2">
+    <div class="panel-body">
+      <router-outlet *ngIf="panel2RouterOutlet"></router-outlet>
+      <ng-content select="[panelTwo]"></ng-content>
+    </div>
+  </section>
+  <section class="panel panel-3">
+    <div class="panel-body">
+      <router-outlet *ngIf="panel3RouterOutlet"></router-outlet>
+      <ng-content select="[panelThree]"></ng-content>
+    </div>
+  </section>
+</div>

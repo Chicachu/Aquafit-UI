@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostBinding, Input, OnDestroy, OnInit } from "@angular/core";
 import { ClassService } from "@/core/services/classService";
 import { UserService } from "@/core/services/userService";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -21,15 +21,19 @@ import { ClassType } from "@/core/types/enums/classType";
 import { Note } from "@/core/types/user";
 import { WaitlistService, WaitlistEntry, CreateWaitlistEntryDTO } from "@/core/services/waitlistService";
 import { forkJoin } from "rxjs";
-import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
 import { CacheService } from "@/core/services/cacheService";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-class-details',
   templateUrl: './class-details.component.html',
   styleUrls: ['./class-details.component.scss']
 })
-export class ClassDetailsComponent implements OnInit {
+export class ClassDetailsComponent implements OnInit, OnDestroy {
+  @Input() showBreadcrumb = true
+  @Input() @HostBinding('class.panel-view') panelView = false
+
   ButtonType = ButtonType
   PaymentStatus = PaymentStatus
   Role = Role
@@ -65,8 +69,9 @@ export class ClassDetailsComponent implements OnInit {
     return this.classDetails?.classType === ClassType.PRIVATE_FITNESS
   }
 
-  classDetails: ClassDetails | null = null 
+  classDetails: ClassDetails | null = null
   navBarInfo: string[] = []
+  private routeSubscription?: Subscription
   clientsByPaymentStatus: Map<PaymentStatus, ClassClientEnrollmentDetails[] | []> = new Map()
   loading = false
   classId: string | null = null
@@ -301,8 +306,25 @@ export class ClassDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.classId = this.route.snapshot.paramMap.get('class-id')
-    this._loadClassDetails()
+    if (this.route.snapshot.data['panelView'] === true) {
+      this.panelView = true
+    }
+
+    this.routeSubscription = this.route.paramMap.pipe(
+      map(params => params.get('class-id')),
+      distinctUntilChanged()
+    ).subscribe(classId => {
+      if (!classId) {
+        return
+      }
+
+      this.classId = classId
+      this._loadClassDetails()
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe()
   }
 
   private _loadClassDetails(): void {

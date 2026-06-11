@@ -61,12 +61,8 @@ export class DesktopWeekCalendarComponent implements OnInit {
     const currentLang = this.translateService.currentLang || 'en';
     const locale = currentLang === 'es' ? 'es' : 'en-US';
 
-    const startLabel = start.toLocaleDateString(locale, { month: 'short', day: 'numeric' });
-    const endLabel = end.toLocaleDateString(locale, {
-      month: 'short',
-      day: 'numeric',
-      year: start.getFullYear() !== end.getFullYear() ? 'numeric' : undefined
-    });
+    const startLabel = this._formatShortDateLabel(start, locale);
+    const endLabel = this._formatShortDateLabel(end, locale, start.getFullYear() !== end.getFullYear());
 
     if (start.getFullYear() !== end.getFullYear()) {
       return `${startLabel}, ${start.getFullYear()} – ${endLabel}, ${end.getFullYear()}`;
@@ -119,5 +115,18 @@ export class DesktopWeekCalendarComponent implements OnInit {
 
   private _toDateKey(date: Date): string {
     return date.toISOString().split('T')[0];
+  }
+
+  private _formatShortDateLabel(date: Date, locale: string, includeYear = false): string {
+    const formatted = date.toLocaleDateString(locale, {
+      month: 'short',
+      day: 'numeric',
+      year: includeYear ? 'numeric' : undefined
+    });
+
+    return formatted.replace(
+      /([a-zA-ZáéíóúñÁÉÍÓÚÑ]+)/g,
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    );
   }
 }

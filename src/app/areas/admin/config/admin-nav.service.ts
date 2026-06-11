@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Role } from '@core/types/enums/role';
 import { UserService } from '@core/services/userService';
 import { MobileNavItem } from '@layouts/mobile/mobile-nav-item';
@@ -9,6 +10,7 @@ import {
 } from './admin-nav';
 
 type NavPathKey = 'mobilePath' | 'desktopPath';
+export type AdminFeatureKey = keyof typeof ADMIN_NAV_LABELS;
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +30,35 @@ export class AdminNavService {
   /** Time tracking is only available to this specific user */
   private readonly timeTrackingAllowedUsername = 'admin@aquafitvallarta.com';
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
+
+  isMobileAdminRoute(url?: string): boolean {
+    const currentUrl = url ?? this.router.url;
+    return currentUrl.includes('/admin/mobile');
+  }
+
+  getFeatureBasePath(feature: AdminFeatureKey): string {
+    const label = ADMIN_NAV_LABELS[feature];
+    const item = ADMIN_NAV_ITEMS.find(navItem => navItem.label === label);
+
+    if (!item) {
+      throw new Error(`Unknown admin feature: ${feature}`);
+    }
+
+    return this.isMobileAdminRoute() ? item.mobilePath : item.desktopPath;
+  }
+
+  getFeatureRoute(feature: AdminFeatureKey, ...segments: string[]): string[] {
+    const baseSegments = this.getFeatureBasePath(feature).split('/').filter(Boolean);
+    return [...baseSegments, ...segments];
+  }
+
+  navigateToFeature(feature: AdminFeatureKey, ...segments: string[]): void {
+    this.router.navigate(this.getFeatureRoute(feature, ...segments));
+  }
 
   getMobileNavItems(): MobileNavItem[] {
     return this.getNavItems('mobilePath');

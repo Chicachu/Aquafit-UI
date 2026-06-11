@@ -1,7 +1,9 @@
 <div *ngIf="classDetails">
-  <app-breadcrumb-nav-bar 
-    [title]="'CLASSES.CLASS_DETAILS'" 
+  <app-breadcrumb-nav-bar
+    *ngIf="showBreadcrumb"
+    [title]="'CLASSES.CLASS_DETAILS'"
     [buttonType]="canEditClass ? ButtonType.EDIT : ButtonType.NONE"
+    [showBack]="!panelView"
     (onButtonClick)="editClass()">
   </app-breadcrumb-nav-bar>
   <div class="flex-column general-info">

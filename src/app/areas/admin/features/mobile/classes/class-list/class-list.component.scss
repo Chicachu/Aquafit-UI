@@ -139,3 +139,23 @@ a {
   color: #999;
   font-style: italic;
 }
+
+:host(.panel-view) {
+  display: block;
+  width: 100%;
+  min-height: 0;
+
+  .class-list-wrapper {
+    width: 100%;
+  }
+
+  .class-container,
+  .class-container > div {
+    width: 100%;
+  }
+
+  .class-list-link.selected {
+    color: $light-blue;
+    font-weight: 700;
+  }
+}

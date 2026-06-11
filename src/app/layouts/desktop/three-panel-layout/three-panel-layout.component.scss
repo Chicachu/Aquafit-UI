@@ -1,0 +1,53 @@
+@import 'assets/colors.scss';
+
+:host {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.three-panel-layout {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: $background-blue;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+
+  &-1 {
+    flex: 0 0 var(--panel-1-width, 320px);
+    width: var(--panel-1-width, 320px);
+    max-width: var(--panel-1-width, 320px);
+    border-right: 1px solid rgba($light-pink, 0.25);
+  }
+
+  &-2 {
+    flex: 1;
+    min-width: 0;
+    border-right: 1px solid rgba($light-pink, 0.25);
+  }
+
+  &-3 {
+    flex: 0 0 var(--panel-3-width, 380px);
+    width: var(--panel-3-width, 380px);
+    max-width: var(--panel-3-width, 380px);
+  }
+}
+
+.panel-body {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}

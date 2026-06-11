@@ -13,7 +13,7 @@ import { PaymentOverviewGuard } from "@core/guards/payment-overview.guard";
 import { MobileHomeComponent } from "./home/mobile-home.component";
 import { CommonModule } from "@angular/common";
 import { SharedModule } from "@shared/shared.module";
-import { BreadcrumbNavBarComponent } from "./breadcrumb-nav-bar/breadcrumb-nav-bar.component";
+import { AdminSharedFeaturesModule } from "../shared/admin-shared-features.module";
 import { ClientListComponent } from "./clients/client-list/client-list.component";
 import { EditClientComponent } from "./clients/edit-client/edit-client.component";
 import { ClassListComponent } from "./classes/class-list/class-list.component";
@@ -180,13 +180,10 @@ const routes: Routes = [
   declarations: [
     MobileHomeComponent,
     MobileClassCalendarComponent,
-    BreadcrumbNavBarComponent,
     EditClientComponent,
     EditClassComponent,
     ClientListComponent,
     ClientDetailsComponent,
-    ClassListComponent,
-    ClassDetailsComponent,
     InvoiceHistoryComponent,
     InvoiceDetailsComponent,
     DiscountListComponent,
@@ -207,6 +204,7 @@ const routes: Routes = [
     SharedModule,
     TranslateModule,
     MatRadioModule,
+    AdminSharedFeaturesModule,
     RouterModule.forChild(routes)
   ],
   exports: [

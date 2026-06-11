@@ -1,10 +1,12 @@
 <div class="flex-column class-list-wrapper">
-  <app-breadcrumb-nav-bar 
-  [title]="'NAVIGATION.CLASSES'" 
-  [buttonType]="buttonType"
-  (onButtonClick)="addNewClass()"></app-breadcrumb-nav-bar>
-  
-  <!-- Filters -->
+  <app-breadcrumb-nav-bar
+    *ngIf="showBreadcrumb"
+    [title]="'NAVIGATION.CLASSES'"
+    [buttonType]="buttonType"
+    [showBack]="!panelView"
+    (onButtonClick)="addNewClass()">
+  </app-breadcrumb-nav-bar>
+
   <form [formGroup]="filterForm" class="filters-container">
     <app-dropdown
       label="CLASSES.FILTER_BY_TYPE"
@@ -13,7 +15,7 @@
       [showValidation]="false"
       controlName="classType">
     </app-dropdown>
-    
+
     <app-dropdown
       label="CLASSES.FILTER_BY_LOCATION"
       [options]="locationOptions"
@@ -22,10 +24,8 @@
       controlName="location">
     </app-dropdown>
   </form>
-  
-  <div>
+
   <div class="flex-column class-container">
-    <!-- Active Classes -->
     <div *ngFor="let typeGroup of classesGrouped | keyvalue">
       <h3>{{ 'CLASS_TYPES.' + typeGroup.key | translate | capitalize }}</h3>
       <hr />
@@ -33,16 +33,25 @@
         <h4>{{ locationGroup.key }}</h4>
         <ul>
           <li *ngFor="let class of locationGroup.value">
-            <a [routerLink]="['./', class._id, 'details']" class="flex-row">
+            <a
+              *ngIf="!panelView"
+              [routerLink]="[class._id, 'details']"
+              class="flex-row">
               {{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}
               <div class="arrow-right"></div>
+            </a>
+            <a
+              *ngIf="panelView"
+              [routerLink]="'/admin/classes/' + class._id + '/details'"
+              class="flex-row class-list-link"
+              [class.selected]="isClassSelected(class._id)">
+              {{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}
             </a>
           </li>
         </ul>
       </div>
     </div>
 
-    <!-- Terminated Classes -->
     <div *ngIf="terminatedClasses.length > 0" class="terminated-section">
       <h3 class="terminated-header">{{ 'CLASSES.TERMINATED_CLASSES' | translate }}</h3>
       <hr />
@@ -52,9 +61,19 @@
           <h4>{{ locationGroup.key }}</h4>
           <ul>
             <li *ngFor="let class of locationGroup.value">
-              <a [routerLink]="['./', class._id, 'details']" class="flex-row">
+              <a
+                *ngIf="!panelView"
+                [routerLink]="[class._id, 'details']"
+                class="flex-row">
                 {{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}
                 <div class="arrow-right"></div>
+              </a>
+              <a
+                *ngIf="panelView"
+                [routerLink]="'/admin/classes/' + class._id + '/details'"
+                class="flex-row class-list-link"
+                [class.selected]="isClassSelected(class._id)">
+                {{ class.days | weekdays:'/' }} - {{ class.startTime | timeFormat }}
               </a>
             </li>
           </ul>

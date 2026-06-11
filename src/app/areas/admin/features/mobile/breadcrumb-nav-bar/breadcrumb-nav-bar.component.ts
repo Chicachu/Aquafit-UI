@@ -15,6 +15,7 @@ export enum ButtonType {
 export class BreadcrumbNavBarComponent {
   @Input() title: string = ''
   @Input() buttonType: ButtonType | null = null
+  @Input() showBack = true
   @Output() onButtonClick: EventEmitter<void> = new EventEmitter()
   ButtonType = ButtonType
 
@@ -22,6 +23,10 @@ export class BreadcrumbNavBarComponent {
   }
 
   navigateBack(): void {
+    if (!this.showBack) {
+      return;
+    }
+
     this.location.back()
   }
 

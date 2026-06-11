@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
+import { AdminNavService } from '@areas/admin/config/admin-nav.service';
 import { map } from 'rxjs';
 import { ScheduleService } from '@core/services/scheduleService';
 import { ScheduleView } from '@core/types/scheduleView';
@@ -44,7 +44,7 @@ export class DesktopClassCalendarComponent implements OnChanges, OnInit {
     private scheduleService: ScheduleService,
     private snackBarService: SnackBarService,
     private classService: ClassService,
-    private router: Router
+    private adminNavService: AdminNavService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class DesktopClassCalendarComponent implements OnChanges, OnInit {
 
   goToClassDetails(classId: string | undefined): void {
     if (classId) {
-      this.router.navigate(['/admin/classes', classId, 'details']);
+      this.adminNavService.navigateToFeature('classes', classId, 'details');
     }
   }
 

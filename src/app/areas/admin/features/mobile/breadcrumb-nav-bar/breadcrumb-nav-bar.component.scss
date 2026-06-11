@@ -11,6 +11,12 @@
 
 .icon-container {
   margin-left: 8px;
+  cursor: pointer;
+
+  &--no-back {
+    cursor: default;
+    margin-left: 16px;
+  }
 }
 
 h2 {

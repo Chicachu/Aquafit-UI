@@ -23,6 +23,16 @@
       [showValidation]="false"
       controlName="location">
     </app-dropdown>
+
+    <div *ngIf="panelView && canAddClass" class="add-class-row">
+      <button
+        mat-icon-button
+        type="button"
+        (click)="addNewClass()"
+        class="add-class-button">
+        <mat-icon class="add-icon" matPrefix>add</mat-icon>
+      </button>
+    </div>
   </form>
 
   <div class="flex-column class-container">

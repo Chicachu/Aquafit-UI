@@ -1,13 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostBinding, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 import { ClassType } from "@/core/types/enums/classType";
 import { Weekday } from "@/core/types/enums/weekday";
 import { ClassService } from "@/core/services/classService";
 import { SnackBarService } from "@/core/services/snackBarService";
 import { TranslateService } from "@ngx-translate/core";
 import { Currency } from "@/core/types/enums/currency";
-import { CreateClassDTO } from "@/core/types/classes/class";
+import { Class, CreateClassDTO } from "@/core/types/classes/class";
 import { SelectOption } from "@/core/types/selectOption";
 import { Pipes } from "@/core/types/enums/pipes";
 import { FormatOptions } from "@/core/types/enums/formatOptions";
@@ -21,6 +22,8 @@ import { BillingFrequency } from "@core/types/enums/billingFrequency";
   styleUrls: ['./edit-class.component.scss']
 })
 export class EditClassComponent implements OnInit {
+  @HostBinding('class.panel-view') panelView = false
+
   readonly Pipes = Pipes
   readonly FormatOptions = FormatOptions
   classForm: FormGroup
@@ -64,6 +67,10 @@ export class EditClassComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.route.snapshot.data['panelView'] === true) {
+      this.panelView = true
+    }
+
     this.classId = this.route.snapshot.paramMap.get('class-id')
     this.isEditMode = !!this.classId
 
@@ -156,7 +163,7 @@ export class EditClassComponent implements OnInit {
           next: () => {
             this.loading = false
             this.snackBarService.showSuccess(this.translateService.instant('CLASSES.UPDATE_CLASS_SUCCESS'))
-            this.router.navigate(['../..'], { relativeTo: this.route.parent })
+            this._navigateAfterSave()
           },
           error: ({error}) => {
             this.loading = false
@@ -164,11 +171,28 @@ export class EditClassComponent implements OnInit {
           }
         })
       } else {
-        this.classService.createNewClass(classData).subscribe({
-          next: () => {
+        const create$ = this.panelView
+          ? this.classService.getAllClasses().pipe(
+              switchMap(existingClasses => {
+                const existingIds = new Set(existingClasses.map(classItem => classItem._id))
+                return this.classService.createNewClass(classData).pipe(
+                  switchMap(() => this.classService.getAllClasses()),
+                  map(classes => classes.find(classItem => !existingIds.has(classItem._id)) ?? null)
+                )
+              })
+            )
+          : this.classService.createNewClass(classData).pipe(map(() => null))
+
+        create$.subscribe({
+          next: (createdClass: Class | null) => {
             this.loading = false
             this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
-            this.router.navigate(['../'], { relativeTo: this.route })
+            if (this.panelView && createdClass) {
+              this.router.navigate(['/admin/classes', createdClass._id, 'details'])
+              return
+            }
+
+            this._navigateAfterSave()
           },
           error: ({error}) => {
             this.loading = false
@@ -180,5 +204,24 @@ export class EditClassComponent implements OnInit {
     else {
       this.classForm.markAllAsTouched()
     }
+  }
+
+  private _navigateAfterSave(): void {
+    if (this.panelView && this.isEditMode && this.classId) {
+      this.router.navigate(['/admin/classes', this.classId, 'details'])
+      return
+    }
+
+    if (this.panelView) {
+      this.router.navigate(['/admin/classes'])
+      return
+    }
+
+    if (this.isEditMode) {
+      this.router.navigate(['../..'], { relativeTo: this.route.parent })
+      return
+    }
+
+    this.router.navigate(['../'], { relativeTo: this.route })
   }
 }

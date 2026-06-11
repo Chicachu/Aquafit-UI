@@ -1,6 +1,7 @@
 import { Component, HostBinding, Input, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { filter } from "rxjs/operators";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { Class } from "@/core/types/classes/class";
 import { ClassService } from "@/core/services/classService";
@@ -55,20 +56,12 @@ export class ClassListComponent implements OnInit, OnDestroy {
     return this.userService.isAdmin ? ButtonType.ADD : ButtonType.NONE
   }
 
+  get canAddClass(): boolean {
+    return this.userService.isAdmin
+  }
+
   ngOnInit(): void {
-    this.subscriptions.add(
-      this.classService.getAllClasses().subscribe({
-        next: (classes: Class[]) => {
-          this.classes = classes
-          this._separateActiveAndTerminated(classes)
-          this._generateFilterOptions(classes)
-          this._updateGroupedClasses()
-        },
-        error: ({ error }) => {
-          this.snackBarService.showError(error.message)
-        }
-      })
-    )
+    this._loadClasses()
 
     this.subscriptions.add(
       this.filterForm.valueChanges.subscribe(() => {
@@ -79,8 +72,11 @@ export class ClassListComponent implements OnInit, OnDestroy {
     if (this.panelView) {
       this._updateSelectedClassId()
       this.subscriptions.add(
-        this.router.events.subscribe(() => {
+        this.router.events.pipe(
+          filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+        ).subscribe(() => {
           this._updateSelectedClassId()
+          this._loadClasses()
         })
       )
     }
@@ -91,7 +87,26 @@ export class ClassListComponent implements OnInit, OnDestroy {
   }
 
   addNewClass(): void {
+    if (this.panelView) {
+      this.router.navigate(['/admin/classes/add-class'])
+      return
+    }
+
     this.router.navigate(['add-class'], { relativeTo: this.route })
+  }
+
+  private _loadClasses(): void {
+    this.classService.getAllClasses().subscribe({
+      next: (classes: Class[]) => {
+        this.classes = classes
+        this._separateActiveAndTerminated(classes)
+        this._generateFilterOptions(classes)
+        this._updateGroupedClasses()
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error.message)
+      }
+    })
   }
 
   isClassSelected(classId: string): boolean {

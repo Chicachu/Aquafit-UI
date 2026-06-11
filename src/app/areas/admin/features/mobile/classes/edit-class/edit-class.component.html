@@ -1,5 +1,11 @@
 <div>
-  <app-breadcrumb-nav-bar [title]="(isEditMode ? 'CLASSES.EDIT_CLASS' : 'CLASSES.ADD_NEW_CLASS') | translate"></app-breadcrumb-nav-bar>
+  <app-breadcrumb-nav-bar
+    *ngIf="!panelView"
+    [title]="(isEditMode ? 'CLASSES.EDIT_CLASS' : 'CLASSES.ADD_NEW_CLASS') | translate">
+  </app-breadcrumb-nav-bar>
+  <div *ngIf="panelView" class="panel-view-header">
+    <h2 class="light-blue">{{ (isEditMode ? 'CLASSES.EDIT_CLASS' : 'CLASSES.ADD_NEW_CLASS') | translate }}</h2>
+  </div>
   <div class="edit-container">
     <form [formGroup]="classForm" (ngSubmit)="onSubmit()" class="form-container">
       <!-- Location Autocomplete -->

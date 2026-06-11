@@ -8,12 +8,14 @@ import { SharedModule } from '@shared/shared.module';
 import { BreadcrumbNavBarComponent } from '../mobile/breadcrumb-nav-bar/breadcrumb-nav-bar.component';
 import { ClassListComponent } from '../mobile/classes/class-list/class-list.component';
 import { ClassDetailsComponent } from '../mobile/classes/class-details/class-details.component';
+import { EditClassComponent } from '../mobile/classes/edit-class/edit-class.component';
 
 @NgModule({
   declarations: [
     BreadcrumbNavBarComponent,
     ClassListComponent,
-    ClassDetailsComponent
+    ClassDetailsComponent,
+    EditClassComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { ClassDetailsComponent } from '../mobile/classes/class-details/class-det
   exports: [
     BreadcrumbNavBarComponent,
     ClassListComponent,
-    ClassDetailsComponent
+    ClassDetailsComponent,
+    EditClassComponent
   ]
 })
 export class AdminSharedFeaturesModule {}

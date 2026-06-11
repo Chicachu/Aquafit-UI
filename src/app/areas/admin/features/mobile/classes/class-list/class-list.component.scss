@@ -185,4 +185,26 @@ a {
     color: $light-blue;
     font-weight: 700;
   }
+
+  .add-class-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 16px 4px;
+    box-sizing: border-box;
+  }
+
+  .add-class-button {
+    background-color: $light-pink !important;
+    width: 24px !important;
+    height: 24px;
+    border-radius: 5px;
+    color: $primary-pink;
+    font-weight: 900 !important;
+    border: 1px solid $primary-pink;
+
+    .add-icon {
+      left: -9px;
+      top: -9px;
+    }
+  }
 }

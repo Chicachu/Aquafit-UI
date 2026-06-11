@@ -17,8 +17,8 @@ import { AdminSharedFeaturesModule } from "../shared/admin-shared-features.modul
 import { ClientListComponent } from "./clients/client-list/client-list.component";
 import { EditClientComponent } from "./clients/edit-client/edit-client.component";
 import { ClassListComponent } from "./classes/class-list/class-list.component";
-import { EditClassComponent } from "./classes/edit-class/edit-class.component";
 import { ClassDetailsComponent } from "./classes/class-details/class-details.component";
+import { EditClassComponent } from "./classes/edit-class/edit-class.component";
 import { ClientDetailsComponent } from "./clients/client-details/client-details.component";
 import { InvoiceHistoryComponent } from "./payments/invoice-history/invoice-history.component";
 import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-details.component";
@@ -181,7 +181,6 @@ const routes: Routes = [
     MobileHomeComponent,
     MobileClassCalendarComponent,
     EditClientComponent,
-    EditClassComponent,
     ClientListComponent,
     ClientDetailsComponent,
     InvoiceHistoryComponent,

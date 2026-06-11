@@ -1,17 +1,21 @@
-<div>
-  <app-breadcrumb-nav-bar [title]="'CLIENTS.PAYMENT_HISTORY'" [buttonType]="ButtonType.NONE"></app-breadcrumb-nav-bar>
+<div class="invoice-history-container">
+  <app-breadcrumb-nav-bar
+    [title]="'CLIENTS.PAYMENT_HISTORY'"
+    [buttonType]="ButtonType.NONE"
+    [showBack]="!panelView">
+  </app-breadcrumb-nav-bar>
 
   <div *ngIf="invoiceHistory">
-    <div class="header flex-column">
+    <div class="header flex-column" [class.general-info]="panelView">
       <h3 class="mid-pink">{{ invoiceHistory.clientName }}</h3>
       <h4 class="light-green">{{ 'CLASS_TYPES.' + invoiceHistory.classDetails.classType | translate | capitalize }}</h4>
       <h4 class="light-blue">{{ invoiceHistory.classDetails.classLocation }} - {{ invoiceHistory.classDetails.days! | weekdays }}</h4>
     </div>
-    <hr>
+    <hr *ngIf="!panelView">
     <div>
       <ul>
         <a *ngFor="let invoice of invoiceHistory.invoices; let i = index"
-          [routerLink]="[invoice._id]" class="flex-row">
+          [routerLink]="getInvoiceDetailsLink(invoice._id)" class="flex-row invoice-history-row">
           <div 
             [ngClass]="[
               getIconClass(invoice.paymentStatus), 

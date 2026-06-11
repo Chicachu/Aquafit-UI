@@ -9,7 +9,8 @@ import { filter, Subscription } from 'rxjs';
 })
 export class ClassesDesktopPageComponent implements OnInit, OnDestroy {
   showEnrollPanel = false
-  showInvoicePanel = false
+  showInvoiceHistoryPanel = false
+  showInvoiceDetailsPanel = false
   activeClassId: string | null = null
   activeUserId: string | null = null
   activeEnrollmentId: string | null = null
@@ -39,7 +40,8 @@ export class ClassesDesktopPageComponent implements OnInit, OnDestroy {
     this.activeEnrollmentId = this._findParamInRouteTree(this.route, 'enrollment-id')
     this.activeInvoiceId = this._findParamInRouteTree(this.route, 'invoice-id')
     this.showEnrollPanel = this._routeTreeHasData(this.route, 'showEnrollPanel')
-    this.showInvoicePanel = this._routeTreeHasData(this.route, 'showInvoicePanel')
+    this.showInvoiceHistoryPanel = this._routeTreeHasData(this.route, 'showInvoiceHistoryPanel')
+    this.showInvoiceDetailsPanel = this._routeTreeHasData(this.route, 'showInvoiceDetailsPanel')
   }
 
   private _findParamInRouteTree(route: ActivatedRoute, param: string): string | null {

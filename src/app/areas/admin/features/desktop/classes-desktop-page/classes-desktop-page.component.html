@@ -19,8 +19,15 @@
         [classId]="activeClassId"
         [panelView]="true">
       </app-class-enroll>
+      <app-invoice-history
+        *ngIf="showInvoiceHistoryPanel && activeClassId && activeUserId && activeEnrollmentId"
+        [classId]="activeClassId"
+        [userId]="activeUserId"
+        [enrollmentId]="activeEnrollmentId"
+        [panelView]="true">
+      </app-invoice-history>
       <app-invoice-details
-        *ngIf="showInvoicePanel && activeUserId && activeEnrollmentId && activeInvoiceId"
+        *ngIf="showInvoiceDetailsPanel && activeUserId && activeEnrollmentId && activeInvoiceId"
         [userId]="activeUserId"
         [enrollmentId]="activeEnrollmentId"
         [invoiceId]="activeInvoiceId"

@@ -48,7 +48,8 @@
     "DAYS_OVERRIDE": "Partial Enrollment", 
     "BILLING_FREQUENCY_OVERRIDE": "Billing Frequency Override",
     "INSTRUCTOR": "Instructor",
-    "PAYMENTVALUE": "Payment per session"
+    "PAYMENTVALUE": "Payment per session",
+    "AMOUNT": "Amount"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} is required",
@@ -283,10 +284,13 @@
     "BONUS_SESSION_PLURAL": "bonus sessions",
     "APPLY_PAYMENT": "Apply Payment",
     "PAYMENT_TYPE": "Payment Type",
+    "TYPE": "Type",
     "AMOUNT": "Amount",
     "REMAINING_BALANCE": "Remaining balance",
+    "CHANGE_DUE": "Change due",
+    "PAYMENTS_APPLIED": "Payments Applied",
+    "NO_CHANGE": "No change",
     "INVALID_AMOUNT": "Enter an amount greater than zero.",
-    "AMOUNT_EXCEEDS_REMAINING": "Amount cannot exceed the remaining balance on this invoice.",
     "PAYMENT_TYPE_REQUIRED": "Payment type is required.",
     "APPLY_PAYMENT_SUCCESS": "Payment applied successfully.",
     "APPLY_PAYMENT_ERROR": "Failed to apply payment."

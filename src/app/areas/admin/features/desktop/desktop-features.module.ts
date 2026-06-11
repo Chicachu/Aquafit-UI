@@ -34,7 +34,12 @@ const routes: Routes = [
       {
         path: ':class-id/details/invoice/:user-id/:enrollment-id/:invoice-id',
         component: ClassDetailsComponent,
-        data: { panelView: true, showInvoicePanel: true }
+        data: { panelView: true, showInvoiceDetailsPanel: true }
+      },
+      {
+        path: ':class-id/details/invoice/:user-id/:enrollment-id',
+        component: ClassDetailsComponent,
+        data: { panelView: true, showInvoiceHistoryPanel: true }
       },
       {
         path: ':class-id/details',

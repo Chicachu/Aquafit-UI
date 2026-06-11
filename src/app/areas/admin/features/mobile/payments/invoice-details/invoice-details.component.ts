@@ -44,6 +44,10 @@ export class InvoiceDetailsComponent implements OnInit, OnChanges {
       return 0
     }
 
+    if (this.invoiceDetails.remainingBalance != null) {
+      return Math.max(0, this.invoiceDetails.remainingBalance)
+    }
+
     const totalPaid = (this.invoiceDetails.paymentsApplied || []).reduce(
       (sum, payment) => sum + (payment.charge?.amount ?? 0),
       0
@@ -60,6 +64,24 @@ export class InvoiceDetailsComponent implements OnInit, OnChanges {
     return this.invoiceDetails.paymentStatus !== PaymentStatus.PAID
       && this.invoiceDetails.paymentStatus !== PaymentStatus.CANCELLED
       && this.remainingBalance > 0
+  }
+
+  get enteredPaymentAmount(): number {
+    const raw = this.paymentForm.get('amount')?.value
+    const amount = typeof raw === 'string' ? parseFloat(raw) : Number(raw)
+    return isNaN(amount) ? 0 : amount
+  }
+
+  get changeDue(): number {
+    if (this.enteredPaymentAmount <= this.remainingBalance) {
+      return 0
+    }
+
+    return this.enteredPaymentAmount - this.remainingBalance
+  }
+
+  get currency(): string {
+    return this.invoiceDetails?.charge.currency ?? 'MXN'
   }
 
   constructor(
@@ -174,6 +196,22 @@ export class InvoiceDetailsComponent implements OnInit, OnChanges {
     return translated !== translationKey ? translated : description
   }
 
+  getPaymentTenderedAmount(payment: InvoiceDetails['paymentsApplied'][number]): number {
+    return payment.amountTendered?.amount ?? payment.charge.amount
+  }
+
+  getPaymentTypeLabel(paymentType: PaymentType): string {
+    return this.translateService.instant(`PAYMENT_TYPE.${paymentType.toUpperCase()}`)
+  }
+
+  getPaymentChangeDue(payment: InvoiceDetails['paymentsApplied'][number]): number | null {
+    if (payment.changeDue?.amount != null && payment.changeDue.amount > 0) {
+      return payment.changeDue.amount
+    }
+
+    return null
+  }
+
   applyPayment(): void {
     if (!this.canApplyPayment) {
       return
@@ -206,11 +244,6 @@ export class InvoiceDetailsComponent implements OnInit, OnChanges {
 
     if (isNaN(amount) || amount <= 0) {
       this.snackBarService.showError(this.translateService.instant('PAYMENTS.INVALID_AMOUNT'))
-      return
-    }
-
-    if (amount > this.remainingBalance) {
-      this.snackBarService.showError(this.translateService.instant('PAYMENTS.AMOUNT_EXCEEDS_REMAINING'))
       return
     }
 

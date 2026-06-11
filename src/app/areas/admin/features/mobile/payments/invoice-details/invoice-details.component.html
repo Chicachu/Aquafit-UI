@@ -2,7 +2,7 @@
   <app-breadcrumb-nav-bar
     [title]="'PAYMENTS.INVOICE_DETAILS'"
     [buttonType]="ButtonType.NONE"
-    [showBack]="!panelView">
+    [showBack]="true">
   </app-breadcrumb-nav-bar>
 
   <div class="container" *ngIf="invoiceDetails">
@@ -71,13 +71,44 @@
 
       <div class="flex-row payment-details white">
         <h4 class="first-column">{{ 'PAYMENTS.AMOUNT_DUE' | translate }}:</h4>
-        <h4 class="second-column price-value">{{ invoiceDetails.charge.amount }} {{ invoiceDetails.charge.currency }}</h4>
+        <h4 class="second-column price-value">{{ invoiceDetails.amountDue }} {{ invoiceDetails.charge.currency }}</h4>
       </div>
+    </div>
 
-      <div class="flex-row payment-details white">
-        <h4 class="first-column">{{ 'PAYMENTS.DUE_BY' | translate }}:</h4>
-        <h4 class="second-column price-value">{{ invoiceDetails.period.endDate | translateDate:'shortDate' }}</h4>
+    <div *ngIf="invoiceDetails.paymentsApplied?.length" class="payments-applied-section">
+      <hr />
+      <h4 class="payments-applied-title">{{ 'PAYMENTS.PAYMENTS_APPLIED' | translate }}</h4>
+      <div class="payments-applied-list">
+        <div
+          *ngFor="let payment of invoiceDetails.paymentsApplied"
+          class="payment-applied-row">
+          <div class="payment-date-column white">
+            <h5>{{ payment.date | translateDate:'shortDate' }}</h5>
+          </div>
+          <div class="payment-labels-column white">
+            <h5 class="payment-detail-label">{{ 'PAYMENTS.AMOUNT' | translate }}:</h5>
+            <h5 class="payment-detail-label">{{ 'PAYMENTS.TYPE' | translate }}:</h5>
+            <h5 class="payment-detail-label" *ngIf="getPaymentChangeDue(payment)">{{ 'PAYMENTS.CHANGE_DUE' | translate }}:</h5>
+          </div>
+          <div class="payment-values-column white">
+            <h5 class="payment-detail-value">{{ getPaymentTenderedAmount(payment) }} {{ payment.charge.currency }}</h5>
+            <h5 class="payment-detail-value">{{ getPaymentTypeLabel(payment.paymentType) }}</h5>
+            <h5 class="payment-detail-value" *ngIf="getPaymentChangeDue(payment) as change">{{ change }} {{ payment.charge.currency }}</h5>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <hr />
+
+    <div *ngIf="remainingBalance < invoiceDetails.amountDue" class="flex-row payment-details white">
+      <h4 class="first-column">{{ 'PAYMENTS.REMAINING_BALANCE' | translate }}:</h4>
+      <h4 class="second-column price-value">{{ remainingBalance }} {{ invoiceDetails.charge.currency }}</h4>
+    </div>
+
+    <div class="flex-row payment-details white">
+      <h4 class="first-column">{{ 'PAYMENTS.DUE_BY' | translate }}:</h4>
+      <h4 class="second-column price-value">{{ invoiceDetails.period.endDate | translateDate:'shortDate' }}</h4>
     </div>
 
     <div class="apply-payment-row">
@@ -98,7 +129,7 @@
   (modalClick)="processApplyPaymentModalClick($event)"
   class="apply-payment-modal">
   <div content>
-    <p class="remaining-balance">
+    <p class="remaining-balance primary-pink">
       {{ 'PAYMENTS.REMAINING_BALANCE' | translate }}:
       {{ remainingBalance }} {{ invoiceDetails.charge.currency }}
     </p>
@@ -112,10 +143,14 @@
       </app-dropdown>
 
       <app-text-input
-        label="PAYMENTS.AMOUNT"
+        label="CONTROLS.AMOUNT"
         controlName="amount"
         [type]="TextInputType.NUMBER">
       </app-text-input>
     </form>
+
+    <p *ngIf="changeDue > 0" class="change-due primary-pink">
+      {{ 'PAYMENTS.CHANGE_DUE' | translate }}: {{ changeDue }} {{ currency }}
+    </p>
   </div>
 </app-modal>

@@ -36,17 +36,17 @@
       {{ 'CLASSES.NO_CLIENTS_ENROLLED' | translate }}
     </p>
 
-    <ng-container *ngFor="let status of visibleStatuses">
-      <ng-container *ngIf="(clientsByPaymentStatus.get(status)?.length ?? 0) > 0">
-        <div [ngClass]="getStatusSectionClass(status)">
-          <h3 [ngClass]="paymentStatusConfig[status]?.headingClass">
-            {{ paymentStatusConfig[status]?.titleKey || '' | translate }}
+    <ng-container *ngFor="let group of clientsGroupedByStatus">
+      <ng-container *ngIf="group.clients.length > 0">
+        <div [ngClass]="getStatusSectionClass(group.status)">
+          <h3 [ngClass]="paymentStatusConfig[group.status]?.headingClass">
+            {{ paymentStatusConfig[group.status]?.titleKey || '' | translate }}
           </h3>
-          <div *ngIf="paymentStatusConfig[status]?.iconClass" [ngClass]="paymentStatusConfig[status]?.iconClass"></div>
+          <div *ngIf="paymentStatusConfig[group.status]?.iconClass" [ngClass]="paymentStatusConfig[group.status]?.iconClass"></div>
         </div>
     
         <ul>
-          <li *ngFor="let client of clientsByPaymentStatus.get(status)">
+          <li *ngFor="let client of group.clients">
             <div class="flex-row details-row">
               <a [routerLink]="['../../../clients', client._id, 'details']">
                 <p class="white">
@@ -54,10 +54,10 @@
                 </p>
               </a>
               <a
-                *ngIf="canViewPaymentsInClass && client.currentPayment?.enrollmentId"
+                *ngIf="canShowClientInvoiceLink(client)"
                 [routerLink]="panelView
-                  ? ['/admin/classes', classId, 'details', 'invoice', client._id, client.currentPayment.enrollmentId, client.currentPayment._id]
-                  : ['../../../clients', client._id, 'payments', client.currentPayment.enrollmentId]"
+                  ? ['/admin/classes', classId, 'details', 'invoice', client._id, getClientEnrollmentId(client)]
+                  : ['../../../clients', client._id, 'payments', getClientEnrollmentId(client)]"
                 class="payment-history-link">
                 <mat-icon class="icon">receipt_long</mat-icon>
               </a>

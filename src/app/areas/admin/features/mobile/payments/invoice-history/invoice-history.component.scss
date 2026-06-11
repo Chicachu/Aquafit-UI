@@ -4,6 +4,11 @@ h3, h4, h5 {
   margin: 5px 0;
 }
 
+.invoice-history-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .header {
   width: 100vw;
   align-items: center;
@@ -23,10 +28,12 @@ li {
   animation: flashIconStroke 1s infinite;
 }
 
-a {
+a.invoice-history-row {
   align-items: center;
   justify-content: space-between;
   width: 85vw;
+  text-decoration: none;
+  color: inherit;
 }
 
 .icon {
@@ -38,4 +45,43 @@ a {
 
 ul {
   padding-left: 5vw;
+}
+
+:host(.panel-view) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  .header {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .general-info {
+    border-bottom: 1px solid $light-blue;
+    text-align: center;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    align-items: center;
+
+    h3, h4 {
+      margin: 5px 0;
+    }
+  }
+
+  a.invoice-history-row {
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  ul {
+    padding-left: 0;
+    margin: 0;
+  }
+
+  li {
+    color: white;
+  }
 }

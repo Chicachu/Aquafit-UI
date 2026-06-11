@@ -54,6 +54,19 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist
   }
 
+  canShowClientInvoiceLink(client: ClassClientEnrollmentDetails): boolean {
+    return this.canViewPaymentsInClass
+      && !!this.getClientEnrollmentId(client)
+  }
+
+  getClientEnrollmentId(client: ClassClientEnrollmentDetails): string | null {
+    return client.enrollmentId || client.currentPayment?.enrollmentId || null
+  }
+
+  getClientInvoiceId(client: ClassClientEnrollmentDetails): string | null {
+    return client.currentPayment?._id ?? null
+  }
+
   get hasEnrolledClients(): boolean {
     return (this.classDetails?.clients?.length ?? 0) > 0
   }
@@ -67,7 +80,7 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
   navBarInfo: string[] = []
   private routeSubscription?: Subscription
   private routerSubscription?: Subscription
-  clientsByPaymentStatus: Map<PaymentStatus, ClassClientEnrollmentDetails[] | []> = new Map()
+  clientsGroupedByStatus: { status: PaymentStatus; clients: ClassClientEnrollmentDetails[] }[] = []
   loading = false
   classId: string | null = null
   canEditClass = false
@@ -294,8 +307,7 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     this.classService.getClassDetails(this.classId).subscribe({
       next: (classDetails: ClassDetails) => {
         this.classDetails = classDetails
-        this.clientsByPaymentStatus.clear()
-        this._separateClientsByPaymentStatus(classDetails)
+        this.clientsGroupedByStatus = this._buildClientsGroupedByStatus(classDetails)
         
         // Check if class is terminated (has endDate today or in the past)
         const today = new Date()
@@ -521,14 +533,41 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private _separateClientsByPaymentStatus(classDetails: ClassDetails): void {
-    classDetails.clients.forEach((client) => {
-      const group = this.clientsByPaymentStatus.get(client.currentPayment.paymentStatus) || []
+  private _buildClientsGroupedByStatus(
+    classDetails: ClassDetails
+  ): { status: PaymentStatus; clients: ClassClientEnrollmentDetails[] }[] {
+    const clientsByStatus = new Map<PaymentStatus, ClassClientEnrollmentDetails[]>()
 
+    for (const client of classDetails.clients ?? []) {
+      const status = this._resolveClientPaymentStatus(client)
+      const group = clientsByStatus.get(status) ?? []
       group.push(client)
+      clientsByStatus.set(status, group)
+    }
 
-      this.clientsByPaymentStatus.set(client.currentPayment.paymentStatus, group)
-    })
+    return this.visibleStatuses
+      .filter((status) => (clientsByStatus.get(status)?.length ?? 0) > 0)
+      .map((status) => ({
+        status,
+        clients: clientsByStatus.get(status)!
+      }))
+  }
+
+  private _resolveClientPaymentStatus(client: ClassClientEnrollmentDetails): PaymentStatus {
+    const rawStatus = client.currentPayment?.paymentStatus
+    if (!rawStatus) {
+      return PaymentStatus.PENDING
+    }
+
+    if (this.paymentStatusConfig[rawStatus as PaymentStatus]) {
+      return rawStatus as PaymentStatus
+    }
+
+    const normalized = Object.values(PaymentStatus).find(
+      (status) => status === rawStatus || status === rawStatus.replace(/_/g, ' ')
+    )
+
+    return normalized ?? PaymentStatus.PENDING
   }
 
   get cancelledDates(): Date[] {

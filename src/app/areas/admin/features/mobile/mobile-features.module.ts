@@ -183,7 +183,6 @@ const routes: Routes = [
     EditClientComponent,
     ClientListComponent,
     ClientDetailsComponent,
-    InvoiceHistoryComponent,
     DiscountListComponent,
     DiscountDetailsComponent,
     EditDiscountComponent,

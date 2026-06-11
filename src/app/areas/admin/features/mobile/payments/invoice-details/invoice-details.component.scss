@@ -93,11 +93,74 @@ hr {
   width: 100%;
 }
 
-.apply-payment-modal {
+:host ::ng-deep app-modal.apply-payment-modal {
   .remaining-balance {
     text-align: center;
     margin: 0 0 16px;
-    color: $mid-green;
+    color: $primary-pink;
+  }
+
+  .change-due {
+    text-align: center;
+    margin: 16px 0 0;
+  }
+}
+
+.payments-applied-section {
+  width: 100%;
+  box-sizing: border-box;
+
+  .payments-applied-title {
+    margin: 0 0 8px;
+    padding: 0 5vw;
+  }
+
+  .payments-applied-list {
+    display: grid;
+    grid-template-columns: minmax(72px, 1fr) max-content max-content;
+    column-gap: 12px;
+    row-gap: 8px;
+    width: 100%;
+    padding: 0 5vw;
+    box-sizing: border-box;
+  }
+
+  .payment-applied-row {
+    display: contents;
+  }
+
+  .payment-date-column {
+    justify-self: start;
+    align-self: start;
+    padding-top: 2px;
+
+    h5 {
+      margin: 0;
+      padding: 0 20px 0 0;
+      font-size: 0.85em;
+      white-space: nowrap;
+    }
+  }
+
+  .payment-labels-column,
+  .payment-values-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-self: end;
+    align-self: start;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .payment-detail-label,
+  .payment-detail-value {
+    margin: 0;
+    padding: 0 20px 0 0;
+    font-size: 0.85em;
+    white-space: nowrap;
+    text-align: left;
+    width: 100%;
   }
 }
 
@@ -120,6 +183,22 @@ hr {
   .apply-payment-row {
     padding: 16px;
     border-top: 1px solid $light-blue;
+  }
+
+  .payments-applied-section {
+    .payments-applied-title {
+      padding: 0 16px;
+      color: white;
+    }
+
+    .payments-applied-list {
+      padding: 0 16px;
+    }
+  }
+
+  .period > div {
+    justify-content: flex-start;
+    gap: 8px;
   }
 
   .container {

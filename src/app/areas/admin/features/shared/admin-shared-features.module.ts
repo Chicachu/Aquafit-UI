@@ -11,6 +11,7 @@ import { ClassDetailsComponent } from '../mobile/classes/class-details/class-det
 import { EditClassComponent } from '../mobile/classes/edit-class/edit-class.component';
 import { ClassEnrollComponent } from '../mobile/classes/class-enroll/class-enroll.component';
 import { InvoiceDetailsComponent } from '../mobile/payments/invoice-details/invoice-details.component';
+import { InvoiceHistoryComponent } from '../mobile/payments/invoice-history/invoice-history.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { InvoiceDetailsComponent } from '../mobile/payments/invoice-details/invo
     ClassDetailsComponent,
     EditClassComponent,
     ClassEnrollComponent,
-    InvoiceDetailsComponent
+    InvoiceDetailsComponent,
+    InvoiceHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,8 @@ import { InvoiceDetailsComponent } from '../mobile/payments/invoice-details/invo
     ClassDetailsComponent,
     EditClassComponent,
     ClassEnrollComponent,
-    InvoiceDetailsComponent
+    InvoiceDetailsComponent,
+    InvoiceHistoryComponent
   ]
 })
 export class AdminSharedFeaturesModule {}

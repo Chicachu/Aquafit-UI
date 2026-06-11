@@ -1,7 +1,20 @@
 <div class="header-top-bar">
-  <div class="website-content-width flex-row">
-    <a *ngIf="loggedIn" [routerLink]="['/login']" (click)="logout()">{{ 'LOGOUT.TITLE' | translate }}</a>
-<a *ngIf="!loggedIn" [routerLink]="['/login']">{{ 'LOGIN.TITLE' | translate }}</a>
-    <app-language-selector></app-language-selector>
+  <div
+    class="flex-row"
+    [class.header-actions--admin]="variant === 'admin'"
+    [class.website-content-width]="variant === 'default'">
+    <a
+      *ngIf="variant === 'admin'"
+      class="header-logo-link"
+      [routerLink]="adminHomeRoute"
+      aria-label="Aquafit home">
+      <img src="assets/images/logos/aqua-fit-logo-w-name-horizontal.png" alt="Aquafit" />
+    </a>
+
+    <div class="header-end-actions">
+      <a *ngIf="loggedIn" [routerLink]="['/login']" (click)="logout()">{{ 'LOGOUT.TITLE' | translate }}</a>
+      <a *ngIf="!loggedIn" [routerLink]="['/login']">{{ 'LOGIN.TITLE' | translate }}</a>
+      <app-language-selector></app-language-selector>
+    </div>
   </div>
 </div>

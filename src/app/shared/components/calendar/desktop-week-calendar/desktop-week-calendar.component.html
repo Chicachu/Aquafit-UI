@@ -1,0 +1,41 @@
+<div class="week-calendar">
+  <div class="week-navigation">
+    <button class="nav-arrow" (click)="previousWeek()" aria-label="Previous week">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="week-label">{{ getWeekLabel() }}</span>
+    <button class="nav-arrow" (click)="nextWeek()" aria-label="Next week">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="location-legend" *ngIf="showLegend && legendItems.length > 0">
+    <div class="legend-item" *ngFor="let legendItem of legendItems">
+      <div class="legend-color-box" [style.background-color]="legendItem.color"></div>
+      <span class="legend-text">{{ legendItem.label }}</span>
+    </div>
+  </div>
+
+  <div class="week-view">
+    <div
+      class="day-column"
+      *ngFor="let day of weekDays"
+      [class.today]="isToday(day)">
+      <div class="day-header">{{ getDayHeader(day) }}</div>
+      <ul class="day-hours">
+        <li *ngFor="let hour of hours">
+          <app-calendar-hour-slot
+            [hour]="hour"
+            [items]="getItemsForDayHour(day, hour)"
+            [itemTemplate]="itemTemplate"
+            [emptyTemplate]="emptyTemplate">
+          </app-calendar-hour-slot>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

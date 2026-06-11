@@ -43,6 +43,8 @@ $Aquafit-UI-theme: mat.define-theme((
 
 html, body { 
   height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
   tap-highlight-color: transparent;
 }

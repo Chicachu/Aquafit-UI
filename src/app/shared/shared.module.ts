@@ -33,6 +33,7 @@ import { NotesComponent } from "./components/notes/notes.component"
 import { TranslateDatePipe } from "./pipes/Date.pipe"
 import { CalendarHourSlotComponent } from "./components/calendar/calendar-hour-slot/calendar-hour-slot.component"
 import { MobileCalendarComponent } from "./components/calendar/mobile-calendar/mobile-calendar.component"
+import { DesktopWeekCalendarComponent } from "./components/calendar/desktop-week-calendar/desktop-week-calendar.component"
 
 const materialModules = [
   MatAutocompleteModule,
@@ -71,7 +72,8 @@ const pipes = [
 
 const calendarComponents = [
   CalendarHourSlotComponent,
-  MobileCalendarComponent
+  MobileCalendarComponent,
+  DesktopWeekCalendarComponent
 ]
 
 @NgModule({

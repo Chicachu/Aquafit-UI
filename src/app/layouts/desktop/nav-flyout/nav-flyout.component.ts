@@ -12,8 +12,7 @@ import { getActiveNavItem } from '@layouts/shared/nav-list.utils';
 export class NavFlyoutComponent {
   @Input() navItems: MobileNavItem[] = [];
 
-  // TODO: remove — temporary for layout inspection
-  isOpen = true;
+  isOpen = false;
   currentRoute = '';
 
   constructor(private router: Router) {
@@ -30,8 +29,7 @@ export class NavFlyoutComponent {
   }
 
   close(): void {
-    // TODO: remove — temporary for layout inspection
-    // this.isOpen = false;
+    this.isOpen = false;
   }
 
   navigate(item: MobileNavItem, event?: Event): void {

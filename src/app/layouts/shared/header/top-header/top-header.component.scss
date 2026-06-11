@@ -1,27 +1,75 @@
 @import '../../../../../assets/colors.scss';
 
+:host {
+  display: block;
+  flex-shrink: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
 .header-top-bar {
   border-top: 3px solid $background-blue;
   background-color: $light-blue;
   border-bottom: 4px solid $primary-green;
-  height: 53px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .flex-row {
+  display: flex;
   position: relative;
   height: 53px;
   align-items: center;
   justify-content: flex-end;
+  min-width: 0;
 }
-
 .flex-row > * {
   padding-left: 10px;
 }
 
+.header-actions--admin {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  min-width: 0;
+
+  .header-end-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+
+    > * {
+      padding-left: 10px;
+    }
+
+    a {
+      margin-right: 12px;
+    }
+  }
+}
+
+.header-logo-link {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-left: 0;
+  margin-right: 16px;
+  text-decoration: none;
+
+  img {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+}
+
 a {
   font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 700; 
+  font-weight: 700;
   text-decoration: none;
   margin-right: 30px;
 }
-

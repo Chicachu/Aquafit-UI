@@ -184,7 +184,6 @@ const routes: Routes = [
     ClientListComponent,
     ClientDetailsComponent,
     InvoiceHistoryComponent,
-    InvoiceDetailsComponent,
     DiscountListComponent,
     DiscountDetailsComponent,
     EditDiscountComponent,

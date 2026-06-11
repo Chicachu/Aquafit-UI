@@ -19,6 +19,13 @@
         [classId]="activeClassId"
         [panelView]="true">
       </app-class-enroll>
+      <app-invoice-details
+        *ngIf="showInvoicePanel && activeUserId && activeEnrollmentId && activeInvoiceId"
+        [userId]="activeUserId"
+        [enrollmentId]="activeEnrollmentId"
+        [invoiceId]="activeInvoiceId"
+        [panelView]="true">
+      </app-invoice-details>
     </div>
   </section>
 </div>

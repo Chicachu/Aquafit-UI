@@ -10,6 +10,7 @@ import { ClassListComponent } from '../mobile/classes/class-list/class-list.comp
 import { ClassDetailsComponent } from '../mobile/classes/class-details/class-details.component';
 import { EditClassComponent } from '../mobile/classes/edit-class/edit-class.component';
 import { ClassEnrollComponent } from '../mobile/classes/class-enroll/class-enroll.component';
+import { InvoiceDetailsComponent } from '../mobile/payments/invoice-details/invoice-details.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ClassEnrollComponent } from '../mobile/classes/class-enroll/class-enrol
     ClassListComponent,
     ClassDetailsComponent,
     EditClassComponent,
-    ClassEnrollComponent
+    ClassEnrollComponent,
+    InvoiceDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { ClassEnrollComponent } from '../mobile/classes/class-enroll/class-enrol
     ClassListComponent,
     ClassDetailsComponent,
     EditClassComponent,
-    ClassEnrollComponent
+    ClassEnrollComponent,
+    InvoiceDetailsComponent
   ]
 })
 export class AdminSharedFeaturesModule {}

@@ -1,14 +1,24 @@
-<div class="flex-column">
-  <app-breadcrumb-nav-bar [title]="'PAYMENTS.INVOICE_DETAILS'" [buttonType]="ButtonType.NONE"></app-breadcrumb-nav-bar>
+<div class="flex-column invoice-details-container">
+  <app-breadcrumb-nav-bar
+    [title]="'PAYMENTS.INVOICE_DETAILS'"
+    [buttonType]="ButtonType.NONE"
+    [showBack]="!panelView">
+  </app-breadcrumb-nav-bar>
 
   <div class="container" *ngIf="invoiceDetails">
-    <div class="header flex-column">
-      <h3 class="mid-pink">{{ invoiceDetails.clientName }}</h3>
-      <h4 class="light-green">{{ 'CLASS_TYPES.' + invoiceDetails.classDetails.classType | translate | capitalize }}</h4>
-      <h4 class="light-blue">{{ invoiceDetails.classDetails.classLocation }} - {{ invoiceDetails.classDetails.days! | weekdays }}</h4>
-      <!-- <h4>{{  }}</h4> -->
+    <div class="header flex-column" [class.general-info]="panelView">
+      <ng-container *ngIf="panelView; else mobileInvoiceHeader">
+        <h3 class="mid-green">{{ invoiceDetails.clientName }}</h3>
+        <h3 class="light-blue">{{ 'CLASS_TYPES.' + invoiceDetails.classDetails.classType | translate }}</h3>
+        <h3 class="mid-pink">{{ invoiceDetails.classDetails.classLocation }} - {{ invoiceDetails.classDetails.days! | weekdays:'/' }}</h3>
+      </ng-container>
+      <ng-template #mobileInvoiceHeader>
+        <h3 class="mid-pink">{{ invoiceDetails.clientName }}</h3>
+        <h4 class="light-green">{{ 'CLASS_TYPES.' + invoiceDetails.classDetails.classType | translate | capitalize }}</h4>
+        <h4 class="light-blue">{{ invoiceDetails.classDetails.classLocation }} - {{ invoiceDetails.classDetails.days! | weekdays }}</h4>
+      </ng-template>
     </div>
-    <hr>
+    <hr *ngIf="!panelView">
 
     <div class="flex-column">
       <div [ngClass]="getStatusClass(invoiceDetails.paymentStatus!)" class="payment-status flex-row">

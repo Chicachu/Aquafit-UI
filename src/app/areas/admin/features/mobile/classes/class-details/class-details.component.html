@@ -55,7 +55,9 @@
               </a>
               <a
                 *ngIf="canViewPaymentsInClass && client.currentPayment?.enrollmentId"
-                [routerLink]="['../../../clients', client._id, 'payments', client.currentPayment.enrollmentId]"
+                [routerLink]="panelView
+                  ? ['/admin/classes', classId, 'details', 'invoice', client._id, client.currentPayment.enrollmentId, client.currentPayment._id]
+                  : ['../../../clients', client._id, 'payments', client.currentPayment.enrollmentId]"
                 class="payment-history-link">
                 <mat-icon class="icon">receipt_long</mat-icon>
               </a>

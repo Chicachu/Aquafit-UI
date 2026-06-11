@@ -83,3 +83,58 @@ hr {
   margin: 15px 5vw;
   width: 90vw;
 }
+
+:host(.panel-view) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    align-items: stretch;
+  }
+
+  .general-info {
+    border-bottom: 1px solid $light-blue;
+    text-align: center;
+    padding: 8px 16px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+
+    h3 {
+      margin: 5px 0;
+    }
+  }
+
+  .payment-status {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .payment-details {
+    margin-left: 0;
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .discount-name {
+    padding-left: 0;
+  }
+
+  .first-column,
+  .second-column {
+    width: 50%;
+  }
+
+  hr {
+    margin: 15px 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

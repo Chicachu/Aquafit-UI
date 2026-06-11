@@ -9,7 +9,11 @@ import { filter, Subscription } from 'rxjs';
 })
 export class ClassesDesktopPageComponent implements OnInit, OnDestroy {
   showEnrollPanel = false
+  showInvoicePanel = false
   activeClassId: string | null = null
+  activeUserId: string | null = null
+  activeEnrollmentId: string | null = null
+  activeInvoiceId: string | null = null
 
   private routerSubscription?: Subscription
 
@@ -30,18 +34,22 @@ export class ClassesDesktopPageComponent implements OnInit, OnDestroy {
   }
 
   private _syncFromRoute(): void {
-    this.activeClassId = this._findClassIdInRouteTree(this.route)
+    this.activeClassId = this._findParamInRouteTree(this.route, 'class-id')
+    this.activeUserId = this._findParamInRouteTree(this.route, 'user-id')
+    this.activeEnrollmentId = this._findParamInRouteTree(this.route, 'enrollment-id')
+    this.activeInvoiceId = this._findParamInRouteTree(this.route, 'invoice-id')
     this.showEnrollPanel = this._routeTreeHasData(this.route, 'showEnrollPanel')
+    this.showInvoicePanel = this._routeTreeHasData(this.route, 'showInvoicePanel')
   }
 
-  private _findClassIdInRouteTree(route: ActivatedRoute): string | null {
-    const classId = route.snapshot.paramMap.get('class-id')
-    if (classId) {
-      return classId
+  private _findParamInRouteTree(route: ActivatedRoute, param: string): string | null {
+    const value = route.snapshot.paramMap.get(param)
+    if (value) {
+      return value
     }
 
     if (route.firstChild) {
-      return this._findClassIdInRouteTree(route.firstChild)
+      return this._findParamInRouteTree(route.firstChild, param)
     }
 
     return null

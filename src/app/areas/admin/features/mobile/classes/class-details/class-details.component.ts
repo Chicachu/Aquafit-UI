@@ -58,6 +58,10 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist
   }
 
+  get hasEnrolledClients(): boolean {
+    return (this.classDetails?.clients?.length ?? 0) > 0
+  }
+
   /** Show Cancel class button only for Group fitness and Private fitness */
   get showCancelButton(): boolean {
     if (!this.classDetails?.classType) return false

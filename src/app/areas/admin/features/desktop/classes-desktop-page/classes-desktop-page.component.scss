@@ -72,7 +72,9 @@
   }
 
   .clients-section,
+  .clients-section + p.light-blue,
   .waitlist-section-header,
+  .waitlist-section-header + p.light-blue,
   .paid-status-section,
   .pending-status-section,
   .almost-due-status-section,
@@ -144,5 +146,9 @@
     border-radius: 0 !important;
     text-align: left;
     box-sizing: border-box;
+  }
+
+  app-multi-select-chips .label {
+    color: $light-blue;
   }
 }

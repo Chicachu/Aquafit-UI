@@ -32,6 +32,10 @@
       </button>
     </div>
 
+    <p *ngIf="!hasEnrolledClients" class="light-blue">
+      {{ 'CLASSES.NO_CLIENTS_ENROLLED' | translate }}
+    </p>
+
     <ng-container *ngFor="let status of visibleStatuses">
       <ng-container *ngIf="(clientsByPaymentStatus.get(status)?.length ?? 0) > 0">
         <div [ngClass]="getStatusSectionClass(status)">
@@ -98,14 +102,14 @@
         <mat-icon matPrefix>add</mat-icon>
       </button>
     </div>
-    <ul>
+    <p *ngIf="waitlistEntries.length === 0" class="light-blue">
+      {{ 'CLIENTS.NO_WAITLIST_ENTRIES' | translate }}
+    </p>
+    <ul *ngIf="waitlistEntries.length > 0">
       <li *ngFor="let entry of waitlistEntries">
         <a *ngIf="waitlistUsers.get(entry.userId)" [routerLink]="['../../../clients', entry.userId, 'details']" class="white">
           {{ waitlistUsers.get(entry.userId)!.firstName }} {{ waitlistUsers.get(entry.userId)!.lastName }}
         </a>
-      </li>
-      <li *ngIf="waitlistEntries.length === 0">
-        <p class="light-blue">{{ 'CLIENTS.NO_WAITLIST_ENTRIES' | translate }}</p>
       </li>
     </ul>
   </div>

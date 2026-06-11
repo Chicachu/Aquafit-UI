@@ -1,0 +1,59 @@
+@import 'assets/colors.scss';
+
+@mixin nav-list {
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+  }
+
+  li {
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:first-child {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    a {
+      display: block;
+      padding: 16px 16px;
+      color: $light-green;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 16px;
+      font-weight: 500;
+      -webkit-tap-highlight-color: transparent;
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: $mid-blue;
+        }
+      }
+
+      &:active {
+        background-color: $mid-blue;
+      }
+    }
+
+    &.active {
+      a {
+        background-color: $mid-blue;
+
+        &:hover,
+        &:active {
+          background-color: $mid-blue;
+        }
+      }
+    }
+  }
+}

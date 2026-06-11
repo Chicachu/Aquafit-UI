@@ -1,0 +1,18 @@
+<div
+  class="nav-flyout"
+  [class.open]="isOpen"
+  (mouseenter)="open()"
+  (mouseleave)="close()">
+  <nav class="flyout-panel" aria-label="Main navigation">
+    <div class="flyout-content">
+      <ul class="flyout-links">
+        <li *ngFor="let item of navItems" [class.active]="isActive(item)">
+          <a (click)="navigate(item, $event)">{{ item.label | translate }}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="flyout-rail" aria-hidden="true">
+      <mat-icon>{{ isOpen ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+    </div>
+  </nav>
+</div>

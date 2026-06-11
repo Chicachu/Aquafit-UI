@@ -1,24 +1,17 @@
-import { NgModule } from "@angular/core"
-import { AuthLayoutComponent } from "./auth-layout/auth-layout.component";
-import { CommonModule } from "@angular/common";
-import { RouterModule } from "@angular/router";
-import { SharedModule } from "../shared/shared.module";
-import { WebsiteLayoutComponent } from "./website-layout/website-layout.component";
-import { LayoutComponentsModule } from "./layout-components/layout-components.module";
-import { MobileLayoutComponent } from "./mobile-layout/mobile-layout.component";
-import { LayoutGuard } from "../core/guards/layout.guard";
-import { authGuard } from "../core/guards/auth.guard";
-import { AdminLayoutComponent } from "./admin-layout/admin-layout.component";
-
-const adminNavItems = new Map([
-  ["NAVIGATION.CALENDAR", "/admin/mobile/home"],
-  ["NAVIGATION.CLIENTS", "/admin/mobile/clients"],
-  ["NAVIGATION.EMPLOYEES", "/admin/mobile/employees"],
-  ["NAVIGATION.CLASSES", "/admin/mobile/classes"],
-  ["NAVIGATION.CHECK_INS", "/admin/mobile/check-ins"],
-  ["NAVIGATION.DISCOUNTS", "/admin/mobile/discounts"],
-  ["NAVIGATION.SALARY_CONFIGURATION", "/admin/mobile/salary-configuration"]
-])
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '@shared/shared.module';
+import { LayoutGuard } from '@core/guards/layout.guard';
+import { authGuard } from '@core/guards/auth.guard';
+import { SharedLayoutComponentsModule } from './shared/shared-layout-components.module';
+import { MobileShellModule } from './mobile/mobile-shell.module';
+import { NavFlyoutModule } from './desktop/nav-flyout.module';
+import { AdminLayoutComponent } from '../areas/admin/layouts/admin-shell/admin-layout.component';
+import { AdminMobileLayoutComponent } from '../areas/admin/layouts/admin-mobile-layout/admin-mobile-layout.component';
+import { AdminDesktopLayoutComponent } from '../areas/admin/layouts/admin-desktop-layout/admin-desktop-layout.component';
+import { AuthLayoutComponent } from '../areas/auth/layouts/auth-layout/auth-layout.component';
+import { WebsiteLayoutComponent } from '../areas/website/layouts/website-shell/website-layout.component';
 
 const routes = [
   {
@@ -27,10 +20,11 @@ const routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('../features/authFeatures/authFeatures.module').then(m => m.AuthFeaturesModule)
-      },
-    ],
+        loadChildren: () => import('../areas/auth/features/authFeatures.module').then(m => m.AuthFeaturesModule)
+      }
+    ]
   },
+  // Public website: desktop only for now. Mobile/desktop split — see areas/website/website.routes.ts
   {
     path: '',
     component: WebsiteLayoutComponent,
@@ -38,7 +32,7 @@ const routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('../features/website-features/website-features.module').then(m => m.WebsiteFeaturesModule)
+        loadChildren: () => import('../areas/website/features/desktop/website-features.module').then(m => m.WebsiteFeaturesModule)
       }
     ]
   },
@@ -53,14 +47,14 @@ const routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('../features/desktop-features/desktop-features.module').then(m => m.DesktopFeaturesModule)
+            component: AdminDesktopLayoutComponent,
+            loadChildren: () => import('../areas/admin/features/desktop/desktop-features.module').then(m => m.DesktopFeaturesModule)
           },
           {
             path: 'mobile',
             canActivate: [LayoutGuard],
-            component: MobileLayoutComponent,
-            data: { navItems: adminNavItems },
-            loadChildren: () => import('../features/mobile-features/mobile-features.module').then(m => m.MobileFeaturesModule)
+            component: AdminMobileLayoutComponent,
+            loadChildren: () => import('../areas/admin/features/mobile/mobile-features.module').then(m => m.MobileFeaturesModule)
           }
         ]
       }
@@ -71,16 +65,19 @@ const routes = [
 @NgModule({
   declarations: [
     AdminLayoutComponent,
+    AdminMobileLayoutComponent,
+    AdminDesktopLayoutComponent,
     AuthLayoutComponent,
-    WebsiteLayoutComponent,
-    MobileLayoutComponent
+    WebsiteLayoutComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     SharedModule,
-    LayoutComponentsModule
+    SharedLayoutComponentsModule,
+    MobileShellModule,
+    NavFlyoutModule
   ],
   providers: []
 })
-export class LayoutsModule { }
+export class LayoutsModule {}

@@ -1,0 +1,22 @@
+@import 'assets/colors.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: $background-blue;
+  background: linear-gradient(180deg, $background-blue 0%, $background-blue-gradient-light 100%);
+}
+
+:host > .flex-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+
+  router-outlet + * {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+  }
+}

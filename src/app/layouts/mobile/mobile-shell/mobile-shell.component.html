@@ -1,0 +1,19 @@
+<div class="flex-column">
+  <div class="mobile-nav-container">
+    <button
+      mat-icon-button
+      class="hamburger-button"
+      (click)="toggleMenu()"
+      aria-label="Toggle navigation menu">
+      <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+    <div class="dropdown-menu" [class.open]="isMenuOpen">
+      <ul>
+        <li *ngFor="let item of navItems" [class.active]="isActive(item)">
+          <a (click)="navigate(item, $event)">{{ item.label | translate }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <router-outlet />
+</div>

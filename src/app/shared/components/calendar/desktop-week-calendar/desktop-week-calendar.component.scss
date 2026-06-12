@@ -145,43 +145,25 @@
   min-width: 0;
 
   li {
-    height: calc((100vh - 220px) / 14);
-    min-height: 48px;
+    display: block;
+    width: 100%;
+    min-height: calc((100vh - 220px) / 14 + 10px);
+    height: auto;
     border-bottom: 1px solid rgba($light-pink, 0.15);
     background-color: $background-blue;
     min-width: 0;
-    overflow: hidden;
+    overflow: visible;
+    box-sizing: border-box;
   }
 
   :host ::ng-deep app-calendar-hour-slot {
     display: block;
-    height: 100%;
+    width: 100%;
     min-width: 0;
-
-    .time-slot {
-      padding: 4px;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .time {
-      display: none;
-    }
-
-    .items-container {
-      min-width: 0;
-      width: 100%;
-    }
 
     .empty,
     .time-slot {
       background-color: $background-blue;
-    }
-
-    .empty {
-      padding: 0;
-      font-size: 0;
-      color: transparent;
     }
   }
 }

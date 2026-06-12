@@ -1,10 +1,11 @@
-<div>
-  <app-breadcrumb-nav-bar 
-  [title]="'NAVIGATION.CLIENTS' | translate" 
-  [buttonType]="ButtonType.ADD"
-  (onButtonClick)="addNewClient()"></app-breadcrumb-nav-bar>
-  
-  <!-- Location Filter -->
+<div class="client-list-wrapper">
+  <app-breadcrumb-nav-bar
+    *ngIf="showBreadcrumb"
+    [title]="'NAVIGATION.CLIENTS'"
+    [buttonType]="ButtonType.ADD"
+    (onButtonClick)="addNewClient()">
+  </app-breadcrumb-nav-bar>
+
   <form [formGroup]="filterForm" class="filters-container">
     <app-dropdown
       label="CLASSES.FILTER_BY_LOCATION"
@@ -13,14 +14,29 @@
       [showValidation]="false"
       controlName="location">
     </app-dropdown>
+
+    <div *ngIf="panelView && canAddClient" class="add-client-row">
+      <button
+        mat-icon-button
+        type="button"
+        (click)="addNewClient()"
+        class="add-client-button">
+        <mat-icon class="add-icon" matPrefix>add</mat-icon>
+      </button>
+    </div>
   </form>
-  
+
   <div class="client-list-content">
     <div class="clients-section">
       <h2>{{ 'CLIENTS.ACTIVE_CLIENTS' | translate }}</h2>
       <ul>
         <li *ngFor="let user of activeClients">
-          <a [routerLink]="['./', user._id, 'details']">{{ user.firstName }} {{ user.lastName }}</a>
+          <a
+            [routerLink]="getClientDetailsLink(user._id)"
+            class="client-list-link"
+            [class.selected]="isClientSelected(user._id)">
+            {{ user.firstName }} {{ user.lastName }}
+          </a>
         </li>
       </ul>
     </div>
@@ -28,7 +44,12 @@
       <h2>{{ 'CLIENTS.INACTIVE_CLIENTS' | translate }}</h2>
       <ul>
         <li *ngFor="let user of inactiveClients">
-          <a [routerLink]="['./', user._id, 'details']">{{ user.firstName }} {{ user.lastName }}</a>
+          <a
+            [routerLink]="getClientDetailsLink(user._id)"
+            class="client-list-link"
+            [class.selected]="isClientSelected(user._id)">
+            {{ user.firstName }} {{ user.lastName }}
+          </a>
         </li>
       </ul>
     </div>
@@ -36,10 +57,15 @@
       <h2>{{ 'CLIENTS.WAITLIST' | translate }}</h2>
       <ul>
         <li *ngFor="let entry of deduplicatedWaitlistEntries">
-          <a [routerLink]="['./', entry.userId, 'details']">{{ entry.firstName }} {{ entry.lastName }}</a>
+          <a
+            [routerLink]="getClientDetailsLink(entry.userId)"
+            class="client-list-link"
+            [class.selected]="isClientSelected(entry.userId)">
+            {{ entry.firstName }} {{ entry.lastName }}
+          </a>
           <span class="class-info">
             <ng-container *ngFor="let classInfo of entry.classInfo; let last = last">
-              <a [routerLink]="['../classes', classInfo.classId, 'details']">{{ classInfo.className }}</a><span *ngIf="!last">, </span>
+              <a [routerLink]="getClassDetailsLink(classInfo.classId)">{{ classInfo.className }}</a><span *ngIf="!last">, </span>
             </ng-container>
           </span>
         </li>

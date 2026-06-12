@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ClassService } from '@core/services/classService';
 import { SnackBarService } from '@core/services/snackBarService';
+import { ClassType } from '@core/types/enums/classType';
 import { FormatOptions } from '@core/types/enums/formatOptions';
 import { SelectOption } from '@core/types/selectOption';
 
@@ -13,18 +14,27 @@ import { SelectOption } from '@core/types/selectOption';
 export class MobileHomeComponent implements OnInit {
   readonly FormatOptions = FormatOptions
   calendarLocationOptions: SelectOption[] = []
+  calendarClassTypeOptions: SelectOption[] = []
   allLocations: string[] = []
   calendarOptionsForm: FormGroup
   selectedLocation: string = ''
+  selectedClassType: string = ''
 
   constructor(private _classService: ClassService, private snackBarService: SnackBarService, private fb: FormBuilder, ) {
     this.calendarOptionsForm = this.fb.group({
-      calendarView: ['MASTER']
+      calendarView: ['MASTER'],
+      classType: ['ALL']
     })
 
     this.calendarOptionsForm.get('calendarView')?.valueChanges.subscribe(value => {
       this.selectedLocation = value === 'MASTER' ? '' : value;
     });
+
+    this.calendarOptionsForm.get('classType')?.valueChanges.subscribe(value => {
+      this.selectedClassType = value === 'ALL' ? '' : value;
+    });
+
+    this._generateCalendarClassTypeOptions()
   }
 
   ngOnInit(): void {
@@ -42,7 +52,7 @@ export class MobileHomeComponent implements OnInit {
   private _generateCalendarLocationOptions(): void {
     this.calendarLocationOptions.push({
       value: "MASTER",
-      viewValue: "CALENDAR.MASTER"
+      viewValue: "CLASSES.ALL_LOCATIONS"
     })
 
     this.allLocations.forEach((location) => {
@@ -51,5 +61,15 @@ export class MobileHomeComponent implements OnInit {
         value: location
       })
     })
+  }
+
+  private _generateCalendarClassTypeOptions(): void {
+    this.calendarClassTypeOptions = [
+      { value: 'ALL', viewValue: 'CLASSES.ALL_TYPES' },
+      ...Object.values(ClassType).map(classType => ({
+        value: classType,
+        viewValue: `CLASS_TYPES.${classType}`
+      }))
+    ]
   }
 }

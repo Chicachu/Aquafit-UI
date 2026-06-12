@@ -2,6 +2,7 @@
   <app-breadcrumb-nav-bar 
     [title]="'CLIENTS.DETAILS'" 
     [buttonType]="canEditClient ? ButtonType.EDIT : ButtonType.NONE"
+    [showBack]="!panelView"
     (onButtonClick)="editClient()">
   </app-breadcrumb-nav-bar>
   <div *ngIf="client" class="flex-column general-info">
@@ -22,13 +23,13 @@
     <!-- Active Classes -->
     <div *ngFor="let classEnrollment of classesGrouped | keyvalue">
       <h3 class="mid-green">{{ 'CLASS_TYPES.' + classEnrollment.key | translate | capitalize }}</h3>
-      <hr />
+      <hr class="class-type-divider" />
       <div *ngFor="let locationGroup of classEnrollment.value | keyvalue">
         <h4>{{ locationGroup.key }}</h4>
         <ul>
           <li *ngFor="let classAndEnrollment of locationGroup.value">
             <div class="flex-row details-row">
-              <a [routerLink]="['/admin/mobile/classes', classAndEnrollment?.class?._id, 'details']">
+              <a [routerLink]="getClassDetailsLink(classAndEnrollment?.class?._id)">
                 <ng-container *ngIf="classAndEnrollment.enrollment.daysOfWeekOverride as override; else defaultDays">
                   <ng-container *ngIf="override.length > 0; else defaultDays">
                     {{ override | weekdays:'/' }}
@@ -49,7 +50,7 @@
                 </button>
                 <a
                   *ngIf="canViewClientPayments"
-                  [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
+                  [routerLink]="getPaymentHistoryLink(classAndEnrollment?.enrollment?._id)"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>
                 </a>
@@ -72,6 +73,19 @@
       (notesUpdated)="onNotesUpdated($event)">
     </app-notes>
 
+    <div *ngIf="waitlistClassInfo.length > 0" class="waitlist-section">
+      <h2 class="light-blue">{{ 'CLIENTS.WAITLIST' | translate }}</h2>
+      <ul>
+        <li>
+          <span class="class-info">
+            <ng-container *ngFor="let classInfo of waitlistClassInfo; let last = last">
+              <a [routerLink]="getClassDetailsLink(classInfo.classId)">{{ classInfo.className }}</a><span *ngIf="!last">, </span>
+            </ng-container>
+          </span>
+        </li>
+      </ul>
+    </div>
+
     <!-- Unenrolled Classes -->
     <div *ngIf="unenrolledClassEnrollmentInfo.length > 0" class="unenrolled-section">
       <h3 class="unenrolled-header">{{ 'CLASSES.UNENROLLED_CLASSES' | translate }}</h3>
@@ -83,7 +97,7 @@
           <ul>
             <li *ngFor="let classAndEnrollment of locationGroup.value">
               <div class="flex-row details-row">
-                <a [routerLink]="['/admin/mobile/classes', classAndEnrollment?.class?._id, 'details']">
+                <a [routerLink]="getClassDetailsLink(classAndEnrollment?.class?._id)">
                   <ng-container *ngIf="classAndEnrollment.enrollment.daysOfWeekOverride as override; else defaultDays">
                     <ng-container *ngIf="override.length > 0; else defaultDays">
                       {{ override | weekdays:'/' }}
@@ -95,7 +109,7 @@
                 </a>
                 <a
                   *ngIf="canViewClientPayments"
-                  [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
+                  [routerLink]="getPaymentHistoryLink(classAndEnrollment?.enrollment?._id)"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>
                 </a>
@@ -117,7 +131,7 @@
           <ul>
             <li *ngFor="let classAndEnrollment of locationGroup.value">
               <div class="flex-row details-row">
-                <a [routerLink]="['/admin/mobile/classes', classAndEnrollment?.class?._id, 'details']">
+                <a [routerLink]="getClassDetailsLink(classAndEnrollment?.class?._id)">
                   <ng-container *ngIf="classAndEnrollment.enrollment.daysOfWeekOverride as override; else defaultDays">
                     <ng-container *ngIf="override.length > 0; else defaultDays">
                       {{ override | weekdays:'/' }}
@@ -129,7 +143,7 @@
                 </a>
                 <a
                   *ngIf="canViewClientPayments"
-                  [routerLink]="['../payments', classAndEnrollment?.enrollment?._id]"
+                  [routerLink]="getPaymentHistoryLink(classAndEnrollment?.enrollment?._id)"
                   class="payment-history-link">
                   <mat-icon class="icon">receipt_long</mat-icon>
                 </a>
@@ -144,7 +158,7 @@
     <div *ngIf="isAdmin" class="delete-user-section">
       <div class="flex-row buttons">
         <app-button
-          [label]="'CLIENTS.DELETE_USER'"
+          [label]="'CLIENTS.DELETE_CLIENT_INFO'"
           [disabled]="!canDeleteUser"
           (onClick)="openDeleteUserModal()">
         </app-button>

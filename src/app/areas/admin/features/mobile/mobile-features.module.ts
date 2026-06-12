@@ -180,9 +180,6 @@ const routes: Routes = [
   declarations: [
     MobileHomeComponent,
     MobileClassCalendarComponent,
-    EditClientComponent,
-    ClientListComponent,
-    ClientDetailsComponent,
     DiscountListComponent,
     DiscountDetailsComponent,
     EditDiscountComponent,

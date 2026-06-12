@@ -48,9 +48,12 @@
         <ul>
           <li *ngFor="let client of group.clients">
             <div class="flex-row details-row">
-              <a [routerLink]="['../../../clients', client._id, 'details']">
+              <a
+                [routerLink]="panelView
+                  ? ['/admin/clients', client._id, 'details']
+                  : ['../../../clients', client._id, 'details']">
                 <p class="white">
-                  {{ client.firstName }} {{ client.lastName }}<sup *ngIf="client.isPartiallyEnrolled" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup>
+                  {{ client.firstName }} {{ client.lastName }}<sup *ngIf="client.isPartiallyEnrolled" class="partial-badge" [attr.title]="'CLASSES.PARTIAL_ENROLLMENT_TITLE' | translate">{{ 'CLASSES.PARTIAL_ENROLLMENT_LETTER' | translate }}</sup><ng-container *ngIf="panelView && client.isPartiallyEnrolled && client.daysOfWeekOverride?.length"><span class="partial-days"> ({{ client.daysOfWeekOverride! | weekdays:'/' }})</span></ng-container>
                 </p>
               </a>
               <a
@@ -218,5 +221,4 @@
     </form>
   </div>
 </app-modal>
-
  

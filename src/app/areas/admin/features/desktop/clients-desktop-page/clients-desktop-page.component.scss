@@ -1,0 +1,170 @@
+@import 'assets/colors.scss';
+
+:host {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.three-panel-layout {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: $background-blue;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+
+  &-1 {
+    flex: 0 0 360px;
+    width: 360px;
+    max-width: 360px;
+    border-right: 1px solid rgba($light-pink, 0.25);
+  }
+
+  &-2,
+  &-3 {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 0;
+  }
+
+  &-2 {
+    border-right: 1px solid rgba($light-pink, 0.25);
+  }
+}
+
+.panel-body {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+
+:host ::ng-deep app-client-details.panel-view {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  box-sizing: border-box;
+
+  .general-info {
+    padding: 8px 16px;
+    box-sizing: border-box;
+  }
+
+  .client-details-content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 8px 16px 16px;
+    box-sizing: border-box;
+  }
+
+  .classes-section {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .unenrolled-section,
+  .terminated-section {
+    padding-top: 16px;
+  }
+
+  .not-enrolled {
+    margin-left: 0;
+  }
+
+  hr:not(.class-type-divider) {
+    margin: 0 -16px;
+    width: auto;
+  }
+
+  .class-type-divider {
+    margin: 0;
+  }
+
+  .delete-user-section {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+
+  app-notes {
+    display: block;
+    padding-top: 16px;
+    padding-bottom: 8px;
+  }
+
+  .waitlist-section {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  ul {
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+
+  li {
+    margin-left: 16px;
+  }
+
+  .details-row > a:first-child {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .payment-history-link {
+    flex-shrink: 0;
+  }
+}
+
+:host ::ng-deep app-edit-client.panel-view {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  .panel-view-header {
+    border-bottom: 1px solid $light-blue;
+
+    h2 {
+      margin: 0;
+      padding: 12px 16px;
+    }
+  }
+
+  .edit-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    justify-content: flex-start;
+    box-sizing: border-box;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 16px;
+    border: none !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    text-align: left;
+    box-sizing: border-box;
+  }
+}

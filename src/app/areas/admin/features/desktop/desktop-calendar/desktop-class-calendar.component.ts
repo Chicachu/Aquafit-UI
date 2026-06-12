@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AdminNavService } from '@areas/admin/config/admin-nav.service';
-import { map } from 'rxjs';
+import { forkJoin, map } from 'rxjs';
 import { ScheduleService } from '@core/services/scheduleService';
 import { ScheduleView } from '@core/types/scheduleView';
 import { CalendarClass } from '@core/types/calendarClass';
@@ -8,6 +8,14 @@ import { SnackBarService } from '@core/services/snackBarService';
 import { ClassService } from '@core/services/classService';
 import { CalendarHourSlotItem } from '@shared/components/calendar/calendar-hour-slot/calendar-hour-slot.component';
 import { LegendItem } from '@shared/components/calendar/mobile-calendar/mobile-calendar.component';
+import { UserService } from '@core/services/userService';
+import { PaymentStatus } from '@core/types/enums/paymentStatus';
+import { ClassDetails } from '@core/types/classes/classDetails';
+
+interface ClassPaymentStatusCounts {
+  almostDueCount: number;
+  overdueCount: number;
+}
 
 interface ClassItemWithStyles extends CalendarHourSlotItem {
   backgroundColor?: string;
@@ -21,6 +29,9 @@ interface ClassItemWithStyles extends CalendarHourSlotItem {
 })
 export class DesktopClassCalendarComponent implements OnChanges, OnInit {
   @Input() location = '';
+  @Input() classType = '';
+
+  private readonly maxClassesPerTimeSlot = 2;
 
   readonly HOURS_IN_WORKDAY = [
     '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00',
@@ -34,18 +45,40 @@ export class DesktopClassCalendarComponent implements OnChanges, OnInit {
   legendItems: LegendItem[] = [];
   currentDate = new Date();
   isLoading = false;
+  paymentStatusByClassId = new Map<string, ClassPaymentStatusCounts>();
 
   private readonly locationColorPalette = [
-    '#4CAF50', '#E91E63', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4', '#FF5722', '#795548'
+    '#4CAF50', '#F27AB8', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4', '#FF5722', '#795548'
   ];
-  private readonly lightColors = ['#FF9800', '#00BCD4', '#4CAF50'];
+  private readonly lightColors = ['#FF9800', '#00BCD4', '#4CAF50', '#F27AB8'];
 
   constructor(
     private scheduleService: ScheduleService,
     private snackBarService: SnackBarService,
     private classService: ClassService,
-    private adminNavService: AdminNavService
+    private adminNavService: AdminNavService,
+    private userService: UserService
   ) {}
+
+  get canViewPayments(): boolean {
+    return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist;
+  }
+
+  hasAlmostDuePayments(classId: string | undefined): boolean {
+    if (!classId) {
+      return false;
+    }
+
+    return (this.paymentStatusByClassId.get(classId)?.almostDueCount ?? 0) > 0;
+  }
+
+  hasOverduePayments(classId: string | undefined): boolean {
+    if (!classId) {
+      return false;
+    }
+
+    return (this.paymentStatusByClassId.get(classId)?.overdueCount ?? 0) > 0;
+  }
 
   ngOnInit(): void {
     this._loadLocations();
@@ -53,7 +86,7 @@ export class DesktopClassCalendarComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['location']) {
+    if (changes['location'] || changes['classType']) {
       this.scheduleByDay = new Map();
       this._updateLegendItems();
       this._loadSchedule();
@@ -121,6 +154,10 @@ export class DesktopClassCalendarComponent implements OnChanges, OnInit {
           const hourMap = new Map<string, ClassItemWithStyles[]>();
 
           classes.forEach((classItem: CalendarClass) => {
+            if (!this._matchesClassType(classItem)) {
+              return;
+            }
+
             const hour = new Date(classItem.date).getHours();
             const timeKey = `${hour}:00`;
             const loc = classItem.classLocation || '';
@@ -136,6 +173,10 @@ export class DesktopClassCalendarComponent implements OnChanges, OnInit {
             });
           });
 
+          if (this.location === '') {
+            this._limitClassesPerTimeSlot(hourMap);
+          }
+
           scheduleByDay.set(dateKey, hourMap);
         });
 
@@ -145,10 +186,106 @@ export class DesktopClassCalendarComponent implements OnChanges, OnInit {
       next: scheduleByDay => {
         this.scheduleByDay = scheduleByDay;
         this.isLoading = false;
+        this._loadPaymentStatusForClasses(this._collectUniqueClassIds(scheduleByDay));
       },
       error: ({ error }) => {
         this.isLoading = false;
         this.snackBarService.showError(error.message);
+      }
+    });
+  }
+
+  private _collectUniqueClassIds(scheduleByDay: Map<string, Map<string, ClassItemWithStyles[]>>): string[] {
+    const classIds = new Set<string>();
+
+    scheduleByDay.forEach(hourMap => {
+      hourMap.forEach(items => {
+        items.forEach(item => {
+          const classId = item['_id'] as string | undefined;
+          if (classId) {
+            classIds.add(classId);
+          }
+        });
+      });
+    });
+
+    return Array.from(classIds);
+  }
+
+  private _loadPaymentStatusForClasses(classIds: string[]): void {
+    this.paymentStatusByClassId.clear();
+
+    if (!this.canViewPayments || classIds.length === 0) {
+      return;
+    }
+
+    forkJoin(classIds.map(classId => this.classService.getClassDetails(classId))).subscribe({
+      next: (classDetailsList: ClassDetails[]) => {
+        const paymentStatusByClassId = new Map<string, ClassPaymentStatusCounts>();
+
+        classDetailsList.forEach(details => {
+          if (!details._id) {
+            return;
+          }
+
+          const counts = this._countPaymentStatuses(details);
+          if (counts.almostDueCount > 0 || counts.overdueCount > 0) {
+            paymentStatusByClassId.set(details._id, counts);
+          }
+        });
+
+        this.paymentStatusByClassId = paymentStatusByClassId;
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? '');
+      }
+    });
+  }
+
+  private _countPaymentStatuses(classDetails: ClassDetails): ClassPaymentStatusCounts {
+    let almostDueCount = 0;
+    let overdueCount = 0;
+
+    for (const client of classDetails.clients ?? []) {
+      const status = this._resolvePaymentStatus(client.currentPayment?.paymentStatus);
+      if (status === PaymentStatus.ALMOST_DUE) {
+        almostDueCount++;
+      } else if (status === PaymentStatus.OVERDUE) {
+        overdueCount++;
+      }
+    }
+
+    return { almostDueCount, overdueCount };
+  }
+
+  private _resolvePaymentStatus(status: string | undefined): PaymentStatus | null {
+    if (!status) {
+      return null;
+    }
+
+    if (Object.values(PaymentStatus).includes(status as PaymentStatus)) {
+      return status as PaymentStatus;
+    }
+
+    const normalized = Object.values(PaymentStatus).find(
+      paymentStatus => paymentStatus === status || paymentStatus === status.replace(/_/g, ' ')
+    );
+
+    return normalized ?? null;
+  }
+
+  private _matchesClassType(classItem: CalendarClass): boolean {
+    if (!this.classType) {
+      return true;
+    }
+
+    return classItem.classType === this.classType;
+  }
+
+  private _limitClassesPerTimeSlot(hourMap: Map<string, ClassItemWithStyles[]>): void {
+    hourMap.forEach((items, timeKey) => {
+      if (items.length > this.maxClassesPerTimeSlot) {
+        hourMap.set(timeKey, items.slice(0, this.maxClassesPerTimeSlot));
       }
     });
   }

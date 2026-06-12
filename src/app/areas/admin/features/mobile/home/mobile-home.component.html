@@ -1,9 +1,24 @@
 <form [formGroup]="calendarOptionsForm" class="mobile-home">
-  <app-dropdown
-    label="CALENDAR.VIEW_OPTIONS"
-    [options]="calendarLocationOptions"
-    [formatOption]="FormatOptions.TRANSLATE"
-    controlName="calendarView"></app-dropdown>
+  <div class="calendar-filters">
+    <app-dropdown
+      label="CLASSES.FILTER_BY_LOCATION"
+      [options]="calendarLocationOptions"
+      [formatOption]="FormatOptions.TRANSLATE"
+      [showValidation]="false"
+      controlName="calendarView">
+    </app-dropdown>
 
-  <app-mobile-class-calendar [location]="selectedLocation"></app-mobile-class-calendar>
+    <app-dropdown
+      label="CLASSES.FILTER_BY_TYPE"
+      [options]="calendarClassTypeOptions"
+      [formatOption]="FormatOptions.TRANSLATE"
+      [showValidation]="false"
+      controlName="classType">
+    </app-dropdown>
+  </div>
+
+  <app-mobile-class-calendar
+    [location]="selectedLocation"
+    [classType]="selectedClassType">
+  </app-mobile-class-calendar>
 </form>

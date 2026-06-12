@@ -25,25 +25,27 @@
         <h3>{{ invoiceDetails.paymentStatus | capitalize }}</h3>
       </div>
 
-      <div class="flex-row payment-details white">
-        <h4 class="first-column period-label">{{ 'PAYMENTS.PERIOD' | translate }}:</h4>
-        <div class="flex-column period second-column">
-          <div class="flex-row">
-            <h5 class="period-row-label">{{ 'PAYMENTS.START' | translate }}</h5>
-            <h5>{{ invoiceDetails.period.startDate | translateDate:'shortDate' }}</h5>
-          </div>
-          <div class="flex-row">
-            <h5 class="period-row-label">{{ 'PAYMENTS.END' | translate }}</h5>
-            <h5>{{ (invoiceDetails.originalEndDate || invoiceDetails.period.endDate) | translateDate:'shortDate' }}</h5>
-          </div>
-          <div class="flex-row" *ngIf="invoiceDetails.bonusSessionsApplied && invoiceDetails.bonusSessionsApplied > 0">
-            <h5 class="light-green period-row-label">{{ 'PAYMENTS.BONUS_SESSIONS_APPLIED' | translate }}:</h5>
-            <h5 class="light-green">{{ invoiceDetails.bonusSessionsApplied }}</h5>
-          </div>
-          <div class="flex-row" *ngIf="invoiceDetails.bonusSessionsApplied && invoiceDetails.bonusSessionsApplied > 0 && invoiceDetails.originalEndDate">
-            <h5 class="light-green period-row-label">{{ 'PAYMENTS.NEW_END' | translate }}:</h5>
-            <h5 class="light-green">{{ invoiceDetails.period.endDate | translateDate:'shortDate' }}</h5>
-          </div>
+      <div class="period-section white">
+        <h4 class="period-section-label">{{ 'PAYMENTS.PERIOD' | translate }}:</h4>
+        <div class="period-labels-column">
+          <h5 class="period-detail-label">{{ 'PAYMENTS.START' | translate }}</h5>
+          <h5 class="period-detail-label">{{ 'PAYMENTS.END' | translate }}</h5>
+          <h5 class="period-detail-label light-green" *ngIf="invoiceDetails.bonusSessionsApplied && invoiceDetails.bonusSessionsApplied > 0">
+            {{ 'PAYMENTS.BONUS_SESSIONS_APPLIED' | translate }}:
+          </h5>
+          <h5 class="period-detail-label light-green" *ngIf="invoiceDetails.bonusSessionsApplied && invoiceDetails.bonusSessionsApplied > 0 && invoiceDetails.originalEndDate">
+            {{ 'PAYMENTS.NEW_END' | translate }}:
+          </h5>
+        </div>
+        <div class="period-values-column">
+          <h5 class="period-detail-value">{{ invoiceDetails.period.startDate | translateDate:'shortDate' }}</h5>
+          <h5 class="period-detail-value">{{ (invoiceDetails.originalEndDate || invoiceDetails.period.endDate) | translateDate:'shortDate' }}</h5>
+          <h5 class="period-detail-value light-green" *ngIf="invoiceDetails.bonusSessionsApplied && invoiceDetails.bonusSessionsApplied > 0">
+            {{ invoiceDetails.bonusSessionsApplied }}
+          </h5>
+          <h5 class="period-detail-value light-green" *ngIf="invoiceDetails.bonusSessionsApplied && invoiceDetails.bonusSessionsApplied > 0 && invoiceDetails.originalEndDate">
+            {{ invoiceDetails.period.endDate | translateDate:'shortDate' }}
+          </h5>
         </div>
       </div>
 

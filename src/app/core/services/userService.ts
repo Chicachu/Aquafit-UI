@@ -105,8 +105,8 @@ export class UserService {
       .pipe(take(1));
   }
 
-  addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber?: string, role?: Role, employeeId?: number | null }): Observable<Object> {
-    return this._http.put(`${environment.apiUrl}/users/`, { ...reqObj }).pipe(
+  addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber?: string, role?: Role, employeeId?: number | null }): Observable<User> {
+    return this._http.put<User>(`${environment.apiUrl}/users/`, { ...reqObj }).pipe(
       take(1),
       tap(() => {
         // Invalidate user list caches

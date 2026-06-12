@@ -138,6 +138,7 @@
     "UNENROLL_REASON": "Razón (Opcional)",
     "UNENROLL_SUCCESS": "¡Cliente dado de baja exitosamente!",
     "DELETE_USER": "Eliminar Usuario",
+    "DELETE_CLIENT_INFO": "Eliminar Información del Cliente",
     "DELETE_USER_CONFIRM_MESSAGE": "¿Está seguro de que desea eliminar este usuario? Esta acción no se puede deshacer.",
     "DELETE_USER_CONFIRM_YES": "Sí, estoy seguro",
     "DELETE_USER_SUCCESS": "Usuario eliminado exitosamente."

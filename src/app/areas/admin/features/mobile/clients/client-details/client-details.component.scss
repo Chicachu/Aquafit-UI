@@ -63,6 +63,13 @@ h3 {
   margin-left: 0;
 }
 
+// Sized for longest class type label ("Fitness Privado") at default h3 + a little padding
+.class-type-divider {
+  width: 132px;
+  max-width: 132px;
+  margin: 0;
+}
+
 h4 {
   margin: 0;
   color: $light-green;
@@ -162,5 +169,21 @@ ul {
   .buttons {
     margin-top: 15px;
     justify-content: center;
+  }
+}
+
+.waitlist-section {
+  margin-top: 8px;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .class-info {
+    font-size: 0.9em;
+    color: $light-blue;
+    margin-left: 0;
   }
 }

@@ -1,5 +1,11 @@
 @import '../../../../../assets/colors.scss';
 
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .time-slot {
   height: 100%;
   display: flex;
@@ -21,6 +27,44 @@
   align-items: center;
 }
 
+.slot-item {
+  display: contents;
+}
+
+:host(.stack-items) {
+  .time-slot {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    padding: 4px;
+    gap: 4px;
+    box-sizing: border-box;
+  }
+
+  .time {
+    display: block;
+    min-width: 0;
+    font-size: 0.7em;
+    line-height: 1.2;
+    padding: 0 2px;
+  }
+
+  .items-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    gap: 4px;
+  }
+
+  .slot-item {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
 .empty {
   background-color: $background-blue;
   color: $light-pink;
@@ -28,4 +72,12 @@
   display: flex;
   align-items: center;
   padding-left: 10px;
+}
+
+:host(.stack-items) .empty {
+  align-items: flex-start;
+  padding: 4px;
+  font-size: 0.7em;
+  line-height: 1.2;
+  color: $light-pink;
 }

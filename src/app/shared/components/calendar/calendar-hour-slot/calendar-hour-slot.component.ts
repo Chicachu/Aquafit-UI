@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef } from '@angular/core';
+import { Component, HostBinding, Input, TemplateRef } from '@angular/core';
 
 export interface CalendarHourSlotItem {
   [key: string]: any;
@@ -14,4 +14,10 @@ export class CalendarHourSlotComponent {
   @Input() items: CalendarHourSlotItem[] = []
   @Input() itemTemplate: TemplateRef<any> | null = null
   @Input() emptyTemplate: TemplateRef<any> | null = null
+  @Input() stackItems = false
+
+  @HostBinding('class.stack-items')
+  get isStackItems(): boolean {
+    return this.stackItems
+  }
 }

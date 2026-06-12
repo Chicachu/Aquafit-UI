@@ -12,25 +12,43 @@ h3, h4, h5, h6 {
   width: 95vw;
 }
 
-.period {
-  // Removed top positioning to align Period: label at the top
-}
+.period-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content max-content;
+  column-gap: 12px;
+  row-gap: 2px;
+  align-items: start;
+  width: 95vw;
+  margin-left: 5vw;
+  box-sizing: border-box;
 
-.period-label {
-  align-self: flex-start;
-}
+  .period-section-label {
+    margin: 5px 0;
+    padding-right: 20px;
+    justify-self: start;
+    align-self: start;
+  }
 
-.period > div {
-  justify-content: space-between;
-}
+  .period-labels-column,
+  .period-values-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-self: end;
+    align-self: start;
+    align-items: flex-start;
+    text-align: left;
+  }
 
-.period-row-label {
-  // Ensure consistent alignment for all period row labels
-  // Reset any margins/padding that might cause misalignment
-  margin: 0;
-  padding: 0;
-  width: auto;
-  min-width: 0;
+  .period-detail-label,
+  .period-detail-value {
+    margin: 0;
+    padding: 0 20px 0 0;
+    font-size: 0.85em;
+    white-space: nowrap;
+    text-align: left;
+    width: 100%;
+  }
 }
 
 .container {
@@ -196,9 +214,11 @@ hr {
     }
   }
 
-  .period > div {
-    justify-content: flex-start;
-    gap: 8px;
+  .period-section {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 16px;
+    box-sizing: border-box;
   }
 
   .container {

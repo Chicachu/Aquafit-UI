@@ -21,6 +21,7 @@ interface ClassItemWithStyles extends CalendarHourSlotItem {
 })
 export class MobileClassCalendarComponent implements OnChanges, OnInit {
   @Input() location: string = ''
+  @Input() classType: string = ''
   readonly HOURS_IN_WORKDAY = ["7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
 
   classSchedule: Map<string, ClassItemWithStyles[]> = new Map()
@@ -52,7 +53,7 @@ export class MobileClassCalendarComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['location']) {
+    if (changes['location'] || changes['classType']) {
       this.classSchedule = new Map()
       this._updateLegendItems()
       this._loadSchedule()
@@ -113,6 +114,10 @@ export class MobileClassCalendarComponent implements OnChanges, OnInit {
         // Process all classes and group by hour, pre-computing styles
         responseMap.forEach((classes: CalendarClass[]) => {
           classes.forEach((classItem: CalendarClass) => {
+            if (!this._matchesClassType(classItem)) {
+              return
+            }
+
             const hour = new Date(classItem.date).getHours()
             const timeKey = `${hour}:00`
 
@@ -144,5 +149,13 @@ export class MobileClassCalendarComponent implements OnChanges, OnInit {
         this.snackBarService.showError(error.message)
       }
     })
+  }
+
+  private _matchesClassType(classItem: CalendarClass): boolean {
+    if (!this.classType) {
+      return true
+    }
+
+    return classItem.classType === this.classType
   }
 }

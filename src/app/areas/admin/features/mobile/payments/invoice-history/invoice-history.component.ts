@@ -68,6 +68,16 @@ export class InvoiceHistoryComponent implements OnInit, OnChanges {
       ]
     }
 
+    if (this.panelView && this.userId && this.enrollmentId) {
+      return [
+        '/admin/clients',
+        this.userId,
+        'payments',
+        this.enrollmentId,
+        invoiceId
+      ]
+    }
+
     return [invoiceId]
   }
 

@@ -14,10 +14,19 @@
   border-radius: 0;
   text-align: left;
 
-  app-dropdown {
+  .calendar-filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     flex-shrink: 0;
-    max-width: 320px;
+    gap: 12px;
     padding: 12px 16px 0;
+
+    app-dropdown {
+      flex: 1;
+      min-width: 200px;
+      max-width: 320px;
+    }
   }
 
   app-desktop-class-calendar {

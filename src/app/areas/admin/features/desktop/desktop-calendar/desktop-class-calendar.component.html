@@ -8,7 +8,21 @@
     tabindex="0"
     (keydown.enter)="goToClassDetails(classItem?._id)"
     (keydown.space)="goToClassDetails(classItem?._id); $event.preventDefault()">
-    {{ 'CLASS_TYPES.' + (classItem?.classType || '') | translate | capitalize }}
+    <span class="class-bubble-label">
+      {{ 'CLASS_TYPES.' + (classItem?.classType || '') | translate | capitalize }}
+    </span>
+    <span *ngIf="canViewPayments" class="payment-status-icons">
+      <span
+        *ngIf="hasAlmostDuePayments(classItem?._id)"
+        class="icon almost-due-status-icon calendar-payment-icon"
+        [attr.title]="'PAYMENT_STATUS.ALMOST_DUE' | translate">
+      </span>
+      <span
+        *ngIf="hasOverduePayments(classItem?._id)"
+        class="icon overdue-status-icon calendar-payment-icon"
+        [attr.title]="'PAYMENT_STATUS.OVERDUE' | translate">
+      </span>
+    </span>
   </div>
 </ng-template>
 

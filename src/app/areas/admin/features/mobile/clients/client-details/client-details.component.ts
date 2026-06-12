@@ -1,6 +1,8 @@
-import { ChangeDetectorRef, Component } from "@angular/core";
+import { ChangeDetectorRef, Component, HostBinding, OnDestroy, OnInit } from "@angular/core";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { ActivatedRoute, Router } from "@angular/router";
+import { distinctUntilChanged, map } from "rxjs/operators";
+import { forkJoin, Subscription } from "rxjs";
 import { UserService } from "@core/services/userService";
 import { User } from "@core/types/user";
 import { SnackBarService } from "@core/services/snackBarService";
@@ -20,13 +22,16 @@ import { Weekday } from "@core/types/enums/weekday";
 import { Note } from "@core/types/user";
 import { EnrollmentStatus } from "@core/types/enums/enrollmentStatus";
 import { Role } from "@core/types/enums/role";
+import { WaitlistService, WaitlistEntry } from "@core/services/waitlistService";
 
 @Component({
   selector: 'app-client-details',
   templateUrl: './client-details.component.html',
   styleUrls: ['./client-details.component.scss']
 })
-export class ClientDetailsComponent {
+export class ClientDetailsComponent implements OnInit, OnDestroy {
+  @HostBinding('class.panel-view') panelView = false
+
   readonly FormatOptions = FormatOptions
   readonly EnrollmentStatus = EnrollmentStatus
   ButtonType = ButtonType
@@ -66,7 +71,10 @@ export class ClientDetailsComponent {
     }))
   advancedOptionsClassInfo: Class | undefined
   disabledDaysChips: number[] = []
+  waitlistClassInfo: Array<{ classId: string, className: string }> = []
+  allClasses: Class[] = []
 
+  private routeSubscription?: Subscription
   constructor(
     private route: ActivatedRoute,
     private userService: UserService, 
@@ -75,7 +83,8 @@ export class ClientDetailsComponent {
     private fb: FormBuilder,
     private enrollmentService: EnrollmentService,
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
+    private waitlistService: WaitlistService
   ) {
     this.classSelectionForm = this.fb.group({
       class_type: ['', [Validators.required]],
@@ -133,7 +142,7 @@ export class ClientDetailsComponent {
       next: () => {
         this.showDeleteUserModal = false
         this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.DELETE_USER_SUCCESS'))
-        this.router.navigate(['/admin/mobile/clients'])
+        this.router.navigate(this.panelView ? ['/admin/clients'] : ['/admin/mobile/clients'])
       },
       error: ({ error }) => {
         this.snackBarService.showError(error?.message ?? this.translateService.instant('errors.somethingWentWrong'))
@@ -142,21 +151,88 @@ export class ClientDetailsComponent {
   }
 
   ngOnInit(): void {
-    const userId = this.route.snapshot.paramMap.get('user-id')
-    
-    this.enrollmentService.getClientEnrollmentDetails(userId!).subscribe({
-      next: (clientEnrollmentDetails: ClientEnrollmentDetails) => {
+    if (this.route.snapshot.data['panelView'] === true) {
+      this.panelView = true
+    }
+
+    this._setupClassSelectionFormSubscriptions()
+
+    this.routeSubscription = this._getUserIdRoute().paramMap.pipe(
+      map(params => params.get('user-id')),
+      distinctUntilChanged()
+    ).subscribe(userId => {
+      if (!userId) {
+        return
+      }
+
+      this._loadClientDetails(userId)
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe()
+  }
+
+  private _getUserIdRoute(): ActivatedRoute {
+    if (this.route.snapshot.paramMap.has('user-id')) {
+      return this.route
+    }
+
+    if (this.route.parent?.snapshot.paramMap.has('user-id')) {
+      return this.route.parent
+    }
+
+    return this.route
+  }
+
+  private _loadClientDetails(userId: string): void {
+    forkJoin({
+      clientEnrollmentDetails: this.enrollmentService.getClientEnrollmentDetails(userId),
+      waitlistEntries: this.waitlistService.getAllWaitlistEntries(),
+      classes: this.classService.getAllClasses()
+    }).subscribe({
+      next: ({ clientEnrollmentDetails, waitlistEntries, classes }) => {
         this.client = clientEnrollmentDetails.client
         this.clientId = this.client._id
         this.classEnrollmentInfo = clientEnrollmentDetails.enrolledClassInfo
+        this.allClasses = classes
+        this._buildWaitlistClassInfo(userId, waitlistEntries)
         this._separateActiveAndTerminated(this.classEnrollmentInfo)
         this._loadCanDeleteUser()
       },
-      error: ({error}) => {
+      error: ({ error }) => {
         this.snackBarService.showError(error.message)
       }
     })
+  }
 
+  private _buildWaitlistClassInfo(userId: string, waitlistEntries: WaitlistEntry[]): void {
+    const seenClassIds = new Set<string>()
+    this.waitlistClassInfo = []
+
+    waitlistEntries
+      .filter(entry => entry.userId === userId)
+      .forEach(entry => {
+        if (seenClassIds.has(entry.classId)) {
+          return
+        }
+
+        seenClassIds.add(entry.classId)
+        this.waitlistClassInfo.push({
+          classId: entry.classId,
+          className: this.getClassDisplayName(entry.classId)
+        })
+      })
+  }
+
+  getClassDisplayName(classId: string): string {
+    const classItem = this.allClasses.find(c => c._id === classId)
+    if (!classItem) return classId
+    const daysStr = classItem.days.map((d: number) => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]).join('/')
+    return `${daysStr} - ${classItem.startTime} - ${classItem.classLocation}`
+  }
+
+  private _setupClassSelectionFormSubscriptions(): void {
     this.classSelectionForm.get('class_type')?.valueChanges.subscribe((selectedClassType: ClassType) => {
       if (!this.classScheduleMap) return 
 
@@ -237,7 +313,9 @@ export class ClientDetailsComponent {
       const daysOverride = this.classSelectionForm.controls["days_override"].value ?? null
       this.enrollmentService.enrollClient(this.selectedClassId, this.clientId!, this.f['start_date'].value._d, billingFrequency, daysOverride).subscribe({
         next: () => {
-          this.ngOnInit()
+          if (this.clientId) {
+            this._loadClientDetails(this.clientId)
+          }
           this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
           this.showEnrollmentModal = false
         }, 
@@ -386,8 +464,33 @@ export class ClientDetailsComponent {
 
   editClient(): void {
     if (this.clientId) {
+      if (this.panelView) {
+        this.router.navigate(['/admin/clients', this.clientId, 'edit'])
+        return
+      }
+
       this.router.navigate(['../edit'], { relativeTo: this.route })
     }
+  }
+
+  getClassDetailsLink(classId: string | undefined): string[] {
+    if (!classId) {
+      return []
+    }
+
+    return this.panelView
+      ? ['/admin/classes', classId, 'details']
+      : ['/admin/mobile/classes', classId, 'details']
+  }
+
+  getPaymentHistoryLink(enrollmentId: string | undefined): string[] {
+    if (!enrollmentId || !this.clientId) {
+      return []
+    }
+
+    return this.panelView
+      ? ['/admin/clients', this.clientId, 'payments', enrollmentId]
+      : ['../payments', enrollmentId]
   }
 
   onNotesUpdated(notes: Note[]): void {
@@ -419,7 +522,9 @@ export class ClientDetailsComponent {
       const cancelReason = this.unenrollForm.get('cancelReason')?.value || undefined
       this.enrollmentService.unenrollClient(this.selectedEnrollmentForUnenroll.enrollment._id, cancelReason, this.clientId!).subscribe({
         next: () => {
-          this.ngOnInit()
+          if (this.clientId) {
+            this._loadClientDetails(this.clientId)
+          }
           this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.UNENROLL_SUCCESS'))
           this.showUnenrollModal = false
           this.selectedEnrollmentForUnenroll = null

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostBinding, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserService } from "@core/services/userService";
@@ -14,6 +14,8 @@ import { Role } from "@core/types/enums/role";
   styleUrls: ['./edit-client.component.scss']
 })
 export class EditClientComponent implements OnInit {
+  @HostBinding('class.panel-view') panelView = false
+
   readonly TextInputType = TextInputType
   contactForm: FormGroup
   loading = false
@@ -44,6 +46,10 @@ export class EditClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.route.snapshot.data['panelView'] === true) {
+      this.panelView = true
+    }
+
     this.userId = this.route.snapshot.paramMap.get('user-id')
     this.isEditMode = !!this.userId
 
@@ -113,6 +119,11 @@ export class EditClientComponent implements OnInit {
           next: () => {
             this.loading = false
             this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.UPDATE_CLIENT_SUCCESS'))
+            if (this.panelView && this.userId) {
+              this.router.navigate(['/admin/clients', this.userId, 'details'])
+              return
+            }
+
             this.router.navigate(['../details'], { relativeTo: this.route })
           },
           error: (err: { error?: { message?: string } }) => {
@@ -122,12 +133,10 @@ export class EditClientComponent implements OnInit {
         })
       } else {
         this.userService.addNewClient(clientData).subscribe({
-          next: () => {
+          next: (createdClient: User) => {
             this.loading = false
             this.snackBarService.showSuccess(this.translateService.instant('CLIENTS.ADD_NEW_CLIENT_SUCCESS'))
-            this.contactForm.reset()
-            this.contactForm.markAsUntouched()
-            this.contactForm.markAsPristine()
+            this._navigateAfterAdd(createdClient._id)
           },
           error: (err: { error?: { message?: string } }) => {
             this.loading = false
@@ -142,5 +151,14 @@ export class EditClientComponent implements OnInit {
 
   getErrorMessage(controlName: string): string {
     return ''
+  }
+
+  private _navigateAfterAdd(clientId: string): void {
+    if (this.panelView) {
+      this.router.navigate(['/admin/clients', clientId, 'details'])
+      return
+    }
+
+    this.router.navigate(['/admin/mobile/clients'])
   }
 }

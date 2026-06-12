@@ -25,6 +25,11 @@
         [payableId]="activePayableId"
         [panelView]="true">
       </app-employee-payable-details>
+      <app-employee-assign-class
+        *ngIf="showAssignPanel && activeUserId"
+        [userId]="activeUserId"
+        [panelView]="true">
+      </app-employee-assign-class>
     </div>
   </section>
 </div>

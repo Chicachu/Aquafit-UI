@@ -84,9 +84,71 @@ h3, h4, h5, h6 {
   color: #666;
 }
 
+.no-check-ins-message {
+  margin: 0 0 8px 0;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #666;
+}
+
 hr {
   border: none;
   border-top: 1px solid #ccc;
   margin: 15px 5vw;
   width: 90vw;
+}
+
+:host(.panel-view) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  .container {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .header {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .general-info {
+    border-bottom: 1px solid $light-blue;
+    text-align: center;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    align-items: center;
+
+    h3, h4 {
+      margin: 5px 0;
+    }
+  }
+
+  .payment-details {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .payment-status,
+  .payment-status h3 {
+    width: 100%;
+  }
+
+  .first-column {
+    width: 50%;
+  }
+
+  .second-column {
+    width: 50%;
+  }
+
+  hr {
+    margin: 15px 16px;
+    width: auto;
+  }
 }

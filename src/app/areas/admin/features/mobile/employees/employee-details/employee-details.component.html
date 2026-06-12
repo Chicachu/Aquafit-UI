@@ -21,7 +21,7 @@
 
   <div *ngIf="employee && (employee.role === Role.INSTRUCTOR || canEditEmployee)" class="flex-column employee-details-content">
     <!-- Teaching (instructors only) -->
-    <ng-container *ngIf="employee.role === Role.INSTRUCTOR">
+    <ng-container *ngIf="employee.role === Role.INSTRUCTOR || employee.role === Role.MANAGER">
       <div class="flex-row classes-section">
         <h2 class="light-blue">{{ 'EMPLOYEES.TEACHING' | translate }}</h2>
         <button
@@ -35,7 +35,7 @@
 
       <div *ngFor="let assignmentGroup of assignmentsGrouped | keyvalue">
         <h3 class="mid-green">{{ 'CLASS_TYPES.' + assignmentGroup.key | translate | capitalize }}</h3>
-        <hr />
+        <hr class="class-type-divider" />
         <div *ngFor="let locationGroup of assignmentGroup.value | keyvalue">
           <h4>{{ locationGroup.key }}</h4>
           <ul>
@@ -120,41 +120,19 @@
 </div>
 
 <app-modal
-  *ngIf="showAssignmentModal"
+  *ngIf="showAssignmentModal && !panelView"
   [parent]="this"
   [title]="'EMPLOYEES.ASSIGN_INSTRUCTOR' | translate"
-  [buttonList]="assignmentButtons"
-  (modalClick)="processAssignmentModalClick($event)"
+  [buttonList]="[]"
+  (modalClick)="onAssignmentModalClick($event)"
   class="assignment-modal">
   <div content>
-    <p>{{ 'EMPLOYEES.ASSIGN_INSTRUCTIONS' | translate }}</p>
-    <h5>{{ employee?.firstName }} {{ employee?.lastName }}</h5>
-    <div [formGroup]="classSelectionForm">
-      <app-dropdown
-        *ngIf="classTypeOptions.length"
-        label="CONTROLS.CLASS_TYPE"
-        [options]="classTypeOptions"
-        [i18nPrefix]="'CLASS_TYPES'"
-        controlName="class_type">
-      </app-dropdown>
-      <app-dropdown
-        label="CONTROLS.LOCATION"
-        [options]="classLocationOptions"
-        controlName="location"
-        [disabled]="!selectedType">
-      </app-dropdown>
-      <app-dropdown
-        label="CONTROLS.TIME"
-        [options]="classTimesOptions"
-        controlName="time"
-        [disabled]="!selectedType || !selectedLocation">
-      </app-dropdown>
-      <app-datepicker
-        label="CONTROLS.START_DATE"
-        controlName="start_date"
-        [allowedWeekdays]="selectedClassDays">
-      </app-datepicker>
-    </div>
+    <app-employee-assign-class
+      *ngIf="employeeId"
+      [userId]="employeeId"
+      (closed)="closeAssignmentModal()"
+      (assigned)="onEmployeeAssigned()">
+    </app-employee-assign-class>
   </div>
 </app-modal>
 

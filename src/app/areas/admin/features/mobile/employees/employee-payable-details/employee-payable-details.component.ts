@@ -23,6 +23,18 @@ export class EmployeePayableDetailsComponent implements OnInit, OnChanges {
 
   payable: EmployeePayable | null = null;
 
+  get breadcrumbBackRoute(): string[] | null {
+    if (!this.panelView || !this.userId) {
+      return null
+    }
+
+    return ['/admin/employees', this.userId, 'payments']
+  }
+
+  get hasNoCheckInEarnings(): boolean {
+    return !this.payable?.lineItems?.length
+  }
+
   constructor(
     private route: ActivatedRoute,
     private invoiceAndPaymentsService: InvoiceAndPaymentsService,

@@ -1,12 +1,10 @@
 <div class="flex-column">
   <app-breadcrumb-nav-bar
-    *ngIf="!panelView"
-    [title]="'PAYMENTS.PAYABLE_DETAILS' | translate"
-    [buttonType]="ButtonType.NONE">
+    [title]="'PAYMENTS.PAYABLE_DETAILS'"
+    [buttonType]="ButtonType.NONE"
+    [showBack]="true"
+    [backRoute]="breadcrumbBackRoute">
   </app-breadcrumb-nav-bar>
-  <div *ngIf="panelView" class="panel-view-header">
-    <h2 class="light-blue">{{ 'PAYMENTS.PAYABLE_DETAILS' | translate }}</h2>
-  </div>
 
   <div class="container" *ngIf="payable as p">
     <div class="header flex-column" [class.general-info]="panelView">
@@ -35,7 +33,7 @@
 
       <hr />
 
-      <div *ngIf="p.lineItems && p.lineItems.length > 0">
+      <div class="earnings-breakdown-section">
         <div class="flex-row payment-details white">
           <h4 class="first-column">{{ 'PAYMENTS.EARNINGS_BREAKDOWN' | translate }}:</h4>
           <div class="second-column"></div>
@@ -47,6 +45,9 @@
           </div>
           <h4 class="second-column price-value">{{ formatPrice(item.amount) }}</h4>
         </div>
+        <p *ngIf="hasNoCheckInEarnings" class="no-check-ins-message payment-details">
+          {{ 'PAYMENTS.NO_CHECK_INS_FOR_PAYABLE' | translate }}
+        </p>
       </div>
 
       <hr />

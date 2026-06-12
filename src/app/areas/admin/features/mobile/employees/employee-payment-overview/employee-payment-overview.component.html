@@ -1,12 +1,9 @@
 <div>
   <app-breadcrumb-nav-bar
-    *ngIf="!panelView"
-    [title]="'EMPLOYEES.PAYMENT_OVERVIEW' | translate"
-    [buttonType]="ButtonType.NONE">
+    [title]="'EMPLOYEES.PAYMENT_OVERVIEW'"
+    [buttonType]="ButtonType.NONE"
+    [showBack]="!panelView">
   </app-breadcrumb-nav-bar>
-  <div *ngIf="panelView" class="panel-view-header">
-    <h2 class="light-blue">{{ 'EMPLOYEES.PAYMENT_OVERVIEW' | translate }}</h2>
-  </div>
 
   <div *ngIf="employeeName">
     <div class="header flex-column" [class.general-info]="panelView">

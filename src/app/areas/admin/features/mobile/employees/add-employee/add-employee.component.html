@@ -35,6 +35,13 @@
         controlName="role">
       </app-dropdown>
 
+      <app-dropdown
+        label="CONTROLS.LOCATION"
+        [options]="locationOptions"
+        controlName="workLocation"
+        [hasNoSelectOption]="true">
+      </app-dropdown>
+
       <app-submit-button
         [loading]="loading"
         [label]="'CONTROLS.SUBMIT' | translate"

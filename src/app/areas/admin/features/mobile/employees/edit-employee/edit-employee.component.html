@@ -50,6 +50,13 @@
         [minLength]="6">
       </app-text-input>
 
+      <app-dropdown
+        label="CONTROLS.LOCATION"
+        [options]="locationOptions"
+        controlName="workLocation"
+        [hasNoSelectOption]="true">
+      </app-dropdown>
+
       <app-submit-button
         [loading]="loading"
         [label]="'CLIENTS.UPDATE' | translate"

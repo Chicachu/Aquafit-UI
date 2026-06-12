@@ -63,11 +63,9 @@ h3 {
   margin-left: 0;
 }
 
-// Sized for longest class type label ("Fitness Privado") at default h3 + a little padding
 .class-type-divider {
-  width: 132px;
-  max-width: 132px;
-  margin: 0;
+  margin: 0 0 0 30px;
+  width: auto;
 }
 
 h4 {

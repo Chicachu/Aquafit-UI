@@ -10,6 +10,7 @@ import { filter, Subscription } from 'rxjs';
 export class EmployeesDesktopPageComponent implements OnInit, OnDestroy {
   showPaymentOverviewPanel = false
   showPayableDetailsPanel = false
+  showAssignPanel = false
   activeUserId: string | null = null
   activePayableId: string | null = null
 
@@ -36,6 +37,7 @@ export class EmployeesDesktopPageComponent implements OnInit, OnDestroy {
     this.activePayableId = this._findParamInRouteTree(this.route, 'payable-id')
     this.showPaymentOverviewPanel = this._routeTreeHasData(this.route, 'showPaymentOverviewPanel')
     this.showPayableDetailsPanel = this._routeTreeHasData(this.route, 'showPayableDetailsPanel')
+    this.showAssignPanel = this._routeTreeHasData(this.route, 'showAssignPanel')
   }
 
   private _findParamInRouteTree(route: ActivatedRoute, param: string): string | null {

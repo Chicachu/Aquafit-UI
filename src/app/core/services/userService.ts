@@ -107,7 +107,7 @@ export class UserService {
       .pipe(take(1));
   }
 
-  addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber?: string, role?: Role, employeeId?: number | null }): Observable<User> {
+  addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber?: string, role?: Role, employeeId?: number | null, workLocation?: string | null }): Observable<User> {
     return this._http.put<User>(`${environment.apiUrl}/users/`, { ...reqObj }).pipe(
       take(1),
       tap((created) => {
@@ -116,7 +116,7 @@ export class UserService {
     );
   }
 
-  updateClient(userId: string, reqObj: { firstName?: string, lastName?: string, phoneNumber?: string, role?: Role, employeeId?: number | null, password?: string }): Observable<User> {
+  updateClient(userId: string, reqObj: { firstName?: string, lastName?: string, phoneNumber?: string, role?: Role, employeeId?: number | null, workLocation?: string | null, password?: string }): Observable<User> {
     return this._http.put<User>(`${environment.apiUrl}/users/${userId}`, reqObj).pipe(
       take(1),
       tap(() => {

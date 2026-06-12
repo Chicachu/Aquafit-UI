@@ -119,6 +119,11 @@ const routes: Routes = [
         data: { panelView: true }
       },
       {
+        path: ':user-id/details/assign',
+        component: EmployeeDetailsComponent,
+        data: { panelView: true, showAssignPanel: true }
+      },
+      {
         path: ':user-id/details',
         component: EmployeeDetailsComponent,
         data: { panelView: true }

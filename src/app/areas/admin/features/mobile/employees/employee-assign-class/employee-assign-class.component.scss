@@ -1,0 +1,70 @@
+@import 'assets/colors.scss';
+
+.assign-content {
+  p,
+  h5 {
+    text-align: center;
+  }
+}
+
+.assign-form {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.buttons {
+  margin-top: 15px;
+  justify-content: space-between;
+}
+
+.buttons > * {
+  width: 45%;
+}
+
+:host(:not(.panel-view)) {
+  .assign-content form {
+    width: inherit;
+    border: none;
+    min-height: fit-content;
+    padding: 0;
+  }
+}
+
+:host.panel-view {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  .assign-content {
+    padding: 16px;
+    box-sizing: border-box;
+
+    > p {
+      color: $mid-pink;
+    }
+
+    > h5 {
+      color: $mid-green;
+    }
+
+    .buttons {
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .buttons > * {
+      width: auto;
+    }
+  }
+
+  .assign-form {
+    border: none !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+  }
+}

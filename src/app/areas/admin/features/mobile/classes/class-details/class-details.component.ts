@@ -43,7 +43,7 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
   }
 
   get canTerminateClass(): boolean {
-    return !this.isTerminated && (this.userService.isAdmin || this.userService.isManager || this.userService.userRole === Role.INSTRUCTOR)
+    return !this.isTerminated && (this.userService.isAdmin || this.userService.isManager)
   }
 
   get canEnrollClientToClass(): boolean {

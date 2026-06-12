@@ -46,3 +46,42 @@ li {
 ul {
   padding-left: 5vw;
 }
+
+:host(.panel-view) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  .header {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .general-info {
+    border-bottom: 1px solid $light-blue;
+    text-align: center;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    align-items: center;
+
+    h3, h4 {
+      margin: 5px 0;
+    }
+  }
+
+  .period-row {
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  ul {
+    padding-left: 0;
+    margin: 0;
+  }
+
+  li {
+    color: white;
+  }
+}

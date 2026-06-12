@@ -10,6 +10,8 @@ import { STAFF_MANAGEMENT_ROLE_OPTIONS } from "@core/constants/staffManagementRo
 import { User } from "@core/types/user";
 import { MustMatch } from "@shared/validators/mustMatch";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
+import { ClassService } from "@core/services/classService";
+import { SelectOption } from "@core/types/selectOption";
 
 @Component({
   selector: 'app-edit-employee',
@@ -28,6 +30,7 @@ export class EditEmployeeComponent implements OnInit {
   staffId: number | null = null
   loadedRole: Role | null = null
   roleOptions = STAFF_MANAGEMENT_ROLE_OPTIONS
+  locationOptions: SelectOption[] = []
 
   get editBreadcrumbTitle(): string {
     if (this.loadedRole === Role.INSTRUCTOR) return 'EMPLOYEES.EDIT_INSTRUCTOR'
@@ -50,6 +53,7 @@ export class EditEmployeeComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private classService: ClassService,
     private userService: UserService,
     private snackBarService: SnackBarService,
     private translateService: TranslateService,
@@ -66,6 +70,7 @@ export class EditEmployeeComponent implements OnInit {
           Validators.maxLength(15)
         ]],
         role: [Role.INSTRUCTOR, [Validators.required]],
+        workLocation: [''],
         password: [''],
         confirmPassword: ['']
       },
@@ -81,6 +86,18 @@ export class EditEmployeeComponent implements OnInit {
     this.userId = this.route.snapshot.paramMap.get('user-id')
     if (!this.userId) return
 
+    this.classService.getAllLocations().subscribe({
+      next: (locations) => {
+        this.locationOptions = locations.map((location) => ({
+          value: location,
+          viewValue: location
+        }))
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? '')
+      }
+    })
+
     this.userService.getUser(this.userId).subscribe({
       next: (user: User) => {
         this.loadedRole = user.role
@@ -89,7 +106,8 @@ export class EditEmployeeComponent implements OnInit {
           firstName: user.firstName,
           lastName: user.lastName,
           phoneNumber: user.phoneNumber ?? '',
-          role: user.role
+          role: user.role,
+          workLocation: user.workLocation ?? ''
         })
       },
       error: ({ error }) => {
@@ -106,12 +124,14 @@ export class EditEmployeeComponent implements OnInit {
     if (this.form.valid && this.userId) {
       this.loading = true
       const role = this.f['role'].value as Role
+      const workLocation = this.f['workLocation'].value?.trim()
       const payload: Parameters<UserService['updateClient']>[1] = {
         firstName: this.f['firstName'].value.trim(),
         lastName: this.f['lastName'].value.trim(),
         phoneNumber: this.f['phoneNumber'].value?.trim(),
         role,
-        employeeId: this.staffId
+        employeeId: this.staffId,
+        workLocation: workLocation || null
       }
       const pwd = this.form.get('password')?.value
       if (typeof pwd === 'string' && pwd.trim().length > 0) {

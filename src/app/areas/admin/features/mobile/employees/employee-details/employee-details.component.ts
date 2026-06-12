@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnDestroy, OnInit } from "@angular/core";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
-import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, map } from "rxjs/operators";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { distinctUntilChanged, filter, map } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { UserService } from "@core/services/userService";
 import { ScheduleService } from "@core/services/scheduleService";
@@ -14,12 +14,8 @@ import { Class } from "@core/types/classes/class";
 import { Assignment } from "@core/types/assignment";
 import { ClassType } from "@core/types/enums/classType";
 import { AssignmentStatus } from "@core/types/enums/assignmentStatus";
-import { ClassService } from "@core/services/classService";
 import { AssignmentService } from "@core/services/assignmentService";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ClassScheduleMap } from "@core/types/classScheduleMap";
-import { SelectOption } from "@core/types/selectOption";
-import { forkJoin } from "rxjs";
 
 @Component({
   selector: "app-employee-details",
@@ -39,7 +35,6 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
   canEditEmployee = false;
 
   showAssignmentModal = false;
-  assignmentButtons = [{ text: "CONTROLS.CANCEL" }, { text: "EMPLOYEES.ASSIGN_INSTRUCTOR" }];
   showUnassignModal = false;
   unassignButtons = [{ text: "CONTROLS.CANCEL" }, { text: "EMPLOYEES.UNASSIGN" }];
   unassignForm: FormGroup;
@@ -50,18 +45,8 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
   pastAssignmentInfo: { class: Class; assignment: Assignment }[] = [];
   terminatedAssignmentInfo: { class: Class; assignment: Assignment }[] = [];
 
-  classSelectionForm: FormGroup;
-  classTypeOptions: SelectOption[] = [];
-  selectedType: ClassType | null = null;
-  classLocationOptions: SelectOption[] = [];
-  selectedLocation = "";
-  classTimesOptions: SelectOption[] = [];
-  classScheduleMap: ClassScheduleMap | null = null;
-  classIdsWithActiveAssignment: Set<string> = new Set();
-  selectedClassId = "";
-  selectedClassDays: number[] | null = null;
-
   private routeSubscription?: Subscription
+  private routerSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -69,17 +54,10 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     private snackBarService: SnackBarService,
     private translateService: TranslateService,
     private router: Router,
-    private classService: ClassService,
     private fb: FormBuilder,
     private assignmentService: AssignmentService,
     private scheduleService: ScheduleService
   ) {
-    this.classSelectionForm = this.fb.group({
-      class_type: ["", [Validators.required]],
-      location: ["", [Validators.required]],
-      time: ["", [Validators.required]],
-      start_date: ["", [Validators.required]],
-    });
     this.unassignForm = this.fb.group({
       end_date: ["", [Validators.required]],
     });
@@ -100,10 +78,6 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  get f() {
-    return this.classSelectionForm.controls;
-  }
-
   get assignmentsGrouped(): Map<ClassType, Map<string, { class: Class; assignment: Assignment }[]>> | undefined {
     return this.activeAssignmentInfo?.reduce(
       (typeMap, item) => {
@@ -122,10 +96,6 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  /**
-   * Groups past (unassigned) assignments by ClassType → location → list of { class, assignment }.
-   * Uses status only; cron job sets status from endDate.
-   */
   get pastAssignmentsGrouped(): Map<ClassType, Map<string, { class: Class; assignment: Assignment }[]>> | undefined {
     return this.pastAssignmentInfo?.reduce(
       (typeMap, item) => {
@@ -144,10 +114,6 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  /**
-   * Groups terminated-class assignments by ClassType → location. Only when the class itself
-   * was terminated (class.endDate). Unassigned assignments go to Past, not here.
-   */
   get terminatedAssignmentsGrouped(): Map<ClassType, Map<string, { class: Class; assignment: Assignment }[]>> | undefined {
     return this.terminatedAssignmentInfo?.reduce(
       (typeMap, item) => {
@@ -172,7 +138,6 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.canEditEmployee = this.userService.isAdmin || this.userService.isManager;
-    this._setupAssignModalFormSubscriptions();
 
     this.routeSubscription = this._getUserIdRoute().paramMap.pipe(
       map(params => params.get('user-id')),
@@ -184,10 +149,21 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
 
       this._loadEmployeeDetails(userId)
     })
+
+    if (this.panelView) {
+      this.routerSubscription = this.router.events.pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        if (this.employeeId && this._employeeCanHaveClassAssignments(this.employee?.role)) {
+          this._loadClassDetails()
+        }
+      })
+    }
   }
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe()
+    this.routerSubscription?.unsubscribe()
   }
 
   private _getUserIdRoute(): ActivatedRoute {
@@ -202,13 +178,17 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     return this.route
   }
 
+  private _employeeCanHaveClassAssignments(role: Role | undefined): boolean {
+    return role === Role.INSTRUCTOR || role === Role.MANAGER
+  }
+
   private _loadEmployeeDetails(userId: string): void {
     this.employeeId = userId
 
     this.userService.getUser(userId).subscribe({
       next: (user: User) => {
         this.employee = user;
-        if (this.employee?.role === Role.INSTRUCTOR) {
+        if (this._employeeCanHaveClassAssignments(this.employee?.role)) {
           this._loadClassDetails();
         } else {
           this.assignmentInfo = []
@@ -256,14 +236,6 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Uses status only to decide where assignments belong. The cron job checks endDate
-   * and sets status to UNASSIGNED; project code must not check endDate.
-   * - Active (Classes Teaching): status not UNASSIGNED, class not ended.
-   * - Past assignments: status === UNASSIGNED.
-   * - Terminated Classes: class ended (class.endDate in past), status not UNASSIGNED.
-   *   Unassigned never go here.
-   */
   private _separateActiveAndTerminated(assignmentInfo: { class: Class; assignment: Assignment }[]): void {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -290,10 +262,6 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private _getAssignedClassIds(): Set<string> {
-    return this.classIdsWithActiveAssignment;
-  }
-
   editEmployee(): void {
     if (this.employeeId) {
       if (this.panelView) {
@@ -314,74 +282,27 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
   setShowAssignmentModal(): void {
     if (!this.employee) return;
 
-    this.classSelectionForm.reset();
-    this.selectedType = null;
-    this.selectedLocation = "";
-    this.selectedClassId = "";
-    this.selectedClassDays = null;
-    this.classLocationOptions = [];
-    this.classTimesOptions = [];
-    this.classIdsWithActiveAssignment = new Set();
+    if (this.panelView && this.employeeId) {
+      this.router.navigate(['/admin/employees', this.employeeId, 'details', 'assign'])
+      return
+    }
 
-    forkJoin({
-      classScheduleMap: this.classService.getClassScheduleMap(),
-      classIds: this.assignmentService.getClassIdsWithActiveAssignments(),
-    }).subscribe({
-      next: ({ classScheduleMap, classIds }) => {
-        if (classScheduleMap) {
-          this.classScheduleMap = classScheduleMap;
-          this.classIdsWithActiveAssignment = new Set(classIds);
-          this.classTypeOptions = Object.keys(classScheduleMap).map((classType) => ({
-            viewValue: classType,
-            value: classType,
-          }));
-          this.showAssignmentModal = true;
-        }
-      },
-      error: ({ error }) => {
-        this.snackBarService.showError(error?.message ?? "");
-      },
-    });
+    this.showAssignmentModal = true;
   }
 
-  processAssignmentModalClick(event: { ref: EmployeeDetailsComponent; buttonTitle: string }): void {
-    if (event.buttonTitle === "CONTROLS.CANCEL" || event.buttonTitle === "close-button") {
-      this.classSelectionForm.reset();
-      this.selectedType = null;
-      this.selectedLocation = "";
-      this.selectedClassId = "";
-      this.selectedClassDays = null;
-      this.classLocationOptions = [];
-      this.classTimesOptions = [];
-      this.showAssignmentModal = false;
-    } else if (event.buttonTitle === "EMPLOYEES.ASSIGN_INSTRUCTOR") {
-      const raw = this.f["start_date"].value;
-      const startDate = raw?._d ? new Date(raw._d) : raw ? new Date(raw) : null;
-      if (!startDate || !this.employeeId || !this.selectedClassId) {
-        this.snackBarService.showError(this.translateService.instant("ERRORS.REQUIRED", { field: "Start date" }));
-        return;
-      }
-      this.assignmentService.assignInstructor(this.selectedClassId, this.employeeId, startDate).subscribe({
-        next: () => {
-          if (this.employeeId) {
-            this.scheduleService.invalidateEmployeeClassDetails(this.employeeId);
-          }
-          this.classSelectionForm.reset();
-          this.selectedType = null;
-          this.selectedLocation = "";
-          this.selectedClassId = "";
-          this.selectedClassDays = null;
-          this.classLocationOptions = [];
-          this.classTimesOptions = [];
-          this._loadClassDetails();
-          this.snackBarService.showSuccess(this.translateService.instant("EMPLOYEES.ASSIGN_SUCCESS"));
-          this.showAssignmentModal = false;
-        },
-        error: ({ error }) => {
-          this.snackBarService.showError(error?.message ?? "");
-        },
-      });
+  onAssignmentModalClick(event: { ref: EmployeeDetailsComponent; buttonTitle: string }): void {
+    if (event.buttonTitle === 'close-button') {
+      this.closeAssignmentModal()
     }
+  }
+
+  closeAssignmentModal(): void {
+    this.showAssignmentModal = false
+  }
+
+  onEmployeeAssigned(): void {
+    this._loadClassDetails()
+    this.closeAssignmentModal()
   }
 
   setShowUnassignModal(classAndAssignment: { class: Class; assignment: Assignment }): void {
@@ -421,51 +342,5 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
           },
         });
     }
-  }
-
-  private _setupAssignModalFormSubscriptions(): void {
-    this.classSelectionForm.get("class_type")?.valueChanges.subscribe((selectedClassType: ClassType) => {
-      if (!this.classScheduleMap) return;
-      this.selectedType = selectedClassType;
-      const locations = Object.keys(this.classScheduleMap[selectedClassType] || {});
-      this.classLocationOptions = locations.map((loc) => ({ value: loc, viewValue: loc }));
-      this.selectedLocation = "";
-      this.selectedClassId = "";
-      this.selectedClassDays = null;
-      this.classSelectionForm.get("location")?.reset("", { emitEvent: false });
-      this.classSelectionForm.get("time")?.reset("", { emitEvent: false });
-    });
-
-    this.classSelectionForm.get("location")?.valueChanges.subscribe((selectedLocation: string) => {
-      if (!this.classScheduleMap || !this.selectedType) return;
-      this.selectedLocation = selectedLocation;
-      const timeMap = this.classScheduleMap[this.selectedType]?.[selectedLocation] || {};
-      const assignedIds = this._getAssignedClassIds();
-      this.classTimesOptions = Object.keys(timeMap)
-        .filter((timeSlot) => {
-          const classId = timeMap[timeSlot];
-          return !assignedIds.has(classId);
-        })
-        .map((t) => ({ value: t, viewValue: t }));
-      this.selectedClassId = "";
-      this.selectedClassDays = null;
-      this.classSelectionForm.get("time")?.reset("", { emitEvent: false });
-    });
-
-    this.classSelectionForm.get("time")?.valueChanges.subscribe((selectedTime: string) => {
-      if (!this.classScheduleMap || !this.selectedType || !this.selectedLocation) return;
-      this.selectedClassId = this.classScheduleMap[this.selectedType]?.[this.selectedLocation]?.[selectedTime]!;
-      this.selectedClassDays = null;
-      if (this.selectedClassId) {
-        this.classService.getClass(this.selectedClassId).subscribe({
-          next: (classDetails: Class) => {
-            this.selectedClassDays = classDetails.days ?? null;
-          },
-          error: () => {
-            this.selectedClassDays = null;
-          },
-        });
-      }
-    });
   }
 }

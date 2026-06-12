@@ -1,0 +1,54 @@
+<div class="assign-container">
+  <app-breadcrumb-nav-bar
+    *ngIf="panelView"
+    [title]="'EMPLOYEES.ASSIGN_INSTRUCTOR'"
+    [buttonType]="ButtonType.NONE"
+    [showBack]="false">
+  </app-breadcrumb-nav-bar>
+
+  <div class="assign-content">
+    <p>{{ 'EMPLOYEES.ASSIGN_INSTRUCTIONS' | translate }}</p>
+    <h5>{{ employeeFirstName }} {{ employeeLastName }}</h5>
+
+    <form [formGroup]="classSelectionForm" class="assign-form">
+      <app-dropdown
+        *ngIf="locationOptions.length"
+        label="CONTROLS.LOCATION"
+        [options]="locationOptions"
+        controlName="location">
+      </app-dropdown>
+      <app-dropdown
+        label="CONTROLS.CLASS_TYPE"
+        [options]="classTypeOptions"
+        [i18nPrefix]="'CLASS_TYPES'"
+        controlName="class_type"
+        [disabled]="!selectedLocation">
+      </app-dropdown>
+      <app-dropdown
+        label="CONTROLS.TIME"
+        [options]="classTimesOptions"
+        controlName="time"
+        [disabled]="!selectedLocation || !selectedType">
+      </app-dropdown>
+      <app-datepicker
+        label="CONTROLS.START_DATE"
+        controlName="start_date"
+        [allowedWeekdays]="selectedClassDays">
+      </app-datepicker>
+    </form>
+
+    <div class="flex-row buttons">
+      <app-button
+        [label]="'CONTROLS.CANCEL'"
+        (onClick)="cancel()">
+      </app-button>
+      <app-button
+        [label]="'EMPLOYEES.ASSIGN_INSTRUCTOR'"
+        [loading]="loading"
+        [loadingMessage]="'CONTROLS.SUBMIT_WAIT_MESSAGE'"
+        [disabled]="!classSelectionForm.valid"
+        (onClick)="submit()">
+      </app-button>
+    </div>
+  </div>
+</div>

@@ -9,6 +9,8 @@ import { Role } from "@core/types/enums/role";
 import { STAFF_MANAGEMENT_ROLE_OPTIONS } from "@core/constants/staffManagementRoles";
 import { User } from "@core/types/user";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
+import { ClassService } from "@core/services/classService";
+import { SelectOption } from "@core/types/selectOption";
 
 @Component({
   selector: 'app-add-employee',
@@ -25,9 +27,11 @@ export class AddEmployeeComponent implements OnInit {
   loading = false
   staffId: number | null = null
   roleOptions = STAFF_MANAGEMENT_ROLE_OPTIONS
+  locationOptions: SelectOption[] = []
 
   constructor(
     private fb: FormBuilder,
+    private classService: ClassService,
     private userService: UserService,
     private snackBarService: SnackBarService,
     private translateService: TranslateService,
@@ -42,7 +46,8 @@ export class AddEmployeeComponent implements OnInit {
         Validators.pattern('^[+]?[0-9 ]*$'),
         Validators.maxLength(15)
       ]],
-      role: [Role.INSTRUCTOR, [Validators.required]]
+      role: [Role.INSTRUCTOR, [Validators.required]],
+      workLocation: ['']
     })
   }
 
@@ -59,6 +64,18 @@ export class AddEmployeeComponent implements OnInit {
         this.snackBarService.showError(error?.message ?? 'Failed to load staff ID')
       }
     })
+
+    this.classService.getAllLocations().subscribe({
+      next: (locations) => {
+        this.locationOptions = locations.map((location) => ({
+          value: location,
+          viewValue: location
+        }))
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? '')
+      }
+    })
   }
 
   get f() {
@@ -73,12 +90,14 @@ export class AddEmployeeComponent implements OnInit {
     if (this.form.valid && this.staffId !== null) {
       this.loading = true
       const role = this.f['role'].value as Role
+      const workLocation = this.f['workLocation'].value?.trim()
       this.userService.addNewClient({
         firstName: this.f['firstName'].value.trim(),
         lastName: this.f['lastName'].value.trim(),
         phoneNumber: this.f['phoneNumber'].value?.trim(),
         role,
-        employeeId: this.staffId
+        employeeId: this.staffId,
+        workLocation: workLocation || null
       }).subscribe({
         next: (createdEmployee: User) => {
           this.loading = false

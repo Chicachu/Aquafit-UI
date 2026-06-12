@@ -92,6 +92,9 @@
 
   .class-type-divider {
     margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 16px;
   }
 
   .delete-user-section {

@@ -1,6 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, HostBinding, OnDestroy, OnInit } from "@angular/core";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { ActivatedRoute, Router } from "@angular/router";
+import { distinctUntilChanged, map } from "rxjs/operators";
+import { Subscription } from "rxjs";
 import { UserService } from "@core/services/userService";
 import { ScheduleService } from "@core/services/scheduleService";
 import { User, Note } from "@core/types/user";
@@ -24,7 +26,9 @@ import { forkJoin } from "rxjs";
   templateUrl: "./employee-details.component.html",
   styleUrls: ["./employee-details.component.scss"],
 })
-export class EmployeeDetailsComponent {
+export class EmployeeDetailsComponent implements OnInit, OnDestroy {
+  @HostBinding('class.panel-view') panelView = false
+
   readonly ClassType = ClassType;
   readonly AssignmentStatus = AssignmentStatus;
   readonly Role = Role;
@@ -56,6 +60,8 @@ export class EmployeeDetailsComponent {
   classIdsWithActiveAssignment: Set<string> = new Set();
   selectedClassId = "";
   selectedClassDays: number[] | null = null;
+
+  private routeSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -161,23 +167,80 @@ export class EmployeeDetailsComponent {
   }
 
   ngOnInit(): void {
-    this.canEditEmployee = this.userService.isAdmin || this.userService.isManager;
-    const userId = this.route.snapshot.paramMap.get("user-id");
-    this.employeeId = userId;
+    if (this.route.snapshot.data['panelView'] === true) {
+      this.panelView = true
+    }
 
+    this.canEditEmployee = this.userService.isAdmin || this.userService.isManager;
     this._setupAssignModalFormSubscriptions();
 
-    this.userService.getUser(userId!).subscribe({
+    this.routeSubscription = this._getUserIdRoute().paramMap.pipe(
+      map(params => params.get('user-id')),
+      distinctUntilChanged()
+    ).subscribe(userId => {
+      if (!userId) {
+        return
+      }
+
+      this._loadEmployeeDetails(userId)
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe()
+  }
+
+  private _getUserIdRoute(): ActivatedRoute {
+    if (this.route.snapshot.paramMap.has('user-id')) {
+      return this.route
+    }
+
+    if (this.route.parent?.snapshot.paramMap.has('user-id')) {
+      return this.route.parent
+    }
+
+    return this.route
+  }
+
+  private _loadEmployeeDetails(userId: string): void {
+    this.employeeId = userId
+
+    this.userService.getUser(userId).subscribe({
       next: (user: User) => {
         this.employee = user;
         if (this.employee?.role === Role.INSTRUCTOR) {
           this._loadClassDetails();
+        } else {
+          this.assignmentInfo = []
+          this.activeAssignmentInfo = []
+          this.pastAssignmentInfo = []
+          this.terminatedAssignmentInfo = []
         }
       },
       error: ({ error }) => {
         this.snackBarService.showError(error?.message ?? "");
       },
     });
+  }
+
+  getPaymentLink(): string[] {
+    if (!this.employeeId) {
+      return []
+    }
+
+    return this.panelView
+      ? ['/admin/employees', this.employeeId, 'payments']
+      : ['/admin/mobile/employees', this.employeeId, 'payments']
+  }
+
+  getClassDetailsLink(classId: string | undefined): string[] {
+    if (!classId) {
+      return []
+    }
+
+    return this.panelView
+      ? ['/admin/classes', classId, 'details']
+      : ['/admin/mobile/classes', classId, 'details']
   }
 
   private _loadClassDetails(): void {
@@ -233,6 +296,11 @@ export class EmployeeDetailsComponent {
 
   editEmployee(): void {
     if (this.employeeId) {
+      if (this.panelView) {
+        this.router.navigate(['/admin/employees', this.employeeId, 'edit'])
+        return
+      }
+
       this.router.navigate(["/admin/mobile/employees", this.employeeId, "edit"]);
     }
   }

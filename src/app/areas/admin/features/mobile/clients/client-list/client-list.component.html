@@ -16,6 +16,7 @@
     </app-dropdown>
 
     <div *ngIf="panelView && canAddClient" class="add-client-row">
+      <span *ngIf="hasNoClients" class="add-client-hint">{{ 'CLIENTS.CLICK_TO_ADD_CLIENTS' | translate }}</span>
       <button
         mat-icon-button
         type="button"

@@ -7,6 +7,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { TextInputType } from "@core/types/enums/textInputType";
 import { User } from "@core/types/user";
 import { Role } from "@core/types/enums/role";
+import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 
 @Component({
   selector: 'app-edit-client',
@@ -16,6 +17,7 @@ import { Role } from "@core/types/enums/role";
 export class EditClientComponent implements OnInit {
   @HostBinding('class.panel-view') panelView = false
 
+  readonly ButtonType = ButtonType
   readonly TextInputType = TextInputType
   contactForm: FormGroup
   loading = false
@@ -24,6 +26,18 @@ export class EditClientComponent implements OnInit {
 
   get editBreadcrumbTitle(): string {
     return this.isEditMode ? 'CLIENTS.EDIT_CLIENT' : 'CLIENTS.ADD_NEW_CLIENT'
+  }
+
+  get breadcrumbBackRoute(): string[] | null {
+    if (!this.panelView) {
+      return null
+    }
+
+    if (this.isEditMode && this.userId) {
+      return ['/admin/clients', this.userId, 'details']
+    }
+
+    return ['/admin/clients']
   }
 
   constructor(

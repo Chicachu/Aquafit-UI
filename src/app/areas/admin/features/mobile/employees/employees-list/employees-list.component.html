@@ -1,16 +1,34 @@
-<div>
+<div class="employees-list-wrapper">
   <app-breadcrumb-nav-bar
+    *ngIf="showBreadcrumb"
     [title]="'NAVIGATION.EMPLOYEES' | translate"
     [buttonType]="canAddEmployee ? ButtonType.ADD : ButtonType.NONE"
     (onButtonClick)="addNewEmployee()">
   </app-breadcrumb-nav-bar>
+
+  <div *ngIf="panelView && canAddEmployee" class="add-employee-row">
+    <span *ngIf="hasNoEmployees" class="add-employee-hint">{{ 'EMPLOYEES.CLICK_TO_ADD_EMPLOYEES' | translate }}</span>
+    <button
+      mat-icon-button
+      type="button"
+      (click)="addNewEmployee()"
+      class="add-employee-button">
+      <mat-icon class="add-icon" matPrefix>add</mat-icon>
+    </button>
+  </div>
+
   <div class="employees-list-content">
     <div class="instructors-section">
       <h2>{{ 'CLIENTS.INSTRUCTORS' | translate }}</h2>
       <ul>
         <li *ngFor="let instructor of instructors">
           <div class="instructor-item">
-            <a [routerLink]="['/admin/mobile/employees', instructor._id, 'details']">{{ instructor.firstName }} {{ instructor.lastName }}</a>
+            <a
+              [routerLink]="getEmployeeDetailsLink(instructor._id)"
+              class="employee-list-link"
+              [class.selected]="isEmployeeSelected(instructor._id)">
+              {{ instructor.firstName }} {{ instructor.lastName }}
+            </a>
             <span *ngIf="instructor.employeeId" class="instructor-id">{{ instructor.employeeId }}</span>
           </div>
         </li>
@@ -21,7 +39,12 @@
       <ul>
         <li *ngFor="let manager of managers">
           <div class="manager-item">
-            <a [routerLink]="['/admin/mobile/employees', manager._id, 'details']">{{ manager.firstName }} {{ manager.lastName }}</a>
+            <a
+              [routerLink]="getEmployeeDetailsLink(manager._id)"
+              class="employee-list-link"
+              [class.selected]="isEmployeeSelected(manager._id)">
+              {{ manager.firstName }} {{ manager.lastName }}
+            </a>
             <span *ngIf="manager.employeeId" class="manager-id">{{ manager.employeeId }}</span>
           </div>
         </li>
@@ -32,7 +55,12 @@
       <ul>
         <li *ngFor="let receptionist of receptionists">
           <div class="receptionist-item">
-            <a [routerLink]="['/admin/mobile/employees', receptionist._id, 'details']">{{ receptionist.firstName }} {{ receptionist.lastName }}</a>
+            <a
+              [routerLink]="getEmployeeDetailsLink(receptionist._id)"
+              class="employee-list-link"
+              [class.selected]="isEmployeeSelected(receptionist._id)">
+              {{ receptionist.firstName }} {{ receptionist.lastName }}
+            </a>
             <span *ngIf="receptionist.employeeId" class="receptionist-id">{{ receptionist.employeeId }}</span>
           </div>
         </li>
@@ -42,7 +70,12 @@
       <h2>{{ 'CLIENTS.EMPLOYEES' | translate }}</h2>
       <ul>
         <li *ngFor="let employee of employees">
-          <a [routerLink]="['/admin/mobile/employees', employee._id, 'details']">{{ employee.firstName }} {{ employee.lastName }}</a>
+          <a
+            [routerLink]="getEmployeeDetailsLink(employee._id)"
+            class="employee-list-link"
+            [class.selected]="isEmployeeSelected(employee._id)">
+            {{ employee.firstName }} {{ employee.lastName }}
+          </a>
         </li>
       </ul>
     </div>

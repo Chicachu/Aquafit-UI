@@ -1,0 +1,30 @@
+<div class="three-panel-layout">
+  <section class="panel panel-1">
+    <div class="panel-body">
+      <app-employees-list
+        [showBreadcrumb]="false"
+        [panelView]="true">
+      </app-employees-list>
+    </div>
+  </section>
+  <section class="panel panel-2">
+    <div class="panel-body">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+  <section class="panel panel-3">
+    <div class="panel-body">
+      <app-employee-payment-overview
+        *ngIf="showPaymentOverviewPanel && activeUserId"
+        [userId]="activeUserId"
+        [panelView]="true">
+      </app-employee-payment-overview>
+      <app-employee-payable-details
+        *ngIf="showPayableDetailsPanel && activeUserId && activePayableId"
+        [userId]="activeUserId"
+        [payableId]="activePayableId"
+        [panelView]="true">
+      </app-employee-payable-details>
+    </div>
+  </section>
+</div>

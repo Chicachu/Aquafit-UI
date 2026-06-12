@@ -39,6 +39,7 @@ export class ClientListComponent implements OnInit, OnDestroy {
   waitlistUsers: Map<string, User> = new Map()
   allClasses: Class[] = []
   selectedClientId: string | null = null
+  clientsLoaded = false
 
   private subscriptions = new Subscription()
 
@@ -60,6 +61,12 @@ export class ClientListComponent implements OnInit, OnDestroy {
 
   get canAddClient(): boolean {
     return this.userService.isAdmin
+  }
+
+  get hasNoClients(): boolean {
+    return this.clientsLoaded
+      && this.allActiveClients.length === 0
+      && this.allInactiveClients.length === 0
   }
 
   ngOnInit(): void {
@@ -196,6 +203,7 @@ export class ClientListComponent implements OnInit, OnDestroy {
 
         this.allActiveClients = active.sort(sortUsers)
         this.allInactiveClients = inactive.sort(sortUsers)
+        this.clientsLoaded = true
 
         this._loadWaitlistEntries()
       },

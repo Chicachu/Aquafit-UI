@@ -166,9 +166,17 @@ li {
 
   .add-client-row {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
+    gap: 8px;
     padding: 0 16px 4px;
     box-sizing: border-box;
+  }
+
+  .add-client-hint {
+    margin-right: auto;
+    color: $light-pink;
+    font-size: 0.9em;
   }
 
   .add-client-button {

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { InvoiceAndPaymentsService } from "@core/services/invoiceAndPaymentsService";
@@ -14,11 +14,13 @@ import { Weekday } from "@core/types/enums/weekday";
   templateUrl: "./employee-payable-details.component.html",
   styleUrls: ["./employee-payable-details.component.scss"],
 })
-export class EmployeePayableDetailsComponent {
+export class EmployeePayableDetailsComponent implements OnInit, OnChanges {
+  @Input() @HostBinding('class.panel-view') panelView = false
+  @Input() userId: string | null = null
+  @Input() payableId: string | null = null
+
   readonly ButtonType = ButtonType;
 
-  userId: string | null = null;
-  payableId: string | null = null;
   payable: EmployeePayable | null = null;
 
   constructor(
@@ -29,18 +31,31 @@ export class EmployeePayableDetailsComponent {
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get("user-id");
-    this.payableId = this.route.snapshot.paramMap.get("payable-id");
-    if (!this.userId || !this.payableId) return;
+    if (this.route.snapshot.data['panelView'] === true) {
+      this.panelView = true
+    }
 
-    this.invoiceAndPaymentsService.getPayableById(this.userId, this.payableId).subscribe({
-      next: (p) => {
-        this.payable = p;
-      },
-      error: (err) => {
-        this.snackBarService.showError(err?.error?.message ?? "Error loading payable.");
-      },
-    });
+    if (this.panelView && this.userId && this.payableId) {
+      this._loadPayableDetails()
+      return
+    }
+
+    if (!this.panelView) {
+      this.userId = this.route.snapshot.paramMap.get("user-id");
+      this.payableId = this.route.snapshot.paramMap.get("payable-id");
+      this._loadPayableDetails()
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      this.panelView
+      && (changes['userId'] || changes['payableId'])
+      && this.userId
+      && this.payableId
+    ) {
+      this._loadPayableDetails()
+    }
   }
 
   getStatusClass(paymentStatus: PaymentStatus): string {
@@ -88,5 +103,18 @@ export class EmployeePayableDetailsComponent {
       parts.push(`${displayHour}:00${period}`);
     }
     return parts.join(" · ");
+  }
+
+  private _loadPayableDetails(): void {
+    if (!this.userId || !this.payableId) return;
+
+    this.invoiceAndPaymentsService.getPayableById(this.userId, this.payableId).subscribe({
+      next: (p) => {
+        this.payable = p;
+      },
+      error: (err) => {
+        this.snackBarService.showError(err?.error?.message ?? "Error loading payable.");
+      },
+    });
   }
 }

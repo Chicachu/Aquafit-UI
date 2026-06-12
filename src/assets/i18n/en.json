@@ -129,6 +129,7 @@
     "EMPLOYEES": "Employees",
     "ACTIVE_CLIENTS": "Active Clients",
     "INACTIVE_CLIENTS": "Inactive Clients",
+    "CLICK_TO_ADD_CLIENTS": "Click here to add clients →",
     "WAITLIST": "Waitlist",
     "ADD_TO_WAITLIST": "Add to Waitlist",
     "NO_WAITLIST_ENTRIES": "There are no clients on the waitlist.",
@@ -152,6 +153,7 @@
     "EDIT_RECEPTIONIST": "Edit Receptionist",
     "ADD_EMPLOYEE": "Add Employee",
     "ADD_EMPLOYEE_SUCCESS": "Employee added successfully!",
+    "CLICK_TO_ADD_EMPLOYEES": "Click here to add employees →",
     "UPDATE_SUCCESS": "Updated successfully!",
     "STAFF_ID": "Staff ID",
     "ROLE": "Role",
@@ -187,6 +189,7 @@
   },
   "CLASSES": {
     "ADD_NEW_CLASS": "Add Class",
+    "CLICK_TO_ADD_CLASSES": "Click here to add classes →",
     "ADD_NEW_CLASS_SUCCESS": "Successfully added new class!",
     "EDIT_CLASS": "Edit Class",
     "UPDATE": "Update",

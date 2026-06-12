@@ -51,44 +51,54 @@
   overflow: auto;
 }
 
-:host ::ng-deep app-class-details.panel-view {
+:host ::ng-deep app-employee-details.panel-view {
   display: block;
   width: 100%;
   min-width: 0;
   min-height: 100%;
   box-sizing: border-box;
 
-  .general-info {
+  .general-info-row {
     padding: 8px 16px;
     box-sizing: border-box;
   }
 
-  .class-details-content {
+  .employee-details-content {
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 8px 16px 16px;
     box-sizing: border-box;
   }
 
-  .clients-section,
-  .clients-section + p.light-blue,
-  .waitlist-section-header,
-  .waitlist-section-header + p.light-blue,
-  .paid-status-section,
-  .pending-status-section,
-  .almost-due-status-section,
-  .overdue-status-section,
-  .buttons,
+  .classes-section {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .past-section,
+  .terminated-section {
+    padding-top: 16px;
+  }
+
+  .not-teaching {
+    margin-left: 0;
+  }
+
+  hr {
+    margin: 0 -16px;
+    width: auto;
+  }
+
   app-notes {
-    padding-left: 16px;
-    padding-right: 16px;
-    box-sizing: border-box;
+    display: block;
+    padding-top: 16px;
+    padding-bottom: 8px;
   }
 
   ul {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 0;
+    padding-right: 0;
     box-sizing: border-box;
   }
 
@@ -100,20 +110,11 @@
     min-width: 0;
     flex: 1;
     overflow: hidden;
-
-    p {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
-  .payment-history-link {
-    flex-shrink: 0;
   }
 }
 
-:host ::ng-deep app-edit-class.panel-view {
+:host ::ng-deep app-edit-employee.panel-view,
+:host ::ng-deep app-add-employee.panel-view {
   display: block;
   width: 100%;
   min-width: 0;
@@ -139,12 +140,17 @@
     box-sizing: border-box;
   }
 
-  app-multi-select-chips .label {
-    color: $light-blue;
+  .staff-id-label {
+    color: $light-green;
+  }
+
+  .staff-id-value {
+    color: $mid-pink;
   }
 }
 
-:host ::ng-deep app-class-enroll.panel-view {
+:host ::ng-deep app-employee-payment-overview.panel-view,
+:host ::ng-deep app-employee-payable-details.panel-view {
   display: block;
   width: 100%;
   min-width: 0;
@@ -159,35 +165,26 @@
     }
   }
 
-  .enroll-content {
-    padding: 16px;
+  .header {
+    width: 100%;
+    padding: 8px 16px;
     box-sizing: border-box;
-
-    > p {
-      color: $mid-pink;
-    }
-
-    > h5 {
-      color: $mid-green;
-    }
-
-    .buttons {
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .buttons > * {
-      width: auto;
-    }
+    align-items: center;
   }
 
-  .enroll-form {
-    border: none !important;
-    background-color: transparent !important;
-    border-radius: 0 !important;
+  hr {
+    margin: 0;
   }
 
-  app-multi-select-chips .label {
-    color: $light-blue;
+  a.period-row,
+  .period-row {
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  ul {
+    padding-left: 0;
+    margin: 0;
   }
 }

@@ -15,6 +15,12 @@ import { InvoiceHistoryComponent } from '../mobile/payments/invoice-history/invo
 import { ClientListComponent } from '../mobile/clients/client-list/client-list.component';
 import { ClientDetailsComponent } from '../mobile/clients/client-details/client-details.component';
 import { EditClientComponent } from '../mobile/clients/edit-client/edit-client.component';
+import { EmployeesListComponent } from '../mobile/employees/employees-list/employees-list.component';
+import { EmployeeDetailsComponent } from '../mobile/employees/employee-details/employee-details.component';
+import { EmployeePaymentOverviewComponent } from '../mobile/employees/employee-payment-overview/employee-payment-overview.component';
+import { EmployeePayableDetailsComponent } from '../mobile/employees/employee-payable-details/employee-payable-details.component';
+import { AddEmployeeComponent } from '../mobile/employees/add-employee/add-employee.component';
+import { EditEmployeeComponent } from '../mobile/employees/edit-employee/edit-employee.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +33,13 @@ import { EditClientComponent } from '../mobile/clients/edit-client/edit-client.c
     InvoiceHistoryComponent,
     ClientListComponent,
     ClientDetailsComponent,
-    EditClientComponent
+    EditClientComponent,
+    EmployeesListComponent,
+    EmployeeDetailsComponent,
+    EmployeePaymentOverviewComponent,
+    EmployeePayableDetailsComponent,
+    AddEmployeeComponent,
+    EditEmployeeComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +59,13 @@ import { EditClientComponent } from '../mobile/clients/edit-client/edit-client.c
     InvoiceHistoryComponent,
     ClientListComponent,
     ClientDetailsComponent,
-    EditClientComponent
+    EditClientComponent,
+    EmployeesListComponent,
+    EmployeeDetailsComponent,
+    EmployeePaymentOverviewComponent,
+    EmployeePayableDetailsComponent,
+    AddEmployeeComponent,
+    EditEmployeeComponent
   ]
 })
 export class AdminSharedFeaturesModule {}

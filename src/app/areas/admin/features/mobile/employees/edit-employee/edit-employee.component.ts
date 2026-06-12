@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostBinding, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserService } from "@core/services/userService";
@@ -9,6 +9,7 @@ import { Role } from "@core/types/enums/role";
 import { SelectOption } from "@core/types/selectOption";
 import { User } from "@core/types/user";
 import { MustMatch } from "@shared/validators/mustMatch";
+import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 
 @Component({
   selector: 'app-edit-employee',
@@ -16,6 +17,9 @@ import { MustMatch } from "@shared/validators/mustMatch";
   styleUrls: ['./edit-employee.component.scss']
 })
 export class EditEmployeeComponent implements OnInit {
+  @HostBinding('class.panel-view') panelView = false
+
+  readonly ButtonType = ButtonType
   readonly TextInputType = TextInputType
   readonly Role = Role
   form: FormGroup
@@ -35,6 +39,18 @@ export class EditEmployeeComponent implements OnInit {
     if (this.loadedRole === Role.MANAGER) return 'EMPLOYEES.EDIT_MANAGER'
     if (this.loadedRole === Role.RECEPTIONIST) return 'EMPLOYEES.EDIT_RECEPTIONIST'
     return 'EMPLOYEES.EDIT_EMPLOYEE'
+  }
+
+  get breadcrumbBackRoute(): string[] | null {
+    if (!this.panelView) {
+      return null
+    }
+
+    if (this.userId) {
+      return ['/admin/employees', this.userId, 'details']
+    }
+
+    return ['/admin/employees']
   }
 
   constructor(
@@ -63,6 +79,10 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.route.snapshot.data['panelView'] === true) {
+      this.panelView = true
+    }
+
     this.userId = this.route.snapshot.paramMap.get('user-id')
     if (!this.userId) return
 
@@ -106,6 +126,11 @@ export class EditEmployeeComponent implements OnInit {
         next: () => {
           this.loading = false
           this.snackBarService.showSuccess(this.translateService.instant('EMPLOYEES.UPDATE_SUCCESS'))
+          if (this.panelView && this.userId) {
+            this.router.navigate(['/admin/employees', this.userId, 'details'])
+            return
+          }
+
           this.router.navigate(['../details'], { relativeTo: this.route })
         },
         error: ({ error }) => {

@@ -35,6 +35,7 @@ export class ClassListComponent implements OnInit, OnDestroy {
   classesGrouped: GroupedClasses = new Map()
   terminatedClassesGrouped: GroupedClasses = new Map()
   selectedClassId: string | null = null
+  classesLoaded = false
 
   private subscriptions = new Subscription()
 
@@ -58,6 +59,10 @@ export class ClassListComponent implements OnInit, OnDestroy {
 
   get canAddClass(): boolean {
     return this.userService.isAdmin
+  }
+
+  get hasNoClasses(): boolean {
+    return this.classesLoaded && this.activeClasses.length === 0 && this.terminatedClasses.length === 0
   }
 
   ngOnInit(): void {
@@ -99,6 +104,7 @@ export class ClassListComponent implements OnInit, OnDestroy {
     this.classService.getAllClasses().subscribe({
       next: (classes: Class[]) => {
         this.classes = classes
+        this.classesLoaded = true
         this._separateActiveAndTerminated(classes)
         this._generateFilterOptions(classes)
         this._updateGroupedClasses()

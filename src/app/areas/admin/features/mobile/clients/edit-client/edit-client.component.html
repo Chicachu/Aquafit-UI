@@ -1,11 +1,9 @@
 <div>
   <app-breadcrumb-nav-bar
-    *ngIf="!panelView"
-    [title]="(editBreadcrumbTitle) | translate">
+    [title]="editBreadcrumbTitle"
+    [buttonType]="ButtonType.NONE"
+    [backRoute]="breadcrumbBackRoute">
   </app-breadcrumb-nav-bar>
-  <div *ngIf="panelView" class="panel-view-header">
-    <h2 class="light-blue">{{ editBreadcrumbTitle | translate }}</h2>
-  </div>
   <div class="edit-container">
     <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="form-container">
       <app-text-input

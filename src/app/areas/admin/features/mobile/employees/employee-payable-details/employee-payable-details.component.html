@@ -1,14 +1,18 @@
 <div class="flex-column">
   <app-breadcrumb-nav-bar
+    *ngIf="!panelView"
     [title]="'PAYMENTS.PAYABLE_DETAILS' | translate"
     [buttonType]="ButtonType.NONE">
   </app-breadcrumb-nav-bar>
+  <div *ngIf="panelView" class="panel-view-header">
+    <h2 class="light-blue">{{ 'PAYMENTS.PAYABLE_DETAILS' | translate }}</h2>
+  </div>
 
   <div class="container" *ngIf="payable as p">
-    <div class="header flex-column">
+    <div class="header flex-column" [class.general-info]="panelView">
       <h3 class="mid-pink">{{ (p.period.endDate | translateDate:'MMMM yyyy') }}</h3>
     </div>
-    <hr>
+    <hr *ngIf="!panelView">
 
     <div class="flex-column">
       <div [ngClass]="getStatusClass(p.paymentStatus)" class="payment-status flex-row">

@@ -25,6 +25,7 @@
     </app-dropdown>
 
     <div *ngIf="panelView && canAddClass" class="add-class-row">
+      <span *ngIf="hasNoClasses" class="add-class-hint">{{ 'CLASSES.CLICK_TO_ADD_CLASSES' | translate }}</span>
       <button
         mat-icon-button
         type="button"

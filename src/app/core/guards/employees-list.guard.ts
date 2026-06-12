@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../services/userService';
 
 /** Allows Admin, Manager, or Receptionist to view the employees list (and details/payments). */
@@ -12,11 +12,13 @@ export class EmployeesListGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(): boolean {
+  canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist) {
       return true;
     }
-    this.router.navigate(['/admin/mobile/home']);
+
+    const isDesktopEmployees = state.url.includes('/admin/employees');
+    this.router.navigate([isDesktopEmployees ? '/admin/home' : '/admin/mobile/home']);
     return false;
   }
 }

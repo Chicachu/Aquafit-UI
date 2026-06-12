@@ -2,11 +2,12 @@
   <app-breadcrumb-nav-bar
     [title]="'EMPLOYEES.DETAILS' | translate"
     [buttonType]="canEditEmployee ? ButtonType.EDIT : ButtonType.NONE"
+    [showBack]="!panelView"
     (onButtonClick)="editEmployee()">
   </app-breadcrumb-nav-bar>
   <div *ngIf="employee" class="general-info-row flex-row">
     <div class="payment-button-wrapper">
-      <a *ngIf="canViewPaymentDetails" mat-icon-button [routerLink]="['../payments']" class="payment-button">
+      <a *ngIf="canViewPaymentDetails" mat-icon-button [routerLink]="getPaymentLink()" class="payment-button">
         <mat-icon class="payment-icon">attach_money</mat-icon>
       </a>
     </div>
@@ -40,7 +41,7 @@
           <ul>
             <li *ngFor="let classAndAssignment of locationGroup.value">
               <div class="flex-row details-row">
-                <a [routerLink]="['/admin/mobile/classes', classAndAssignment?.class?._id, 'details']">
+                <a [routerLink]="getClassDetailsLink(classAndAssignment?.class?._id)">
                   {{ classAndAssignment.class.days | weekdays:'/' }} - {{ classAndAssignment.class.startTime | timeFormat }}
                 </a>
                 <div class="action-buttons">
@@ -74,7 +75,7 @@
             <ul>
               <li *ngFor="let classAndAssignment of locationGroup.value">
                 <div class="flex-row details-row">
-                  <a [routerLink]="['/admin/mobile/classes', classAndAssignment?.class?._id, 'details']">
+                  <a [routerLink]="getClassDetailsLink(classAndAssignment?.class?._id)">
                     {{ classAndAssignment.class.days | weekdays:'/' }} - {{ classAndAssignment.class.startTime | timeFormat }}
                   </a>
                 </div>
@@ -95,7 +96,7 @@
             <ul>
               <li *ngFor="let classAndAssignment of locationGroup.value">
                 <div class="flex-row details-row">
-                  <a [routerLink]="['/admin/mobile/classes', classAndAssignment?.class?._id, 'details']">
+                  <a [routerLink]="getClassDetailsLink(classAndAssignment?.class?._id)">
                     {{ classAndAssignment.class.days | weekdays:'/' }} - {{ classAndAssignment.class.startTime | timeFormat }}
                   </a>
                 </div>

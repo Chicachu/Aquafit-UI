@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { InvoiceAndPaymentsService } from "@core/services/invoiceAndPaymentsService";
@@ -17,11 +17,13 @@ export interface PaymentPeriodRow {
   templateUrl: "./employee-payment-overview.component.html",
   styleUrls: ["./employee-payment-overview.component.scss"],
 })
-export class EmployeePaymentOverviewComponent {
+export class EmployeePaymentOverviewComponent implements OnInit, OnChanges {
+  @Input() @HostBinding('class.panel-view') panelView = false
+  @Input() userId: string | null = null
+
   readonly ButtonType = ButtonType;
   readonly PaymentStatus = PaymentStatus;
 
-  userId: string | null = null;
   employeeName = "";
   periods: PaymentPeriodRow[] = [];
 
@@ -32,29 +34,35 @@ export class EmployeePaymentOverviewComponent {
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get("user-id");
-    if (!this.userId) return;
+    if (this.route.snapshot.data['panelView'] === true) {
+      this.panelView = true
+    }
 
-    this.invoiceAndPaymentsService.getInvoicesByUserId(this.userId).subscribe({
-      next: ({ invoices, employeePayables, userName }) => {
-        this.employeeName = userName ?? "";
-        const fromInvoices = invoices.map((i) => ({
-          date: new Date(i.period.endDate),
-          paymentStatus: i.paymentStatus,
-        }));
-        const fromPayables = (employeePayables ?? []).map((p) => ({
-          date: new Date(p.period.endDate),
-          paymentStatus: p.paymentStatus,
-          payableId: p._id,
-        }));
-        const combined = [...fromInvoices, ...fromPayables];
-        combined.sort((a, b) => b.date.getTime() - a.date.getTime());
-        this.periods = combined;
-      },
-      error: ({ error }) => {
-        this.snackBarService.showError(error?.message ?? "Error loading invoices.");
-      },
-    });
+    if (this.panelView && this.userId) {
+      this._loadPaymentOverview()
+      return
+    }
+
+    if (!this.panelView) {
+      this.userId = this.route.snapshot.paramMap.get("user-id");
+      this._loadPaymentOverview()
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.panelView && changes['userId'] && this.userId) {
+      this._loadPaymentOverview()
+    }
+  }
+
+  getPayableDetailsLink(payableId: string): string[] {
+    if (!this.userId) {
+      return []
+    }
+
+    return this.panelView
+      ? ['/admin/employees', this.userId, 'payments', 'details', payableId]
+      : ['/admin/mobile/employees', this.userId, 'payments', 'details', payableId]
   }
 
   getIconClass(paymentStatus: PaymentStatus): string {
@@ -89,5 +97,30 @@ export class EmployeePaymentOverviewComponent {
 
   isOverdue(paymentStatus: PaymentStatus): boolean {
     return paymentStatus === PaymentStatus.OVERDUE;
+  }
+
+  private _loadPaymentOverview(): void {
+    if (!this.userId) return;
+
+    this.invoiceAndPaymentsService.getInvoicesByUserId(this.userId).subscribe({
+      next: ({ invoices, employeePayables, userName }) => {
+        this.employeeName = userName ?? "";
+        const fromInvoices = invoices.map((i) => ({
+          date: new Date(i.period.endDate),
+          paymentStatus: i.paymentStatus,
+        }));
+        const fromPayables = (employeePayables ?? []).map((p) => ({
+          date: new Date(p.period.endDate),
+          paymentStatus: p.paymentStatus,
+          payableId: p._id,
+        }));
+        const combined = [...fromInvoices, ...fromPayables];
+        combined.sort((a, b) => b.date.getTime() - a.date.getTime());
+        this.periods = combined;
+      },
+      error: ({ error }) => {
+        this.snackBarService.showError(error?.message ?? "Error loading invoices.");
+      },
+    });
   }
 }

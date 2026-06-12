@@ -15,6 +15,7 @@ import { FormatOptions } from "@/core/types/enums/formatOptions";
 import { ActivatedRoute, Router } from "@angular/router";
 import { nonEmptyArrayValidator } from "@shared/validators/nonEmptyArray";
 import { BillingFrequency } from "@core/types/enums/billingFrequency";
+import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 
 @Component({
   selector: 'app-edit-class',
@@ -24,6 +25,7 @@ import { BillingFrequency } from "@core/types/enums/billingFrequency";
 export class EditClassComponent implements OnInit {
   @HostBinding('class.panel-view') panelView = false
 
+  readonly ButtonType = ButtonType
   readonly Pipes = Pipes
   readonly FormatOptions = FormatOptions
   classForm: FormGroup
@@ -118,6 +120,18 @@ export class EditClassComponent implements OnInit {
 
   get f() { 
     return this.classForm.controls
+  }
+
+  get breadcrumbBackRoute(): string[] | null {
+    if (!this.panelView) {
+      return null
+    }
+
+    if (this.isEditMode && this.classId) {
+      return ['/admin/classes', this.classId, 'details']
+    }
+
+    return ['/admin/classes']
   }
 
   convertToSelectOptions(values: string[]): SelectOption[] {

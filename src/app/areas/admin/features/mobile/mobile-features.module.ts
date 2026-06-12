@@ -25,15 +25,15 @@ import { InvoiceDetailsComponent } from "./payments/invoice-details/invoice-deta
 import { DiscountListComponent } from "./discounts/discount-list/discount-list.component";
 import { DiscountDetailsComponent } from "./discounts/discount-details/discount-details.component";
 import { EditDiscountComponent } from "./discounts/edit-discount/edit-discount.component";
-import { EmployeeDetailsComponent } from "./employees/employee-details/employee-details.component";
-import { EmployeePaymentOverviewComponent } from "./employees/employee-payment-overview/employee-payment-overview.component";
-import { EmployeePayableDetailsComponent } from "./employees/employee-payable-details/employee-payable-details.component";
-import { EmployeesListComponent } from "./employees/employees-list/employees-list.component";
-import { AddEmployeeComponent } from "./employees/add-employee/add-employee.component";
-import { EditEmployeeComponent } from "./employees/edit-employee/edit-employee.component";
 import { SalaryConfigurationComponent } from "./salary-configuration/salary-configuration.component";
 import { CheckInsComponent } from "./check-ins/check-ins.component";
 import { MobileClassCalendarComponent } from "./mobile-calendar/mobile-calendar.component";
+import { EmployeesListComponent } from "./employees/employees-list/employees-list.component";
+import { AddEmployeeComponent } from "./employees/add-employee/add-employee.component";
+import { EmployeeDetailsComponent } from "./employees/employee-details/employee-details.component";
+import { EditEmployeeComponent } from "./employees/edit-employee/edit-employee.component";
+import { EmployeePaymentOverviewComponent } from "./employees/employee-payment-overview/employee-payment-overview.component";
+import { EmployeePayableDetailsComponent } from "./employees/employee-payable-details/employee-payable-details.component";
 
 const routes: Routes = [
   {
@@ -183,14 +183,8 @@ const routes: Routes = [
     DiscountListComponent,
     DiscountDetailsComponent,
     EditDiscountComponent,
-    EmployeeDetailsComponent,
-    EmployeePaymentOverviewComponent,
-    EmployeesListComponent,
-    AddEmployeeComponent,
-    EditEmployeeComponent,
     SalaryConfigurationComponent,
-    CheckInsComponent,
-    EmployeePayableDetailsComponent
+    CheckInsComponent
   ],
   imports: [
     CommonModule,

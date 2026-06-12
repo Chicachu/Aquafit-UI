@@ -1,5 +1,9 @@
 <div>
-  <app-breadcrumb-nav-bar [title]="'EMPLOYEES.ADD_EMPLOYEE' | translate"></app-breadcrumb-nav-bar>
+  <app-breadcrumb-nav-bar
+    [title]="'EMPLOYEES.ADD_EMPLOYEE'"
+    [buttonType]="ButtonType.NONE"
+    [backRoute]="breadcrumbBackRoute">
+  </app-breadcrumb-nav-bar>
   <div class="edit-container">
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
       <div class="staff-id-display" *ngIf="staffId !== null">

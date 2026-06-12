@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SnackBarService } from '@core/services/snackBarService';
 import { UserService } from '@core/services/userService';
 import { Role } from '@core/types/enums/role';
-import { internalEmailRegex } from '@core/constants';
+import { adminEmailRegex, internalEmailRegex } from '@core/constants';
 import { ErrorsService } from '@core/services/errorsService';
 import { TextInputType } from '@core/types/enums/textInputType';
 import { Router } from '@angular/router';
@@ -47,9 +47,14 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.loading = true;
 
-      const role = internalEmailRegex.test(this.f['email'].value) ? Role.INSTRUCTOR : Role.CLIENT
+      const email = String(this.f['email'].value).trim().toLowerCase()
+      const role = adminEmailRegex.test(email)
+        ? Role.ADMIN
+        : internalEmailRegex.test(email)
+          ? Role.INSTRUCTOR
+          : Role.CLIENT
       
-      this.userService.register(this.f['email'].value, this.f['password'].value, role).subscribe({
+      this.userService.register(email, this.f['password'].value, role).subscribe({
         next: (rsp) => {
           this.loading = false;
           this.router.navigate(["/login"])

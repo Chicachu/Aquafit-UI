@@ -9,22 +9,31 @@
   justify-content: space-evenly;
 }
 
-.paid-status-section {
-  border-bottom: 1px solid $light-pink;
-  justify-content: space-between;
-}
-
-.pending-status-section {
-  border-bottom: 1px solid $light-pink;
-}
-
-.almost-due-status-section {
-  border-bottom: 1px solid $light-pink;
-  justify-content: space-between;
-}
-
+.paid-status-section,
+.pending-status-section,
+.almost-due-status-section,
 .overdue-status-section {
-  border-bottom: 1px solid $light-pink;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: none;
+  padding-bottom: 4px;
+  box-sizing: border-box;
+
+  &::after {
+    content: '';
+    flex: 0 0 100%;
+    height: 1px;
+    box-sizing: border-box;
+    background-color: $light-pink;
+    background-clip: content-box;
+  }
+}
+
+.paid-status-section,
+.almost-due-status-section,
+.overdue-status-section {
   justify-content: space-between;
 }
 

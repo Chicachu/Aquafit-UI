@@ -9,6 +9,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { CalendarHourSlotItem } from '../calendar-hour-slot/calendar-hour-slot.component';
 import { LegendItem } from '../mobile-calendar/mobile-calendar.component';
+import { businessDateKey } from '@shared/utils/calendarTimeUtils';
 
 @Component({
   selector: 'app-desktop-week-calendar',
@@ -114,7 +115,7 @@ export class DesktopWeekCalendarComponent implements OnInit {
   }
 
   private _toDateKey(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return businessDateKey(date);
   }
 
   private _formatShortDateLabel(date: Date, locale: string, includeYear = false): string {

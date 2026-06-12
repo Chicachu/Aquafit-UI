@@ -6,7 +6,7 @@ import { SnackBarService } from "@core/services/snackBarService";
 import { TranslateService } from "@ngx-translate/core";
 import { TextInputType } from "@core/types/enums/textInputType";
 import { Role } from "@core/types/enums/role";
-import { SelectOption } from "@core/types/selectOption";
+import { STAFF_MANAGEMENT_ROLE_OPTIONS } from "@core/constants/staffManagementRoles";
 import { User } from "@core/types/user";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 
@@ -24,12 +24,7 @@ export class AddEmployeeComponent implements OnInit {
   form: FormGroup
   loading = false
   staffId: number | null = null
-  roleOptions: SelectOption[] = [
-    { value: Role.INSTRUCTOR, viewValue: 'INSTRUCTOR' },
-    { value: Role.MANAGER, viewValue: 'MANAGER' },
-    { value: Role.RECEPTIONIST, viewValue: 'RECEPTIONIST' },
-    { value: Role.EMPLOYEE, viewValue: 'EMPLOYEE' }
-  ]
+  roleOptions = STAFF_MANAGEMENT_ROLE_OPTIONS
 
   constructor(
     private fb: FormBuilder,
@@ -47,7 +42,7 @@ export class AddEmployeeComponent implements OnInit {
         Validators.pattern('^[+]?[0-9 ]*$'),
         Validators.maxLength(15)
       ]],
-      role: [Role.EMPLOYEE, [Validators.required]]
+      role: [Role.INSTRUCTOR, [Validators.required]]
     })
   }
 

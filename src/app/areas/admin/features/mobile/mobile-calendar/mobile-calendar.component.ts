@@ -8,6 +8,7 @@ import { ClassService } from '@/core/services/classService';
 import { CalendarHourSlotItem } from '@/shared/components/calendar/calendar-hour-slot/calendar-hour-slot.component';
 import { LegendItem } from '@/shared/components/calendar/mobile-calendar/mobile-calendar.component';
 import { map } from 'rxjs';
+import { calendarTimeSlotKey } from '@shared/utils/calendarTimeUtils';
 
 interface ClassItemWithStyles extends CalendarHourSlotItem {
   backgroundColor?: string;
@@ -118,8 +119,7 @@ export class MobileClassCalendarComponent implements OnChanges, OnInit {
               return
             }
 
-            const hour = new Date(classItem.date).getHours()
-            const timeKey = `${hour}:00`
+            const timeKey = calendarTimeSlotKey(classItem.startTime)
 
             if (!scheduleMap.has(timeKey)) {
               scheduleMap.set(timeKey, [])

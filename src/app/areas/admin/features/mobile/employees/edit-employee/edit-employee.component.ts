@@ -6,7 +6,7 @@ import { SnackBarService } from "@core/services/snackBarService";
 import { TranslateService } from "@ngx-translate/core";
 import { TextInputType } from "@core/types/enums/textInputType";
 import { Role } from "@core/types/enums/role";
-import { SelectOption } from "@core/types/selectOption";
+import { STAFF_MANAGEMENT_ROLE_OPTIONS } from "@core/constants/staffManagementRoles";
 import { User } from "@core/types/user";
 import { MustMatch } from "@shared/validators/mustMatch";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
@@ -27,12 +27,7 @@ export class EditEmployeeComponent implements OnInit {
   userId: string | null = null
   staffId: number | null = null
   loadedRole: Role | null = null
-  roleOptions: SelectOption[] = [
-    { value: Role.INSTRUCTOR, viewValue: 'INSTRUCTOR' },
-    { value: Role.MANAGER, viewValue: 'MANAGER' },
-    { value: Role.RECEPTIONIST, viewValue: 'RECEPTIONIST' },
-    { value: Role.EMPLOYEE, viewValue: 'EMPLOYEE' }
-  ]
+  roleOptions = STAFF_MANAGEMENT_ROLE_OPTIONS
 
   get editBreadcrumbTitle(): string {
     if (this.loadedRole === Role.INSTRUCTOR) return 'EMPLOYEES.EDIT_INSTRUCTOR'
@@ -70,7 +65,7 @@ export class EditEmployeeComponent implements OnInit {
           Validators.pattern('^[+]?[0-9 ]*$'),
           Validators.maxLength(15)
         ]],
-        role: [Role.EMPLOYEE, [Validators.required]],
+        role: [Role.INSTRUCTOR, [Validators.required]],
         password: [''],
         confirmPassword: ['']
       },

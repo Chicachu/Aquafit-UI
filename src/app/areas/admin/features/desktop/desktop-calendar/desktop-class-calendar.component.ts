@@ -11,6 +11,7 @@ import { LegendItem } from '@shared/components/calendar/mobile-calendar/mobile-c
 import { UserService } from '@core/services/userService';
 import { PaymentStatus } from '@core/types/enums/paymentStatus';
 import { ClassDetails } from '@core/types/classes/classDetails';
+import { calendarTimeSlotKey } from '@shared/utils/calendarTimeUtils';
 
 interface ClassPaymentStatusCounts {
   almostDueCount: number;
@@ -158,8 +159,7 @@ export class DesktopClassCalendarComponent implements OnChanges, OnInit {
               return;
             }
 
-            const hour = new Date(classItem.date).getHours();
-            const timeKey = `${hour}:00`;
+            const timeKey = calendarTimeSlotKey(classItem.startTime);
             const loc = classItem.classLocation || '';
 
             if (!hourMap.has(timeKey)) {

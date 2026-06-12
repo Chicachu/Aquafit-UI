@@ -66,18 +66,5 @@
         </li>
       </ul>
     </div>
-    <div class="employees-section">
-      <h2>{{ 'CLIENTS.EMPLOYEES' | translate }}</h2>
-      <ul>
-        <li *ngFor="let employee of employees">
-          <a
-            [routerLink]="getEmployeeDetailsLink(employee._id)"
-            class="employee-list-link"
-            [class.selected]="isEmployeeSelected(employee._id)">
-            {{ employee.firstName }} {{ employee.lastName }}
-          </a>
-        </li>
-      </ul>
-    </div>
   </div>
 </div>

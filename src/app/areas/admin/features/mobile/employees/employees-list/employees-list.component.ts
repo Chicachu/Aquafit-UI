@@ -20,7 +20,6 @@ export class EmployeesListComponent implements OnInit, OnDestroy {
   instructors: User[] = []
   managers: User[] = []
   receptionists: User[] = []
-  employees: User[] = []
   selectedEmployeeId: string | null = null
   employeesLoaded = false
 
@@ -35,7 +34,6 @@ export class EmployeesListComponent implements OnInit, OnDestroy {
       && this.instructors.length === 0
       && this.managers.length === 0
       && this.receptionists.length === 0
-      && this.employees.length === 0
   }
 
   constructor(
@@ -107,10 +105,9 @@ export class EmployeesListComponent implements OnInit, OnDestroy {
     forkJoin({
       instructors: this.userService.getAllUsers(Role.INSTRUCTOR),
       managers: this.userService.getAllUsers(Role.MANAGER),
-      receptionists: this.userService.getAllUsers(Role.RECEPTIONIST),
-      employees: this.userService.getAllUsers(Role.EMPLOYEE)
+      receptionists: this.userService.getAllUsers(Role.RECEPTIONIST)
     }).subscribe({
-      next: ({ instructors, managers, receptionists, employees }) => {
+      next: ({ instructors, managers, receptionists }) => {
         const sortUsers = (a: User, b: User) => {
           if (a.firstName < b.firstName) return -1
           if (b.firstName < a.firstName) return 1
@@ -120,7 +117,6 @@ export class EmployeesListComponent implements OnInit, OnDestroy {
         this.instructors = instructors.sort(sortUsers)
         this.managers = managers.sort(sortUsers)
         this.receptionists = receptionists.sort(sortUsers)
-        this.employees = employees.sort(sortUsers)
         this.employeesLoaded = true
       },
       error: ({ error }) => {

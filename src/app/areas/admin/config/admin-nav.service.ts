@@ -18,7 +18,8 @@ export type AdminFeatureKey = keyof typeof ADMIN_NAV_LABELS;
 export class AdminNavService {
   private readonly adminOnlyLabels = new Set<string>([
     ADMIN_NAV_LABELS.discounts,
-    ADMIN_NAV_LABELS.salaryConfiguration
+    ADMIN_NAV_LABELS.salaryConfiguration,
+    ADMIN_NAV_LABELS.employees
   ]);
 
   private readonly instructorOrAdminLabels = new Set<string>([
@@ -74,7 +75,6 @@ export class AdminNavService {
     const isInstructor = role === Role.INSTRUCTOR;
     const isReceptionist = role === Role.RECEPTIONIST;
     const isAdminOrManager = this.userService.isAdmin || this.userService.isManager;
-    const canSeeEmployeesNav = isAdminOrManager || isReceptionist;
 
     const navItems = ADMIN_NAV_ITEMS.filter(item => {
       if (item.label === ADMIN_NAV_LABELS.checkIns) {
@@ -82,9 +82,6 @@ export class AdminNavService {
       }
       if (this.adminOnlyLabels.has(item.label)) {
         return isAdminOrManager;
-      }
-      if (item.label === ADMIN_NAV_LABELS.employees) {
-        return canSeeEmployeesNav;
       }
       if (this.instructorOrAdminLabels.has(item.label)) {
         return isAdminOrManager || isInstructor || isReceptionist;

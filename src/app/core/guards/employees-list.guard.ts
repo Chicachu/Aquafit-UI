@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../services/userService';
 
-/** Allows Admin, Manager, or Receptionist to view the employees list (and details/payments). */
+/** Allows Admin or Manager to view the employees list (and details/payments). */
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +13,7 @@ export class EmployeesListGuard implements CanActivate {
   ) {}
 
   canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    if (this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist) {
+    if (this.userService.isAdmin || this.userService.isManager) {
       return true;
     }
 

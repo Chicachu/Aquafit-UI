@@ -5,6 +5,7 @@ import { environment } from "../../../environments/environment"
 import { ScheduleView } from "../types/scheduleView"
 import { CalendarClass } from "../types/calendarClass"
 import { CacheService } from "./cacheService"
+import { CACHE_TTL } from "./cacheTtl"
 import { EmployeeClassDetails } from "@core/types/employees/employeeClassDetails"
 import { User } from "../types/user"
 
@@ -25,7 +26,7 @@ export class ScheduleService {
     // Check if this is today's date - don't cache today's schedule for real-time updates
     const today = new Date().toISOString().split('T')[0];
     const isToday = dateKey === today;
-    const ttl = isToday ? 0 : 30 * 1000; // No cache for today, 30 seconds for other dates
+    const ttl = isToday ? 0 : CACHE_TTL.SHORT;
 
     // If it's today, skip cache entirely
     if (isToday) {
@@ -79,7 +80,7 @@ export class ScheduleService {
             assignmentInfo: res.assignmentInfo ?? []
           }))
         ),
-      1 * 60 * 1000
+      CACHE_TTL.MEDIUM
     );
   }
 

@@ -1,22 +1,33 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
-import { Observable, take } from "rxjs";
+import { Observable, take, tap } from "rxjs";
 import { map } from "rxjs/operators";
-import { Assignment, AssignmentCreationDTO } from "@core/types/assignment";
+import { Assignment } from "@core/types/assignment";
 import { Price } from "@core/types/price";
+import { CacheService } from "./cacheService";
+import { CACHE_TTL } from "./cacheTtl";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssignmentService {
-  constructor(private http: HttpClient) {}
+  private readonly _activeClassIdsKey = 'assignments:classIdsActive';
 
-  /** Class IDs that have at least one active assignment (any instructor). Used to hide them from the Assign Instructor modal. */
+  constructor(
+    private http: HttpClient,
+    private cacheService: CacheService
+  ) {}
+
+  /** Class IDs that have at least one active assignment (any instructor). */
   getClassIdsWithActiveAssignments(): Observable<string[]> {
-    return this.http
-      .get<{ classIds: string[] }>(`${environment.apiUrl}/assignments/class-ids-with-active`)
-      .pipe(take(1), map((res) => res.classIds))
+    return this.cacheService.get(
+      this._activeClassIdsKey,
+      () => this.http
+        .get<{ classIds: string[] }>(`${environment.apiUrl}/assignments/class-ids-with-active`)
+        .pipe(take(1), map((res) => res.classIds)),
+      CACHE_TTL.SHORT
+    );
   }
 
   assignInstructor(classId: string, employeeId: string, startDate: Date, endDate?: Date | null): Observable<Assignment> {
@@ -25,7 +36,10 @@ export class AssignmentService {
       employeeId,
       startDate,
       endDate
-    }).pipe(take(1))
+    }).pipe(
+      take(1),
+      tap(() => this._invalidateAfterAssignmentChange())
+    );
   }
 
   updateAssignment(assignmentId: string, opts: { endDate?: Date | null; paymentValue?: Price | null }): Observable<Assignment> {
@@ -37,10 +51,26 @@ export class AssignmentService {
         ? { amount: opts.paymentValue.amount, currency: opts.paymentValue.currency }
         : null
     }
-    return this.http.patch<Assignment>(`${environment.apiUrl}/assignments/${assignmentId}`, body).pipe(take(1))
+    return this.http.patch<Assignment>(`${environment.apiUrl}/assignments/${assignmentId}`, body).pipe(
+      take(1),
+      tap(() => this._invalidateAfterAssignmentChange())
+    );
   }
 
   unassignInstructor(assignmentId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/assignments/${assignmentId}`).pipe(take(1))
+    return this.http.delete<void>(`${environment.apiUrl}/assignments/${assignmentId}`).pipe(
+      take(1),
+      tap(() => this._invalidateAfterAssignmentChange())
+    );
+  }
+
+  private _invalidateAfterAssignmentChange(): void {
+    this.cacheService.invalidate(this._activeClassIdsKey);
+    this.cacheService.invalidatePattern('schedules:users:*');
+    this.cacheService.invalidatePattern('classes:details:*');
+    this.cacheService.invalidatePattern('classes:*');
+    this.cacheService.invalidate('classes:all');
+    this.cacheService.invalidate('classes:scheduleMap');
+    this.cacheService.invalidatePattern('schedule:*');
   }
 }

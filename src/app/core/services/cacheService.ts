@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { finalize, shareReplay, tap } from 'rxjs/operators';
 
 interface CacheEntry<T> {
   data: T;
@@ -12,37 +12,41 @@ interface CacheEntry<T> {
   providedIn: 'root'
 })
 export class CacheService {
-  private cache = new Map<string, CacheEntry<any>>();
+  private cache = new Map<string, CacheEntry<unknown>>();
+  private inflight = new Map<string, Observable<unknown>>();
 
   /**
-   * Get data from cache or execute the fetcher function
-   * @param key Cache key
-   * @param fetcher Function that returns an Observable to fetch data
-   * @param ttl Time to live in milliseconds (default: 5 minutes)
-   * @returns Observable with cached or fresh data
+   * Get data from cache or execute the fetcher function.
+   * Concurrent requests for the same key share one in-flight HTTP call.
    */
   get<T>(key: string, fetcher: () => Observable<T>, ttl: number = 5 * 60 * 1000): Observable<T> {
     const cached = this.cache.get(key);
 
-    // Return cached data if it exists and hasn't expired
     if (cached && cached.expires > Date.now()) {
-      return of(cached.data);
+      return of(cached.data as T);
     }
 
-    // Fetch fresh data and cache it
-    return fetcher().pipe(
+    const pending = this.inflight.get(key);
+    if (pending) {
+      return pending as Observable<T>;
+    }
+
+    const request$ = fetcher().pipe(
       tap(data => {
-        this.set(key, data, ttl);
-      })
+        if (ttl > 0) {
+          this.set(key, data, ttl);
+        }
+      }),
+      finalize(() => {
+        this.inflight.delete(key);
+      }),
+      shareReplay(1)
     );
+
+    this.inflight.set(key, request$ as Observable<unknown>);
+    return request$;
   }
 
-  /**
-   * Set data in cache with TTL
-   * @param key Cache key
-   * @param data Data to cache
-   * @param ttl Time to live in milliseconds
-   */
   set<T>(key: string, data: T, ttl: number = 5 * 60 * 1000): void {
     this.cache.set(key, {
       data,
@@ -51,18 +55,11 @@ export class CacheService {
     });
   }
 
-  /**
-   * Invalidate a specific cache key
-   * @param key Cache key to invalidate
-   */
   invalidate(key: string): void {
     this.cache.delete(key);
+    this.inflight.delete(key);
   }
 
-  /**
-   * Invalidate all cache keys matching a pattern
-   * @param pattern Pattern to match (supports wildcard *)
-   */
   invalidatePattern(pattern: string): void {
     const regex = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$');
     const keysToDelete: string[] = [];
@@ -73,19 +70,23 @@ export class CacheService {
       }
     });
 
-    keysToDelete.forEach(key => this.cache.delete(key));
+    this.inflight.forEach((_, key) => {
+      if (regex.test(key)) {
+        keysToDelete.push(key);
+      }
+    });
+
+    keysToDelete.forEach(key => {
+      this.cache.delete(key);
+      this.inflight.delete(key);
+    });
   }
 
-  /**
-   * Clear all cache
-   */
   clear(): void {
     this.cache.clear();
+    this.inflight.clear();
   }
 
-  /**
-   * Get cache statistics (useful for debugging)
-   */
   getStats(): { size: number; keys: string[]; entries: Array<{ key: string; age: number; expiresIn: number }> } {
     const now = Date.now();
     const entries = Array.from(this.cache.entries()).map(([key, entry]) => ({

@@ -6,6 +6,7 @@ import { environment } from "../../../environments/environment";
 import { ClassDetails } from "../types/classes/classDetails";
 import { ClassScheduleMap } from "@core/types/classScheduleMap";
 import { CacheService } from "./cacheService";
+import { CACHE_TTL } from "./cacheTtl";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ClassService {
     return this.cacheService.get(
       'classes:all',
       () => this.http.get<Class[]>(`${environment.apiUrl}/classes`).pipe(take(1)),
-      2 * 60 * 1000 // 2 minutes TTL
+      CACHE_TTL.LONG
     );
   }
 
@@ -28,7 +29,7 @@ export class ClassService {
     return this.cacheService.get(
       'classes:locations',
       () => this.http.get<string[]>(`${environment.apiUrl}/classes/locations`).pipe(take(1)),
-      5 * 60 * 1000 // 5 minutes TTL - locations rarely change
+      CACHE_TTL.STATIC
     );
   }
 
@@ -49,7 +50,7 @@ export class ClassService {
     return this.cacheService.get(
       `classes:details:${classId}`,
       () => this.http.get<ClassDetails>(`${environment.apiUrl}/classes/${classId}/details`).pipe(take(1)),
-      1 * 60 * 1000 // 1 minute TTL
+      CACHE_TTL.MEDIUM
     );
   }
 
@@ -57,7 +58,7 @@ export class ClassService {
     return this.cacheService.get(
       'classes:scheduleMap',
       () => this.http.get<ClassScheduleMap>(`${environment.apiUrl}/classes/classScheduleMap`).pipe(take(1)),
-      2 * 60 * 1000 // 2 minutes TTL
+      CACHE_TTL.LONG
     );
   }
 
@@ -65,7 +66,7 @@ export class ClassService {
     return this.cacheService.get(
       `classes:${classId}`,
       () => this.http.get<Class>(`${environment.apiUrl}/classes/${classId}`).pipe(take(1)),
-      1 * 60 * 1000 // 1 minute TTL
+      CACHE_TTL.MEDIUM
     );
   }
 

@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http"
 import { Observable, take, tap } from "rxjs"
 import { environment } from "../../../environments/environment"
 import { CacheService } from "./cacheService"
+import { CACHE_TTL } from "./cacheTtl"
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +70,7 @@ export class UserService {
   clearSession(): void {
     this._user = null
     localStorage.removeItem('user')
+    this.cacheService.clear()
   }
 
   register(username: string, password: string, role: Role): Observable<User> {
@@ -80,7 +82,7 @@ export class UserService {
     return this.cacheService.get(
       cacheKey,
       () => this._http.get<User[]>(`${environment.apiUrl}/users?role=${role}`).pipe(take(1)),
-      2 * 60 * 1000 // 2 minutes TTL
+      CACHE_TTL.LONG
     );
   }
 
@@ -88,7 +90,7 @@ export class UserService {
     return this.cacheService.get(
       `users:${userId}`,
       () => this._http.get<User>(`${environment.apiUrl}/users/${userId}`).pipe(take(1)),
-      1 * 60 * 1000 // 1 minute TTL
+      CACHE_TTL.MEDIUM
     );
   }
 
@@ -108,12 +110,8 @@ export class UserService {
   addNewClient(reqObj: { firstName: string, lastName: string, phoneNumber?: string, role?: Role, employeeId?: number | null }): Observable<User> {
     return this._http.put<User>(`${environment.apiUrl}/users/`, { ...reqObj }).pipe(
       take(1),
-      tap(() => {
-        // Invalidate user list caches
-        this.cacheService.invalidatePattern('users:all*');
-        if (reqObj.role) {
-          this.cacheService.invalidate(`users:all:${reqObj.role}`);
-        }
+      tap((created) => {
+        this._invalidateUserCaches(created._id, reqObj.role);
       })
     );
   }
@@ -122,14 +120,7 @@ export class UserService {
     return this._http.put<User>(`${environment.apiUrl}/users/${userId}`, reqObj).pipe(
       take(1),
       tap(() => {
-        // Invalidate caches for this user and user lists
-        this.cacheService.invalidate(`users:${userId}`);
-        this.cacheService.invalidate(`enrollments:users:${userId}`);
-        this.cacheService.invalidate(`schedules:users:${userId}:classes`);
-        this.cacheService.invalidatePattern('users:all*');
-        if (reqObj.role) {
-          this.cacheService.invalidate(`users:all:${reqObj.role}`);
-        }
+        this._invalidateUserCaches(userId, reqObj.role);
       })
     );
   }
@@ -138,7 +129,6 @@ export class UserService {
     return this._http.post<User>(`${environment.apiUrl}/users/${userId}/notes`, { content }).pipe(
       take(1),
       tap(() => {
-        // Notes affect user details
         this.cacheService.invalidate(`users:${userId}`);
       })
     );
@@ -154,19 +144,24 @@ export class UserService {
   }
 
   getCanDeleteUser(userId: string): Observable<{ canDelete: boolean; reason?: string }> {
-    return this._http
-      .get<{ canDelete: boolean; reason?: string }>(`${environment.apiUrl}/users/${userId}/can-delete`)
-      .pipe(take(1));
+    return this.cacheService.get(
+      `users:${userId}:can-delete`,
+      () => this._http
+        .get<{ canDelete: boolean; reason?: string }>(`${environment.apiUrl}/users/${userId}/can-delete`)
+        .pipe(take(1)),
+      CACHE_TTL.MEDIUM
+    );
   }
 
   deleteUser(userId: string): Observable<void> {
     return this._http.delete<void>(`${environment.apiUrl}/users/${userId}`).pipe(
       take(1),
       tap(() => {
-        this.cacheService.invalidate(`users:${userId}`);
-        this.cacheService.invalidate(`enrollments:users:${userId}`);
-        this.cacheService.invalidate(`schedules:users:${userId}:classes`);
-        this.cacheService.invalidatePattern('users:all*');
+        this._invalidateUserCaches(userId);
+        this.cacheService.invalidate('enrollments:active');
+        this.cacheService.invalidate('waitlist:all');
+        this.cacheService.invalidatePattern('classes:details:*');
+        this.cacheService.invalidatePattern('schedule:*');
       })
     );
   }
@@ -174,5 +169,16 @@ export class UserService {
   getNextEmployeeId(): Observable<{ employeeId: number }> {
     // Don't cache - this is a dynamic value that changes
     return this._http.get<{ employeeId: number }>(`${environment.apiUrl}/users/next-employee-id`).pipe(take(1))
+  }
+
+  private _invalidateUserCaches(userId: string, role?: Role): void {
+    this.cacheService.invalidate(`users:${userId}`);
+    this.cacheService.invalidate(`users:${userId}:can-delete`);
+    this.cacheService.invalidate(`enrollments:users:${userId}`);
+    this.cacheService.invalidate(`schedules:users:${userId}:classes`);
+    this.cacheService.invalidatePattern('users:all*');
+    if (role) {
+      this.cacheService.invalidate(`users:all:${role}`);
+    }
   }
 }

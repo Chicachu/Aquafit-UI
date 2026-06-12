@@ -45,6 +45,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "initial",
@@ -69,6 +70,7 @@
               "sourceMap": true
             },
             "koyeb": {
+              "baseHref": "/",
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
@@ -78,6 +80,7 @@
               }]
             },
             "test": {
+              "baseHref": "/",
               "budgets": [
                 { "type": "initial", "maximumWarning": "500kB", "maximumError": "1MB" },
                 { "type": "anyComponentStyle", "maximumWarning": "2kB", "maximumError": "4kB" }

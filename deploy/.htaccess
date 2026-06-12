@@ -1,8 +1,19 @@
-# Angular SPA: serve index.html for all routes
+# Angular SPA on Apache (GoDaddy): serve index.html for app routes only.
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . index.html [L]
+
+  # Leave real files and directories alone (JS, CSS, assets, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # App routes -> index.html
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Avoid serving HTML for missing hashed bundles after a deploy (stale index.html in cache).
+<IfModule mod_headers.c>
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
 </IfModule>

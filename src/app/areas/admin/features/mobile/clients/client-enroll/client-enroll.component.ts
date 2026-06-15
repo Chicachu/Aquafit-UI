@@ -105,7 +105,7 @@ export class ClientEnrollComponent implements OnInit, OnChanges {
       return
     }
 
-    const billingFrequency = this.enrollmentForm.controls['billing_frequency_override'].value ?? null
+    const billingFrequency = this._getBillingFrequencyOverride()
     const daysOverride = this.enrollmentForm.controls['days_override'].value ?? null
     const startDate = this.enrollmentForm.controls['start_date'].value._d
 
@@ -281,7 +281,14 @@ export class ClientEnrollComponent implements OnInit, OnChanges {
   }
 
   private _resetForm(): void {
-    this.enrollmentForm.reset()
+    this.enrollmentForm.reset({
+      class_type: '',
+      location: '',
+      time: '',
+      start_date: '',
+      days_override: null,
+      billing_frequency_override: null
+    })
     this.selectedType = null
     this.selectedLocation = ''
     this.selectedClassId = ''
@@ -289,6 +296,15 @@ export class ClientEnrollComponent implements OnInit, OnChanges {
     this.classTimesOptions = []
     this.advancedOptionsClassInfo = undefined
     this.disabledDaysChips = []
+  }
+
+  private _getBillingFrequencyOverride(): BillingFrequency | null {
+    const value = this.enrollmentForm.controls['billing_frequency_override'].value
+    if (value === null || value === undefined || value === '') {
+      return null
+    }
+
+    return value
   }
 
   private _closePanelRoute(): void {

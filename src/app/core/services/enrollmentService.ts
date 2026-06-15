@@ -19,8 +19,26 @@ export class EnrollmentService {
     private cacheService: CacheService
   ) {}
 
-  enrollClient(classId: string, clientId: string, startDate: Date, billingFrequency: BillingFrequency, daysOverride: number[]): Observable<void> {
-    return this.http.post<void>(`${environment.apiUrl}/enrollments/`, { classId, clientId, startDate, billingFrequency, daysOverride }).pipe(
+  enrollClient(
+    classId: string,
+    clientId: string,
+    startDate: Date,
+    billingFrequency?: BillingFrequency | null,
+    daysOverride?: number[] | null
+  ): Observable<void> {
+    const body: {
+      classId: string
+      clientId: string
+      startDate: Date
+      billingFrequency?: BillingFrequency
+      daysOverride?: number[] | null
+    } = { classId, clientId, startDate, daysOverride: daysOverride ?? null }
+
+    if (billingFrequency) {
+      body.billingFrequency = billingFrequency
+    }
+
+    return this.http.post<void>(`${environment.apiUrl}/enrollments/`, body).pipe(
       take(1),
       tap(() => this._invalidateEnrollmentCaches(clientId, classId))
     )

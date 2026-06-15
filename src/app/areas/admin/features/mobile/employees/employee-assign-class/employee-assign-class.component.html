@@ -33,7 +33,9 @@
       <app-datepicker
         label="CONTROLS.START_DATE"
         controlName="start_date"
-        [allowedWeekdays]="selectedClassDays">
+        [disabled]="!canSelectStartDate"
+        [allowedWeekdays]="selectedClassDays"
+        [minDate]="selectedClassStartDate">
       </app-datepicker>
     </form>
 

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostBinding, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AssignmentService } from '@core/services/assignmentService';
 import { ClassService } from '@core/services/classService';
@@ -38,8 +38,29 @@ export class EmployeeAssignClassComponent implements OnInit, OnChanges {
   classScheduleMap: ClassScheduleMap | null = null
   classIdsWithActiveAssignment: Set<string> = new Set()
   selectedClassId = ''
-  selectedClassDays: number[] | null = null
+  selectedClassInfo: Class | null = null
   loading = false
+
+  get canSelectStartDate(): boolean {
+    return !!this.selectedClassInfo
+      && !!this.f['location'].value
+      && !!this.f['class_type'].value
+      && !!this.f['time'].value
+  }
+
+  get selectedClassDays(): number[] | null {
+    return this.selectedClassInfo?.days ?? null
+  }
+
+  get selectedClassStartDate(): Date | null {
+    if (!this.selectedClassInfo?.startDate) {
+      return null
+    }
+
+    const startDate = new Date(this.selectedClassInfo.startDate)
+    startDate.setHours(0, 0, 0, 0)
+    return startDate
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -85,13 +106,24 @@ export class EmployeeAssignClassComponent implements OnInit, OnChanges {
   }
 
   submit(): void {
+    if (!this.userId || !this.selectedClassId) {
+      this.classSelectionForm.markAllAsTouched()
+      this.snackBarService.showError(this.translateService.instant('ERRORS.FILL_REQUIRED_FIELDS'))
+      return
+    }
+
+    this._updateStartDateValidators()
+    this.classSelectionForm.markAllAsTouched()
+    this.classSelectionForm.updateValueAndValidity()
+
+    if (!this.classSelectionForm.valid) {
+      return
+    }
+
     const raw = this.f['start_date'].value
     const startDate = raw?._d ? new Date(raw._d) : raw ? new Date(raw) : null
 
-    if (!startDate || !this.userId || !this.selectedClassId) {
-      this.snackBarService.showError(
-        this.translateService.instant('ERRORS.REQUIRED', { field: this.translateService.instant('ERRORS.START_DATE') })
-      )
+    if (!startDate) {
       return
     }
 
@@ -187,10 +219,57 @@ export class EmployeeAssignClassComponent implements OnInit, OnChanges {
     this.selectedLocation = ''
     this.selectedType = null
     this.selectedClassId = ''
-    this.selectedClassDays = null
+    this.selectedClassInfo = null
     this.classTypeOptions = []
     this.classTimesOptions = []
     this.employeeLocation = null
+    this._updateStartDateValidators()
+  }
+
+  private _clearStartDate(): void {
+    this.classSelectionForm.get('start_date')?.reset('', { emitEvent: false })
+    this._updateStartDateValidators()
+  }
+
+  private _updateStartDateValidators(): void {
+    const startDateControl = this.classSelectionForm.get('start_date')
+    if (!startDateControl) {
+      return
+    }
+
+    startDateControl.clearValidators()
+    startDateControl.addValidators(Validators.required)
+
+    if (this.selectedClassInfo) {
+      startDateControl.addValidators(this._classAssignmentStartDateValidator())
+    }
+
+    startDateControl.updateValueAndValidity({ emitEvent: false })
+  }
+
+  private _classAssignmentStartDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value || !this.selectedClassInfo) {
+        return null
+      }
+
+      const selectedDate = new Date(control.value._d || control.value)
+      selectedDate.setHours(0, 0, 0, 0)
+
+      const classStart = new Date(this.selectedClassInfo.startDate)
+      classStart.setHours(0, 0, 0, 0)
+
+      if (selectedDate < classStart) {
+        return { beforeClassStart: true }
+      }
+
+      const classDays = this.selectedClassInfo.days ?? []
+      if (classDays.length > 0 && !classDays.includes(selectedDate.getDay())) {
+        return { invalidClassDay: true }
+      }
+
+      return null
+    }
   }
 
   private _setupFormSubscriptions(): void {
@@ -206,10 +285,11 @@ export class EmployeeAssignClassComponent implements OnInit, OnChanges {
       }))
       this.selectedType = null
       this.selectedClassId = ''
-      this.selectedClassDays = null
+      this.selectedClassInfo = null
       this.classTimesOptions = []
       this.classSelectionForm.get('class_type')?.reset('', { emitEvent: false })
       this.classSelectionForm.get('time')?.reset('', { emitEvent: false })
+      this._clearStartDate()
     })
 
     this.classSelectionForm.get('class_type')?.valueChanges.subscribe((selectedClassType: ClassType) => {
@@ -223,8 +303,9 @@ export class EmployeeAssignClassComponent implements OnInit, OnChanges {
         .filter((timeSlot) => !this.classIdsWithActiveAssignment.has(timeMap[timeSlot]))
         .map((time) => ({ value: time, viewValue: time }))
       this.selectedClassId = ''
-      this.selectedClassDays = null
+      this.selectedClassInfo = null
       this.classSelectionForm.get('time')?.reset('', { emitEvent: false })
+      this._clearStartDate()
     })
 
     this.classSelectionForm.get('time')?.valueChanges.subscribe((selectedTime: string) => {
@@ -233,15 +314,18 @@ export class EmployeeAssignClassComponent implements OnInit, OnChanges {
       }
 
       this.selectedClassId = this.classScheduleMap[this.selectedType]?.[this.selectedLocation]?.[selectedTime]!
-      this.selectedClassDays = null
+      this.selectedClassInfo = null
+      this._clearStartDate()
 
       if (this.selectedClassId) {
         this.classService.getClass(this.selectedClassId).subscribe({
           next: (classDetails: Class) => {
-            this.selectedClassDays = classDetails.days ?? null
+            this.selectedClassInfo = classDetails
+            this._updateStartDateValidators()
           },
           error: () => {
-            this.selectedClassDays = null
+            this.selectedClassInfo = null
+            this._updateStartDateValidators()
           }
         })
       }

@@ -46,6 +46,12 @@ export class ErrorsService {
     if (control?.hasError('minDate')) {
       return this.translateService.instant('ERRORS.MIN_DATE', { field });
     }
+    if (control?.hasError('beforeClassStart')) {
+      return this.translateService.instant('ERRORS.BEFORE_CLASS_START', { field });
+    }
+    if (control?.hasError('invalidClassDay')) {
+      return this.translateService.instant('ERRORS.INVALID_CLASS_DAY', { field });
+    }
     return '';
   }
 

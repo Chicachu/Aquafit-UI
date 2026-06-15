@@ -68,6 +68,8 @@
     "POSITIVE": "{{field}} must be a positive value",
     "MIN": "{{field}} must be at least {{min}}",
     "MIN_DATE": "{{field}} cannot be before today",
+    "BEFORE_CLASS_START": "{{field}} cannot be before the class start date",
+    "INVALID_CLASS_DAY": "{{field}} must be on a day the class runs",
     "GENERIC": "Something went wrong. Please try again.",
     "LOAD_PAYABLE": "Error loading payable.",
     "LOAD_INVOICES": "Error loading invoices.",

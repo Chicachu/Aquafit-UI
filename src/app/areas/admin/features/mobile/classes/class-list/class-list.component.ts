@@ -54,11 +54,11 @@ export class ClassListComponent implements OnInit, OnDestroy {
   }
 
   get buttonType(): ButtonType {
-    return this.userService.isAdmin ? ButtonType.ADD : ButtonType.NONE
+    return this.canAddClass ? ButtonType.ADD : ButtonType.NONE
   }
 
   get canAddClass(): boolean {
-    return this.userService.isAdmin
+    return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist
   }
 
   get hasNoClasses(): boolean {

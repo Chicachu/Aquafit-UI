@@ -22,7 +22,7 @@
 
     <div class="flex-column">
       <div [ngClass]="getStatusClass(invoiceDetails.paymentStatus!)" class="payment-status flex-row">
-        <h3>{{ invoiceDetails.paymentStatus | capitalize }}</h3>
+        <h3>{{ getPaymentStatusTranslationKey(invoiceDetails.paymentStatus) | translate }}</h3>
       </div>
 
       <div class="period-section white">

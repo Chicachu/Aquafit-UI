@@ -6,6 +6,7 @@ import { SnackBarService } from "@core/services/snackBarService";
 import { InvoiceDetails } from "@core/types/invoices/invoiceDetails";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { PaymentStatus } from "@core/types/enums/paymentStatus";
+import { getPaymentStatusTranslationKey } from "@shared/utils/paymentStatusUtils";
 import { PaymentType } from "@core/types/enums/paymentType";
 import { TextInputType } from "@core/types/enums/textInputType";
 import { SelectOption } from "@core/types/selectOption";
@@ -24,6 +25,7 @@ export class InvoiceDetailsComponent implements OnInit, OnChanges {
 
   ButtonType = ButtonType
   PaymentStatus = PaymentStatus
+  getPaymentStatusTranslationKey = getPaymentStatusTranslationKey
   readonly TextInputType = TextInputType
   invoiceDetails: InvoiceDetails | null = null
 

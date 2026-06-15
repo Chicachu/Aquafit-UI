@@ -269,7 +269,8 @@
     "PAID": "Pagado",
     "PENDING": "Pendiente", 
     "OVERDUE": "Vencido",
-    "ALMOST_DUE": "Próximo a vencer"
+    "ALMOST_DUE": "Próximo a vencer",
+    "CANCELLED": "Cancelado"
   },
   "PAYMENTS": {
     "TITLE": "Pagos",

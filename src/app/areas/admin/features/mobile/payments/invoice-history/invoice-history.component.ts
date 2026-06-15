@@ -5,6 +5,7 @@ import { SnackBarService } from "@core/services/snackBarService";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
 import { InvoiceHistory } from "@core/types/invoices/invoiceHistory";
 import { PaymentStatus } from "@core/types/enums/paymentStatus";
+import { getPaymentStatusTranslationKey } from "@shared/utils/paymentStatusUtils";
 
 @Component({
   selector: 'app-invoice-history',
@@ -18,6 +19,7 @@ export class InvoiceHistoryComponent implements OnInit, OnChanges {
   @Input() enrollmentId: string | null = null
 
   PaymentStatus = PaymentStatus
+  getPaymentStatusTranslationKey = getPaymentStatusTranslationKey
   ButtonType = ButtonType
   invoiceHistory: InvoiceHistory | null = null
 

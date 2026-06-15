@@ -37,7 +37,7 @@ const routes: Routes = [
       {
         path: 'add-class',
         component: EditClassComponent,
-        canActivate: [AdminGuard],
+        canActivate: [AdminManagerReceptionistGuard],
         data: { panelView: true }
       },
       {

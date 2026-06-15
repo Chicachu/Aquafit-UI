@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { UserService } from '../services/userService';
 
-/** Allows Admin, Manager, or Receptionist (e.g. add/edit clients). */
+/** Allows Admin, Manager, or Receptionist (e.g. add clients/classes). */
 @Injectable({
   providedIn: 'root'
 })

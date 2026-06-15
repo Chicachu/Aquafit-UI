@@ -269,7 +269,8 @@
     "PAID": "Paid",
     "PENDING": "Pending", 
     "OVERDUE": "Overdue",
-    "ALMOST_DUE": "Due soon"
+    "ALMOST_DUE": "Due soon",
+    "CANCELLED": "Cancelled"
   },
   "PAYMENTS": {
     "TITLE": "Payments",

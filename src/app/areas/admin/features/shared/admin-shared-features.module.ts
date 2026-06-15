@@ -22,6 +22,8 @@ import { EmployeePayableDetailsComponent } from '../mobile/employees/employee-pa
 import { AddEmployeeComponent } from '../mobile/employees/add-employee/add-employee.component';
 import { EditEmployeeComponent } from '../mobile/employees/edit-employee/edit-employee.component';
 import { EmployeeAssignClassComponent } from '../mobile/employees/employee-assign-class/employee-assign-class.component';
+import { CheckInsComponent } from '../mobile/check-ins/check-ins.component';
+import { CheckInsHistoryComponent } from '../mobile/check-ins/check-ins-history.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { EmployeeAssignClassComponent } from '../mobile/employees/employee-assig
     EmployeePayableDetailsComponent,
     AddEmployeeComponent,
     EditEmployeeComponent,
-    EmployeeAssignClassComponent
+    EmployeeAssignClassComponent,
+    CheckInsComponent,
+    CheckInsHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +72,9 @@ import { EmployeeAssignClassComponent } from '../mobile/employees/employee-assig
     EmployeePayableDetailsComponent,
     AddEmployeeComponent,
     EditEmployeeComponent,
-    EmployeeAssignClassComponent
+    EmployeeAssignClassComponent,
+    CheckInsComponent,
+    CheckInsHistoryComponent
   ]
 })
 export class AdminSharedFeaturesModule {}

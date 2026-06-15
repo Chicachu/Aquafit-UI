@@ -1,0 +1,130 @@
+@import 'assets/colors.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.check-ins-history {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.history-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 0 16px;
+  box-sizing: border-box;
+}
+
+.general-info {
+  border-bottom: 1px solid $light-blue;
+  text-align: center;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  align-items: center;
+
+  h3,
+  h4 {
+    margin: 5px 0;
+  }
+}
+
+.missing-id-message {
+  color: $light-pink;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  padding: 0 16px;
+}
+
+.loading-section,
+.entries-section,
+.months-section {
+  margin-top: 0;
+}
+
+.month-row {
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.month-link {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+ul {
+  padding-left: 0;
+  margin: 0;
+}
+
+li {
+  color: white;
+  padding: 5px;
+}
+
+.entries-list {
+  list-style: none;
+  padding: 0 16px;
+  margin: 0;
+}
+
+.entry-item {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba($light-blue, 0.35);
+  border-radius: 4px;
+  background: rgba($mid-blue, 0.35);
+}
+
+.entry-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.entry-type {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.entry-type.check-in {
+  color: $light-green;
+}
+
+.entry-type.check-out {
+  color: $mid-pink;
+}
+
+.entry-date {
+  color: $light-blue;
+  font-size: 0.9rem;
+}
+
+.no-entries {
+  text-align: center;
+  padding: 1rem 16px;
+  color: $light-blue;
+}
+
+.loading-section p {
+  color: $light-blue;
+  padding: 0 16px;
+}

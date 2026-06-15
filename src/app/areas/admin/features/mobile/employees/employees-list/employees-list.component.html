@@ -6,7 +6,7 @@
     (onButtonClick)="addNewEmployee()">
   </app-breadcrumb-nav-bar>
 
-  <div *ngIf="panelView && canAddEmployee" class="add-employee-row">
+  <div *ngIf="panelView && canAddEmployee && listMode === 'default'" class="add-employee-row">
     <span *ngIf="hasNoEmployees" class="add-employee-hint">{{ 'EMPLOYEES.CLICK_TO_ADD_EMPLOYEES' | translate }}</span>
     <button
       mat-icon-button

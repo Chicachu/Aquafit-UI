@@ -94,10 +94,16 @@
     "CHECK_OUT_SUCCESS": "Check-out recorded.",
     "SUBMIT_ERROR": "Failed to record entry.",
     "NOT_LOGGED_IN": "You must be logged in to record entries.",
+    "ENTRIES_HISTORY_OVERVIEW": "Time Entries History",
     "ENTRIES_HISTORY": "Time Entries",
     "NO_ENTRIES": "No entries yet.",
     "LOADING_ENTRIES": "Loading entries...",
-    "LOAD_ENTRIES_ERROR": "Could not load entries."
+    "LOAD_ENTRIES_ERROR": "Could not load entries.",
+    "MISSING_EMPLOYEE_ID": "This employee does not have a staff ID configured. Add one on their employee profile before recording check-ins.",
+    "CHECK_IN_OPEN_SESSION": "Cannot check in: this employee already has an open check-in without a check-out.",
+    "CHECK_IN_COOLDOWN_AFTER_CHECK_OUT": "Cannot check in within 15 minutes of the previous check-out.",
+    "CHECK_OUT_NO_OPEN_CHECK_IN": "Cannot check out: there is no open check-in to close.",
+    "CHECK_OUT_COOLDOWN_AFTER_CHECK_IN": "Cannot check out within 15 minutes of the check-in."
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Group fitness", 
@@ -197,6 +203,8 @@
     "CLASS_DETAILS": "Class Details",
     "ENROLL_CLIENT_INSTRUCTIONS": "Select a client to enroll",
     "ENROLLED": "enrolled",
+    "INSTRUCTOR_LABEL": "Instructor:",
+    "NO_INSTRUCTOR_ASSIGNED": "No instructor assigned",
     "NO_CLIENTS_ENROLLED": "There are no clients enrolled in this class.",
     "PARTIAL_ENROLLMENT_LETTER": "P",
     "PARTIAL_ENROLLMENT_TITLE": "Partial enrollment",

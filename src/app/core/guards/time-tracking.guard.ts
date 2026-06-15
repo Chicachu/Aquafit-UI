@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../services/userService';
 
 const TIME_TRACKING_ALLOWED_USERNAME = 'admin@aquafitvallarta.com';
@@ -13,12 +13,14 @@ export class TimeTrackingGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(): boolean {
+  canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const username = this.userService.user?.username;
     if (username === TIME_TRACKING_ALLOWED_USERNAME) {
       return true;
     }
-    this.router.navigate(['/admin/mobile/classes']);
+
+    const isDesktop = !state.url.includes('/admin/mobile');
+    this.router.navigate([isDesktop ? '/admin/classes' : '/admin/mobile/classes']);
     return false;
   }
 }

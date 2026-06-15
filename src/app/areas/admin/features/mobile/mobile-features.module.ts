@@ -183,8 +183,7 @@ const routes: Routes = [
     DiscountListComponent,
     DiscountDetailsComponent,
     EditDiscountComponent,
-    SalaryConfigurationComponent,
-    CheckInsComponent
+    SalaryConfigurationComponent
   ],
   imports: [
     CommonModule,

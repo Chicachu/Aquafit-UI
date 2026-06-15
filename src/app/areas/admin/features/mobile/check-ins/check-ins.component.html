@@ -1,13 +1,22 @@
 <div class="flex-column">
   <app-breadcrumb-nav-bar
+    *ngIf="!panelView"
     [title]="'NAVIGATION.CHECK_INS' | translate"
     [buttonType]="buttonType">
   </app-breadcrumb-nav-bar>
-  <div class="check-ins-content">
-    <p>{{ 'CHECK_INS.INTRO' | translate }}</p>
+  <div class="check-ins-content" [class.panel-view]="panelView">
+    <p class="intro-text">{{ 'CHECK_INS.INTRO' | translate }}</p>
+
+    <div *ngIf="panelView && employeeName" class="header flex-column general-info">
+      <h3 class="mid-pink">{{ employeeName }}</h3>
+    </div>
+
+    <p *ngIf="missingEmployeeId" class="missing-id-message">
+      {{ 'CHECK_INS.MISSING_EMPLOYEE_ID' | translate }}
+    </p>
 
     <form [formGroup]="simulateForm" class="simulate-form">
-      <div class="form-row">
+      <div *ngIf="!panelView" class="form-row">
         <mat-form-field appearance="outline" class="employee-number-field">
           <mat-label>{{ 'CHECK_INS.EMPLOYEE_NUMBER' | translate }}</mat-label>
           <input
@@ -40,7 +49,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="form-row buttons-row">
+      <div *ngIf="!panelView" class="form-row buttons-row">
         <button
           mat-stroked-button
           type="button"
@@ -57,7 +66,7 @@
         mat-raised-button
         color="primary"
         class="action-button check-in-button"
-        [disabled]="!canSubmit"
+        [disabled]="!canCheckIn"
         (click)="submitCheckIn()">
         {{ 'CHECK_INS.CHECK_IN' | translate }}
       </button>
@@ -66,31 +75,33 @@
         mat-raised-button
         color="accent"
         class="action-button check-out-button"
-        [disabled]="!canSubmit"
+        [disabled]="!canCheckOut"
         (click)="submitCheckOut()">
         {{ 'CHECK_INS.CHECK_OUT' | translate }}
       </button>
     </section>
 
-    <section *ngIf="isLoadingEntries" class="loading-section">
-      <p>{{ 'CHECK_INS.LOADING_ENTRIES' | translate }}</p>
-    </section>
+    <ng-container *ngIf="!panelView">
+      <section *ngIf="isLoadingEntries" class="loading-section">
+        <p>{{ 'CHECK_INS.LOADING_ENTRIES' | translate }}</p>
+      </section>
 
-    <section *ngIf="!isLoadingEntries" class="entries-section">
-      <h3>{{ 'CHECK_INS.ENTRIES_HISTORY' | translate }}</h3>
-      <div *ngIf="entries.length === 0" class="no-entries">
-        <p>{{ 'CHECK_INS.NO_ENTRIES' | translate }}</p>
-      </div>
-      <ul *ngIf="entries.length > 0" class="entries-list">
-        <li *ngFor="let entry of entries" class="entry-item">
-          <div class="entry-content">
-            <span class="entry-type" [class.check-in]="entry.type === CheckInType.CHECK_IN" [class.check-out]="entry.type === CheckInType.CHECK_OUT">
-              {{ entry.type === CheckInType.CHECK_IN ? ('CHECK_INS.CHECK_IN' | translate) : ('CHECK_INS.CHECK_OUT' | translate) }}
-            </span>
-            <span class="entry-date">{{ entry.date | date:'short' }}</span>
-          </div>
-        </li>
-      </ul>
-    </section>
+      <section *ngIf="!isLoadingEntries" class="entries-section">
+        <h3>{{ 'CHECK_INS.ENTRIES_HISTORY' | translate }}</h3>
+        <div *ngIf="entries.length === 0" class="no-entries">
+          <p>{{ 'CHECK_INS.NO_ENTRIES' | translate }}</p>
+        </div>
+        <ul *ngIf="entries.length > 0" class="entries-list">
+          <li *ngFor="let entry of entries" class="entry-item">
+            <div class="entry-content">
+              <span class="entry-type" [class.check-in]="entry.type === CheckInType.CHECK_IN" [class.check-out]="entry.type === CheckInType.CHECK_OUT">
+                {{ entry.type === CheckInType.CHECK_IN ? ('CHECK_INS.CHECK_IN' | translate) : ('CHECK_INS.CHECK_OUT' | translate) }}
+              </span>
+              <span class="entry-date">{{ entry.date | date:'short' }}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </ng-container>
   </div>
 </div>

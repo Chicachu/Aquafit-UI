@@ -17,6 +17,23 @@
      <h5 class="light-green" *ngFor="let enrollmentCount of classDetails.enrollmentCounts | keyvalue">
       {{ enrollmentCount.key | weekdays }}: {{ enrollmentCount.value }}/{{ classDetails.maxCapacity }} {{ 'CLASSES.ENROLLED' | translate }}
      </h5>
+     <h4 class="mid-pink instructor-line">
+      {{ 'CLASSES.INSTRUCTOR_LABEL' | translate }}
+      <ng-container *ngIf="classDetails.instructor; else noInstructor">
+        <a
+          *ngIf="canLinkToEmployeeDetails; else instructorNameOnly"
+          [routerLink]="getEmployeeDetailsLink(classDetails.instructor._id)"
+          class="instructor-link">
+          {{ classDetails.instructor.firstName }} {{ classDetails.instructor.lastName }}
+        </a>
+        <ng-template #instructorNameOnly>
+          {{ classDetails.instructor.firstName }} {{ classDetails.instructor.lastName }}
+        </ng-template>
+      </ng-container>
+      <ng-template #noInstructor>
+        {{ 'CLASSES.NO_INSTRUCTOR_ASSIGNED' | translate }}
+      </ng-template>
+     </h4>
   </div>
 
   <!-- Client information -->

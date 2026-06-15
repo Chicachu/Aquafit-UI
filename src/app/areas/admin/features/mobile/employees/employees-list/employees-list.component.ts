@@ -15,6 +15,7 @@ import { filter, forkJoin, Subscription } from "rxjs";
 export class EmployeesListComponent implements OnInit, OnDestroy {
   @Input() showBreadcrumb = true
   @Input() @HostBinding('class.panel-view') panelView = false
+  @Input() listMode: 'default' | 'time-tracking' = 'default'
 
   ButtonType = ButtonType
   instructors: User[] = []
@@ -68,6 +69,12 @@ export class EmployeesListComponent implements OnInit, OnDestroy {
   }
 
   getEmployeeDetailsLink(employeeId: string): string[] {
+    if (this.listMode === 'time-tracking') {
+      return this.panelView
+        ? ['/admin/check-ins', employeeId]
+        : ['/admin/mobile/check-ins', employeeId]
+    }
+
     if (this.panelView) {
       return ['/admin/employees', employeeId, 'details']
     }

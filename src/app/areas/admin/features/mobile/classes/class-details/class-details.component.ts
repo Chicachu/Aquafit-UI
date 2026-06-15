@@ -54,6 +54,16 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
     return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist
   }
 
+  get canLinkToEmployeeDetails(): boolean {
+    return this.userService.isAdmin || this.userService.isManager
+  }
+
+  getEmployeeDetailsLink(employeeId: string): string[] {
+    return this.panelView
+      ? ['/admin/employees', employeeId, 'details']
+      : ['/admin/mobile/employees', employeeId, 'details']
+  }
+
   canShowClientInvoiceLink(client: ClassClientEnrollmentDetails): boolean {
     return this.canViewPaymentsInClass
       && !!this.getClientEnrollmentId(client)

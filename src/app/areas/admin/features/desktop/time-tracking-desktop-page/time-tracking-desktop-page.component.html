@@ -1,0 +1,27 @@
+<div class="three-panel-layout">
+  <section class="panel panel-1">
+    <div class="panel-body">
+      <app-employees-list
+        [showBreadcrumb]="false"
+        [panelView]="true"
+        listMode="time-tracking">
+      </app-employees-list>
+    </div>
+  </section>
+  <section class="panel panel-2">
+    <div class="panel-body">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+  <section class="panel panel-3">
+    <div class="panel-body">
+      <app-check-ins-history
+        *ngIf="activeUserId"
+        [userId]="activeUserId"
+        [year]="activeYear"
+        [month]="activeMonth"
+        [panelView]="true">
+      </app-check-ins-history>
+    </div>
+  </section>
+</div>

@@ -12,6 +12,7 @@ import { DesktopClassCalendarComponent } from "./desktop-calendar/desktop-class-
 import { ClassesDesktopPageComponent } from "./classes-desktop-page/classes-desktop-page.component";
 import { ClientsDesktopPageComponent } from "./clients-desktop-page/clients-desktop-page.component";
 import { EmployeesDesktopPageComponent } from "./employees-desktop-page/employees-desktop-page.component";
+import { TimeTrackingDesktopPageComponent } from "./time-tracking-desktop-page/time-tracking-desktop-page.component";
 import { ClassDetailsComponent } from "../mobile/classes/class-details/class-details.component";
 import { EditClassComponent } from "../mobile/classes/edit-class/edit-class.component";
 import { ClientDetailsComponent } from "../mobile/clients/client-details/client-details.component";
@@ -19,6 +20,9 @@ import { EditClientComponent } from "../mobile/clients/edit-client/edit-client.c
 import { EmployeeDetailsComponent } from "../mobile/employees/employee-details/employee-details.component";
 import { EditEmployeeComponent } from "../mobile/employees/edit-employee/edit-employee.component";
 import { AddEmployeeComponent } from "../mobile/employees/add-employee/add-employee.component";
+import { CheckInsComponent } from "../mobile/check-ins/check-ins.component";
+import { TimeTrackingGuard } from "@core/guards/time-tracking.guard";
+
 const routes: Routes = [
   {
     path: 'home',
@@ -131,6 +135,23 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'check-ins',
+    component: TimeTrackingDesktopPageComponent,
+    canActivate: [TimeTrackingGuard],
+    children: [
+      {
+        path: ':user-id/entries/:year/:month',
+        component: CheckInsComponent,
+        data: { panelView: true }
+      },
+      {
+        path: ':user-id',
+        component: CheckInsComponent,
+        data: { panelView: true }
+      }
+    ]
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'home'
@@ -143,7 +164,8 @@ const routes: Routes = [
     DesktopClassCalendarComponent,
     ClassesDesktopPageComponent,
     ClientsDesktopPageComponent,
-    EmployeesDesktopPageComponent
+    EmployeesDesktopPageComponent,
+    TimeTrackingDesktopPageComponent
   ],
   imports: [
     CommonModule,

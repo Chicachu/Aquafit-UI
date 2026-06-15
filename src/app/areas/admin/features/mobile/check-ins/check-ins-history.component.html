@@ -1,0 +1,62 @@
+<div class="check-ins-history">
+  <app-breadcrumb-nav-bar
+    *ngIf="showMonthDetail"
+    [title]="'CHECK_INS.ENTRIES_HISTORY'"
+    [buttonType]="ButtonType.NONE"
+    [showBack]="true"
+    [backRoute]="historyOverviewBackRoute">
+  </app-breadcrumb-nav-bar>
+
+  <div class="history-content">
+    <div *ngIf="employeeName" class="header flex-column general-info">
+      <h3 class="mid-pink">{{ employeeName }}</h3>
+      <h4 *ngIf="showMonthDetail && selectedMonthDate" class="light-blue">
+        {{ selectedMonthDate | translateDate:'MMMM yyyy' }}
+      </h4>
+    </div>
+
+    <p *ngIf="missingEmployeeId" class="missing-id-message">
+      {{ 'CHECK_INS.MISSING_EMPLOYEE_ID' | translate }}
+    </p>
+
+    <section *ngIf="isLoadingEntries" class="loading-section">
+      <p>{{ 'CHECK_INS.LOADING_ENTRIES' | translate }}</p>
+    </section>
+
+    <ng-container *ngIf="!isLoadingEntries && !missingEmployeeId">
+      <section *ngIf="!showMonthDetail" class="months-section">
+        <div *ngIf="monthGroups.length === 0" class="no-entries">
+          <p>{{ 'CHECK_INS.NO_ENTRIES' | translate }}</p>
+        </div>
+        <ul *ngIf="monthGroups.length > 0">
+          <a
+            *ngFor="let group of monthGroups"
+            [routerLink]="getMonthLink(group)"
+            class="month-row flex-row month-link">
+            <li>{{ group.labelDate | translateDate:'MMMM yyyy' }}</li>
+            <div class="arrow-right"></div>
+          </a>
+        </ul>
+      </section>
+
+      <section *ngIf="showMonthDetail" class="entries-section">
+        <div *ngIf="monthEntries.length === 0" class="no-entries">
+          <p>{{ 'CHECK_INS.NO_ENTRIES' | translate }}</p>
+        </div>
+        <ul *ngIf="monthEntries.length > 0" class="entries-list">
+          <li *ngFor="let entry of monthEntries" class="entry-item">
+            <div class="entry-content">
+              <span
+                class="entry-type"
+                [class.check-in]="entry.type === CheckInType.CHECK_IN"
+                [class.check-out]="entry.type === CheckInType.CHECK_OUT">
+                {{ entry.type === CheckInType.CHECK_IN ? ('CHECK_INS.CHECK_IN' | translate) : ('CHECK_INS.CHECK_OUT' | translate) }}
+              </span>
+              <span class="entry-date">{{ entry.date | date:'short' }}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </ng-container>
+  </div>
+</div>

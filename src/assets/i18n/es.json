@@ -94,10 +94,16 @@
     "CHECK_OUT_SUCCESS": "Salida registrada.",
     "SUBMIT_ERROR": "Error al registrar entrada.",
     "NOT_LOGGED_IN": "Debes iniciar sesión para registrar entradas.",
+    "ENTRIES_HISTORY_OVERVIEW": "Historial de registros de tiempo",
     "ENTRIES_HISTORY": "Registros de Tiempo",
     "NO_ENTRIES": "Aún no hay registros.",
     "LOADING_ENTRIES": "Cargando registros...",
-    "LOAD_ENTRIES_ERROR": "No se pudieron cargar los registros."
+    "LOAD_ENTRIES_ERROR": "No se pudieron cargar los registros.",
+    "MISSING_EMPLOYEE_ID": "Este empleado no tiene un ID de personal configurado. Agréguelo en su perfil antes de registrar entradas.",
+    "CHECK_IN_OPEN_SESSION": "No se puede registrar entrada: este empleado ya tiene una entrada abierta sin salida.",
+    "CHECK_IN_COOLDOWN_AFTER_CHECK_OUT": "No se puede registrar entrada dentro de los 15 minutos posteriores a la última salida.",
+    "CHECK_OUT_NO_OPEN_CHECK_IN": "No se puede registrar salida: no hay una entrada abierta para cerrar.",
+    "CHECK_OUT_COOLDOWN_AFTER_CHECK_IN": "No se puede registrar salida dentro de los 15 minutos posteriores a la entrada."
   }, 
   "CLASS_TYPES": {
     "GROUP_FITNESS": "Fitness grupal",
@@ -197,6 +203,8 @@
     "CLASS_DETAILS": "Detalles de la Clase",
     "ENROLL_CLIENT_INSTRUCTIONS": "Selecciona un cliente para inscribir",
     "ENROLLED": "inscritos",
+    "INSTRUCTOR_LABEL": "Instructor:",
+    "NO_INSTRUCTOR_ASSIGNED": "Sin instructor asignado",
     "NO_CLIENTS_ENROLLED": "No hay clientes inscritos en esta clase.",
     "PARTIAL_ENROLLMENT_LETTER": "P",
     "PARTIAL_ENROLLMENT_TITLE": "Inscripción parcial",

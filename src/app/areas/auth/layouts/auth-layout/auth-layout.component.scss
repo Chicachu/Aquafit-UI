@@ -1,15 +1,18 @@
 @import 'assets/colors.scss';
 
 :host {
-  height: 100%;
+  display: block;
+  min-height: 100vh;
 }
 
 .main {
   background-color: $background-blue;
   min-height: 100vh;
-  height: 100vh;
-  align-items: center; 
-  justify-content: center; 
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  padding: 4.5rem 1rem 1.5rem;
+  box-sizing: border-box;
 }
 
 .language-container {
@@ -18,56 +21,125 @@
   position: absolute;
   top: 0;
   left: 0;
-  
+
   .content-width {
     display: flex;
     justify-content: flex-end;
+    max-width: none;
+    padding: 0 1rem;
+    box-sizing: border-box;
   }
 }
 
 .feature-container {
   border: 5px solid $primary-pink;
   border-radius: 10px;
-  height: 60vh; 
+  min-height: 60vh;
+  height: auto;
   width: 60vw;
+  max-width: 100%;
   background-image: url('assets/images/backgrounds/happy-woman-barbells-pool-less-wide.jpg');
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
-  justify-content: center; 
+  justify-content: center;
   z-index: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.5);
   padding: 20px;
 }
 
 .overlay {
-  position: absolute; 
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: $background-blue-overlay; 
+  background-color: $background-blue-overlay;
   z-index: 1;
 }
 
-.content  {
+.content {
   position: relative;
   z-index: 2;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .logo {
   height: 15vh;
+  max-height: 120px;
   width: auto;
 }
 
+// Smaller non-mobile viewports: grow the card and use more of the screen.
+@media screen and (max-width: 1200px) and (min-width: 501px) {
+  .feature-container {
+    width: 72vw;
+    min-height: 72vh;
+  }
+
+  .logo {
+    height: 12vh;
+    max-height: 100px;
+  }
+}
+
+@media screen and (max-width: 900px) and (min-width: 501px) {
+  .main {
+    padding-top: 4rem;
+  }
+
+  .feature-container {
+    width: 88vw;
+    min-height: 82vh;
+    padding: 16px;
+  }
+
+  .logo {
+    height: 10vh;
+    max-height: 80px;
+  }
+}
+
+@media screen and (max-width: 768px) and (min-width: 501px) {
+  .main {
+    justify-content: flex-start;
+    padding-top: 3.75rem;
+    padding-bottom: 1rem;
+  }
+
+  .feature-container {
+    width: 94vw;
+    min-height: calc(100vh - 5rem);
+  }
+
+  .logo {
+    height: 8vh;
+    max-height: 64px;
+  }
+}
+
 @media screen and (max-width: 500px) {
+  .main {
+    padding: 3.5rem 0.5rem 0.75rem;
+    justify-content: flex-start;
+  }
+
   .feature-container {
     width: 95vw;
-    height: 80vh;
+    min-height: 80vh;
     background-size: cover;
     background-image: url('assets/images/backgrounds/barbells-in-air.png');
+  }
+
+  .logo {
+    height: 10vh;
+    max-height: 72px;
   }
 }

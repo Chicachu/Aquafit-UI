@@ -60,7 +60,7 @@ export class ClientListComponent implements OnInit, OnDestroy {
   }
 
   get canAddClient(): boolean {
-    return this.userService.isAdmin
+    return this.userService.isAdmin || this.userService.isManager || this.userService.isReceptionist
   }
 
   get hasNoClients(): boolean {

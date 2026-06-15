@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { SharedModule } from "@shared/shared.module";
 import { AdminGuard } from "@core/guards/admin.guard";
+import { AdminManagerReceptionistGuard } from "@core/guards/admin-manager-receptionist.guard";
 import { AdminOrManagerGuard } from "@core/guards/admin-or-manager.guard";
 import { EmployeesListGuard } from "@core/guards/employees-list.guard";
 import { InstructorOrAdminGuard } from "@core/guards/instructor-or-admin.guard";
@@ -69,7 +70,7 @@ const routes: Routes = [
       {
         path: 'add-client',
         component: EditClientComponent,
-        canActivate: [AdminGuard],
+        canActivate: [AdminManagerReceptionistGuard],
         data: { panelView: true }
       },
       {

@@ -15,7 +15,7 @@ export class TimeTrackingGuard implements CanActivate {
 
   canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const username = this.userService.user?.username;
-    if (username === TIME_TRACKING_ALLOWED_USERNAME) {
+    if (username === TIME_TRACKING_ALLOWED_USERNAME || this.userService.isManager) {
       return true;
     }
 

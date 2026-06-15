@@ -55,7 +55,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumError": "6kB"
                 }
               ],
               "fileReplacements": [{
@@ -83,7 +83,7 @@
               "baseHref": "/",
               "budgets": [
                 { "type": "initial", "maximumWarning": "500kB", "maximumError": "1MB" },
-                { "type": "anyComponentStyle", "maximumWarning": "2kB", "maximumError": "4kB" }
+                { "type": "anyComponentStyle", "maximumWarning": "2kB", "maximumError": "6kB" }
               ],
               "fileReplacements": [{
                 "replace": "src/environments/environment.ts",

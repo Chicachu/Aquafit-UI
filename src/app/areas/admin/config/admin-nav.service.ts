@@ -78,7 +78,7 @@ export class AdminNavService {
 
     const navItems = ADMIN_NAV_ITEMS.filter(item => {
       if (item.label === ADMIN_NAV_LABELS.checkIns) {
-        return username === this.timeTrackingAllowedUsername;
+        return username === this.timeTrackingAllowedUsername || this.userService.isManager;
       }
       if (this.adminOnlyLabels.has(item.label)) {
         return isAdminOrManager;

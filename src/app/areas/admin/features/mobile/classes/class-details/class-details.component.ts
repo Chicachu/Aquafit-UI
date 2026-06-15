@@ -432,7 +432,7 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
       : undefined
 
     if (!reason) {
-      this.snackBarService.showError('Reason is required')
+      this.snackBarService.showError(this.translateService.instant('ERRORS.REASON_REQUIRED'))
       return
     }
 
@@ -458,7 +458,9 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
           error: ({error}) => {
             // Even if note fails, cancellation succeeded
             this.snackBarService.showSuccess(this.translateService.instant('CLASSES.CLASS_CANCELLED_SUCCESS'))
-            this.snackBarService.showError('Note could not be added: ' + error.message)
+            this.snackBarService.showError(
+              `${this.translateService.instant('ERRORS.NOTE_ADD_ERROR')} ${error.message ?? ''}`.trim()
+            )
             this.ngOnInit()
             this.loading = false
           }
@@ -628,7 +630,7 @@ export class ClassDetailsComponent implements OnInit, OnDestroy {
           this._loadWaitlistEntries()
         },
         error: ({ error }) => {
-          this.snackBarService.showError(error?.message ?? 'An error occurred')
+          this.snackBarService.showError(error?.message ?? this.translateService.instant('ERRORS.GENERIC'))
         }
       })
     } else {

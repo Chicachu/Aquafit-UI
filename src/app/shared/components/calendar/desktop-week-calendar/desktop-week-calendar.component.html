@@ -21,13 +21,24 @@
   </div>
 
   <div class="week-view">
-    <div
-      class="day-column"
-      *ngFor="let day of weekDays"
-      [class.today]="isToday(day)">
-      <div class="day-header">{{ getDayHeader(day) }}</div>
-      <ul class="day-hours">
-        <li *ngFor="let hour of hours">
+    <div class="day-headers">
+      <div
+        class="day-header"
+        *ngFor="let day of weekDays"
+        [class.today]="isToday(day)">
+        {{ getDayHeader(day) }}
+      </div>
+    </div>
+
+    <div class="hour-rows">
+      <div
+        class="hour-row"
+        *ngFor="let hour of hours; let isLastHour = last">
+        <div
+          class="hour-cell"
+          *ngFor="let day of weekDays"
+          [class.today-column]="isToday(day)"
+          [class.last-hour-row]="isLastHour">
           <app-calendar-hour-slot
             [hour]="hour"
             [items]="getItemsForDayHour(day, hour)"
@@ -35,8 +46,8 @@
             [emptyTemplate]="emptyTemplate"
             [stackItems]="true">
           </app-calendar-hour-slot>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>

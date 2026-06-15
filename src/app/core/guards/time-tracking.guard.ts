@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../services/userService';
 
-const TIME_TRACKING_ALLOWED_USERNAME = 'admin@aquafitvallarta.com';
-
+/** Allows Admin, Manager, or Receptionist to manage employee check-ins. */
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +13,7 @@ export class TimeTrackingGuard implements CanActivate {
   ) {}
 
   canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const username = this.userService.user?.username;
-    if (username === TIME_TRACKING_ALLOWED_USERNAME || this.userService.isManager) {
+    if (this.userService.canManageTimeTracking) {
       return true;
     }
 

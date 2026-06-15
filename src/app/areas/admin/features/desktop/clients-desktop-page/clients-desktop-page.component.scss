@@ -136,6 +136,54 @@
   }
 }
 
+:host ::ng-deep app-client-enroll.panel-view {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  .panel-view-header {
+    border-bottom: 1px solid $light-blue;
+
+    h2 {
+      margin: 0;
+      padding: 12px 16px;
+    }
+  }
+
+  .enroll-content {
+    padding: 16px;
+    box-sizing: border-box;
+
+    > p {
+      color: $mid-pink;
+    }
+
+    > h5 {
+      color: $mid-green;
+    }
+
+    .buttons {
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .buttons > * {
+      width: auto;
+    }
+  }
+
+  .enroll-form {
+    border: none !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+  }
+
+  app-multi-select-chips .label {
+    color: $light-blue;
+  }
+}
+
 :host ::ng-deep app-edit-client.panel-view {
   display: block;
   width: 100%;

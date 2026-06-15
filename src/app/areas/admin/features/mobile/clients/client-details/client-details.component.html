@@ -167,65 +167,19 @@
   </div>
 </div>
 
-<app-modal *ngIf="showEnrollmentModal"
+<app-modal *ngIf="showEnrollmentModal && !panelView"
   [parent]="this"
   [title]="'CLIENTS.ENROLL' | translate"
-  [buttonList]="enrollmentButtons"
-  (modalClick)="processEnrollmentModalClick($event)"
+  [buttonList]="[]"
+  (modalClick)="onEnrollmentModalClick($event)"
   class="enrollment-modal">
-  <div content> 
-    <p>{{ 'CLIENTS.ENROLL_INSTRUCTIONS' | translate }}</p>
-    <h5>{{ client?.firstName }} {{ client?.lastName }}</h5>
-
-    <form [formGroup]="classSelectionForm">
-      <app-dropdown *ngIf="classTypeOptions.length" 
-        label="CONTROLS.CLASS_TYPE" 
-        [options]="classTypeOptions" 
-        [i18nPrefix]="'CLASS_TYPES'"
-        controlName="class_type">
-      </app-dropdown>
-      <app-dropdown 
-        label="CONTROLS.LOCATION" 
-        [options]="classLocationOptions" 
-        controlName="location"
-        [disabled]="!selectedType">
-      </app-dropdown>
-      <app-dropdown
-        label="CONTROLS.TIME" 
-        [options]="classTimesOptions" 
-        controlName="time"
-        [disabled]="!selectedType || !selectedLocation">
-      </app-dropdown>
-      <app-datepicker
-        label="CONTROLS.START_DATE"
-        controlName="start_date">
-      </app-datepicker>
-
-      <mat-expansion-panel [disabled]="!selectedClassId" (opened)="onAdvancedOptionsOpened()">
-        <mat-expansion-panel-header>
-          {{ 'ENROLLMENTS.ADVANCED_OPTIONS' | translate }}
-        </mat-expansion-panel-header>
-
-        <ng-template matExpansionPanelContent>
-          <app-multi-select-chips
-            *ngIf="advancedOptionsClassInfo && advancedOptionsClassInfo.days.length > 1"
-            label="CONTROLS.DAYS_OVERRIDE"
-            [options]="weekdays"
-            [disabledChipsIndices]="disabledDaysChips"
-            i18nPrefix="WEEKDAYS_SHORT"
-            controlName="days_override">
-          </app-multi-select-chips>
-          <app-dropdown
-            label="CONTROLS.BILLING_FREQUENCY_OVERRIDE"
-            [options]="billingFrequencyOptions"
-            controlName="billing_frequency_override"
-            [i18nPrefix]="'BILLING_FREQUENCY'"
-            [hasNoSelectOption]="true"
-            class="billing-frequency">
-          </app-dropdown>
-        </ng-template>
-      </mat-expansion-panel>
-    </form>
+  <div content>
+    <app-client-enroll
+      *ngIf="clientId"
+      [userId]="clientId"
+      (closed)="closeEnrollmentModal()"
+      (enrolled)="onClientEnrolled()">
+    </app-client-enroll>
   </div>
 </app-modal>
 

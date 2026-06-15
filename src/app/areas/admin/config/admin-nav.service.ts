@@ -28,9 +28,6 @@ export class AdminNavService {
     ADMIN_NAV_LABELS.clients
   ]);
 
-  /** Time tracking is only available to this specific user */
-  private readonly timeTrackingAllowedUsername = 'admin@aquafitvallarta.com';
-
   constructor(
     private userService: UserService,
     private router: Router
@@ -71,14 +68,13 @@ export class AdminNavService {
 
   private getNavItems(pathKey: NavPathKey): MobileNavItem[] {
     const role = this.userService.user?.role;
-    const username = this.userService.user?.username ?? '';
     const isInstructor = role === Role.INSTRUCTOR;
     const isReceptionist = role === Role.RECEPTIONIST;
     const isAdminOrManager = this.userService.isAdmin || this.userService.isManager;
 
     const navItems = ADMIN_NAV_ITEMS.filter(item => {
       if (item.label === ADMIN_NAV_LABELS.checkIns) {
-        return username === this.timeTrackingAllowedUsername || this.userService.isManager;
+        return this.userService.canManageTimeTracking;
       }
       if (this.adminOnlyLabels.has(item.label)) {
         return isAdminOrManager;

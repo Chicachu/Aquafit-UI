@@ -32,7 +32,14 @@
 }
 
 :host(.stack-items) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+
   .time-slot {
+    flex: 1;
     flex-direction: column;
     align-items: stretch;
     width: 100%;
@@ -75,6 +82,7 @@
 }
 
 :host(.stack-items) .empty {
+  flex: 1;
   align-items: flex-start;
   padding: 4px;
   font-size: 0.7em;

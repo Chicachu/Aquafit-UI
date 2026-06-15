@@ -53,6 +53,10 @@ export class UserService {
     return this._user?.role === Role.RECEPTIONIST
   }
 
+  get canManageTimeTracking(): boolean {
+    return this.isAdmin || this.isManager || this.isReceptionist
+  }
+
   private _restoreFromStorage(): void {
     if (!this._user) {
       try {

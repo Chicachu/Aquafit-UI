@@ -49,7 +49,13 @@
     "BILLING_FREQUENCY_OVERRIDE": "Billing Frequency Override",
     "INSTRUCTOR": "Instructor",
     "PAYMENTVALUE": "Payment per session",
-    "AMOUNT": "Amount"
+    "AMOUNT": "Amount",
+    "CLIENT": "Client",
+    "PAYMENT_TYPE": "Payment type",
+    "SIMULATED_DATE": "Date",
+    "CANCELLATION_DATE": "Cancellation date",
+    "EMPLOYEE": "Employee",
+    "ROLE": "Role"
   },
   "ERRORS": {
     "REQUIRED": "{{field}} is required",
@@ -61,7 +67,17 @@
     "INVALID_PATTERN": "Please enter a valid {{field}}",
     "POSITIVE": "{{field}} must be a positive value",
     "MIN": "{{field}} must be at least {{min}}",
-    "MIN_DATE": "{{field}} cannot be before today"
+    "MIN_DATE": "{{field}} cannot be before today",
+    "GENERIC": "Something went wrong. Please try again.",
+    "LOAD_PAYABLE": "Error loading payable.",
+    "LOAD_INVOICES": "Error loading invoices.",
+    "UPDATE_ASSIGNMENT": "Error updating assignment.",
+    "LOAD_STAFF_ID": "Failed to load staff ID.",
+    "REASON_REQUIRED": "Reason is required.",
+    "NOTE_ADD_ERROR": "Note could not be added.",
+    "FILL_REQUIRED_FIELDS": "Please fill in all required fields.",
+    "END_DATE": "End date",
+    "START_DATE": "Start date"
   },
   "LANGUAGES": {
     "ENGLISH": "English", 
@@ -82,7 +98,7 @@
     "MY_ACCOUNT": "My Account"
   },
   "CHECK_INS": {
-    "INTRO": "Admin-only testing: simulate check-in and check-out for any employee at a chosen date and time. Entries are used to calculate payables.",
+    "INTRO": "Record check-in and check-out for any employee at a chosen date and time. Entries are used to calculate payables.",
     "EMPLOYEE_NUMBER": "Employee number",
     "EMPLOYEE_NUMBER_PLACEHOLDER": "6-digit ID (e.g. 336105)",
     "SIMULATED_DATE": "Date",

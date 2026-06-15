@@ -8,6 +8,7 @@ import { filter, Subscription } from 'rxjs';
   styleUrls: ['./clients-desktop-page.component.scss']
 })
 export class ClientsDesktopPageComponent implements OnInit, OnDestroy {
+  showEnrollPanel = false
   showInvoiceHistoryPanel = false
   showInvoiceDetailsPanel = false
   activeUserId: string | null = null
@@ -36,6 +37,7 @@ export class ClientsDesktopPageComponent implements OnInit, OnDestroy {
     this.activeUserId = this._findParamInRouteTree(this.route, 'user-id')
     this.activeEnrollmentId = this._findParamInRouteTree(this.route, 'enrollment-id')
     this.activeInvoiceId = this._findParamInRouteTree(this.route, 'invoice-id')
+    this.showEnrollPanel = this._routeTreeHasData(this.route, 'showEnrollPanel')
     this.showInvoiceHistoryPanel = this._routeTreeHasData(this.route, 'showInvoiceHistoryPanel')
     this.showInvoiceDetailsPanel = this._routeTreeHasData(this.route, 'showInvoiceDetailsPanel')
   }

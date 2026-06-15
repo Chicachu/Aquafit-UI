@@ -99,6 +99,6 @@ export abstract class BaseFormControlComponent implements OnInit, ErrorMessagePr
       }
     }
 
-    return this.errorService.getErrorMessage(this.controlName, this.control)
+    return this.errorService.getErrorMessage(this.controlName, this.control, this.label)
   }
 }

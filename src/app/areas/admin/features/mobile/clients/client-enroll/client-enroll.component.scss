@@ -1,0 +1,40 @@
+@import 'assets/colors.scss';
+
+.enroll-content {
+  p,
+  h5 {
+    text-align: center;
+  }
+}
+
+.enroll-form {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.billing-frequency {
+  position: relative;
+  top: 10px;
+}
+
+.buttons {
+  margin-top: 15px;
+  justify-content: space-between;
+}
+
+.buttons > * {
+  width: 45%;
+}
+
+:host(:not(.panel-view)) {
+  .enroll-content form {
+    width: inherit;
+    border: none;
+    min-height: fit-content;
+    padding: 0;
+  }
+}

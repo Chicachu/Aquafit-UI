@@ -61,7 +61,7 @@ export class AddEmployeeComponent implements OnInit {
         this.staffId = res.employeeId
       },
       error: ({ error }) => {
-        this.snackBarService.showError(error?.message ?? 'Failed to load staff ID')
+        this.snackBarService.showError(error?.message ?? this.translateService.instant('ERRORS.LOAD_STAFF_ID'))
       }
     })
 

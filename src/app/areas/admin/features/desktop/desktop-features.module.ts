@@ -74,6 +74,11 @@ const routes: Routes = [
         data: { panelView: true }
       },
       {
+        path: ':user-id/details/enroll',
+        component: ClientDetailsComponent,
+        data: { panelView: true, showEnrollPanel: true }
+      },
+      {
         path: ':user-id/payments/:enrollment-id/:invoice-id',
         component: ClientDetailsComponent,
         data: { panelView: true, showInvoiceDetailsPanel: true }

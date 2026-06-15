@@ -133,7 +133,7 @@ export class ClassEnrollComponent implements OnInit, OnChanges {
   submit(): void {
     if (!this.enrollmentForm.valid || !this.classId) {
       this.enrollmentForm.markAllAsTouched()
-      this.snackBarService.showError('Please fill in all required fields')
+      this.snackBarService.showError(this.translateService.instant('ERRORS.FILL_REQUIRED_FIELDS'))
       return
     }
 

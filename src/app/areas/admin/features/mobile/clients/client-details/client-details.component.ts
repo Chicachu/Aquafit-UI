@@ -1,24 +1,19 @@
-import { ChangeDetectorRef, Component, HostBinding, OnDestroy, OnInit } from "@angular/core";
+import { Component, HostBinding, OnDestroy, OnInit } from "@angular/core";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
-import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, map } from "rxjs/operators";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { distinctUntilChanged, filter, map } from "rxjs/operators";
 import { forkJoin, Subscription } from "rxjs";
 import { UserService } from "@core/services/userService";
 import { User } from "@core/types/user";
 import { SnackBarService } from "@core/services/snackBarService";
 import { ClassService } from "@core/services/classService";
-import { SelectOption } from "@core/types/selectOption";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { ClassType } from "@core/types/enums/classType";
-import { ClassScheduleMap } from "@core/types/classScheduleMap";
 import { FormatOptions } from "@core/types/enums/formatOptions";
 import { EnrollmentService } from "@core/services/enrollmentService";
-import { BillingFrequency } from "@core/types/enums/billingFrequency";
 import { TranslateService } from "@ngx-translate/core";
-import { ClientEnrollmentDetails } from "@core/types/clients/clientEnrollmentDetails";
 import { Enrollment } from "@core/types/enrollment";
 import { Class } from "@core/types/classes/class";
-import { Weekday } from "@core/types/enums/weekday";
 import { Note } from "@core/types/user";
 import { EnrollmentStatus } from "@core/types/enums/enrollmentStatus";
 import { Role } from "@core/types/enums/role";
@@ -40,41 +35,20 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
   canDeleteUser = false
   showEnrollmentModal = false
   showDeleteUserModal = false
-  enrollmentButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.ENROLL'}]
   showUnenrollModal = false
   unenrollButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.UNENROLL'}]
   deleteUserButtons = [{text: 'CONTROLS.CANCEL'}, {text: 'CLIENTS.DELETE_USER_CONFIRM_YES'}]
   unenrollForm: FormGroup
   selectedEnrollmentForUnenroll: { class: Class, enrollment: Enrollment } | null = null
-  classSelectionForm: FormGroup 
-  classTypeOptions: SelectOption[] = []
-  selectedType: ClassType | null = null 
-  classLocationOptions: SelectOption[] = []
-  selectedLocation: string = ''
-  classTimesOptions: SelectOption[] = []
-  classScheduleMap: ClassScheduleMap | null = null
-  selectedClassId: string = ''
   classEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
   activeClassEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
   unenrolledClassEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
   terminatedClassEnrollmentInfo: { class: Class, enrollment: Enrollment }[] = []
-  weekdays: SelectOption[] = Object.keys(Weekday)
-    .filter(key => isNaN(Number(key)))
-    .map(key => ({
-      viewValue: key.toUpperCase(),
-      value: Weekday[key as keyof typeof Weekday]
-    }))
-  billingFrequencyOptions: SelectOption[] = Object.keys(BillingFrequency)
-    .map(key => ({
-      viewValue: key.toUpperCase(),
-      value: BillingFrequency[key as keyof typeof BillingFrequency]
-    }))
-  advancedOptionsClassInfo: Class | undefined
-  disabledDaysChips: number[] = []
   waitlistClassInfo: Array<{ classId: string, className: string }> = []
   allClasses: Class[] = []
 
   private routeSubscription?: Subscription
+  private routerSubscription?: Subscription
   constructor(
     private route: ActivatedRoute,
     private userService: UserService, 
@@ -86,14 +60,6 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private waitlistService: WaitlistService
   ) {
-    this.classSelectionForm = this.fb.group({
-      class_type: ['', [Validators.required]],
-      location: ['', [Validators.required]],
-      time: ['', [Validators.required]],
-      start_date: ['', [Validators.required]],
-      days_override: [null, []],
-      billing_frequency_override: [null, []]
-    })
     this.unenrollForm = this.fb.group({
       cancelReason: ['']
     })
@@ -145,7 +111,7 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
         this.router.navigate(this.panelView ? ['/admin/clients'] : ['/admin/mobile/clients'])
       },
       error: ({ error }) => {
-        this.snackBarService.showError(error?.message ?? this.translateService.instant('errors.somethingWentWrong'))
+        this.snackBarService.showError(error?.message ?? this.translateService.instant('ERRORS.GENERIC'))
       }
     })
   }
@@ -154,8 +120,6 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.data['panelView'] === true) {
       this.panelView = true
     }
-
-    this._setupClassSelectionFormSubscriptions()
 
     this.routeSubscription = this._getUserIdRoute().paramMap.pipe(
       map(params => params.get('user-id')),
@@ -167,10 +131,21 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
 
       this._loadClientDetails(userId)
     })
+
+    if (this.panelView) {
+      this.routerSubscription = this.router.events.pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        if (this.clientId) {
+          this._loadClientDetails(this.clientId)
+        }
+      })
+    }
   }
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe()
+    this.routerSubscription?.unsubscribe()
   }
 
   private _getUserIdRoute(): ActivatedRoute {
@@ -232,150 +207,34 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     return `${daysStr} - ${classItem.startTime} - ${classItem.classLocation}`
   }
 
-  private _setupClassSelectionFormSubscriptions(): void {
-    this.classSelectionForm.get('class_type')?.valueChanges.subscribe((selectedClassType: ClassType) => {
-      if (!this.classScheduleMap) return 
-
-      this.selectedType = selectedClassType
-      const locations = Object.keys(this.classScheduleMap[selectedClassType] || {})
-      this.classLocationOptions = locations.map(location => ({
-        value: location, 
-        viewValue: location
-      }))
-
-      this.selectedLocation = ''
-      this.classSelectionForm.get('location')?.reset('', { emitEvent: false })
-      this.selectedClassId = ''
-      this.classSelectionForm.get('time')?.reset('', { emitEvent: false })
-    })
-
-    this.classSelectionForm.get('location')?.valueChanges.subscribe((selectedLocation: string) => {
-      if (!this.classScheduleMap || !this.selectedType) return
-      
-      this.selectedLocation = selectedLocation
-      const timeMap = this.classScheduleMap[this.selectedType]?.[selectedLocation] || {};
-
-      // Filter out time slots for classes the client is already actively enrolled in
-      const activeClassIds = this._getActiveEnrolledClassIds(this.selectedType, selectedLocation)
-      
-      this.classTimesOptions = Object.keys(timeMap)
-        .filter(timeSlot => {
-          const classId = timeMap[timeSlot]
-          return !activeClassIds.has(classId)
-        })
-        .map(timeSlot => ({
-          value: timeSlot, 
-          viewValue: timeSlot
-        }))
-      
-      this.selectedClassId = ''
-      this.classSelectionForm.get('time')?.reset('', { emitEvent: false })
-    })
-
-    this.classSelectionForm.get('time')?.valueChanges.subscribe((selectedTime: string) => {
-      if (!this.classScheduleMap || !this.selectedType || !this.selectedLocation) return
-    
-      this.selectedClassId = this.classScheduleMap[this.selectedType]?.[this.selectedLocation]?.[selectedTime]!
-    })
-  }
-
-  get f() { 
-    return this.classSelectionForm.controls
-  }
-
   public setShowEnrollmentModal(): void {
-    if (!this.client) return 
+    if (!this.clientId) {
+      return
+    }
 
-    this.classService.getClassScheduleMap().subscribe({
-      next: (classScheduleMap: ClassScheduleMap) => {
-        if (classScheduleMap) {
-          this.classScheduleMap = classScheduleMap
-          this.classTypeOptions = Object.keys(classScheduleMap).map(classType => ({
-            viewValue: classType, 
-            value: classType
-          }))
+    if (this.panelView) {
+      this.router.navigate(['/admin/clients', this.clientId, 'details', 'enroll'])
+      return
+    }
 
-          this.showEnrollmentModal = true
-        }
-      }, 
-      error: ({error}) => {
-        this.snackBarService.showError(error.message)
-      }
-    })
+    this.showEnrollmentModal = true
   }
 
-  public processEnrollmentModalClick(event: { ref: ClientDetailsComponent, buttonTitle: string }): void {
-    if (event.buttonTitle === 'CONTROLS.CANCEL' || event.buttonTitle === 'close-button') {
-      this.classSelectionForm.reset()
-      this.showEnrollmentModal = false
-    } else if (event.buttonTitle === 'CLIENTS.ENROLL') {
-      const billingFrequency = this.classSelectionForm.controls["billing_frequency_override"].value ?? null
-      const daysOverride = this.classSelectionForm.controls["days_override"].value ?? null
-      this.enrollmentService.enrollClient(this.selectedClassId, this.clientId!, this.f['start_date'].value._d, billingFrequency, daysOverride).subscribe({
-        next: () => {
-          if (this.clientId) {
-            this._loadClientDetails(this.clientId)
-          }
-          this.snackBarService.showSuccess(this.translateService.instant('CLASSES.ADD_NEW_CLASS_SUCCESS'))
-          this.showEnrollmentModal = false
-        }, 
-        error: ({error}) => {
-          this.snackBarService.showError(error.message)
-        }
-      })
+  onEnrollmentModalClick(event: { ref: ClientDetailsComponent, buttonTitle: string }): void {
+    if (event.buttonTitle === 'close-button') {
+      this.closeEnrollmentModal()
     }
   }
 
-  public onAdvancedOptionsOpened(): void {
-    this.classService.getClassDetails(this.selectedClassId).subscribe({
-      next: (rsp: Class) => {
-        this.advancedOptionsClassInfo = rsp
-        this.disabledDaysChips = Object.values(Weekday)
-          .filter(value => typeof value === 'number')
-          .filter(value => !this.advancedOptionsClassInfo?.days.includes(value))
-      }, 
-      error: ({error}) => {
-        this.snackBarService.showError(error.message)
-      }
-    })
+  closeEnrollmentModal(): void {
+    this.showEnrollmentModal = false
   }
 
-  private _getActiveEnrolledClassIds(classType: ClassType, location: string): Set<string> {
-    const activeClassIds = new Set<string>()
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    // Check all enrollments (not just activeClassEnrollmentInfo) to include those with endDate that haven't passed
-    this.classEnrollmentInfo.forEach(item => {
-      // Skip if class type or location doesn't match
-      if (item.class.classType !== classType || item.class.classLocation !== location) {
-        return
-      }
-
-      // Check if enrollment is still active
-      // An enrollment is active if:
-      // 1. Status is ACTIVE (not UNENROLLED or TERMINATED)
-      // 2. If it has an endDate, it hasn't passed yet (yesterday or earlier means it's ended)
-      const isActive = item.enrollment.status === EnrollmentStatus.ACTIVE
-      if (isActive) {
-        if (item.enrollment.endDate) {
-          const enrollmentEndDate = new Date(item.enrollment.endDate)
-          enrollmentEndDate.setHours(0, 0, 0, 0)
-          const yesterday = new Date(today)
-          yesterday.setDate(yesterday.getDate() - 1)
-          
-          // If endDate has passed (yesterday or earlier), it's no longer active
-          if (enrollmentEndDate <= yesterday) {
-            return
-          }
-        }
-        
-        // Enrollment is still active, add its classId to the set
-        activeClassIds.add(item.class._id)
-      }
-    })
-
-    return activeClassIds
+  onClientEnrolled(): void {
+    if (this.clientId) {
+      this._loadClientDetails(this.clientId)
+    }
+    this.showEnrollmentModal = false
   }
 
   private _separateActiveAndTerminated(classEnrollmentInfo: { class: Class, enrollment: Enrollment }[]): void {

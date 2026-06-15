@@ -14,6 +14,11 @@
   </section>
   <section class="panel panel-3">
     <div class="panel-body">
+      <app-client-enroll
+        *ngIf="showEnrollPanel && activeUserId"
+        [userId]="activeUserId"
+        [panelView]="true">
+      </app-client-enroll>
       <app-invoice-history
         *ngIf="showInvoiceHistoryPanel && activeUserId && activeEnrollmentId"
         [userId]="activeUserId"

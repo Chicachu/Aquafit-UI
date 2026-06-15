@@ -125,7 +125,7 @@ export class EmployeePayableDetailsComponent implements OnInit, OnChanges {
         this.payable = p;
       },
       error: (err) => {
-        this.snackBarService.showError(err?.error?.message ?? "Error loading payable.");
+        this.snackBarService.showError(err?.error?.message ?? this.translate.instant('ERRORS.LOAD_PAYABLE'));
       },
     });
   }

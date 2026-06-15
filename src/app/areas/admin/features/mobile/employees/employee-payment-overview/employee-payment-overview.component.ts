@@ -1,6 +1,7 @@
 import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ButtonType } from "../../breadcrumb-nav-bar/breadcrumb-nav-bar.component";
+import { TranslateService } from "@ngx-translate/core";
 import { InvoiceAndPaymentsService } from "@core/services/invoiceAndPaymentsService";
 import { SnackBarService } from "@core/services/snackBarService";
 import { PaymentStatus } from "@core/types/enums/paymentStatus";
@@ -30,7 +31,8 @@ export class EmployeePaymentOverviewComponent implements OnInit, OnChanges {
   constructor(
     private route: ActivatedRoute,
     private invoiceAndPaymentsService: InvoiceAndPaymentsService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -119,7 +121,7 @@ export class EmployeePaymentOverviewComponent implements OnInit, OnChanges {
         this.periods = combined;
       },
       error: ({ error }) => {
-        this.snackBarService.showError(error?.message ?? "Error loading invoices.");
+        this.snackBarService.showError(error?.message ?? this.translateService.instant('ERRORS.LOAD_INVOICES'));
       },
     });
   }

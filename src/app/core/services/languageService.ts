@@ -22,11 +22,10 @@ export class LanguageService {
   }
 
   setLanguage(language: 'en' | 'es'): void {
+    localStorage.setItem('preferred-language', language)
+    this.translate.use(language)
     this._http.post(`${environment.apiUrl}/languages`, {language}).pipe(take(1)).subscribe({
-      next: () => {
-        this.translate.use(language);
-        localStorage.setItem('preferred-language', language);
-      }, 
+      next: () => {},
       error: ({error}) => {
         this.snackBarService.showError(error.message)
       }

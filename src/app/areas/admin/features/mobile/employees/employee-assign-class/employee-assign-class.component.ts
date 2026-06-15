@@ -90,7 +90,7 @@ export class EmployeeAssignClassComponent implements OnInit, OnChanges {
 
     if (!startDate || !this.userId || !this.selectedClassId) {
       this.snackBarService.showError(
-        this.translateService.instant('ERRORS.REQUIRED', { field: 'Start date' })
+        this.translateService.instant('ERRORS.REQUIRED', { field: this.translateService.instant('ERRORS.START_DATE') })
       )
       return
     }

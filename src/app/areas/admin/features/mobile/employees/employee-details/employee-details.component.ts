@@ -321,7 +321,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
       const raw = this.unassignForm.get("end_date")?.value;
       const endDate = raw?._d ? new Date(raw._d) : raw ? new Date(raw) : null;
       if (!endDate) {
-        this.snackBarService.showError(this.translateService.instant("ERRORS.REQUIRED", { field: "End date" }));
+        this.snackBarService.showError(this.translateService.instant("ERRORS.REQUIRED", { field: this.translateService.instant("ERRORS.END_DATE") }));
         return;
       }
       this.assignmentService
@@ -338,7 +338,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
             this.unassignForm.reset();
           },
           error: ({ error }) => {
-            this.snackBarService.showError(error?.message ?? "Error updating assignment.");
+            this.snackBarService.showError(error?.message ?? this.translateService.instant('ERRORS.UPDATE_ASSIGNMENT'));
           },
         });
     }

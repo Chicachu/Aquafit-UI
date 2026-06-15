@@ -14,6 +14,7 @@ import { InvoiceDetailsComponent } from '../mobile/payments/invoice-details/invo
 import { InvoiceHistoryComponent } from '../mobile/payments/invoice-history/invoice-history.component';
 import { ClientListComponent } from '../mobile/clients/client-list/client-list.component';
 import { ClientDetailsComponent } from '../mobile/clients/client-details/client-details.component';
+import { ClientEnrollComponent } from '../mobile/clients/client-enroll/client-enroll.component';
 import { EditClientComponent } from '../mobile/clients/edit-client/edit-client.component';
 import { EmployeesListComponent } from '../mobile/employees/employees-list/employees-list.component';
 import { EmployeeDetailsComponent } from '../mobile/employees/employee-details/employee-details.component';
@@ -36,6 +37,7 @@ import { CheckInsHistoryComponent } from '../mobile/check-ins/check-ins-history.
     InvoiceHistoryComponent,
     ClientListComponent,
     ClientDetailsComponent,
+    ClientEnrollComponent,
     EditClientComponent,
     EmployeesListComponent,
     EmployeeDetailsComponent,
@@ -65,6 +67,7 @@ import { CheckInsHistoryComponent } from '../mobile/check-ins/check-ins-history.
     InvoiceHistoryComponent,
     ClientListComponent,
     ClientDetailsComponent,
+    ClientEnrollComponent,
     EditClientComponent,
     EmployeesListComponent,
     EmployeeDetailsComponent,
